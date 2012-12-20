@@ -1,0 +1,58 @@
+{
+
+	"name"    : "Preferences",
+	"version" : "1.0",
+	"state"   : "beta",
+
+	"developer" : "wz",
+	"authKey"   : "wz",
+
+	"language" : {
+
+		"default" : "en-en",
+		"list"    : [ "en-en" ]
+
+	},
+
+	"common" : {
+
+		"css"    : [],
+		"script" : []
+
+	},
+
+	"window" : {
+
+		"default" : "default",
+
+		"name" : {
+
+			"description" : "",
+			
+			"maxizable" : false,
+			"resizable" : false,
+
+			"width"  : {
+
+				"default" : 100,
+				"min"     : 0,
+				"max"     : 0
+
+			},
+
+			"height" : {
+
+				"default" : 100,
+				"min"     : 0,
+				"max"     : 0
+
+			},
+
+			"css"    : [],
+			"script" : []
+
+		}
+
+	}
+
+}
