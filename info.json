@@ -1,3 +1,4 @@
+
 {
 
 	"name"    : "Preferences",
@@ -16,19 +17,21 @@
 
 	"common" : {
 
-		"css"    : [],
-		"script" : []
+		"css"    : ["style.css"],
+		"script" : ["script.js"]
 
 	},
 
+	"primary" : "main",
+
 	"window" : {
 
-		"default" : "default",
-
-		"name" : {
+		"main" : {
 
 			"description" : "",
 			
+			"template" : "main.html",
+
 			"maxizable" : false,
 			"resizable" : false,
 

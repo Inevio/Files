@@ -1,0 +1,28 @@
+
+.wz-app-1 .weexplorer-sidebar{ }
+
+.wz-app-1 .weexplorer-main{ }
+
+.wz-app-1 .weexplorer-file{
+    float: left;
+    margin: 5px;
+    width: 148px;
+    height: 148px;
+    background: #f0faff;
+    border-radius: 8px;
+    border: 1px solid #97c8f1;
+    box-shadow: 0px 0px 1px #daeefb, 0px 0px 1px #daeefb inset;
+}
+
+.wz-app-1 .weexplorer-file textarea{
+    width: 98px;
+}
+
+.wz-app-1 .weexplorer-file-area{ }
+
+.wz-app-1 .weexplorer-option-upload{
+    float: left;
+    width: 22px;
+    height: 16px;
+    background: url('https://static.weezeel.com/app/1/sprite.png') 0px 0px no-repeat;
+}
