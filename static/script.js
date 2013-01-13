@@ -4,9 +4,14 @@ wz.app.addScript( 1, 'common', function( win ){
 
     // Variables
     var history = [];
+    var current = 'root';
 
+    // Areas
     var fileArea      = $( '.weexplorer-file-area', win );
     var filePrototype = $( '.weexplorer-file.prototype', win );
+
+    // Menu Buttons
+    var uploadButton = $( '.weexplorer-option-upload', win );
 
     // Functions
     var addToHistory = function( id ){
@@ -22,6 +27,9 @@ wz.app.addScript( 1, 'common', function( win ){
     };
 
     var openDirectory = function( id ){
+
+        // Update current
+        current = id;
 
         // Get Structure Info
         wz.structure( id, function( error, structure ){
@@ -74,7 +82,12 @@ wz.app.addScript( 1, 'common', function( win ){
 
     });
 
+    $( uploadButton ).on( 'click', function(e){
+        console.log( 'current', current );
+        $(this).data( 'destiny', current );
+    });
+
     // Start Window
-    openDirectory( 'root' );
+    openDirectory( current );
 
 });
