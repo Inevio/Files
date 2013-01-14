@@ -5,6 +5,12 @@ wz.app.addScript( 1, 'common', function( win ){
     // Variables
     var history = [];
     var current = 'root';
+    var types   = [
+                    'weexplorer-file-type-directory',
+                    'weexplorer-file-type-special-directory',
+                    'weexplorer-file-type-file',
+                    'weexplorer-file-type-temporal-file'
+                  ];
 
     // Areas
     var fileArea      = $( '.weexplorer-file-area', win );
@@ -26,6 +32,22 @@ wz.app.addScript( 1, 'common', function( win ){
         // To Do
     };
 
+    var icon = function( id, name, type ){
+
+        // Clone prototype
+        var file = filePrototype.clone().removeClass('prototype');
+
+        // Add new properties
+        file.children('textarea').text( name );
+        file.addClass( types[ type ] );
+        file.addClass( 'weexplorer-file-' + id );
+        file.data( 'file-id', id );
+
+        // Return icon
+        return file;
+
+    };
+
     var openDirectory = function( id ){
 
         // Update current
@@ -42,28 +64,55 @@ wz.app.addScript( 1, 'common', function( win ){
             
             // List Structure Files
             structure.list( function( error, list ){
-                
+                                
                 var length = list.length;
-                var file   = null;
                 var files  = $();
 
                 // Generate File icons
                 for( var i = 0; i < length; i++ ){
-
-                    // Clone prototype
-                    file = filePrototype.clone().removeClass('prototype');
-
-                    // Add new properties
-                    file.children('textarea').text( list[ i ].name );
-
-                    // Add new file to list
-                    files = files.add( file );
-
+                    files = files.add( icon( list[ i ].id, list[ i ].name, list[ i ].type ) );
                 }
 
                 // Display icons
                 fileArea.append( files );
 
+                // Nullify
+                files = null;
+
+            });
+
+        });
+
+    };
+
+    var createDirectory = function(){
+
+        wz.structure( current, function( error, structure ){
+
+            // To Do -> Error
+
+            structure.createDirectory( null, function( error, newDirectory ){
+                fileArea.append( icon( newDirectory.id, newDirectory.name, newDirectory.type ) );
+            });
+
+        });
+
+    };
+
+    var removeStructure = function( id ){
+
+        wz.structure( id, function( error, structure ){
+
+            // To Do -> Error
+            
+            structure.remove( function( error, quota ){
+
+                if( error ){
+                    // To Do -> Error
+                }else{
+                    fileArea.children( '.weexplorer-file-' + id ).remove();
+                }
+                console.log('resultado', error, quota);
             });
 
         });
@@ -72,18 +121,40 @@ wz.app.addScript( 1, 'common', function( win ){
 
     // Events
     $( win )
-    .on( 'contextmenu', '.weexplorer-file', function(e){
+
+    .on( 'wz-upload-end', function( e, structure ){
+        fileArea.append( icon( structure.id, structure.name, structure.type ) );
+    })
+
+    .on( 'contextmenu', '.weexplorer-file', function( /*e*/ ){
+
+        var icon = $(this);
 
         wz.menu()
-            .add('Opción 1')
-            .separator()
-            .add(Math.random())
+            .add('Renombrar')
+            .add('Borrar', function(){
+                removeStructure( icon.data('file-id') );
+            })
             .render();
 
     });
 
-    $( uploadButton ).on( 'click', function(e){
-        console.log( 'current', current );
+    fileArea.on( 'contextmenu', function( /*e*/ ){
+
+        wz.menu()
+            .add('Subir archivo', function(){
+                uploadButton.click();
+            })
+            .add('Nuevo directorio', function(){
+                createDirectory();
+            })
+            .separator()
+            .add('Obtener información')
+            .render();
+
+    });
+
+    uploadButton.on( 'click', function( /*e*/ ){
         $(this).data( 'destiny', current );
     });
 
