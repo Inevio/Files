@@ -137,6 +137,10 @@ wz.app.addScript( 1, 'common', function( win ){
             })
             .render();
 
+    })
+
+    .on( 'mousedown', '.weexplorer-file:not(.active)', function(){
+        $( this ).addClass('active')
     });
 
     fileArea.on( 'contextmenu', function( /*e*/ ){
