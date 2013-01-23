@@ -122,8 +122,41 @@ wz.app.addScript( 1, 'common', function( win ){
     // Events
     $( win )
 
-    .on( 'wz-upload-end', function( e, structure ){
+    .on( 'upload-start', function( e, structure ){
+        console.log('start',structure);
+        //fileArea.append( icon( structure.id, structure.name, structure.type ) );
+    })
+
+    .on( 'upload-progress', function( e, structureID, progress ){
+        console.log('upload-progress', progress );
+        //fileArea.append( icon( structure.id, structure.name, structure.type ) );
+    })
+
+    .on( 'upload-end', function( e, structure ){
+        console.log('end',structure);
         fileArea.append( icon( structure.id, structure.name, structure.type ) );
+    })
+
+    .on( 'dblclick', '.weexplorer-file', function(){
+
+        var id = $(this).data('file-id');
+
+        wz.structure( id, function( error, structure ){
+
+            console.log( structure.formats );
+
+            structure.associatedApp( function( error, app ){
+
+                if( app ){
+                    wz.app.createWindow( app, [ id ] );
+                }else{
+                    alert( error );
+                }
+
+            });
+            
+        });
+        
     })
 
     .on( 'contextmenu', '.weexplorer-file', function( /*e*/ ){
@@ -140,7 +173,7 @@ wz.app.addScript( 1, 'common', function( win ){
     })
 
     .on( 'mousedown', '.weexplorer-file:not(.active)', function(){
-        $( this ).addClass('active')
+        $( this ).addClass('active');
     });
 
     fileArea.on( 'contextmenu', function( /*e*/ ){

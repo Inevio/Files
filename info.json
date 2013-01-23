@@ -32,12 +32,11 @@
 			
 			"template" : "main.html",
 
-			"maxizable" : false,
-			"resizable" : false,
+			"resizable"   : false,
 
 			"width"  : {
 
-				"default" : 100,
+				"default" : 0,
 				"min"     : 0,
 				"max"     : 0
 
@@ -45,7 +44,7 @@
 
 			"height" : {
 
-				"default" : 100,
+				"default" : 0,
 				"min"     : 0,
 				"max"     : 0
 
