@@ -1,7 +1,7 @@
 
 {
 
-    "name"    : "Preferences",
+    "name"    : "weeXplorer",
     "version" : "1.0",
     "state"   : "beta",
 
@@ -36,7 +36,7 @@
 
             "width"  : {
 
-                "default" : 0,
+                "default" : 544,
                 "min"     : 0,
                 "max"     : 0
 
@@ -44,7 +44,7 @@
 
             "height" : {
 
-                "default" : 0,
+                "default" : 776,
                 "min"     : 0,
                 "max"     : 0
 
