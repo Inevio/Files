@@ -99,11 +99,22 @@
 .wz-app-1 .weexplorer-folder{
 	
 	width: 100%;
-	height: 52px;
+	height: 50px;
 	position: absolute;
-	top: 50px;
 	padding-top: 20px;
 	text-align: center;
+	
+	background-image: -moz-linear-gradient(50% 0% -90deg,rgba(255,255,255,1) 65%,rgba(255,255,255,0) 100%); 
+    background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0.65, rgba(255,255,255,1)),color-stop(1, rgba(255,255,255,0)));
+    background-image: -webkit-linear-gradient(-90deg,rgba(255,255,255,1) 65%,rgba(255,255,255,0) 100%);
+    background-image: -o-linear-gradient(-90deg,rgba(255,255,255,1) 65%,rgba(255,255,255,0) 100%);
+    background-image: linear-gradient(0deg,rgba(255,255,255,0) 0%,rgba(255,255,255,1) 35%);
+	
+}
+
+.wz-app-1.sidebar .weexplorer-folder{
+	
+	width: 404px;
 	
 }
 
@@ -123,5 +134,241 @@
 	color: #545454;
 	
 	margin-left: 6px;
+	
+}
+
+.wz-app-1 img{
+	
+	vertical-align: middle;
+	
+}
+
+.wz-app-1 .weexplorer-file-zone{
+	
+	width: 404px;
+	height: 550px;
+	float: left;
+	padding-top: 60px;
+	
+}
+
+.wz-app-1 .grid .weexplorer-file{
+	
+	width: 150px;
+	height: 210px;
+	float: left;
+	margin-left: 25px;
+	
+}
+
+.wz-app-1 .grid figure{
+	
+	width: 148px;
+	height: 148px;
+
+	border: solid 1px #fff;
+	
+	line-height: 150px;
+	text-align: center;
+	
+}
+
+.wz-app-1 .grid .active figure{
+
+	background: #eefaff;
+	border: solid 1px #7fbfeb;
+	border-radius: 6px;
+	
+}
+
+.wz-app-1 .grid textarea{
+	
+	font-size: 14px;
+	color: #585858;
+	
+	width: 100%;
+	text-align: center;
+	
+}
+
+.wz-app-1 .grid span{
+	
+	display: none;
+	
+}
+
+.wz-app-1 .list .weexplorer-file{
+	
+	width: 380px;
+	height: 30px;
+	
+	border: solid 1px #fff;
+	
+	float: left;
+	margin-left: 15px;
+	
+}
+
+.wz-app-1 .list .weexplorer-file.active{
+
+	background: #eefaff;
+	border: solid 1px #7fbfeb;
+	border-radius: 6px;
+	
+}
+
+.wz-app-1 .list figure{
+	
+	width: 25px;
+	height: 25px;
+	float: left;
+	
+	line-height: 25px;
+	text-align: center;
+	
+}
+
+.wz-app-1 .list textarea{
+	
+	font-size: 14px;
+	color: #585858;
+	
+	width: 165px;
+	height: 15px;
+	float: left;
+	margin-top: 8px;
+	margin-left: 15px;
+	overflow: hidden;
+	
+}
+
+.wz-app-1 .list span{
+	
+	font-size: 12px;
+	color: #ABABAB;
+	
+	float: left;
+	margin-top: 9px;
+	text-align: right;
+	
+}
+
+.wz-app-1 .list .weexplorer-file-size{
+	
+	width: 50px;
+	
+}
+
+.wz-app-1 .list .weexplorer-file-date{
+	
+	width: 120px;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar{
+	
+	display: none;
+	
+}
+
+.wz-app-1.sidebar .weexplorer-sidebar{
+	
+	width: 125px;
+	height: 500px;
+	float: left;
+	display: block;
+	
+	background: #EBEBEB;
+	border-left: solid 1px #D8D8D8;
+	
+	padding-top: 20px;
+	padding-left: 14px;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-title{
+		
+	width: 115px;
+	float: left;
+	margin-bottom: 32px;
+
+}
+
+.wz-app-1 .weexplorer-sidebar-icon{
+	
+	width: 16px;
+	height: 14px;
+	float: left;
+	background: url('https://static.weezeel.com/app/1/sidebar.png');
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon .title{
+	
+	background-position: 0 0;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-title-name{
+	
+	font-size: 14px;
+	color: #505050;
+	
+	float: left;
+	margin-left: 10px;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-element{
+	
+	width: 115px;
+	float: left;
+	margin-bottom: 15px;
+	
+}	
+
+.wz-app-1 .weexplorer-sidebar-element-name{
+	
+	font-size: 12px;
+	color: #505050;
+	
+	float: left;
+	margin-left: 10px;
+	
+}	
+
+.wz-app-1 .weexplorer-sidebar-icon.user{
+	
+	background-position: -16px 0;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon.folder{
+	
+	background-position: -32px 0;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon.music{
+	
+	background-position: -48px 0;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon.photo{
+	
+	background-position: -64px 0;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon.video{
+	
+	background-position: -80px 0;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon.doc{
+	
+	background-position: -96px 0;
 	
 }
