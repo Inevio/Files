@@ -5,7 +5,7 @@ wz.app.addScript( 1, 'common', function( win ){
     // Variables
     var history = [];
     var current = 'root';
-    var types   = [
+    /*var types   = [
                     'weexplorer-file-type-directory',
                     'weexplorer-file-type-special-directory',
                     'weexplorer-file-type-file',
@@ -13,12 +13,13 @@ wz.app.addScript( 1, 'common', function( win ){
                   ];
 
     // Areas
-    var fileArea      = $( '.weexplorer-file-area', win );
+    var fileArea      = $( '.weexplorer-file-area', win );*/
     var filePrototype = $( '.weexplorer-file.prototype', win );
 
     // Menu Buttons
     var uploadButton = $( '.weexplorer-option-upload', win );
 
+    /*
     // Functions
     var addToHistory = function( id ){
         // To Do
@@ -47,6 +48,7 @@ wz.app.addScript( 1, 'common', function( win ){
         return file;
 
     };
+    */
 
     var openDirectory = function( id ){
 
@@ -85,6 +87,7 @@ wz.app.addScript( 1, 'common', function( win ){
 
     };
 
+    /*
     var createDirectory = function(){
 
         wz.structure( current, function( error, structure ){
@@ -159,7 +162,7 @@ wz.app.addScript( 1, 'common', function( win ){
         
     })
 
-    .on( 'contextmenu', '.weexplorer-file', function( /*e*/ ){
+    .on( 'contextmenu', '.weexplorer-file', function( /*e*//* ){
 
         var icon = $(this);
 
@@ -176,7 +179,7 @@ wz.app.addScript( 1, 'common', function( win ){
         $( this ).addClass('active');
     });
 
-    fileArea.on( 'contextmenu', function( /*e*/ ){
+    fileArea.on( 'contextmenu', function( /*e*//* ){
 
         wz.menu()
             .add('Subir archivo', function(){
@@ -191,9 +194,10 @@ wz.app.addScript( 1, 'common', function( win ){
 
     });
 
-    uploadButton.on( 'click', function( /*e*/ ){
+    uploadButton.on( 'click', function( /*e*//* ){
         $(this).data( 'destiny', current );
     });
+    */
 
     // Start Window
     openDirectory( current );
