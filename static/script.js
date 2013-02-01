@@ -3,8 +3,11 @@
 wz.app.addScript( 1, 'common', function( win ){
 
     // Variables
-    var history = [];
-    var current = 'root';
+    var record = [];
+    var current = null;
+	var pointer = -1;
+	var controlNav = false;
+	
     /*var types   = [
                     'weexplorer-file-type-directory',
                     'weexplorer-file-type-special-directory',
@@ -21,16 +24,31 @@ wz.app.addScript( 1, 'common', function( win ){
     var uploadButton = $( '.weexplorer-menu-upload', win );
 
     // Functions
-    var addToHistory = function( id ){
-        // To Do
+	var updateCurrent = function(id){
+		
+		current = id;
+		pointer++;
+		record[pointer] = id;
+		
+		if(controlNav){
+			
+			record = record.slice(0,pointer+1);
+			controlNav = false;
+			
+		}
+		
+	};
+
+    var recordBack = function(){
+        pointer--;
+		controlNav = true;
+		openDirectory(record[pointer]);		
     };
 
-    var historyBack = function(){
-        // To Do
-    };
-
-    var historyNext = function(){
-        // To Do
+    var recordNext = function(){
+        pointer++;
+		controlNav = true;	
+		openDirectory(record[pointer]);	
     };
 
     var icon = function( id, name, type ){
@@ -52,7 +70,7 @@ wz.app.addScript( 1, 'common', function( win ){
     var openDirectory = function( id ){
 
         // Update current
-        current = id;
+        updateCurrent(id);
 
         // Get Structure Info
         wz.structure( id, function( error, structure ){
@@ -60,8 +78,6 @@ wz.app.addScript( 1, 'common', function( win ){
             if( error ){
                 return false;
             }
-
-            addToHistory( id );
             
             // List Structure Files
             structure.list( function( error, list ){
