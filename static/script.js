@@ -17,6 +17,7 @@ wz.app.addScript( 1, 'common', function( win ){
 
 	var nextButton    = $( '.weexplorer-option-next', win );
 	var backButton    = $( '.weexplorer-option-back', win );
+	var views         = $( '.weexplorer-menu-views', win );
     var fileArea      = $( '.weexplorer-file-zone', win );
     var filePrototype = $( '.weexplorer-file.prototype', win );
     var folderName    = $( '.weexplorer-folder-name', win );
@@ -171,6 +172,16 @@ wz.app.addScript( 1, 'common', function( win ){
 	.on( 'click', '.weexplorer-option-back', function(){
 		if(backButton.hasClass('active')){
 			recordBack();		
+		}
+	})
+	
+	.on( 'click', '.weexplorer-menu-views', function(){
+		if(views.hasClass('grid')){
+			views.removeClass('grid').addClass('list');		
+			fileArea.removeClass('grid').addClass('list');
+		}else{
+			views.removeClass('list').addClass('grid');
+			fileArea.removeClass('list').addClass('grid');
 		}
 	})
 

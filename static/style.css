@@ -22,7 +22,7 @@
 	float: left;
 	margin-left: 18px;
 
-    background: url('https://static.weezeel.com/app/1/sprite.png') -12px 0; 
+    background: url('https://static.weezeel.com/app/1/sprite.png') -13px 0; 
         
 }
 
@@ -52,8 +52,18 @@
 	width: 23px;
 	height: 15px;
 	float: left;
+	
+}
 
-    background: url('https://static.weezeel.com/app/1/sprite.png') -24px 0; 
+.wz-app-1 .weexplorer-menu-views.grid{
+
+    background: url('https://static.weezeel.com/app/1/sprite.png') -26px 0; 
+	
+}
+
+.wz-app-1 .weexplorer-menu-views.list{
+
+    background: url('https://static.weezeel.com/app/1/sprite.png') -125px 0; 
 	
 }
 
@@ -65,7 +75,7 @@
 	margin-left: 5px;
 	margin-top: 6px;
 
-    background: url('https://static.weezeel.com/app/1/sprite.png') -106px -11px; 
+    background: url('https://static.weezeel.com/app/1/sprite.png') -111px -11px; 
 	
 }
 
@@ -84,7 +94,7 @@
 	height: 16px;
 	float: left;
 
-    background: url('https://static.weezeel.com/app/1/sprite.png') -47px 0; 
+    background: url('https://static.weezeel.com/app/1/sprite.png') -50px 0; 
 	
 }
 
@@ -94,7 +104,7 @@
 	height: 16px;
 	float: left;
 
-    background: url('https://static.weezeel.com/app/1/sprite.png') -69px 0; 
+    background: url('https://static.weezeel.com/app/1/sprite.png') -73px 0; 
 	
 }
 
@@ -104,7 +114,7 @@
 	height: 15px;
 	float: right;
 
-    background: url('https://static.weezeel.com/app/1/sprite.png') -91px 0; 
+    background: url('https://static.weezeel.com/app/1/sprite.png') -96px 0; 
 	
 }
 
@@ -136,7 +146,7 @@
 	height: 11px;
 	display: inline-block;
 
-    background: url('https://static.weezeel.com/app/1/sprite.png') -106px 0; 
+    background: url('https://static.weezeel.com/app/1/sprite.png') -111px 0; 
 	
 }
 
