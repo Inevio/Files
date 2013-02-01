@@ -198,9 +198,8 @@ wz.app.addScript( 1, 'common', function( win ){
     .on( 'upload-end', function( e, structure ){
         console.log('end',structure);
         fileArea.append( icon( structure.id, structure.name, structure.type ) );
-    });
+    })
 
-    /*
     .on( 'dblclick', '.weexplorer-file', function(){
 
         var id = $(this).data('file-id');
@@ -221,7 +220,7 @@ wz.app.addScript( 1, 'common', function( win ){
             
         });
         
-    })
+    })/*
 
     .on( 'contextmenu', '.weexplorer-file', function( /*e*//* ){
 
@@ -234,12 +233,25 @@ wz.app.addScript( 1, 'common', function( win ){
             })
             .render();
 
+    })*/
+
+    .on( 'mousedown', '.weexplorer-file:not(.active)', function( e ){
+		e.stopPropagation();
+        $( this ).addClass('active').siblings('.active').removeClass('active');
+		
+    })
+	
+	.on( 'mousedown', '.weexplorer-file.active', function( e ){
+		e.stopPropagation();		
+    })
+	
+	.on( 'mousedown', '.weexplorer-file-zone', function(){
+		
+        $( '.weexplorer-file.active' ).removeClass('active');
+		
     })
 
-    .on( 'mousedown', '.weexplorer-file:not(.active)', function(){
-        $( this ).addClass('active');
-    });
-
+/*
     fileArea.on( 'contextmenu', function( /*e*//* ){
 
         wz.menu()
