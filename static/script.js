@@ -205,13 +205,25 @@ wz.app.addScript( 1, 'common', function( win ){
     })
 	
 	.on( 'mousedown', '.weexplorer-file:not(.active)', function( e ){
+		
 		e.stopPropagation();
-        $( this ).addClass('active').siblings('.active').removeClass('active');
+		
+		if(e.ctrlKey){
+			$( this ).addClass('active');
+		}else{
+			$( this ).addClass('active').siblings('.active').removeClass('active');
+		}
 		
     })
 	
-	.on( 'mousedown', '.weexplorer-file.active', function( e ){
-		e.stopPropagation();		
+	.on( 'mousedown', '.weexplorer-file.active', function( e ){		
+		
+		e.stopPropagation();
+		
+		if(e.ctrlKey){
+			$( this ).removeClass('active');
+		}
+	
     })
 	
 	.on( 'mousedown', '.weexplorer-file-zone', function(){
