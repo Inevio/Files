@@ -10,16 +10,16 @@ wz.app.addScript( 1, 'common', function( win ){
                     'weexplorer-file-type-special-directory',
                     'weexplorer-file-type-file',
                     'weexplorer-file-type-temporal-file'
-                  ];
+                  ];*/
 
     // Areas
-    var fileArea      = $( '.weexplorer-file-area', win );*/
+    var fileArea      = $( '.weexplorer-file-zone', win );
     var filePrototype = $( '.weexplorer-file.prototype', win );
+    var folderName    = $( '.weexplorer-folder-name', win );
 
     // Menu Buttons
-    var uploadButton = $( '.weexplorer-option-upload', win );
+    var uploadButton = $( '.weexplorer-menu-upload', win );
 
-    /*
     // Functions
     var addToHistory = function( id ){
         // To Do
@@ -40,7 +40,7 @@ wz.app.addScript( 1, 'common', function( win ){
 
         // Add new properties
         file.children('textarea').text( name );
-        file.addClass( types[ type ] );
+        //file.addClass( types[ type ] );
         file.addClass( 'weexplorer-file-' + id );
         file.data( 'file-id', id );
 
@@ -48,7 +48,6 @@ wz.app.addScript( 1, 'common', function( win ){
         return file;
 
     };
-    */
 
     var openDirectory = function( id ){
 
@@ -66,7 +65,9 @@ wz.app.addScript( 1, 'common', function( win ){
             
             // List Structure Files
             structure.list( function( error, list ){
-                                
+                
+                // To Do -> Error
+
                 var length = list.length;
                 var files  = $();
 
@@ -77,6 +78,9 @@ wz.app.addScript( 1, 'common', function( win ){
 
                 // Display icons
                 fileArea.append( files );
+
+                // Update Folder info
+                folderName.text( structure.name );
 
                 // Nullify
                 files = null;
@@ -120,7 +124,7 @@ wz.app.addScript( 1, 'common', function( win ){
 
         });
 
-    };
+    };*/
 
     // Events
     $( win )
@@ -140,6 +144,7 @@ wz.app.addScript( 1, 'common', function( win ){
         fileArea.append( icon( structure.id, structure.name, structure.type ) );
     })
 
+    /*
     .on( 'dblclick', '.weexplorer-file', function(){
 
         var id = $(this).data('file-id');
@@ -192,12 +197,11 @@ wz.app.addScript( 1, 'common', function( win ){
             .add('Obtener información')
             .render();
 
-    });
+    });*/
 
-    uploadButton.on( 'click', function( /*e*//* ){
+    uploadButton.on( 'click', function( /*e*/ ){
         $(this).data( 'destiny', current );
     });
-    */
 
     // Start Window
     openDirectory( current );
