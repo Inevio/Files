@@ -8,12 +8,12 @@ wz.app.addScript( 1, 'common', function( win ){
 	var pointer = -1;
 	var controlNav = false;
 	
-    /*var types   = [
-                    'weexplorer-file-type-directory',
-                    'weexplorer-file-type-special-directory',
-                    'weexplorer-file-type-file',
-                    'weexplorer-file-type-temporal-file'
-                  ];*/
+    var types   = [
+                    'directory',
+                    'special-directory',
+                    'file',
+                    'temporal-file'
+                  ];
 
 	var nextButton    = $( '.weexplorer-option-next', win );
 	var backButton    = $( '.weexplorer-option-back', win );
@@ -74,7 +74,7 @@ wz.app.addScript( 1, 'common', function( win ){
 
         // Add new properties
         file.children('textarea').text( name );
-        //file.addClass( types[ type ] );
+        file.addClass( types[ type ] );
         file.addClass( 'weexplorer-file-' + id );
         file.data( 'file-id', id );
 
@@ -125,7 +125,7 @@ wz.app.addScript( 1, 'common', function( win ){
 
     };
 
-    /*
+    
     var createDirectory = function(){
 
         wz.structure( current, function( error, structure ){
@@ -145,11 +145,15 @@ wz.app.addScript( 1, 'common', function( win ){
         wz.structure( id, function( error, structure ){
 
             // To Do -> Error
+			console.log(error);
             
             structure.remove( function( error, quota ){
+				
+				console.log( error, quota );
 
                 if( error ){
                     // To Do -> Error
+					console.log(error);
                 }else{
                     fileArea.children( '.weexplorer-file-' + id ).remove();
                 }
@@ -158,7 +162,7 @@ wz.app.addScript( 1, 'common', function( win ){
 
         });
 
-    };*/
+    };
 
     // Events
     $( win )
@@ -199,6 +203,22 @@ wz.app.addScript( 1, 'common', function( win ){
         console.log('end',structure);
         fileArea.append( icon( structure.id, structure.name, structure.type ) );
     })
+	
+	.on( 'mousedown', '.weexplorer-file:not(.active)', function( e ){
+		e.stopPropagation();
+        $( this ).addClass('active').siblings('.active').removeClass('active');
+		
+    })
+	
+	.on( 'mousedown', '.weexplorer-file.active', function( e ){
+		e.stopPropagation();		
+    })
+	
+	.on( 'mousedown', '.weexplorer-file-zone', function(){
+		
+        $( '.weexplorer-file.active' ).removeClass('active');
+		
+    })
 
     .on( 'dblclick', '.weexplorer-file', function(){
 
@@ -220,39 +240,36 @@ wz.app.addScript( 1, 'common', function( win ){
             
         });
         
-    })/*
+    })
 
-    .on( 'contextmenu', '.weexplorer-file', function( /*e*//* ){
+    .on( 'contextmenu', '.weexplorer-file', function(){
 
         var icon = $(this);
+		var menu = wz.menu();
 
-        wz.menu()
+        menu
             .add('Renombrar')
             .add('Borrar', function(){
                 removeStructure( icon.data('file-id') );
-            })
-            .render();
+            });
+			if(icon.hasClass('directory')){
+				menu.add('Soy un directorio');
+			}
+			if(icon.hasClass('special-directory')){
+				menu.add('Soy un directorio especial');
+			}
+			if(icon.hasClass('file')){
+				menu.add('Soy un archivo');
+			}
+			if(icon.hasClass('temporal-file')){
+				menu.add('Soy un archivo temporal');
+			}
+            menu.render();
 
-    })*/
+    }); 
+	   
 
-    .on( 'mousedown', '.weexplorer-file:not(.active)', function( e ){
-		e.stopPropagation();
-        $( this ).addClass('active').siblings('.active').removeClass('active');
-		
-    })
-	
-	.on( 'mousedown', '.weexplorer-file.active', function( e ){
-		e.stopPropagation();		
-    })
-	
-	.on( 'mousedown', '.weexplorer-file-zone', function(){
-		
-        $( '.weexplorer-file.active' ).removeClass('active');
-		
-    })
-
-/*
-    fileArea.on( 'contextmenu', function( /*e*//* ){
+    fileArea.on( 'contextmenu', function(){
 
         wz.menu()
             .add('Subir archivo', function(){
@@ -265,9 +282,9 @@ wz.app.addScript( 1, 'common', function( win ){
             .add('Obtener información')
             .render();
 
-    });*/
+    });
 
-    uploadButton.on( 'click', function( /*e*/ ){
+    uploadButton.on( 'click', function(){
         $(this).data( 'destiny', current );
     });
 
