@@ -15,15 +15,30 @@ wz.app.addScript( 1, 'common', function( win ){
                     'weexplorer-file-type-temporal-file'
                   ];*/
 
-    // Areas
+	var nextButton    = $( '.weexplorer-option-next', win );
+	var backButton    = $( '.weexplorer-option-back', win );
     var fileArea      = $( '.weexplorer-file-zone', win );
     var filePrototype = $( '.weexplorer-file.prototype', win );
     var folderName    = $( '.weexplorer-folder-name', win );
-
-    // Menu Buttons
-    var uploadButton = $( '.weexplorer-menu-upload', win );
+    var uploadButton  = $( '.weexplorer-menu-upload', win );
 
     // Functions
+	var recordNavigation = function(){
+		
+		if(record[pointer+1]){
+			nextButton.addClass('active');
+		}else{
+			nextButton.removeClass('active');
+		}
+		
+		if(record[pointer-1]){
+			backButton.addClass('active');
+		}else{
+			backButton.removeClass('active');
+		}
+		
+	}			
+			
 	var updateCurrent = function(id){
 		
 		current = id;
@@ -71,6 +86,8 @@ wz.app.addScript( 1, 'common', function( win ){
 
         // Update current
         updateCurrent(id);
+		
+		recordNavigation();
 
         // Get Structure Info
         wz.structure( id, function( error, structure ){
@@ -144,6 +161,18 @@ wz.app.addScript( 1, 'common', function( win ){
 
     // Events
     $( win )
+	
+	.on( 'click', '.weexplorer-option-next', function(){
+		if(nextButton.hasClass('active')){
+			recordNext();		
+		}
+	})
+	
+	.on( 'click', '.weexplorer-option-back', function(){
+		if(backButton.hasClass('active')){
+			recordBack();		
+		}
+	})
 
     .on( 'upload-start', function( e, structure ){
         console.log('start',structure);
@@ -158,7 +187,7 @@ wz.app.addScript( 1, 'common', function( win ){
     .on( 'upload-end', function( e, structure ){
         console.log('end',structure);
         fileArea.append( icon( structure.id, structure.name, structure.type ) );
-    })
+    });
 
     /*
     .on( 'dblclick', '.weexplorer-file', function(){
@@ -220,6 +249,6 @@ wz.app.addScript( 1, 'common', function( win ){
     });
 
     // Start Window
-    openDirectory( current );
+    openDirectory( 'root' );
 
 });
