@@ -22,7 +22,9 @@ wz.app.addScript( 1, 'common', function( win ){
     var filePrototype = $( '.weexplorer-file.prototype', win );
     var folderName    = $( '.weexplorer-folder-name', win );
     var uploadButton  = $( '.weexplorer-menu-upload', win );
-
+	
+	var renaming = $();
+	
     // Functions
 	var recordNavigation = function(){
 		
@@ -124,7 +126,25 @@ wz.app.addScript( 1, 'common', function( win ){
         });
 
     };
+	
+	var beginRename = function( icon ){
+		
+		renaming = icon;
+		
+		$( 'textarea', icon).removeAttr('readonly').focus().select();
 
+	};
+	
+	var finishRename = function(){
+		
+		var icon = renaming;
+		renaming = $();
+		
+		wz.structure(icon.data('file-id'), function( error, structure ){
+			structure.rename( $( 'textarea', icon ).attr('readonly','readonly').blur().val(), function(error){})
+		});
+		
+	}
     
     var createDirectory = function(){
 
@@ -208,10 +228,30 @@ wz.app.addScript( 1, 'common', function( win ){
 		
 		e.stopPropagation();
 		
-		if(e.ctrlKey){
+		if(e.ctrlKey || e.metaKey){
+			
 			$( this ).addClass('active');
+			$( '.weexplorer-file.last-active', fileArea ).removeClass('last-active');
+			$( this ).addClass('last-active');
+			
+		}else if(e.shiftKey){
+			
+			var icons = $( '.weexplorer-file' );
+			var begin = icons.index(this);
+			var final = icons.index(icons.filter( '.last-active' ));
+			
+			if(begin < final){
+				var row = icons.slice(begin,final+1).addClass('active');
+			}else{
+				var row = icons.slice(final,begin+1).addClass('active');
+			}
+			
+			icons.not(row).removeClass('active');
+			
 		}else{
 			$( this ).addClass('active').siblings('.active').removeClass('active');
+			$( '.weexplorer-file.last-active', fileArea ).removeClass('last-active');
+			$( this ).addClass('last-active');
 		}
 		
     })
@@ -220,26 +260,53 @@ wz.app.addScript( 1, 'common', function( win ){
 		
 		e.stopPropagation();
 		
-		if(e.ctrlKey){
+		if(e.ctrlKey || e.metaKey){
 			$( this ).removeClass('active');
+		}else if(e.shiftKey){
+			
+			var icons = $( '.weexplorer-file' );
+			var begin = icons.index(this);
+			var final = icons.index(icons.filter( '.last-active' ));
+			
+			if(begin < final){
+				var row = icons.slice(begin,final+1).addClass('active');
+			}else{
+				var row = icons.slice(final,begin+1).addClass('active');
+			}
+			
+			icons.not(row).removeClass('active');
+			
 		}
 	
     })
 	
 	.on( 'mousedown', '.weexplorer-file-zone', function(){
 		
-        $( '.weexplorer-file.active' ).removeClass('active');
+		if( renaming.size() ){
+			finishRename();	
+		}
+			$( '.weexplorer-file.active' , fileArea ).removeClass('active');
 		
     })
-
+	
+	.on( 'mousedown', 'textarea', function(){
+		
+		if( $(this).parent().hasClass('active') ){
+			beginRename( $(this).parent() );
+		}
+		
+    })
+	
+	.on( 'dblclick', 'textarea:not([readonly])', function( e ){
+		e.stopPropagation();
+	})
+	
     .on( 'dblclick', '.weexplorer-file', function(){
 
         var id = $(this).data('file-id');
 
         wz.structure( id, function( error, structure ){
-
-            console.log( structure.formats );
-
+			
             structure.associatedApp( function( error, app ){
 
                 if( app ){
@@ -253,6 +320,22 @@ wz.app.addScript( 1, 'common', function( win ){
         });
         
     })
+	
+	.key( 'enter', function(){
+		
+		if( renaming.size() ){
+			finishRename();	
+		}else{
+			$( '.weexplorer-file.active' , fileArea ).dblclick();
+		}
+		
+	})
+	
+	.key( 'backspace,delete', function(){
+		
+		removeStructure( $(this).data('file-id') );
+		
+	})
 
     .on( 'contextmenu', '.weexplorer-file', function(){
 
@@ -260,7 +343,9 @@ wz.app.addScript( 1, 'common', function( win ){
 		var menu = wz.menu();
 
         menu
-            .add('Renombrar')
+            .add('Renombrar', function(){
+				beginRename( icon );
+			})
             .add('Borrar', function(){
                 removeStructure( icon.data('file-id') );
             });

@@ -261,7 +261,12 @@
 	margin-top: 8px;
 	margin-left: 15px;
 	overflow: hidden;
+	background:#f00;
 	
+}
+
+.wz-app-1 .list textarea[readonly]{
+	background:transparent;
 }
 
 .wz-app-1 .list span{
@@ -284,6 +289,52 @@
 .wz-app-1 .list .weexplorer-file-date{
 	
 	width: 120px;
+	
+}
+
+.wz-app-1 .grid .last-active figure{
+
+	border: solid 1px #7fbfeb;
+	border-radius: 6px;
+	
+}
+
+.wz-app-1 .grid figure:hover{
+	
+	background: #f00;
+	border: solid 1px #7fbfeb;
+	border-radius: 6px;
+	
+}
+
+.wz-app-1 .grid .active figure:hover{
+
+	background: #eefaff;
+	border: solid 1px #7fbfeb;
+	border-radius: 6px;
+	
+}
+
+.wz-app-1 .list .weexplorer-file.last-active{
+
+	border: solid 1px #7fbfeb;
+	border-radius: 6px;
+	
+}
+
+.wz-app-1 .list .weexplorer-file:hover{
+
+	background: #f00;
+	border: solid 1px #7fbfeb;
+	border-radius: 6px;
+	
+}
+
+.wz-app-1 .list .weexplorer-file.active:hover{
+
+	background: #eefaff;
+	border: solid 1px #7fbfeb;
+	border-radius: 6px;
 	
 }
 
