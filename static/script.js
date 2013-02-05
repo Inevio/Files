@@ -374,9 +374,13 @@ wz.app.addScript( 1, 'common', function( win ){
             if(icon.hasClass('temporal-file')){
                 menu.add('Soy un archivo temporal');
             }
-            
+
             menu.render();
 
+    })
+
+    .on( 'wz-dragstart', '.weexplorer-file', function( e, drag ){
+        drag.ghost( $('<div></div>').text('Buh! Soy un fantasma') );
     });
        
 
