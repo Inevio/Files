@@ -187,6 +187,14 @@ wz.app.addScript( 1, 'common', function( win ){
     // Events
     $( win )
 	
+	.on( 'click', '.weexplorer-menu-download', function(){
+		$('.active.file',win).each(function(){
+			wz.structure($(this).data('file-id'), function(e,st){
+				st.download();
+			});
+		});
+	})
+	
 	.on( 'click', '.weexplorer-option-next', function(){
 		if(nextButton.hasClass('active')){
 			recordNext();		
