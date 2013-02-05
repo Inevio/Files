@@ -1,4 +1,8 @@
 
+.wz-app-1 textarea{
+	overflow: hidden;
+}
+
 .wz-app-1 .weexplorer-option-back{
 
 	width: 12px;
@@ -260,7 +264,6 @@
 	float: left;
 	margin-top: 8px;
 	margin-left: 15px;
-	overflow: hidden;
 	background:#f00;
 	
 }
