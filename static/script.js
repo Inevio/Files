@@ -265,7 +265,7 @@ wz.app.addScript( 1, 'common', function( win ){
         
     })
     
-    .on( 'mousedown', '.weexplorer-file.active', function( e ){     
+    .on( 'mousedown', '.weexplorer-file.active', function( e ){
         
         e.stopPropagation();
         
@@ -380,7 +380,25 @@ wz.app.addScript( 1, 'common', function( win ){
     })
 
     .on( 'wz-dragstart', '.weexplorer-file', function( e, drag ){
-        drag.ghost( $('<div></div>').text('Buh! Soy un fantasma') );
+
+        drag.ghost( $(this).cloneWithStyle().attr('id','wz-drop') );
+
+    })
+
+    .on( 'wz-dropenter', '.wz-drop-area', function( e, item ){
+        console.log('enter', item );
+    })
+
+    .on( 'wz-dropmove', '.wz-drop-area', function( e, item ){
+        console.log('move', item );
+    })
+
+    .on( 'wz-dropleave', '.wz-drop-area', function( e, item ){
+        console.log('leave', item );
+    })
+
+    .on( 'wz-drop', '.wz-drop-area', function( e, item ){
+        console.log('drop', item );
     });
        
 
