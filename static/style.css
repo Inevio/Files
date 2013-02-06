@@ -171,10 +171,14 @@
 
 .wz-app-1 .weexplorer-file-zone{
 	
-	width: 404px;
-	height: 550px;
+	width: 100%;
+	height: 550;
 	float: left;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
 	padding-top: 60px;
+	overflow: auto;
 	
 }
 
