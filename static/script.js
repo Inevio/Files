@@ -588,7 +588,6 @@ wz.app.addScript( 1, 'common', function( win ){
         $(this).data( 'destiny', current );
     });
 
-    // Start Window
     openDirectory( 'root' );
 
 });
