@@ -368,6 +368,14 @@ wz.app.addScript( 1, 'common', function( win ){
 			fileArea.removeClass('list').addClass('grid');
 		}
 	})
+	
+	.on( 'click', '.weexplorer-file.active', function(e){
+		
+		if( !e.shiftKey && !e.ctrlKey && !e.metaKey ){
+			$(this).addClass('last-active').siblings('.active').removeClass('active last-active');
+		}
+		
+	})
 
     .on( 'upload-start', function( e, structure ){
         console.log('start',structure);
