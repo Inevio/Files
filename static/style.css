@@ -415,6 +415,12 @@
 	float: left;
 	margin-left: 10px;
 	
+}
+
+.wz-app-1 .weexplorer-file-uploading{
+	
+	opacity: 0.5;
+	
 }	
 
 .wz-app-1 .weexplorer-sidebar-icon.user{

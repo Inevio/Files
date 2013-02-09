@@ -69,13 +69,16 @@ wz.app.addScript( 1, 'common', function( win ){
         openDirectory(record[pointer]); 
     };
 
-    var icon = function( id, name, type ){
+    var icon = function( id, name, type, size, modified, created ){
 
         // Clone prototype
         var file = filePrototype.clone().removeClass('prototype');
 
         // Add new properties
         file.children('textarea').text( name );
+		file.children('.weexplorer-file-size').text( size );
+		file.children('.weexplorer-file-date-modification').text( modified );
+		file.children('.weexplorer-file-date-creation').text( created );
         file.find('img').attr( 'src', 'https://download.weezeel.com/' + id + '/thumbnail/normal' );
         file.addClass( types[ type ] );
         file.addClass( 'weexplorer-file-' + id );
@@ -102,6 +105,8 @@ wz.app.addScript( 1, 'common', function( win ){
             
             // List Structure Files
             structure.list( function( error, list ){
+				
+				console.log( list );
                 
                 // To Do -> Error
 
@@ -110,7 +115,7 @@ wz.app.addScript( 1, 'common', function( win ){
 
                 // Generate File icons
                 for( var i = 0; i < length; i++ ){
-                    files = files.add( icon( list[ i ].id, list[ i ].name, list[ i ].type ) );
+                    files = files.add( icon( list[ i ].id, list[ i ].name, list[ i ].type, list[ i ].size, list[ i ].modified, list[ i ].created ) );
                 }
 
                 // Display icons
@@ -132,8 +137,12 @@ wz.app.addScript( 1, 'common', function( win ){
         
         renaming = icon;
         
-        $( 'textarea', icon).removeAttr('readonly').focus().select();
-
+        $( 'textarea', icon)
+			.removeAttr('readonly')
+			.focus()
+			.select()
+			.removeClass('wz-dragger');
+			
     };
     
     var finishRename = function(){
@@ -142,7 +151,7 @@ wz.app.addScript( 1, 'common', function( win ){
         renaming = $();
         
         wz.structure(icon.data('file-id'), function( error, structure ){
-            structure.rename( $( 'textarea', icon ).attr('readonly','readonly').blur().val(), function(error){})
+            structure.rename( $( 'textarea', icon ).attr('readonly','readonly').blur().addClass('wz-dragger').val(), function(error){})
         });
         
     }
@@ -154,7 +163,7 @@ wz.app.addScript( 1, 'common', function( win ){
             // To Do -> Error
 
             structure.createDirectory( null, function( error, newDirectory ){
-                fileArea.append( icon( newDirectory.id, newDirectory.name, newDirectory.type ) );
+				//To Do -> Error          
             });
 
         });
@@ -166,27 +175,175 @@ wz.app.addScript( 1, 'common', function( win ){
         wz.structure( id, function( error, structure ){
 
             // To Do -> Error
-            console.log(error);
-            
             structure.remove( function( error, quota ){
-                
-                console.log( error, quota );
-
-                if( error ){
-                    // To Do -> Error
-                    console.log(error);
-                }else{
-                    fileArea.children( '.weexplorer-file-' + id ).remove();
-                }
-                console.log('resultado', error, quota);
-            });
+				// To Do -> Error
+			});
 
         });
 
     };
+	
+	var deleteAllActive = function(){
+		
+		var response = ' el archivo seleccionado? Si lo haces jamás podrás recuperarlo.';
+		
+		if( $('.weexplorer-file.active').size() > 1){
+			response = ' los ' + $('.weexplorer-file.active').size() + ' archivos seleccionados? Si lo haces jamás podrás recuperarlos.';
+		}
+		
+		if (confirm('¿Seguro que quieres eliminar' + response)) {
+		
+			$('.weexplorer-file.active').each(function(){
+				
+				removeStructure( $(this).data('file-id') );
+				
+			});
+		
+		}
+		
+	};	
+	
+	var sortByName = function(a,b){
+		
+		if(a.children('textarea').val().toLowerCase() < b.children('textarea').val().toLowerCase() ){
+			return -1;
+		}
+		
+		if(a.children('textarea').val().toLowerCase() > b.children('textarea').val().toLowerCase() ){
+			return 1;
+		}
+		
+		return 0;
+		
+	};
+	
+	var sortBySize = function(a,b){
+		
+		if(a.children('.weexplorer-file-size').text() < b.children('.weexplorer-file-size').text()){
+			return -1;
+		}
+		
+		if(a.children('.weexplorer-file-size').text() > b.children('.weexplorer-file-size').text()){
+			return 1;
+		}
+		
+		return 0;
+		
+	};
+	
+	var sortByCreationDate = function(a,b){
+		
+		if(a.children('.weexplorer-file-date-creation').text() < b.children('.weexplorer-file-date-creation').text()){
+			return -1;
+		}
+		
+		if(a.children('.weexplorer-file-date-creation').text() > b.children('.weexplorer-file-date-creation').text()){
+			return 1;
+		}
+		
+		return 0;
+		
+	};
+	
+	var sortByModificationDate = function(a,b){
+		
+		if(a.children('.weexplorer-file-date-modification').text() < b.children('.weexplorer-file-date-modification').text()){
+			return -1;
+		}
+		
+		if(a.children('.weexplorer-file-date-modification').text() > b.children('.weexplorer-file-date-modification').text()){
+			return 1;
+		}
+		
+		return 0;
+		
+	};
+	
+	var displayIcons = function(list){
+		
+		fileArea.append( list );
+		
+		// Nullify
+		list = null;
+		
+	};
 
     // Events
     $( win )
+	
+	.on( 'upload-enqueue', function(e, list){
+		
+		console.log(list, typeof list );
+		console.log( Object.keys( list ) );
+		var length = list.length;
+		var files  = $();
+
+		// Generate File icons
+		for( var i = 0; i < length; i++ ){
+			files = files.add( icon( list[ i ].id, list[ i ].name, list[ i ].type, list[ i ].size, list[ i ].modified, list[ i ].created ).addClass('weexplorer-file-uploading') );
+		}
+		
+		// Display icons
+		fileArea.append( files );
+
+		// Nullify
+		files = null;
+				
+	})
+	
+	.on( 'contextmenu', '.weexplorer-menu-sort', function(){
+		
+		var icon = $(this);
+        var menu = wz.menu();
+		var list = [];
+
+        menu
+            .add('Sort By Name', function(){
+				$( '.weexplorer-file' ).each(function(){
+					list.push($(this));
+				});
+                list = list.sort(sortByName);
+				displayIcons(list, true);
+            })
+            .add('Sort by Size', function(){
+                $( '.weexplorer-file' ).each(function(){
+					list.push($(this));
+				});
+				list = list.sort(sortBySize);
+				displayIcons(list, true);
+            })
+			.add('Sort By Creation Date', function(){
+                $( '.weexplorer-file' ).each(function(){
+					list.push($(this));
+				});
+				list = list.sort(sortByCreationDate);
+				displayIcons(list, true);
+            })
+            .add('Sort By Modification Date', function(){
+                $( '.weexplorer-file' ).each(function(){
+					list.push($(this));
+				});
+				list = list.sort(sortByModificationDate);
+				displayIcons(list, true);
+            });
+
+            menu.render();
+		
+	})
+	
+	.on( 'structure-remove', function(e, id){
+		fileArea.children( '.weexplorer-file-' + id ).remove();
+	})
+	
+	.on( 'structure-rename', function(e, structure){
+		console.log( structure );
+		console.log( fileArea.children( '.weexplorer-file-' + structure.id ), fileArea.children( '.weexplorer-file-' + structure.id ).children('textarea'));
+		fileArea.children( '.weexplorer-file-' + structure.id ).children('textarea').val(structure.name);
+	})
+	
+	.on( 'structure-new', function(e, structure){
+		fileArea.append( icon( structure.id, structure.name, structure.type, structure.size, structure.modified, structure.created ) );
+	})
     	
 	.on( 'click', '.weexplorer-menu-download', function(){
 		$('.active.file',win).each(function(){
@@ -230,7 +387,7 @@ wz.app.addScript( 1, 'common', function( win ){
 
     .on( 'upload-end', function( e, structure ){
         console.log('end',structure);
-        fileArea.append( icon( structure.id, structure.name, structure.type ) );
+		$( '.weexplorer-file-' + structure.id ).removeClass('weexplorer-file-uploading').find('img').attr('src', structure.thumbnails.normal );
     })
     
     .on( 'mousedown', '.weexplorer-file:not(.active)', function( e ){
@@ -341,8 +498,8 @@ wz.app.addScript( 1, 'common', function( win ){
     })
     
     .key( 'backspace,delete', function(){
-        
-        removeStructure( $(this).data('file-id') );
+		
+		deleteAllActive();
         
     })
 
@@ -356,7 +513,7 @@ wz.app.addScript( 1, 'common', function( win ){
                 beginRename( icon );
             })
             .add('Borrar', function(){
-                removeStructure( icon.data('file-id') );
+                deleteAllActive();
             });
 
             if(icon.hasClass('directory')){
