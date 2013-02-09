@@ -537,25 +537,33 @@ wz.app.addScript( 1, 'common', function( win ){
     })
 
     .on( 'wz-dragstart', '.weexplorer-file', function( e, drag ){
-
-        drag.ghost( $(this).cloneWithStyle().attr('id','wz-drop') );
+		
+		if( !($('.weexplorer-file.active').size() > 1) ){
+			drag.ghost( $(this).cloneWithStyle() );
+		}else{
+			var ghost = filePrototype.clone()
+										.css({'width':'148px', 'height':'98px', 'background':'green', 'border-radius':'7px', 'border':'solid 1px #fff', 'font-size':'36px', 'color':'white', 'text-align':'center', 'padding-top':'50px'})
+										.text($('.weexplorer-file.active').size());
+			ghost.find('textarea, img, span').remove()
+			drag.ghost( ghost );
+		}
 
     })
 
     .on( 'wz-dropenter', '.wz-drop-area', function( e, item ){
-        console.log('enter', item );
+        //console.log('enter', item );
     })
 
     .on( 'wz-dropmove', '.wz-drop-area', function( e, item ){
-        console.log('move', item );
+        //console.log('move', item );
     })
 
     .on( 'wz-dropleave', '.wz-drop-area', function( e, item ){
-        console.log('leave', item );
+        //console.log('leave', item );
     })
 
     .on( 'wz-drop', '.wz-drop-area', function( e, item ){
-        console.log('drop', item );
+        //console.log('drop', item );
     });
        
 
