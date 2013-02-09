@@ -105,8 +105,6 @@ wz.app.addScript( 1, 'common', function( win ){
             
             // List Structure Files
             structure.list( function( error, list ){
-				
-				console.log( list );
                 
                 // To Do -> Error
 
@@ -273,8 +271,6 @@ wz.app.addScript( 1, 'common', function( win ){
 	
 	.on( 'upload-enqueue', function(e, list){
 		
-		console.log(list, typeof list );
-		console.log( Object.keys( list ) );
 		var length = list.length;
 		var files  = $();
 
@@ -336,8 +332,6 @@ wz.app.addScript( 1, 'common', function( win ){
 	})
 	
 	.on( 'structure-rename', function(e, structure){
-		console.log( structure );
-		console.log( fileArea.children( '.weexplorer-file-' + structure.id ), fileArea.children( '.weexplorer-file-' + structure.id ).children('textarea'));
 		fileArea.children( '.weexplorer-file-' + structure.id ).children('textarea').val(structure.name);
 	})
 	
