@@ -27,7 +27,7 @@ wz.app.addScript( 1, 'common', function( win ){
     
     // Functions
     var recordNavigation = function(){
-        
+						
         if(record[pointer+1]){
             nextButton.addClass('active');
         }else{
@@ -45,15 +45,14 @@ wz.app.addScript( 1, 'common', function( win ){
     var updateCurrent = function(id){
         
         current = id;
-        pointer++;
-        record[pointer] = id;
         
-        if(controlNav){
-            
+        if(!controlNav){
+			pointer++;
             record = record.slice(0,pointer+1);
-            controlNav = false;
-            
         }
+		
+		record[pointer] = id;
+		controlNav = false;
         
     };
 
@@ -117,7 +116,8 @@ wz.app.addScript( 1, 'common', function( win ){
                 }
 
                 // Display icons
-                fileArea.append( files );
+                fileArea.children().not('.prototype').remove();
+				fileArea.append( files );
 
                 // Update Folder info
                 folderName.text( structure.name );
@@ -338,6 +338,16 @@ wz.app.addScript( 1, 'common', function( win ){
 	.on( 'structure-new', function(e, structure){
 		fileArea.append( icon( structure.id, structure.name, structure.type, structure.size, structure.modified, structure.created ) );
 	})
+	
+	.on( 'structure-move', function(e, structure, destinyID, originID){
+		
+		if( originID === current ){
+			fileArea.children( '.weexplorer-file-' + structure.id ).remove();
+		}else if( destinyID === current ){
+			fileArea.append( icon( structure.id, structure.name, structure.type, structure.size, structure.modified, structure.created ) );
+		}
+		
+	})
     	
 	.on( 'click', '.weexplorer-menu-download', function(){
 		$('.active.file',win).each(function(){
@@ -469,7 +479,7 @@ wz.app.addScript( 1, 'common', function( win ){
         e.stopPropagation();
     })
     
-    .on( 'dblclick', '.weexplorer-file', function(){
+    .on( 'dblclick', '.weexplorer-file.file', function(){
 
         var id = $(this).data('file-id');
 
@@ -487,6 +497,10 @@ wz.app.addScript( 1, 'common', function( win ){
             
         });
         
+    })
+	
+	.on( 'dblclick', '.weexplorer-file.directory', function(){
+        openDirectory($(this).data('file-id'));
     })
     
     .key( 'enter', function(){
