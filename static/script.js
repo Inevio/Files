@@ -9,8 +9,8 @@ wz.app.addScript( 1, 'common', function( win ){
     var controlNav = false;
     
     var types   = [
-                    'directory',
-                    'special-directory',
+                    'directory wz-drop-area',
+                    'special-directory wz-drop-area',
                     'file',
                     'temporal-file'
                   ];
@@ -90,18 +90,17 @@ wz.app.addScript( 1, 'common', function( win ){
 
     var openDirectory = function( id ){
 
-        // Update current
-        updateCurrent(id);
-        
-        recordNavigation();
-
         // Get Structure Info
         wz.structure( id, function( error, structure ){
 
             if( error ){
                 return false;
             }
-            
+			
+			// Update current
+        	updateCurrent( structure.id );
+			recordNavigation();
+			            
             // List Structure Files
             structure.list( function( error, list ){
                 
@@ -273,7 +272,11 @@ wz.app.addScript( 1, 'common', function( win ){
 		
 		var length = list.length;
 		var files  = $();
-
+		
+		if( !length || list[ 0 ].parent !== current ){
+			return false;
+		}
+		
 		// Generate File icons
 		for( var i = 0; i < length; i++ ){
 			files = files.add( icon( list[ i ].id, list[ i ].name, list[ i ].type, list[ i ].size, list[ i ].modified, list[ i ].created ).addClass('weexplorer-file-uploading') );
@@ -328,19 +331,26 @@ wz.app.addScript( 1, 'common', function( win ){
 	})
 	
 	.on( 'structure-remove', function(e, id){
-		fileArea.children( '.weexplorer-file-' + id ).remove();
+			fileArea.children( '.weexplorer-file-' + id ).remove();
 	})
 	
 	.on( 'structure-rename', function(e, structure){
-		fileArea.children( '.weexplorer-file-' + structure.id ).children('textarea').val(structure.name);
+		if( structure.parent === current ){
+			fileArea.children( '.weexplorer-file-' + structure.id ).children('textarea').val(structure.name);
+		}		
 	})
 	
 	.on( 'structure-new', function(e, structure){
-		fileArea.append( icon( structure.id, structure.name, structure.type, structure.size, structure.modified, structure.created ) );
+		
+		if( structure.parent === current ){
+			console.log('Bang!');
+			fileArea.append( icon( structure.id, structure.name, structure.type, structure.size, structure.modified, structure.created ) );
+		}
+		
 	})
 	
 	.on( 'structure-move', function(e, structure, destinyID, originID){
-		
+				
 		if( originID === current ){
 			fileArea.children( '.weexplorer-file-' + structure.id ).remove();
 		}else if( destinyID === current ){
@@ -409,8 +419,6 @@ wz.app.addScript( 1, 'common', function( win ){
         if(e.ctrlKey || e.metaKey){
             
             $( this ).addClass('active');
-            $( '.weexplorer-file.last-active', fileArea ).removeClass('last-active');
-            $( this ).addClass('last-active');
             
         }else if(e.shiftKey){
             
@@ -428,9 +436,10 @@ wz.app.addScript( 1, 'common', function( win ){
             
         }else{
             $( this ).addClass('active').siblings('.active').removeClass('active');
-            $( '.weexplorer-file.last-active', fileArea ).removeClass('last-active');
-            $( this ).addClass('last-active');
         }
+		
+		$( '.weexplorer-file.last-active', fileArea ).removeClass('last-active');
+        $( this ).addClass('last-active');
         
     })
     
@@ -515,8 +524,53 @@ wz.app.addScript( 1, 'common', function( win ){
     
     .key( 'backspace,delete', function(){
 		
-		deleteAllActive();
+		if( $('.weexplorer-file.active').size() ){
+			deleteAllActive();
+		}else{
+			recordBack();
+		}
         
+    })
+	
+	.key( 'left', function(){
+		
+		$( '.weexplorer-file.last-active' ).prev().mousedown();
+        
+    })
+	
+	.key( 'right', function(){
+		
+		$( '.weexplorer-file.last-active' ).next().mousedown();
+        
+    })
+	
+	.key( 'up', function(){
+		
+		var leftStart = $( '.weexplorer-file.last-active' ).position().left;
+		var object = $( '.weexplorer-file.last-active' ).prev();
+		
+		while( object.size() && leftStart !== object.position().left ){
+			object = object.prev();	
+		}
+		
+		object.mousedown();
+		
+    })
+	
+	.key( 'down', function(){
+        
+		var leftStart = $( '.weexplorer-file.last-active' ).position().left;
+		var object = $( '.weexplorer-file.last-active' ).next();
+		
+		while( leftStart !== object.position().left ){
+			if(!object.next().size()){
+				break;
+			}
+			object = object.next();				
+		}
+		
+		object.mousedown();
+		
     })
 
     .on( 'contextmenu', '.weexplorer-file', function(){
@@ -563,6 +617,31 @@ wz.app.addScript( 1, 'common', function( win ){
 			ghost.find('textarea, img, span').remove()
 			drag.ghost( ghost );
 		}
+
+    })
+	
+	.on( 'wz-drop', '.wz-drop-area', function( e, item ){
+		
+		e.stopPropagation();
+		
+		if( $(this).hasClass('directory') ){
+			var dest = $(this).data('file-id');
+		}else{
+			var dest = current;
+		}
+				
+		item.siblings('.active').add( item ).each( function(){
+						
+			wz.structure( $(this).data('file-id'), function( error, structure ){
+				
+				//To Do -> Error
+
+				structure.move( dest, null, function( error ){
+					// To Do -> Error
+				});
+				
+			});
+		});
 
     })
 
