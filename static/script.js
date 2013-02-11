@@ -527,7 +527,7 @@ wz.app.addScript( 1, 'common', function( win ){
 		if( $('.weexplorer-file.active').size() ){
 			deleteAllActive();
 		}else{
-			recordBack();
+			$( '.weexplorer-option-back' ).click();
 		}
         
     })
@@ -645,22 +645,13 @@ wz.app.addScript( 1, 'common', function( win ){
 
     })
 
-    .on( 'wz-dropenter', '.wz-drop-area', function( e, item ){
-        //console.log('enter', item );
+    .on( 'wz-dropenter', '.weexplorer-file.directory', function(){
+        $(this).addClass('weexplorer-directory-over');
     })
 
-    .on( 'wz-dropmove', '.wz-drop-area', function( e, item ){
-        //console.log('move', item );
-    })
-
-    .on( 'wz-dropleave', '.wz-drop-area', function( e, item ){
-        //console.log('leave', item );
-    })
-
-    .on( 'wz-drop', '.wz-drop-area', function( e, item ){
-        //console.log('drop', item );
-    });
-       
+    .on( 'wz-dropleave', '.weexplorer-file.directory', function(){
+		$(this).removeClass('weexplorer-directory-over');
+    })       
 
     fileArea.on( 'contextmenu', function(){
 
