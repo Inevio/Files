@@ -185,9 +185,10 @@
 .wz-app-1 .grid .weexplorer-file{
 	
 	width: 150px;
-	height: 210px;
+	height: 185px;
 	float: left;
 	margin-left: 25px;
+	margin-bottom: 15px;
 	
 }
 
@@ -217,6 +218,7 @@
 	color: #585858;
 	
 	width: 100%;
+	margin-top: 5px;
 	text-align: center;
 	
 }

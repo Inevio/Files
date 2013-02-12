@@ -94,6 +94,7 @@ wz.app.addScript( 1, 'common', function( win ){
         wz.structure( id, function( error, structure ){
 
             if( error ){
+				alert('No ha sido posible abrir el directorio');
                 return false;
             }
 			
@@ -104,7 +105,10 @@ wz.app.addScript( 1, 'common', function( win ){
             // List Structure Files
             structure.list( function( error, list ){
                 
-                // To Do -> Error
+                if( error ){
+					alert('No ha sido posible abrir el directorio');
+                	return false;
+            	}
 
                 var length = list.length;
                 var files  = $();
@@ -330,8 +334,11 @@ wz.app.addScript( 1, 'common', function( win ){
 		
 	})
 	
-	.on( 'structure-remove', function(e, id){
+	.on( 'structure-remove', function(e, id, quota, parent){
 			fileArea.children( '.weexplorer-file-' + id ).remove();
+			if( current === id){
+				openDirectory(parent);
+			}
 	})
 	
 	.on( 'structure-rename', function(e, structure){
@@ -341,12 +348,10 @@ wz.app.addScript( 1, 'common', function( win ){
 	})
 	
 	.on( 'structure-new', function(e, structure){
-		
 		if( structure.parent === current ){
 			console.log('Bang!');
 			fileArea.append( icon( structure.id, structure.name, structure.type, structure.size, structure.modified, structure.created ) );
-		}
-		
+		}		
 	})
 	
 	.on( 'structure-move', function(e, structure, destinyID, originID){
@@ -409,7 +414,7 @@ wz.app.addScript( 1, 'common', function( win ){
 
     .on( 'upload-end', function( e, structure ){
         console.log('end',structure);
-		$( '.weexplorer-file-' + structure.id ).removeClass('weexplorer-file-uploading').find('img').attr('src', structure.thumbnails.normal );
+		$( '.weexplorer-file-' + structure.id ).removeClass('weexplorer-file-uploading temporal-file').addClass('file').find('img').attr('src', structure.thumbnails.normal );
     })
     
     .on( 'mousedown', '.weexplorer-file:not(.active)', function( e ){
@@ -622,31 +627,36 @@ wz.app.addScript( 1, 'common', function( win ){
 	
 	.on( 'wz-drop', '.wz-drop-area', function( e, item ){
 		
-		e.stopPropagation();
-		
-		if( $(this).hasClass('directory') ){
-			var dest = $(this).data('file-id');
-		}else{
-			var dest = current;
-		}
-				
-		item.siblings('.active').add( item ).each( function(){
-						
-			wz.structure( $(this).data('file-id'), function( error, structure ){
-				
-				//To Do -> Error
-
-				structure.move( dest, null, function( error ){
-					// To Do -> Error
+		if( item.data('file-id') !== $(this).data('file-id') ){
+			
+			e.stopPropagation();
+			
+			if( $(this).hasClass('directory') ){
+				var dest = $(this).data('file-id');
+			}else{
+				var dest = current;
+			}
+					
+			item.siblings('.active').add( item ).each( function(){
+							
+				wz.structure( $(this).data('file-id'), function( error, structure ){
+					
+					//To Do -> Error
+	
+					structure.move( dest, null, function( error ){
+						// To Do -> Error
+					});
+					
 				});
-				
 			});
-		});
+		}
 
     })
 
-    .on( 'wz-dropenter', '.weexplorer-file.directory', function(){
-        $(this).addClass('weexplorer-directory-over');
+    .on( 'wz-dropenter', '.weexplorer-file.directory', function(e, file){
+		if(file.data('file-id') !== $(this).data('file-id')){
+			$(this).addClass('weexplorer-directory-over');
+		}
     })
 
     .on( 'wz-dropleave', '.weexplorer-file.directory', function(){
