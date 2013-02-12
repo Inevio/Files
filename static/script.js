@@ -534,7 +534,7 @@ wz.app.addScript( 1, 'common', function( win ){
 	
 	.key( 'left', function(){
 		
-		$( '.weexplorer-file.last-active' ).prev().mousedown();
+		$( '.weexplorer-file.last-active' ).prev().not( '.weexplorer-file.prototype' ).mousedown();
         
     })
 	
