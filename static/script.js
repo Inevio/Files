@@ -188,13 +188,13 @@ wz.app.addScript( 1, 'common', function( win ){
 		
 		var response = ' el archivo seleccionado? Si lo haces jamás podrás recuperarlo.';
 		
-		if( $('.weexplorer-file.active').size() > 1){
-			response = ' los ' + $('.weexplorer-file.active').size() + ' archivos seleccionados? Si lo haces jamás podrás recuperarlos.';
+		if( $('.weexplorer-file.active', win).size() > 1){
+			response = ' los ' + $('.weexplorer-file.active', win).size() + ' archivos seleccionados? Si lo haces jamás podrás recuperarlos.';
 		}
 		
 		if (confirm('¿Seguro que quieres eliminar' + response)) {
 		
-			$('.weexplorer-file.active').each(function(){
+			$('.weexplorer-file.active', win).each(function(){
 				
 				removeStructure( $(this).data('file-id') );
 				
@@ -302,28 +302,28 @@ wz.app.addScript( 1, 'common', function( win ){
 
         menu
             .add('Sort By Name', function(){
-				$( '.weexplorer-file' ).each(function(){
+				$( '.weexplorer-file', win ).each(function(){
 					list.push($(this));
 				});
                 list = list.sort(sortByName);
 				displayIcons(list, true);
             })
             .add('Sort by Size', function(){
-                $( '.weexplorer-file' ).each(function(){
+                $( '.weexplorer-file', win ).each(function(){
 					list.push($(this));
 				});
 				list = list.sort(sortBySize);
 				displayIcons(list, true);
             })
 			.add('Sort By Creation Date', function(){
-                $( '.weexplorer-file' ).each(function(){
+                $( '.weexplorer-file', win ).each(function(){
 					list.push($(this));
 				});
 				list = list.sort(sortByCreationDate);
 				displayIcons(list, true);
             })
             .add('Sort By Modification Date', function(){
-                $( '.weexplorer-file' ).each(function(){
+                $( '.weexplorer-file', win ).each(function(){
 					list.push($(this));
 				});
 				list = list.sort(sortByModificationDate);
@@ -424,10 +424,12 @@ wz.app.addScript( 1, 'common', function( win ){
         if(e.ctrlKey || e.metaKey){
             
             $( this ).addClass('active');
+			$( '.weexplorer-file.last-active', fileArea ).removeClass('last-active');
+        	$( this ).addClass('last-active');
             
         }else if(e.shiftKey){
             
-            var icons = $( '.weexplorer-file' );
+            var icons = $( '.weexplorer-file', win );
             var begin = icons.index(this);
             var final = icons.index(icons.filter( '.last-active' ));
             
@@ -440,11 +442,12 @@ wz.app.addScript( 1, 'common', function( win ){
             icons.not(row).removeClass('active');
             
         }else{
+			
             $( this ).addClass('active').siblings('.active').removeClass('active');
-        }
-		
-		$( '.weexplorer-file.last-active', fileArea ).removeClass('last-active');
-        $( this ).addClass('last-active');
+			$( '.weexplorer-file.last-active', fileArea ).removeClass('last-active');
+        	$( this ).addClass('last-active');
+			
+        }		
         
     })
     
@@ -456,7 +459,7 @@ wz.app.addScript( 1, 'common', function( win ){
             $( this ).removeClass('active');
         }else if(e.shiftKey){
             
-            var icons = $( '.weexplorer-file' );
+            var icons = $( '.weexplorer-file', win );
             var begin = icons.index(this);
             var final = icons.index(icons.filter( '.last-active' ));
             
@@ -529,7 +532,7 @@ wz.app.addScript( 1, 'common', function( win ){
     
     .key( 'backspace,delete', function(){
 		
-		if( $('.weexplorer-file.active').size() ){
+		if( $('.weexplorer-file.active', win).size() ){
 			deleteAllActive();
 		}else{
 			$( '.weexplorer-option-back' ).click();
@@ -613,12 +616,12 @@ wz.app.addScript( 1, 'common', function( win ){
 
     .on( 'wz-dragstart', '.weexplorer-file', function( e, drag ){
 		
-		if( !($('.weexplorer-file.active').size() > 1) ){
+		if( !($('.weexplorer-file.active', win).size() > 1) ){
 			drag.ghost( $(this).cloneWithStyle() );
 		}else{
 			var ghost = filePrototype.clone()
 										.css({'width':'148px', 'height':'98px', 'background':'green', 'border-radius':'7px', 'border':'solid 1px #fff', 'font-size':'36px', 'color':'white', 'text-align':'center', 'padding-top':'50px'})
-										.text($('.weexplorer-file.active').size());
+										.text($('.weexplorer-file.active', win).size());
 			ghost.find('textarea, img, span').remove()
 			drag.ghost( ghost );
 		}
