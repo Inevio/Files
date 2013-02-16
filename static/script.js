@@ -530,7 +530,7 @@ wz.app.addScript( 1, 'common', function( win ){
         
     })
     
-    .key( 'backspace,delete', function(){
+    .key( 'backspace', function(){
 		
 		if( $('.weexplorer-file.active', win).size() ){
 			deleteAllActive();
@@ -539,6 +539,12 @@ wz.app.addScript( 1, 'common', function( win ){
 		}
         
     })
+	
+	.key( 'delete', function(){
+		if( $('.weexplorer-file.active', win).size() ){
+			deleteAllActive();
+		}
+	})
 	
 	.key( 'left', function(){
 		
