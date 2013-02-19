@@ -78,7 +78,7 @@ wz.app.addScript( 1, 'common', function( win ){
 		file.children('.weexplorer-file-size').text( size );
 		file.children('.weexplorer-file-date-modification').text( modified );
 		file.children('.weexplorer-file-date-creation').text( created );
-        file.find('img').attr( 'src', 'https://download.weezeel.com/' + id + '/thumbnail/normal' );
+        file.find('img').attr( 'src', 'https://download.weezeel.com/' + id + '/icon/normal' );
         file.addClass( types[ type ] );
         file.addClass( 'weexplorer-file-' + id );
         file.data( 'file-id', id );
