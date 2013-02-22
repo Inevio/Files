@@ -27,7 +27,7 @@ wz.app.addScript( 1, 'common', function( win ){
     
     // Functions
     var recordNavigation = function(){
-						
+                        
         if(record[pointer+1]){
             nextButton.addClass('active');
         }else{
@@ -47,12 +47,12 @@ wz.app.addScript( 1, 'common', function( win ){
         current = id;
         
         if(!controlNav){
-			pointer++;
+            pointer++;
             record = record.slice(0,pointer+1);
         }
-		
-		record[pointer] = id;
-		controlNav = false;
+        
+        record[pointer] = id;
+        controlNav = false;
         
     };
 
@@ -75,9 +75,9 @@ wz.app.addScript( 1, 'common', function( win ){
 
         // Add new properties
         file.children('textarea').text( name );
-		file.children('.weexplorer-file-size').text( size );
-		file.children('.weexplorer-file-date-modification').text( modified );
-		file.children('.weexplorer-file-date-creation').text( created );
+        file.children('.weexplorer-file-size').text( size );
+        file.children('.weexplorer-file-date-modification').text( modified );
+        file.children('.weexplorer-file-date-creation').text( created );
         file.find('img').attr( 'src', 'https://download.weezeel.com/' + id + '/icon/normal' );
         file.addClass( types[ type ] );
         file.addClass( 'weexplorer-file-' + id );
@@ -94,21 +94,21 @@ wz.app.addScript( 1, 'common', function( win ){
         wz.structure( id, function( error, structure ){
 
             if( error ){
-				alert('No ha sido posible abrir el directorio');
+                alert('No ha sido posible abrir el directorio');
                 return false;
             }
-			
-			// Update current
-        	updateCurrent( structure.id );
-			recordNavigation();
-			            
+            
+            // Update current
+            updateCurrent( structure.id );
+            recordNavigation();
+                        
             // List Structure Files
             structure.list( function( error, list ){
                 
                 if( error ){
-					alert('No ha sido posible abrir el directorio');
-                	return false;
-            	}
+                    alert('No ha sido posible abrir el directorio');
+                    return false;
+                }
 
                 var length = list.length;
                 var files  = $();
@@ -120,7 +120,7 @@ wz.app.addScript( 1, 'common', function( win ){
 
                 // Display icons
                 fileArea.children().not('.prototype').remove();
-				fileArea.append( files );
+                fileArea.append( files );
 
                 // Update Folder info
                 folderName.text( structure.name );
@@ -139,11 +139,11 @@ wz.app.addScript( 1, 'common', function( win ){
         renaming = icon;
         
         $( 'textarea', icon)
-			.removeAttr('readonly')
-			.focus()
-			.select()
-			.removeClass('wz-dragger');
-			
+            .removeAttr('readonly')
+            .focus()
+            .select()
+            .removeClass('wz-dragger');
+            
     };
     
     var finishRename = function(){
@@ -164,7 +164,7 @@ wz.app.addScript( 1, 'common', function( win ){
             // To Do -> Error
 
             structure.createDirectory( null, function( error, newDirectory ){
-				//To Do -> Error          
+                //To Do -> Error          
             });
 
         });
@@ -177,230 +177,230 @@ wz.app.addScript( 1, 'common', function( win ){
 
             // To Do -> Error
             structure.remove( function( error, quota ){
-				// To Do -> Error
-			});
+                // To Do -> Error
+            });
 
         });
 
     };
-	
-	var deleteAllActive = function(){
-		
-		var response = ' el archivo seleccionado? Si lo haces jamás podrás recuperarlo.';
-		
-		if( $('.weexplorer-file.active', win).size() > 1){
-			response = ' los ' + $('.weexplorer-file.active', win).size() + ' archivos seleccionados? Si lo haces jamás podrás recuperarlos.';
-		}
-		
-		if (confirm('¿Seguro que quieres eliminar' + response)) {
-		
-			$('.weexplorer-file.active', win).each(function(){
-				
-				removeStructure( $(this).data('file-id') );
-				
-			});
-		
-		}
-		
-	};	
-	
-	var sortByName = function(a,b){
-		
-		if(a.children('textarea').val().toLowerCase() < b.children('textarea').val().toLowerCase() ){
-			return -1;
-		}
-		
-		if(a.children('textarea').val().toLowerCase() > b.children('textarea').val().toLowerCase() ){
-			return 1;
-		}
-		
-		return 0;
-		
-	};
-	
-	var sortBySize = function(a,b){
-		
-		if(a.children('.weexplorer-file-size').text() < b.children('.weexplorer-file-size').text()){
-			return -1;
-		}
-		
-		if(a.children('.weexplorer-file-size').text() > b.children('.weexplorer-file-size').text()){
-			return 1;
-		}
-		
-		return 0;
-		
-	};
-	
-	var sortByCreationDate = function(a,b){
-		
-		if(a.children('.weexplorer-file-date-creation').text() < b.children('.weexplorer-file-date-creation').text()){
-			return -1;
-		}
-		
-		if(a.children('.weexplorer-file-date-creation').text() > b.children('.weexplorer-file-date-creation').text()){
-			return 1;
-		}
-		
-		return 0;
-		
-	};
-	
-	var sortByModificationDate = function(a,b){
-		
-		if(a.children('.weexplorer-file-date-modification').text() < b.children('.weexplorer-file-date-modification').text()){
-			return -1;
-		}
-		
-		if(a.children('.weexplorer-file-date-modification').text() > b.children('.weexplorer-file-date-modification').text()){
-			return 1;
-		}
-		
-		return 0;
-		
-	};
-	
-	var displayIcons = function(list){
-		
-		fileArea.append( list );
-		
-		// Nullify
-		list = null;
-		
-	};
+    
+    var deleteAllActive = function(){
+        
+        var response = ' el archivo seleccionado? Si lo haces jamás podrás recuperarlo.';
+        
+        if( $('.weexplorer-file.active', win).size() > 1){
+            response = ' los ' + $('.weexplorer-file.active', win).size() + ' archivos seleccionados? Si lo haces jamás podrás recuperarlos.';
+        }
+        
+        if (confirm('¿Seguro que quieres eliminar' + response)) {
+        
+            $('.weexplorer-file.active', win).each(function(){
+                
+                removeStructure( $(this).data('file-id') );
+                
+            });
+        
+        }
+        
+    };  
+    
+    var sortByName = function(a,b){
+        
+        if(a.children('textarea').val().toLowerCase() < b.children('textarea').val().toLowerCase() ){
+            return -1;
+        }
+        
+        if(a.children('textarea').val().toLowerCase() > b.children('textarea').val().toLowerCase() ){
+            return 1;
+        }
+        
+        return 0;
+        
+    };
+    
+    var sortBySize = function(a,b){
+        
+        if(a.children('.weexplorer-file-size').text() < b.children('.weexplorer-file-size').text()){
+            return -1;
+        }
+        
+        if(a.children('.weexplorer-file-size').text() > b.children('.weexplorer-file-size').text()){
+            return 1;
+        }
+        
+        return 0;
+        
+    };
+    
+    var sortByCreationDate = function(a,b){
+        
+        if(a.children('.weexplorer-file-date-creation').text() < b.children('.weexplorer-file-date-creation').text()){
+            return -1;
+        }
+        
+        if(a.children('.weexplorer-file-date-creation').text() > b.children('.weexplorer-file-date-creation').text()){
+            return 1;
+        }
+        
+        return 0;
+        
+    };
+    
+    var sortByModificationDate = function(a,b){
+        
+        if(a.children('.weexplorer-file-date-modification').text() < b.children('.weexplorer-file-date-modification').text()){
+            return -1;
+        }
+        
+        if(a.children('.weexplorer-file-date-modification').text() > b.children('.weexplorer-file-date-modification').text()){
+            return 1;
+        }
+        
+        return 0;
+        
+    };
+    
+    var displayIcons = function(list){
+        
+        fileArea.append( list );
+        
+        // Nullify
+        list = null;
+        
+    };
 
     // Events
     $( win )
-	
-	.on( 'upload-enqueue', function(e, list){
-		
-		var length = list.length;
-		var files  = $();
-		
-		if( !length || list[ 0 ].parent !== current ){
-			return false;
-		}
-		
-		// Generate File icons
-		for( var i = 0; i < length; i++ ){
-			files = files.add( icon( list[ i ].id, list[ i ].name, list[ i ].type, list[ i ].size, list[ i ].modified, list[ i ].created ).addClass('weexplorer-file-uploading') );
-		}
-		
-		// Display icons
-		fileArea.append( files );
+    
+    .on( 'upload-enqueue', function(e, list){
+        
+        var length = list.length;
+        var files  = $();
+        
+        if( !length || list[ 0 ].parent !== current ){
+            return false;
+        }
+        
+        // Generate File icons
+        for( var i = 0; i < length; i++ ){
+            files = files.add( icon( list[ i ].id, list[ i ].name, list[ i ].type, list[ i ].size, list[ i ].modified, list[ i ].created ).addClass('weexplorer-file-uploading') );
+        }
+        
+        // Display icons
+        fileArea.append( files );
 
-		// Nullify
-		files = null;
-				
-	})
-	
-	.on( 'contextmenu', '.weexplorer-menu-sort', function(){
-		
-		var icon = $(this);
+        // Nullify
+        files = null;
+                
+    })
+    
+    .on( 'contextmenu', '.weexplorer-menu-sort', function(){
+        
+        var icon = $(this);
         var menu = wz.menu();
-		var list = [];
+        var list = [];
 
         menu
             .add('Sort By Name', function(){
-				$( '.weexplorer-file', win ).each(function(){
-					list.push($(this));
-				});
+                $( '.weexplorer-file', win ).each(function(){
+                    list.push($(this));
+                });
                 list = list.sort(sortByName);
-				displayIcons(list, true);
+                displayIcons(list, true);
             })
             .add('Sort by Size', function(){
                 $( '.weexplorer-file', win ).each(function(){
-					list.push($(this));
-				});
-				list = list.sort(sortBySize);
-				displayIcons(list, true);
+                    list.push($(this));
+                });
+                list = list.sort(sortBySize);
+                displayIcons(list, true);
             })
-			.add('Sort By Creation Date', function(){
+            .add('Sort By Creation Date', function(){
                 $( '.weexplorer-file', win ).each(function(){
-					list.push($(this));
-				});
-				list = list.sort(sortByCreationDate);
-				displayIcons(list, true);
+                    list.push($(this));
+                });
+                list = list.sort(sortByCreationDate);
+                displayIcons(list, true);
             })
             .add('Sort By Modification Date', function(){
                 $( '.weexplorer-file', win ).each(function(){
-					list.push($(this));
-				});
-				list = list.sort(sortByModificationDate);
-				displayIcons(list, true);
+                    list.push($(this));
+                });
+                list = list.sort(sortByModificationDate);
+                displayIcons(list, true);
             });
 
             menu.render();
-		
-	})
-	
-	.on( 'structure-remove', function(e, id, quota, parent){
-			fileArea.children( '.weexplorer-file-' + id ).remove();
-			if( current === id){
-				openDirectory(parent);
-			}
-	})
-	
-	.on( 'structure-rename', function(e, structure){
-		if( structure.parent === current ){
-			fileArea.children( '.weexplorer-file-' + structure.id ).children('textarea').val(structure.name);
-		}		
-	})
-	
-	.on( 'structure-new', function(e, structure){
-		if( structure.parent === current ){
-			console.log('Bang!');
-			fileArea.append( icon( structure.id, structure.name, structure.type, structure.size, structure.modified, structure.created ) );
-		}		
-	})
-	
-	.on( 'structure-move', function(e, structure, destinyID, originID){
-				
-		if( originID === current ){
-			fileArea.children( '.weexplorer-file-' + structure.id ).remove();
-		}else if( destinyID === current ){
-			fileArea.append( icon( structure.id, structure.name, structure.type, structure.size, structure.modified, structure.created ) );
-		}
-		
-	})
-    	
-	.on( 'click', '.weexplorer-menu-download', function(){
-		$('.active.file',win).each(function(){
-			wz.structure($(this).data('file-id'), function(e,st){
-				st.download();
-			});
-		});
-	})
-	
-	.on( 'click', '.weexplorer-option-next', function(){
-		if(nextButton.hasClass('active')){
-			recordNext();		
-		}
-	})
-	
-	.on( 'click', '.weexplorer-option-back', function(){
-		if(backButton.hasClass('active')){
-			recordBack();		
-		}
-	})
-	
-	.on( 'click', '.weexplorer-menu-views', function(){
-		if(views.hasClass('grid')){
-			views.removeClass('grid').addClass('list');		
-			fileArea.removeClass('grid').addClass('list');
-		}else{
-			views.removeClass('list').addClass('grid');
-			fileArea.removeClass('list').addClass('grid');
-		}
-	})
-	
-	.on( 'click', '.weexplorer-file.active', function(e){
-		
-		if( !e.shiftKey && !e.ctrlKey && !e.metaKey ){
-			$(this).addClass('last-active').siblings('.active').removeClass('active last-active');
-		}
-		
-	})
+        
+    })
+    
+    .on( 'structure-remove', function(e, id, quota, parent){
+            fileArea.children( '.weexplorer-file-' + id ).remove();
+            if( current === id){
+                openDirectory(parent);
+            }
+    })
+    
+    .on( 'structure-rename', function(e, structure){
+        if( structure.parent === current ){
+            fileArea.children( '.weexplorer-file-' + structure.id ).children('textarea').val(structure.name);
+        }       
+    })
+    
+    .on( 'structure-new', function(e, structure){
+        if( structure.parent === current ){
+            console.log('Bang!');
+            fileArea.append( icon( structure.id, structure.name, structure.type, structure.size, structure.modified, structure.created ) );
+        }       
+    })
+    
+    .on( 'structure-move', function(e, structure, destinyID, originID){
+                
+        if( originID === current ){
+            fileArea.children( '.weexplorer-file-' + structure.id ).remove();
+        }else if( destinyID === current ){
+            fileArea.append( icon( structure.id, structure.name, structure.type, structure.size, structure.modified, structure.created ) );
+        }
+        
+    })
+        
+    .on( 'click', '.weexplorer-menu-download', function(){
+        $('.active.file',win).each(function(){
+            wz.structure($(this).data('file-id'), function(e,st){
+                st.download();
+            });
+        });
+    })
+    
+    .on( 'click', '.weexplorer-option-next', function(){
+        if(nextButton.hasClass('active')){
+            recordNext();       
+        }
+    })
+    
+    .on( 'click', '.weexplorer-option-back', function(){
+        if(backButton.hasClass('active')){
+            recordBack();       
+        }
+    })
+    
+    .on( 'click', '.weexplorer-menu-views', function(){
+        if(views.hasClass('grid')){
+            views.removeClass('grid').addClass('list');     
+            fileArea.removeClass('grid').addClass('list');
+        }else{
+            views.removeClass('list').addClass('grid');
+            fileArea.removeClass('list').addClass('grid');
+        }
+    })
+    
+    .on( 'click', '.weexplorer-file.active', function(e){
+        
+        if( !e.shiftKey && !e.ctrlKey && !e.metaKey ){
+            $(this).addClass('last-active').siblings('.active').removeClass('active last-active');
+        }
+        
+    })
 
     .on( 'upload-start', function( e, structure ){
         console.log('start',structure);
@@ -413,8 +413,14 @@ wz.app.addScript( 1, 'common', function( win ){
     })
 
     .on( 'upload-end', function( e, structure ){
+
         console.log('end',structure);
-		$( '.weexplorer-file-' + structure.id ).removeClass('weexplorer-file-uploading temporal-file').addClass('file').find('img').attr('src', structure.thumbnails.normal );
+        $( '.weexplorer-file-' + structure.id )
+            .removeClass('weexplorer-file-uploading temporal-file')
+            .addClass('file')
+            .find('img')
+            .attr('src', structure.icons.normal + '?' + new Date().getTime() );
+            
     })
     
     .on( 'mousedown', '.weexplorer-file:not(.active)', function( e ){
@@ -424,8 +430,8 @@ wz.app.addScript( 1, 'common', function( win ){
         if(e.ctrlKey || e.metaKey){
             
             $( this ).addClass('active');
-			$( '.weexplorer-file.last-active', fileArea ).removeClass('last-active');
-        	$( this ).addClass('last-active');
+            $( '.weexplorer-file.last-active', fileArea ).removeClass('last-active');
+            $( this ).addClass('last-active');
             
         }else if(e.shiftKey){
             
@@ -442,12 +448,12 @@ wz.app.addScript( 1, 'common', function( win ){
             icons.not(row).removeClass('active');
             
         }else{
-			
+            
             $( this ).addClass('active').siblings('.active').removeClass('active');
-			$( '.weexplorer-file.last-active', fileArea ).removeClass('last-active');
-        	$( this ).addClass('last-active');
-			
-        }		
+            $( '.weexplorer-file.last-active', fileArea ).removeClass('last-active');
+            $( this ).addClass('last-active');
+            
+        }       
         
     })
     
@@ -515,8 +521,8 @@ wz.app.addScript( 1, 'common', function( win ){
         });
         
     })
-	
-	.on( 'dblclick', '.weexplorer-file.directory', function(){
+    
+    .on( 'dblclick', '.weexplorer-file.directory', function(){
         openDirectory($(this).data('file-id'));
     })
     
@@ -531,60 +537,60 @@ wz.app.addScript( 1, 'common', function( win ){
     })
     
     .key( 'backspace', function(){
-		
-		if( $('.weexplorer-file.active', win).size() ){
-			deleteAllActive();
-		}else{
-			$( '.weexplorer-option-back' ).click();
-		}
+        
+        if( $('.weexplorer-file.active', win).size() ){
+            deleteAllActive();
+        }else{
+            $( '.weexplorer-option-back' ).click();
+        }
         
     })
-	
-	.key( 'delete', function(){
-		if( $('.weexplorer-file.active', win).size() ){
-			deleteAllActive();
-		}
-	})
-	
-	.key( 'left', function(){
-		
-		$( '.weexplorer-file.last-active' ).prev().not( '.weexplorer-file.prototype' ).mousedown();
+    
+    .key( 'delete', function(){
+        if( $('.weexplorer-file.active', win).size() ){
+            deleteAllActive();
+        }
+    })
+    
+    .key( 'left', function(){
+        
+        $( '.weexplorer-file.last-active' ).prev().not( '.weexplorer-file.prototype' ).mousedown();
         
     })
-	
-	.key( 'right', function(){
-		
-		$( '.weexplorer-file.last-active' ).next().mousedown();
+    
+    .key( 'right', function(){
+        
+        $( '.weexplorer-file.last-active' ).next().mousedown();
         
     })
-	
-	.key( 'up', function(){
-		
-		var leftStart = $( '.weexplorer-file.last-active' ).position().left;
-		var object = $( '.weexplorer-file.last-active' ).prev();
-		
-		while( object.size() && leftStart !== object.position().left ){
-			object = object.prev();	
-		}
-		
-		object.mousedown();
-		
-    })
-	
-	.key( 'down', function(){
+    
+    .key( 'up', function(){
         
-		var leftStart = $( '.weexplorer-file.last-active' ).position().left;
-		var object = $( '.weexplorer-file.last-active' ).next();
-		
-		while( leftStart !== object.position().left ){
-			if(!object.next().size()){
-				break;
-			}
-			object = object.next();				
-		}
-		
-		object.mousedown();
-		
+        var leftStart = $( '.weexplorer-file.last-active' ).position().left;
+        var object = $( '.weexplorer-file.last-active' ).prev();
+        
+        while( object.size() && leftStart !== object.position().left ){
+            object = object.prev(); 
+        }
+        
+        object.mousedown();
+        
+    })
+    
+    .key( 'down', function(){
+        
+        var leftStart = $( '.weexplorer-file.last-active' ).position().left;
+        var object = $( '.weexplorer-file.last-active' ).next();
+        
+        while( leftStart !== object.position().left ){
+            if(!object.next().size()){
+                break;
+            }
+            object = object.next();             
+        }
+        
+        object.mousedown();
+        
     })
 
     .on( 'contextmenu', '.weexplorer-file', function(){
@@ -621,55 +627,55 @@ wz.app.addScript( 1, 'common', function( win ){
     })
 
     .on( 'wz-dragstart', '.weexplorer-file', function( e, drag ){
-		
-		if( !($('.weexplorer-file.active', win).size() > 1) ){
-			drag.ghost( $(this).cloneWithStyle() );
-		}else{
-			var ghost = filePrototype.clone()
-										.css({'width':'148px', 'height':'98px', 'background':'green', 'border-radius':'7px', 'border':'solid 1px #fff', 'font-size':'36px', 'color':'white', 'text-align':'center', 'padding-top':'50px'})
-										.text($('.weexplorer-file.active', win).size());
-			ghost.find('textarea, img, span').remove()
-			drag.ghost( ghost );
-		}
+        
+        if( !($('.weexplorer-file.active', win).size() > 1) ){
+            drag.ghost( $(this).cloneWithStyle() );
+        }else{
+            var ghost = filePrototype.clone()
+                                        .css({'width':'148px', 'height':'98px', 'background':'green', 'border-radius':'7px', 'border':'solid 1px #fff', 'font-size':'36px', 'color':'white', 'text-align':'center', 'padding-top':'50px'})
+                                        .text($('.weexplorer-file.active', win).size());
+            ghost.find('textarea, img, span').remove()
+            drag.ghost( ghost );
+        }
 
     })
-	
-	.on( 'wz-drop', '.wz-drop-area', function( e, item ){
-		
-		if( item.data('file-id') !== $(this).data('file-id') ){
-			
-			e.stopPropagation();
-			
-			if( $(this).hasClass('directory') ){
-				var dest = $(this).data('file-id');
-			}else{
-				var dest = current;
-			}
-					
-			item.siblings('.active').add( item ).each( function(){
-							
-				wz.structure( $(this).data('file-id'), function( error, structure ){
-					
-					//To Do -> Error
-	
-					structure.move( dest, null, function( error ){
-						// To Do -> Error
-					});
-					
-				});
-			});
-		}
+    
+    .on( 'wz-drop', '.wz-drop-area', function( e, item ){
+        
+        if( item.data('file-id') !== $(this).data('file-id') ){
+            
+            e.stopPropagation();
+            
+            if( $(this).hasClass('directory') ){
+                var dest = $(this).data('file-id');
+            }else{
+                var dest = current;
+            }
+                    
+            item.siblings('.active').add( item ).each( function(){
+                            
+                wz.structure( $(this).data('file-id'), function( error, structure ){
+                    
+                    //To Do -> Error
+    
+                    structure.move( dest, null, function( error ){
+                        // To Do -> Error
+                    });
+                    
+                });
+            });
+        }
 
     })
 
     .on( 'wz-dropenter', '.weexplorer-file.directory', function(e, file){
-		if(file.data('file-id') !== $(this).data('file-id')){
-			$(this).addClass('weexplorer-directory-over');
-		}
+        if(file.data('file-id') !== $(this).data('file-id')){
+            $(this).addClass('weexplorer-directory-over');
+        }
     })
 
     .on( 'wz-dropleave', '.weexplorer-file.directory', function(){
-		$(this).removeClass('weexplorer-directory-over');
+        $(this).removeClass('weexplorer-directory-over');
     })       
 
     fileArea.on( 'contextmenu', function(){
