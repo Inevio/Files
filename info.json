@@ -17,8 +17,8 @@
 
     "common" : {
 
-        "css"    : ["style.css"],
-        "script" : ["script.js"]
+        "css"    : ["style.css", "share.css"],
+        "script" : ["script.js", "share.js"]
 
     },
 
@@ -45,6 +45,35 @@
             "height" : {
 
                 "default" : 600,
+                "min"     : 0,
+                "max"     : 0
+
+            },
+
+            "css"    : [],
+            "script" : []
+
+        },
+		
+		"share" : {
+
+            "description" : "",
+            
+            "template" : "share.html",
+
+            "resizable"   : false,
+
+            "width"  : {
+
+                "default" : 800,
+                "min"     : 0,
+                "max"     : 0
+
+            },
+
+            "height" : {
+				
+                "default" : 500,
                 "min"     : 0,
                 "max"     : 0
 
