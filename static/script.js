@@ -604,7 +604,10 @@ wz.app.addScript( 1, 'common', function( win ){
             })
             .add('Borrar', function(){
                 deleteAllActive();
-            });
+            })
+			.add('Share', function(){
+				wz.app.createWindow(1, null, 'share')
+			});
 
             if(icon.hasClass('directory')){
                 menu.add('Soy un directorio');
