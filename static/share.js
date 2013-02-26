@@ -1,10 +1,9 @@
 
 wz.app.addScript( 1, 'common', function( win ){
 
-	var win 				= $('.wz-app-1-share');
-	var shareListUsers 		= $('.share-list-users');
-	var shareChosenUsers	= $('.share-chosen-users');
-	var shareUserPrototype 	= $('.share-user.prototype');
+	var shareListUsers 		= $('.share-list-users', win);
+	var shareChosenUsers	= $('.share-chosen-users', win);
+	var shareUserPrototype 	= $('.share-user.prototype', win);
 
 	win
 		.on( 'click', '.share-how article', function(){

@@ -599,14 +599,20 @@ wz.app.addScript( 1, 'common', function( win ){
         var menu = wz.menu();
 
         menu
-            .add('Renombrar', function(){
+            .add('Rename', function(){
                 beginRename( icon );
             })
-            .add('Borrar', function(){
+            .add('Delete', function(){
                 deleteAllActive();
             })
+			.add('Download', function(){
+				$( '.weexplorer-menu-download' ).click();
+            })
 			.add('Share', function(){
-				wz.app.createWindow(1, null, 'share')
+				wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
+			})
+			.add('Properties', function(){
+				wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
 			});
 
             if(icon.hasClass('directory')){

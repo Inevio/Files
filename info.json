@@ -17,8 +17,8 @@
 
     "common" : {
 
-        "css"    : ["style.css", "share.css"],
-        "script" : ["script.js", "share.js"]
+        "css"    : [],
+        "script" : []
 
     },
 
@@ -50,8 +50,8 @@
 
             },
 
-            "css"    : [],
-            "script" : []
+            "css"    : ["style.css"],
+            "script" : ["script.js"]
 
         },
 		
@@ -79,8 +79,37 @@
 
             },
 
-            "css"    : [],
-            "script" : []
+            "css"    : ["share.css"],
+            "script" : ["share.js"]
+
+        },
+		
+		"properties" : {
+
+            "description" : "",
+            
+            "template" : "properties.html",
+
+            "resizable"   : false,
+
+            "width"  : {
+
+                "default" : 275,
+                "min"     : 0,
+                "max"     : 0
+
+            },
+
+            "height" : {
+				
+                "default" : 350,
+                "min"     : 0,
+                "max"     : 0
+
+            },
+
+            "css"    : ["properties.css"],
+            "script" : ["properties.js"]
 
         }
 
