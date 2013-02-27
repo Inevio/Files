@@ -1,0 +1,136 @@
+
+.wz-app-1-link{
+	
+	background: #FFF;
+	
+}
+
+.wz-app-1-link .wz-win-menu{
+	
+	border-bottom: 1px solid #E5E5E5;
+	width: 335px;
+	height: 13px;
+	padding: 13px 15px;
+	
+}
+
+.wz-app-1-link .wz-win-menu span{
+	
+	font-size: 15px;
+	color: #646464;
+	
+}
+
+.wz-app-1-link .wz-win-close{
+	
+	float: right;
+	
+}
+
+.wz-app-1-link .link{
+
+	width: 335px;
+	height: 150px;
+	padding-top: 20px;
+	padding-left: 20px;
+	
+}
+
+.wz-app-1-link .link span{
+	
+	float: left;
+	font-size: 15px;
+	color: #333;
+	width: 80px;
+	
+}
+
+.wz-app-1-link span.link-question{
+	width: 335px;
+}
+
+.wz-app-1-link span.link-answer{
+	width: 335px;
+	font-size: 14px;
+	color: #666;
+	margin-top: 5px;
+}
+
+.wz-app-1-link .link-password{
+
+	width: 335px;	
+	float: left;
+	margin-top: 20px;
+	
+}
+
+.wz-app-1-link .link-password input{
+
+	width: 145px;
+	float: left;
+	margin-top: -3px;
+	border-radius: 3px;
+	border: 1px solid #DDD;	
+	font-size: 14px;
+	color: #666;
+	padding: 3px 5px 3px 5px;
+	
+}
+
+.wz-app-1-link .link-password input:focus{
+	border: 1px solid #50BDFF;
+}
+
+.wz-app-1-link .link-password button{
+
+	width: 75px;
+	height: 19px;
+	float: left;
+	margin-top: -3px;
+	margin-left: 15px;
+	padding: 1px 2px 3px 2px;
+	border-radius: 2px;
+	border-top: 1px solid #50BDFF;
+	text-align: center;
+	font-size: 15px;
+	color: #FFF;
+	box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	-webkit-box-sizing: content-box;
+	cursor: pointer;
+	
+	background-image: -moz-linear-gradient(50% 0% -90deg,rgb(60,181,255) 0%,rgb(44,153,255) 100%); 
+    background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0, rgb(60,181,255)),color-stop(1, rgb(44,153,255)));
+    background-image: -webkit-linear-gradient(-90deg,rgb(60,181,255) 0%,rgb(44,153,255) 100%);
+    background-image: -o-linear-gradient(-90deg,rgb(60,181,255) 0%,rgb(44,153,255) 100%);
+    background-image: linear-gradient(0deg,rgb(44,153,255) 0%,rgb(60,181,255) 100%);
+	
+}
+
+.wz-app-1-link .link-password button:hover{
+	
+	border-top: 1px solid #60CBFF;
+	
+	background-image: -moz-linear-gradient(50% 0% -90deg,rgb(77,197,255) 0%,rgb(56,175,255) 100%); 
+    background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0, rgb(77,197,255)),color-stop(1, rgb(56,175,255)));
+    background-image: -webkit-linear-gradient(-90deg,rgb(77,197,255) 0%,rgb(56,175,255) 100%);
+    background-image: -o-linear-gradient(-90deg,rgb(77,197,255) 0%,rgb(56,175,255) 100%);
+    background-image: linear-gradient(0deg,rgb(56,175,255) 0%,rgb(77,197,255) 100%);
+	
+}
+
+.wz-app-1-link .link-url{
+
+	width: 335px;	
+	float: left;
+	margin-top: 20px;	
+	
+}
+
+.wz-app-1-link span.wz-selectable{
+	
+	float: left;
+	color: #666;
+	width: 245px;
+	
+}

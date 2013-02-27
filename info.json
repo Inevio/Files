@@ -111,7 +111,37 @@
             "css"    : ["properties.css"],
             "script" : ["properties.js"]
 
+        },
+		
+		"link" : {
+
+            "description" : "",
+            
+            "template" : "link.html",
+
+            "resizable"   : false,
+
+            "width"  : {
+
+                "default" : 365,
+                "min"     : 0,
+                "max"     : 0
+
+            },
+
+            "height" : {
+				
+                "default" : 190,
+                "min"     : 0,
+                "max"     : 0
+
+            },
+
+            "css"    : ["link.css"],
+            "script" : ["link.js"]
+
         }
+
 
     }
 

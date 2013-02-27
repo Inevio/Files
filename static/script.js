@@ -602,7 +602,13 @@ wz.app.addScript( 1, 'common', function( win ){
             .add('Rename', function(){
                 beginRename( icon );
             })
-			.add('Share', function(){
+			.add('Create link', function(){
+				wz.app.createWindow(1, icon.data( 'file-id' ), 'link');
+			})
+			.add('Send to...', function(){
+				wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
+			})
+			.add('Share with...', function(){
 				wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
 			})
 			.add('Download', function(){
