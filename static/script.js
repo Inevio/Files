@@ -602,20 +602,20 @@ wz.app.addScript( 1, 'common', function( win ){
             .add('Rename', function(){
                 beginRename( icon );
             })
-            .add('Delete', function(){
-                deleteAllActive();
-            })
-			.add('Download', function(){
-				$( '.weexplorer-menu-download' ).click();
-            })
 			.add('Share', function(){
 				wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
 			})
+			.add('Download', function(){
+				$( '.weexplorer-menu-download' ).click();
+            })			
 			.add('Properties', function(){
 				wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
-			});
+			})
+			.add('Delete', function(){
+                deleteAllActive();
+            }, 'warning');
 
-            if(icon.hasClass('directory')){
+            /*if(icon.hasClass('directory')){
                 menu.add('Soy un directorio');
             }
 
@@ -629,7 +629,7 @@ wz.app.addScript( 1, 'common', function( win ){
 
             if(icon.hasClass('temporal-file')){
                 menu.add('Soy un archivo temporal');
-            }
+            }*/
 
             menu.render();
 

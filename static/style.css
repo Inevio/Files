@@ -132,7 +132,6 @@
 	z-index: 1;
 	
 	background-image: -moz-linear-gradient(50% 0% -90deg,rgba(255,255,255,1) 65%,rgba(255,255,255,0) 100%); 
-    background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0.65, rgba(255,255,255,1)),color-stop(1, rgba(255,255,255,0)));
     background-image: -webkit-linear-gradient(-90deg,rgba(255,255,255,1) 65%,rgba(255,255,255,0) 100%);
     background-image: -o-linear-gradient(-90deg,rgba(255,255,255,1) 65%,rgba(255,255,255,0) 100%);
     background-image: linear-gradient(0deg,rgba(255,255,255,0) 0%,rgba(255,255,255,1) 35%);
@@ -421,11 +420,17 @@
 	
 }
 
-.wz-app-1 .weexplorer-file-uploading{
+.wz-app-1 .weexplorer-file-uploading figure{
 	
 	opacity: 0.5;
 	
 }	
+
+.wz-app-1 .weexplorer-file-uploading textarea{
+	
+	opacity: 0.5;
+	
+}
 
 .wz-app-1 .weexplorer-directory-over{
 	
@@ -467,4 +472,56 @@
 	
 	background-position: -96px 0;
 	
+}
+
+.wz-app-1 .weexplorer-uploading{
+	width: 100%;
+	height: 0px;
+	background-image: -moz-linear-gradient(50% 0% -90deg,rgb(78,78,78) 0%,rgb(50,50,50) 100%); 
+    background-image: -webkit-linear-gradient(-90deg,rgb(78,78,78) 0%,rgb(50,50,50) 100%);
+    background-image: -o-linear-gradient(-90deg,rgb(78,78,78) 0%,rgb(50,50,50) 100%);
+    background-image: linear-gradient(0deg,rgb(50,50,50) 0%,rgb(78,78,78) 100%);
+	position: absolute;
+	bottom: 0px;
+	overflow: hidden;
+}
+
+.wz-app-1 .weexplorer-uploading-bar{
+	width: 75%;
+	height: 5px;
+	background: #1FB3FF;
+}
+
+.wz-app-1 .weexplorer-uploading-info{
+	width: 200px;
+	height: 15px;
+	margin: 6px auto auto;
+}
+
+.wz-app-1 .weexplorer-uploading-info figure{
+	width: 11px;
+	height: 13px;
+	float: left;
+	background: url('https://static.weezeel.com/app/1/uploading.png');
+}
+
+.wz-app-1 .weexplorer-uploading-info span{
+	float: left;
+	margin-left: 8px;
+	font-size: 13px;
+	color: #C0C0C0;
+}
+
+.wz-app-1 .weexplorer-progress-bar{
+	width: 0;
+	height: 5px;
+	margin-top: -5px;
+	background: #1FB3FF;
+}
+
+.wz-app-1 .weexplorer-conversion-bar{
+	width: 75%;
+	height: 5px;
+	margin-top: -5px;
+	background: #A43737;
 }
