@@ -408,14 +408,23 @@ wz.app.addScript( 1, 'common', function( win ){
     })
 
     .on( 'upload-progress', function( e, structureID, progress ){
-        console.log('upload-progress', progress );
-        //fileArea.append( icon( structure.id, structure.name, structure.type ) );
+
+        console.log('progress',progress);
+        fileArea.children( '.weexplorer-file-' + structureID ).children('article')
+            .addClass('weexplorer-progress-bar')
+            .width( ( progress * 100 ) + '%' );
+
     })
 
     .on( 'upload-end', function( e, structure ){
 
         console.log('end',structure);
-        $( '.weexplorer-file-' + structure.id )
+        var icon = fileArea.children( '.weexplorer-file-' + structure.id );
+
+        icon.children('article')
+            .removeClass('weexplorer-progress-bar');
+
+        icon
             .removeClass('weexplorer-file-uploading temporal-file')
             .addClass('file')
             .find('img')
