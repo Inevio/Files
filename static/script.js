@@ -7,7 +7,7 @@ wz.app.addScript( 1, 'common', function( win ){
     var current = null;
     var pointer = -1;
     var controlNav = false;
-    
+
     var types   = [
                     'directory wz-drop-area',
                     'special-directory wz-drop-area',
@@ -22,50 +22,54 @@ wz.app.addScript( 1, 'common', function( win ){
     var filePrototype = $( '.weexplorer-file.prototype', win );
     var folderName    = $( '.weexplorer-folder-name', win );
     var uploadButton  = $( '.weexplorer-menu-upload', win );
-    
+
     var renaming = $();
-    
+
     // Functions
     var recordNavigation = function(){
-                        
-        if(record[pointer+1]){
+
+        if( record[ pointer + 1 ] ){
             nextButton.addClass('active');
         }else{
             nextButton.removeClass('active');
         }
-        
-        if(record[pointer-1]){
+
+        if( record[ pointer - 1 ] ){
             backButton.addClass('active');
         }else{
             backButton.removeClass('active');
         }
-        
-    }           
-            
-    var updateCurrent = function(id){
-        
+
+    };
+
+    var updateCurrent = function( id ){
+
         current = id;
-        
-        if(!controlNav){
+
+        if( !controlNav ){
             pointer++;
-            record = record.slice(0,pointer+1);
+            record = record.slice( 0, pointer + 1 );
         }
-        
-        record[pointer] = id;
+
+        record[ pointer ] = id;
         controlNav = false;
-        
+
     };
 
     var recordBack = function(){
+
         pointer--;
         controlNav = true;
-        openDirectory(record[pointer]);     
+        openDirectory( record[ pointer ]);
+
     };
 
     var recordNext = function(){
+
         pointer++;
-        controlNav = true;  
-        openDirectory(record[pointer]); 
+        controlNav = true;
+        openDirectory( record[ pointer ] );
+
     };
 
     var icon = function( id, name, type, size, modified, created ){
@@ -97,14 +101,14 @@ wz.app.addScript( 1, 'common', function( win ){
                 alert('No ha sido posible abrir el directorio');
                 return false;
             }
-            
+
             // Update current
             updateCurrent( structure.id );
             recordNavigation();
-                        
+
             // List Structure Files
             structure.list( function( error, list ){
-                
+
                 if( error ){
                     alert('No ha sido posible abrir el directorio');
                     return false;
@@ -133,30 +137,30 @@ wz.app.addScript( 1, 'common', function( win ){
         });
 
     };
-    
+
     var beginRename = function( icon ){
-        
+
         renaming = icon;
-        
+
         $( 'textarea', icon)
             .removeAttr('readonly')
             .focus()
             .select()
             .removeClass('wz-dragger');
-            
+
     };
-    
+
     var finishRename = function(){
-        
+
         var icon = renaming;
         renaming = $();
-        
-        wz.structure(icon.data('file-id'), function( error, structure ){
-            structure.rename( $( 'textarea', icon ).attr('readonly','readonly').blur().addClass('wz-dragger').val(), function(error){})
+
+        wz.structure( icon.data('file-id'), function( error, structure ){
+            structure.rename( $( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass('wz-dragger').val(), function( error ){});
         });
-        
-    }
-    
+
+    };
+
     var createDirectory = function(){
 
         wz.structure( current, function( error, structure ){
@@ -335,23 +339,29 @@ wz.app.addScript( 1, 'common', function( win ){
     })
     
     .on( 'structure-remove', function(e, id, quota, parent){
-            fileArea.children( '.weexplorer-file-' + id ).remove();
-            if( current === id){
-                openDirectory(parent);
-            }
+        
+        fileArea.children( '.weexplorer-file-' + id ).remove();
+
+        if( current === id ){
+            openDirectory( parent );
+        }
+
     })
     
     .on( 'structure-rename', function(e, structure){
+
         if( structure.parent === current ){
             fileArea.children( '.weexplorer-file-' + structure.id ).children('textarea').val(structure.name);
-        }       
+        }
+
     })
     
     .on( 'structure-new', function(e, structure){
+
         if( structure.parent === current ){
-            console.log('Bang!');
             fileArea.append( icon( structure.id, structure.name, structure.type, structure.size, structure.modified, structure.created ) );
-        }       
+        }
+
     })
     
     .on( 'structure-move', function(e, structure, destinyID, originID){
@@ -403,13 +413,11 @@ wz.app.addScript( 1, 'common', function( win ){
     })
 
     .on( 'upload-start', function( e, structure ){
-        console.log('start',structure);
         //fileArea.append( icon( structure.id, structure.name, structure.type ) );
     })
 
     .on( 'upload-progress', function( e, structureID, progress ){
 
-        console.log('progress',progress);
         fileArea.children( '.weexplorer-file-' + structureID ).children('article')
             .addClass('weexplorer-progress-bar')
             .width( ( progress * 100 ) + '%' );
@@ -418,7 +426,6 @@ wz.app.addScript( 1, 'common', function( win ){
 
     .on( 'upload-end', function( e, structure ){
 
-        console.log('end',structure);
         var icon = fileArea.children( '.weexplorer-file-' + structure.id );
 
         icon.children('article')
@@ -611,22 +618,22 @@ wz.app.addScript( 1, 'common', function( win ){
             .add('Rename', function(){
                 beginRename( icon );
             })
-			.add('Create link', function(){
-				wz.app.createWindow(1, icon.data( 'file-id' ), 'link');
-			})
-			.add('Send to...', function(){
-				wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
-			})
-			.add('Share with...', function(){
-				wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
-			})
-			.add('Download', function(){
-				$( '.weexplorer-menu-download' ).click();
-            })			
-			.add('Properties', function(){
-				wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
-			})
-			.add('Delete', function(){
+            .add('Create link', function(){
+                wz.app.createWindow(1, icon.data( 'file-id' ), 'link');
+            })
+            .add('Send to...', function(){
+                wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
+            })
+            .add('Share with...', function(){
+                wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
+            })
+            .add('Download', function(){
+                $( '.weexplorer-menu-download' ).click();
+            })          
+            .add('Properties', function(){
+                wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
+            })
+            .add('Delete', function(){
                 deleteAllActive();
             }, 'warning');
 
