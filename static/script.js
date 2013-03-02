@@ -281,7 +281,7 @@ wz.app.addScript( 1, 'common', function( win ){
 
     // Events
     $( win )
-    .on( 'upload-enqueue', function(e, list){
+    .on( 'upload-enqueue', function( e, list ){
         
         var length = list.length;
         var files  = $();
@@ -293,9 +293,18 @@ wz.app.addScript( 1, 'common', function( win ){
         // Display Message
         if( !uploading.hasClass('uploading') ){
 
-            uploading.addClass('uploading');
-            uploading.transition({ height : '+=33' }, 500 );
-            fileArea.transition({ height : '-=33' }, 500 );
+            uploading
+                .addClass('uploading')
+                .clearQueue()
+                .stop()
+                .transition({ height : '+=33' }, 500 );
+
+            fileArea
+                .clearQueue()
+                .stop()
+                .transition({ height : '-=33' }, 500 );
+
+            uploadingBar.width(0);
 
             uploadingItem.text( 0 );
             uploadingItems.text( list.length );
@@ -313,7 +322,22 @@ wz.app.addScript( 1, 'common', function( win ){
 
         // Nullify
         files = null;
-                
+        
+    })
+
+    .on( 'upload-queue-end', function( e ){
+
+        uploading
+                .removeClass('uploading')
+                .clearQueue()
+                .stop()
+                .transition({ height : '-=33' }, 500 );
+
+            fileArea
+                .clearQueue()
+                .stop()
+                .transition({ height : '+=33' }, 500 );
+
     })
     
     .on( 'contextmenu', '.weexplorer-menu-sort', function(){
@@ -439,11 +463,21 @@ wz.app.addScript( 1, 'common', function( win ){
 
         fileArea.children( '.weexplorer-file-' + structureID ).children('article')
             .addClass('weexplorer-progress-bar')
-            .width( ( progress * 100 ) + '%' );
+            .clearQueue()
+            .stop()
+            .transition( { width: ( progress * 100 ) + '%' }, 150 );
 
-        uploadingBar.width( ( queueProgress * 100 ) + '%' );
+        uploadingBar
+            .clearQueue()
+            .stop()
+            .transition( { width: ( queueProgress * 100 ) + '%' }, 150 );
 
         time = parseInt( time, 10 );
+
+        if( isNaN( time ) ){
+            uploadingElapsed.text( 'Calculating...' );
+            return false;
+        }
 
         if( time > 59 ){
             time = parseInt( time/60, 10 ) + ' minutes';
