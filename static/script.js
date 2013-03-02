@@ -8,12 +8,12 @@ wz.app.addScript( 1, 'common', function( win ){
     var pointer = -1;
     var controlNav = false;
 
-    var types   = [
+    var types = [
                     'directory wz-drop-area',
                     'special-directory wz-drop-area',
                     'file',
                     'temporal-file'
-                  ];
+                ];
 
     var nextButton    = $( '.weexplorer-option-next', win );
     var backButton    = $( '.weexplorer-option-back', win );
@@ -22,6 +22,12 @@ wz.app.addScript( 1, 'common', function( win ){
     var filePrototype = $( '.weexplorer-file.prototype', win );
     var folderName    = $( '.weexplorer-folder-name', win );
     var uploadButton  = $( '.weexplorer-menu-upload', win );
+
+    var uploading        = $( '.weexplorer-uploading', win );
+    var uploadingBar     = $( '.weexplorer-uploading-bar', uploading );
+    var uploadingItem    = $( '.item-now', uploading );
+    var uploadingItems   = $( '.total-items', uploading );
+    var uploadingElapsed = $( '.elapsed-time', uploading );
 
     var renaming = $();
 
@@ -275,7 +281,6 @@ wz.app.addScript( 1, 'common', function( win ){
 
     // Events
     $( win )
-    
     .on( 'upload-enqueue', function(e, list){
         
         var length = list.length;
@@ -283,6 +288,19 @@ wz.app.addScript( 1, 'common', function( win ){
         
         if( !length || list[ 0 ].parent !== current ){
             return false;
+        }
+
+        // Display Message
+        if( !uploading.hasClass('uploading') ){
+
+            uploading.addClass('uploading');
+            uploading.transition({ height : '+=33' }, 500 );
+            fileArea.transition({ height : '-=33' }, 500 );
+
+            uploadingItem.text( 0 );
+            uploadingItems.text( list.length );
+            uploadingElapsed.text( 'Calculating...' );
+
         }
         
         // Generate File icons
@@ -413,14 +431,27 @@ wz.app.addScript( 1, 'common', function( win ){
     })
 
     .on( 'upload-start', function( e, structure ){
+        uploadingItem.text( parseInt( uploadingItem.text(), 10 ) + 1 );
         //fileArea.append( icon( structure.id, structure.name, structure.type ) );
     })
 
-    .on( 'upload-progress', function( e, structureID, progress ){
+    .on( 'upload-progress', function( e, structureID, progress, queueProgress, time ){
 
         fileArea.children( '.weexplorer-file-' + structureID ).children('article')
             .addClass('weexplorer-progress-bar')
             .width( ( progress * 100 ) + '%' );
+
+        uploadingBar.width( ( queueProgress * 100 ) + '%' );
+
+        time = parseInt( time, 10 );
+
+        if( time > 59 ){
+            time = parseInt( time/60, 10 ) + ' minutes';
+        }else{
+            time = time + ' seconds';
+        }
+
+        uploadingElapsed.text( time + ' ' + 'left' );
 
     })
 
