@@ -286,7 +286,7 @@ wz.app.addScript( 1, 'common', function( win ){
         var length = list.length;
         var files  = $();
         
-        if( !length || list[ 0 ].parent !== current ){
+        if( !length ){
             return false;
         }
 
@@ -308,6 +308,11 @@ wz.app.addScript( 1, 'common', function( win ){
 
             uploadingItem.text( 0 );
             uploadingItems.text( list.length );
+            uploadingElapsed.text( 'Calculating...' );
+
+        }else{
+
+            uploadingItems.text( parseInt( uploadingItems.text(), 10 ) + list.length );
             uploadingElapsed.text( 'Calculating...' );
 
         }
