@@ -25,7 +25,7 @@ wz.app.addScript( 1, 'common', function( win ){
 				
 				if( password.length || !list.length ){
 										
-					file.createLink( password, function( error, url ){
+					file.createLink( password, true, function( error, url ){
 						
 						linkSpan.text( url.url );
 						
@@ -35,7 +35,7 @@ wz.app.addScript( 1, 'common', function( win ){
 					
 					if( list[0].password ){
 												
-						file.createLink( function( error, url ){
+						file.createLink( null, true, function( error, url ){
 						
 							linkSpan.text( url.url );
 						
