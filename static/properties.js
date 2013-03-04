@@ -1,5 +1,5 @@
 
-wz.app.addScript( 1, 'common', function( win ){
+wz.app.addScript( 1, 'properties', function( win ){
 
 	var input		= $('.properties input', win);
 	var type		= $('.properties .type', win);	

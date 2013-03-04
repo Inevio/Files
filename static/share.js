@@ -1,5 +1,5 @@
 
-wz.app.addScript( 1, 'common', function( win ){
+wz.app.addScript( 1, 'share', function( win ){
 
 	var shareListUsers 		= $('.share-list-users', win);
 	var shareChosenUsers	= $('.share-chosen-users', win);

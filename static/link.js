@@ -1,5 +1,5 @@
 
-wz.app.addScript( 1, 'common', function( win ){
+wz.app.addScript( 1, 'link', function( win ){
 	
 	var file = {};
 	var linkSpan = $('.link-url .wz-selectable', win);

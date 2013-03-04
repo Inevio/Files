@@ -1,6 +1,6 @@
 /*global wz:true $:true */
 
-wz.app.addScript( 1, 'common', function( win ){
+wz.app.addScript( 1, 'main', function( win ){
 
     // Variables
     var record = [];
