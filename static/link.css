@@ -30,7 +30,7 @@
 .wz-app-1-link .link{
 
 	width: 335px;
-	height: 150px;
+	height: 155px;
 	padding-top: 20px;
 	padding-left: 20px;
 	
@@ -133,4 +133,24 @@
 	color: #666;
 	width: 245px;
 	
+}
+
+.wz-app-1-link .link-preview{
+	width: 335px;
+	float: left;
+	margin-top: 15px;
+}
+
+.wz-app-1-link .link-preview input{
+	float: left;
+	margin-top: 2px;
+	cursor: pointer;
+}
+
+.wz-app-1-link .link-preview span{
+	font-size: 15px;
+	color: #666;
+	float: left;
+	margin-left: 8px;
+	width: 295px;
 }
