@@ -688,40 +688,34 @@ wz.app.addScript( 1, 'main', function( win ){
             .add('Rename', function(){
                 beginRename( icon );
             })
-            .add('Create link', function(){
-                wz.app.createWindow(1, icon.data( 'file-id' ), 'link');
-            })
+			
+			if(icon.hasClass('file')){
+                menu.add('Create link', function(){
+                	wz.app.createWindow(1, icon.data( 'file-id' ), 'link');
+            	})
+            }
+        
+		menu    
             .add('Send to...', function(){
                 wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
             })
             .add('Share with...', function(){
                 wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
             })
-            .add('Download', function(){
-                $( '.weexplorer-menu-download' ).click();
-            })          
+			
+			if(icon.hasClass('file')){
+                menu.add('Download', function(){
+                	$( '.weexplorer-menu-download' ).click();
+            	})
+            }
+        
+		menu              
             .add('Properties', function(){
                 wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
             })
             .add('Delete', function(){
                 deleteAllActive();
-            }, 'warning');
-
-            /*if(icon.hasClass('directory')){
-                menu.add('Soy un directorio');
-            }
-
-            if(icon.hasClass('special-directory')){
-                menu.add('Soy un directorio especial');
-            }
-
-            if(icon.hasClass('file')){
-                menu.add('Soy un archivo');
-            }
-
-            if(icon.hasClass('temporal-file')){
-                menu.add('Soy un archivo temporal');
-            }*/
+            }, 'warning');  
 
             menu.render();
 
