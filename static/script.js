@@ -438,7 +438,7 @@ wz.app.addScript( 1, 'main', function( win ){
     })
         
     .on( 'click', '.weexplorer-menu-download', function(){
-        $('.active.file',win).each(function(){
+        $('.active.file', win).each(function(){
             wz.structure($(this).data('file-id'), function(e,st){
                 st.download();
             });
@@ -660,7 +660,7 @@ wz.app.addScript( 1, 'main', function( win ){
 			if( $('.weexplorer-file.active', win).size() ){
             	deleteAllActive();
         	}else{
-            	$( '.weexplorer-option-back' ).click();
+            	$( '.weexplorer-option-back', win ).click();
         	}
 		}
   
@@ -708,7 +708,7 @@ wz.app.addScript( 1, 'main', function( win ){
 		if( $(e.target).is('textarea') ){
 			e.stopPropagation();
 		}else{
-			$( '.weexplorer-file.last-active' ).prev().not( '.weexplorer-file.prototype' ).mousedown();
+			$( '.weexplorer-file.last-active', fileArea ).prev().not( '.weexplorer-file.prototype' ).mousedown();
 		}       
         
     })
@@ -718,7 +718,7 @@ wz.app.addScript( 1, 'main', function( win ){
 		if( $(e.target).is('textarea') ){
 			e.stopPropagation();
 		}else{
-			$( '.weexplorer-file.last-active' ).next().mousedown();
+			$( '.weexplorer-file.last-active', fileArea ).next().mousedown();
 		}  
         
     })
@@ -728,8 +728,8 @@ wz.app.addScript( 1, 'main', function( win ){
 		if( $(e.target).is('textarea') ){
 			e.stopPropagation();
 		}else{
-			var leftStart = $( '.weexplorer-file.last-active' ).position().left;
-        	var object = $( '.weexplorer-file.last-active' ).prev();
+			var leftStart = $( '.weexplorer-file.last-active', fileArea ).position().left;
+        	var object = $( '.weexplorer-file.last-active', fileArea ).prev();
         
 			while( object.size() && leftStart !== object.position().left ){
 				object = object.prev(); 
@@ -745,8 +745,8 @@ wz.app.addScript( 1, 'main', function( win ){
 		if( $(e.target).is('textarea') ){
 			e.stopPropagation();
 		}else{
-			var leftStart = $( '.weexplorer-file.last-active' ).position().left;
-			var object = $( '.weexplorer-file.last-active' ).next();
+			var leftStart = $( '.weexplorer-file.last-active', fileArea ).position().left;
+			var object = $( '.weexplorer-file.last-active', fileArea ).next();
 			
 			while( leftStart !== object.position().left ){
 				if(!object.next().size()){
@@ -786,7 +786,7 @@ wz.app.addScript( 1, 'main', function( win ){
 			
 			if(icon.hasClass('file')){
                 menu.add('Download', function(){
-                	$( '.weexplorer-menu-download' ).click();
+                	$( '.weexplorer-menu-download', win ).click();
             	})
             }
 			
