@@ -30,6 +30,7 @@ wz.app.addScript( 1, 'main', function( win ){
     var uploadingElapsed = $( '.elapsed-time', uploading );
 
     var renaming = $();
+	var prevName = '';
 
     // Functions
     var recordNavigation = function(){
@@ -150,7 +151,8 @@ wz.app.addScript( 1, 'main', function( win ){
     var beginRename = function( icon ){
 
         renaming = icon;
-
+		prevName = $( 'textarea', icon).val();
+		
         $( 'textarea', icon)
             .removeAttr('readonly')
             .focus()
@@ -284,6 +286,17 @@ wz.app.addScript( 1, 'main', function( win ){
 
     // Events
     $( win )
+	
+	.on( 'app-param', function( e, params ){
+		
+		if( params ){
+			openDirectory( params );
+		}else{
+			
+		}
+			
+	})
+		
     .on( 'upload-enqueue', function( e, list ){
         
         var length = list.length;
@@ -654,6 +667,7 @@ wz.app.addScript( 1, 'main', function( win ){
     })
     
     .key( 'delete', function(e){
+		
 		if( $(e.target).is('textarea') ){
 			e.stopPropagation();
 		}else{
@@ -661,7 +675,33 @@ wz.app.addScript( 1, 'main', function( win ){
 				deleteAllActive();
 			}
 		}
+		
     })
+	
+	.key( 'esc', function(e){       
+		
+		if( $(e.target).is('textarea') ){
+			e.preventDefault();
+			var icon = renaming;
+        	renaming = $();
+			$( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass('wz-dragger').val( prevName );
+		}else{
+			$( '.weexplorer-file.active' , fileArea ).removeClass('active');
+		}
+		
+    })
+	
+	.key( 'ctrl + enter', function(){
+		
+		if( $( '.weexplorer-file.active.last-active', fileArea ).hasClass('directory') ){
+			wz.app.createWindow(1, $( '.weexplorer-file.active.last-active', fileArea ).data( 'file-id' ), 'main');
+		}
+			
+	})
+	
+	.key( 'f2', function(){
+		beginRename( $( '.weexplorer-file.active.last-active', fileArea ) );
+	})
     
     .key( 'left', function(e){
 		
@@ -749,6 +789,12 @@ wz.app.addScript( 1, 'main', function( win ){
                 	$( '.weexplorer-menu-download' ).click();
             	})
             }
+			
+			if(icon.hasClass('directory')){
+                menu.add('Open in a new window', function(){
+                	wz.app.createWindow(1, icon.data( 'file-id' ), 'main');
+            	})
+            }
         
 		menu              
             .add('Properties', function(){
@@ -832,7 +878,7 @@ wz.app.addScript( 1, 'main', function( win ){
     uploadButton.on( 'click', function(){
         $(this).data( 'destiny', current );
     });
-
-    openDirectory( 'root' );
+	
+	openDirectory( 'root' );
 
 });
