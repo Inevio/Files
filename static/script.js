@@ -134,13 +134,16 @@ wz.app.addScript( 1, 'main', function( win ){
 
                 // Update Folder info
                 folderName.text( structure.name );
-
+				
+				// When a new window opens we activate the first file as last-active 
+				files.first().addClass('last-active hidden');
+		
                 // Nullify
                 files = null;
 
             });
 
-        });
+        });	
 
     };
 
@@ -454,7 +457,7 @@ wz.app.addScript( 1, 'main', function( win ){
     .on( 'click', '.weexplorer-file.active', function(e){
         
         if( !e.shiftKey && !e.ctrlKey && !e.metaKey ){
-            $(this).addClass('last-active').siblings('.active').removeClass('active last-active');
+            $(this).addClass('last-active').siblings('.active').removeClass('active last-active hidden');
         }
         
     })
@@ -516,7 +519,7 @@ wz.app.addScript( 1, 'main', function( win ){
         if(e.ctrlKey || e.metaKey){
             
             $( this ).addClass('active');
-            $( '.weexplorer-file.last-active', fileArea ).removeClass('last-active');
+            $( '.weexplorer-file.last-active', fileArea ).removeClass('last-active hidden');
             $( this ).addClass('last-active');
             
         }else if(e.shiftKey){
@@ -536,7 +539,7 @@ wz.app.addScript( 1, 'main', function( win ){
         }else{
             
             $( this ).addClass('active').siblings('.active').removeClass('active');
-            $( '.weexplorer-file.last-active', fileArea ).removeClass('last-active');
+            $( '.weexplorer-file.last-active', fileArea ).removeClass('last-active hidden');
             $( this ).addClass('last-active');
             
         }       
@@ -572,17 +575,29 @@ wz.app.addScript( 1, 'main', function( win ){
         if( renaming.size() ){
             finishRename(); 
         }
-            $( '.weexplorer-file.active' , fileArea ).removeClass('active');
+		
+		$( '.weexplorer-file.active' , fileArea ).removeClass('active');
         
     })
     
-    .on( 'mousedown', 'textarea', function(){
+    .on( 'mousedown', 'textarea', function(e){
         
-        if( $(this).parent().hasClass('active') ){
-            beginRename( $(this).parent() );
-        }
+		if( $(this).attr('readonly') ){
+			e.preventDefault();
+			if( $(this).parent().hasClass('active') ){
+            	beginRename( $(this).parent() );
+        	}
+		}       
         
     })
+	
+	.on( 'mousedown', '.weexplorer-file', function(){
+		if( $(this).children('textarea').attr('readonly') ){
+			if( renaming.size() ){
+            	finishRename(); 
+        	}
+		}
+	})
     
     .on( 'dblclick', 'textarea:not([readonly])', function( e ){
         e.stopPropagation();
@@ -611,71 +626,97 @@ wz.app.addScript( 1, 'main', function( win ){
     .on( 'dblclick', '.weexplorer-file.directory', function(){
         openDirectory($(this).data('file-id'));
     })
+	
+	.key( 'enter', function(e){
+		
+		if( $(e.target).is('textarea') ){
+			e.preventDefault();
+			finishRename();
+		}else{
+			$( '.weexplorer-file.active' , fileArea ).dblclick();
+		}
+		
+	})
     
-    .key( 'enter', function(){
+    .key( 'backspace', function(e){
         
-        if( renaming.size() ){
-            finishRename(); 
-        }else{
-            $( '.weexplorer-file.active' , fileArea ).dblclick();
-        }
+		if( $(e.target).is('textarea') ){
+			e.stopPropagation();
+		}else{
+			e.preventDefault();
+			if( $('.weexplorer-file.active', win).size() ){
+            	deleteAllActive();
+        	}else{
+            	$( '.weexplorer-option-back' ).click();
+        	}
+		}
+  
+    })
+    
+    .key( 'delete', function(e){
+		if( $(e.target).is('textarea') ){
+			e.stopPropagation();
+		}else{
+			if( $('.weexplorer-file.active', win).size() ){
+				deleteAllActive();
+			}
+		}
+    })
+    
+    .key( 'left', function(e){
+		
+		if( $(e.target).is('textarea') ){
+			e.stopPropagation();
+		}else{
+			$( '.weexplorer-file.last-active' ).prev().not( '.weexplorer-file.prototype' ).mousedown();
+		}       
         
     })
     
-    .key( 'backspace', function(){
+    .key( 'right', function(e){
         
-        if( $('.weexplorer-file.active', win).size() ){
-            deleteAllActive();
-        }else{
-            $( '.weexplorer-option-back' ).click();
-        }
-        
-    })
-    
-    .key( 'delete', function(){
-        if( $('.weexplorer-file.active', win).size() ){
-            deleteAllActive();
-        }
-    })
-    
-    .key( 'left', function(){
-        
-        $( '.weexplorer-file.last-active' ).prev().not( '.weexplorer-file.prototype' ).mousedown();
+		if( $(e.target).is('textarea') ){
+			e.stopPropagation();
+		}else{
+			$( '.weexplorer-file.last-active' ).next().mousedown();
+		}  
         
     })
     
-    .key( 'right', function(){
+    .key( 'up', function(e){
+		
+		if( $(e.target).is('textarea') ){
+			e.stopPropagation();
+		}else{
+			var leftStart = $( '.weexplorer-file.last-active' ).position().left;
+        	var object = $( '.weexplorer-file.last-active' ).prev();
         
-        $( '.weexplorer-file.last-active' ).next().mousedown();
+			while( object.size() && leftStart !== object.position().left ){
+				object = object.prev(); 
+			}
         
+        	object.mousedown();
+		}  
+          
     })
     
-    .key( 'up', function(){
-        
-        var leftStart = $( '.weexplorer-file.last-active' ).position().left;
-        var object = $( '.weexplorer-file.last-active' ).prev();
-        
-        while( object.size() && leftStart !== object.position().left ){
-            object = object.prev(); 
-        }
-        
-        object.mousedown();
-        
-    })
-    
-    .key( 'down', function(){
-        
-        var leftStart = $( '.weexplorer-file.last-active' ).position().left;
-        var object = $( '.weexplorer-file.last-active' ).next();
-        
-        while( leftStart !== object.position().left ){
-            if(!object.next().size()){
-                break;
-            }
-            object = object.next();             
-        }
-        
-        object.mousedown();
+    .key( 'down', function(e){
+		
+		if( $(e.target).is('textarea') ){
+			e.stopPropagation();
+		}else{
+			var leftStart = $( '.weexplorer-file.last-active' ).position().left;
+			var object = $( '.weexplorer-file.last-active' ).next();
+			
+			while( leftStart !== object.position().left ){
+				if(!object.next().size()){
+					break;
+				}
+				object = object.next();             
+			}
+			
+			object.mousedown();
+		}
         
     })
 

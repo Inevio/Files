@@ -1,6 +1,11 @@
 
 .wz-app-1 textarea{
 	overflow: hidden;
+	border: 1px solid #50BDFF;
+}
+
+.wz-app-1 textarea[readonly]{
+	border: 1px solid transparent;
 }
 
 .wz-app-1 .weexplorer-option-back{
@@ -197,18 +202,10 @@
 	width: 148px;
 	height: 148px;
 
-	border: solid 1px #fff;
+	border: solid 1px transparent;
 	
 	line-height: 150px;
 	text-align: center;
-	
-}
-
-.wz-app-1 .grid .active figure{
-
-	background: #eefaff;
-	border: solid 1px #7fbfeb;
-	border-radius: 6px;
 	
 }
 
@@ -242,14 +239,6 @@
 	
 }
 
-.wz-app-1 .list .weexplorer-file.active{
-
-	background: #eefaff;
-	border: solid 1px #7fbfeb;
-	border-radius: 6px;
-	
-}
-
 .wz-app-1 .list figure{
 	
 	width: 25px;
@@ -268,7 +257,7 @@
 	
 	width: 165px;
 	height: 15px;
-	float: left;
+	float: left;,
 	margin-top: 8px;
 	margin-left: 15px;
 	background:#f00;
@@ -304,6 +293,28 @@
 
 .wz-app-1 .grid .last-active figure{
 
+	border: solid 1px rgba(127,191,235,0.5);
+	border-radius: 6px;
+	
+}
+
+.wz-app-1 .grid .last-active.hidden figure{
+
+	border: solid 1px transparent;
+	
+}
+
+.wz-app-1 .grid .last-active figure:hover{
+
+	background: #eefaff;
+	border: solid 1px #7fbfeb;
+	border-radius: 6px;
+	
+}
+
+.wz-app-1 .grid .active figure{
+
+	background: #ceecff;
 	border: solid 1px #7fbfeb;
 	border-radius: 6px;
 	
@@ -311,7 +322,7 @@
 
 .wz-app-1 .grid figure:hover{
 	
-	background: #f00;
+	background: #eefaff;
 	border: solid 1px #7fbfeb;
 	border-radius: 6px;
 	
@@ -319,7 +330,7 @@
 
 .wz-app-1 .grid .active figure:hover{
 
-	background: #eefaff;
+	background: #ceecff;
 	border: solid 1px #7fbfeb;
 	border-radius: 6px;
 	
@@ -327,14 +338,14 @@
 
 .wz-app-1 .list .weexplorer-file.last-active{
 
-	border: solid 1px #7fbfeb;
+	border: solid 1px rgba(127,191,235,0.5);
 	border-radius: 6px;
 	
 }
 
 .wz-app-1 .list .weexplorer-file:hover{
 
-	background: #f00;
+	background: #eefaff;
 	border: solid 1px #7fbfeb;
 	border-radius: 6px;
 	
@@ -342,7 +353,15 @@
 
 .wz-app-1 .list .weexplorer-file.active:hover{
 
-	background: #eefaff;
+	background: #ceecff;
+	border: solid 1px #7fbfeb;
+	border-radius: 6px;
+	
+}
+
+.wz-app-1 .list .weexplorer-file.active{
+
+	background: #ceecff;
 	border: solid 1px #7fbfeb;
 	border-radius: 6px;
 	
@@ -432,9 +451,10 @@
 	
 }
 
-.wz-app-1 .weexplorer-directory-over{
+.wz-app-1 .weexplorer-directory-over figure{
 	
-	background: #0f0;
+	background: #ceecff;
+	border-radius: 6px;
 	
 }
 
