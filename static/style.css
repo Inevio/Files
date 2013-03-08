@@ -1,3 +1,6 @@
+.wz-app-1.wz-win.sidebar{
+	width: 684px !important;
+}
 
 .wz-app-1 textarea{
 	overflow: hidden;
@@ -47,6 +50,10 @@
 	float: left;
 	padding: 18px 23px 15px;
 	
+}
+
+.wz-app-1.sidebar .weexplorer-menu{
+	width: 408px;
 }
 
 .wz-app-1 .weexplorer-menu article{
@@ -117,19 +124,29 @@
 	
 }
 
-.wz-app-1 .weexplorer-menu-find{
+.wz-app-1 .weexplorer-menu-toggle{
 	
 	width: 15px;
 	height: 15px;
 	float: right;
 
-    background: url('https://static.weezeel.com/app/1/sprite.png') -96px 0; 
+    background: url('https://static.weezeel.com/app/1/sidebar_toggle.png') 0 0; 
+	
+}
+
+.wz-app-1.sidebar .weexplorer-menu-toggle{
+	
+	width: 15px;
+	height: 15px;
+	float: right;
+
+    background: url('https://static.weezeel.com/app/1/sidebar_toggle.png') -15px 0; 
 	
 }
 
 .wz-app-1 .weexplorer-folder{
 	
-	width: 100%;
+	width: 544px;
 	height: 50px;
 	position: absolute;
 	padding-top: 20px;
@@ -140,12 +157,6 @@
     background-image: -webkit-linear-gradient(-90deg,rgba(255,255,255,1) 65%,rgba(255,255,255,0) 100%);
     background-image: -o-linear-gradient(-90deg,rgba(255,255,255,1) 65%,rgba(255,255,255,0) 100%);
     background-image: linear-gradient(0deg,rgba(255,255,255,0) 0%,rgba(255,255,255,1) 35%);
-	
-}
-
-.wz-app-1.sidebar .weexplorer-folder{
-	
-	width: 404px;
 	
 }
 
@@ -176,7 +187,7 @@
 
 .wz-app-1 .weexplorer-file-zone{
 	
-	width: 100%;
+	width: 544px;
 	height: 550px;
 	float: left;
 	-moz-box-sizing: border-box;
@@ -369,22 +380,21 @@
 
 .wz-app-1 .weexplorer-sidebar{
 	
-	display: none;
-	
-}
-
-.wz-app-1.sidebar .weexplorer-sidebar{
-	
-	width: 125px;
-	height: 500px;
+	width: 0px;
+	height: 530px;
 	float: left;
-	display: block;
 	
 	background: #EBEBEB;
 	border-left: solid 1px #D8D8D8;
 	
 	padding-top: 20px;
 	padding-left: 14px;
+	
+}
+
+.wz-app-1.sidebar .weexplorer-sidebar{
+	
+	width: 125px;
 	
 }
 
@@ -398,8 +408,8 @@
 
 .wz-app-1 .weexplorer-sidebar-icon{
 	
-	width: 16px;
-	height: 14px;
+	width: 13px;
+	height: 13px;
 	float: left;
 	background: url('https://static.weezeel.com/app/1/sidebar.png');
 	
@@ -460,37 +470,112 @@
 
 .wz-app-1 .weexplorer-sidebar-icon.user{
 	
-	background-position: -16px 0;
+	background-position: -13px 0;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon.user:hover{
+	
+	background-position: -13px -13px;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon.user.active{
+	
+	background-position: -13px -26px;
 	
 }
 
 .wz-app-1 .weexplorer-sidebar-icon.folder{
 	
-	background-position: -32px 0;
+	background-position: -26px 0;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon.folder:hover{
+	
+	background-position: -26px -13px;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon.folder.active{
+	
+	background-position: -26px -26px;
 	
 }
 
 .wz-app-1 .weexplorer-sidebar-icon.music{
 	
-	background-position: -48px 0;
+	width: 8px;
+	background-position: -39px 0;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon.music:hover{
+	
+	background-position: -39px -13px;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon.music.active{
+	
+	background-position: -39px -26px;
 	
 }
 
 .wz-app-1 .weexplorer-sidebar-icon.photo{
 	
-	background-position: -64px 0;
+	background-position: -74px 0;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon.photo:hover{
+	
+	background-position: -74px -13px;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon.photo.active{
+	
+	background-position: -74px -26px;
 	
 }
 
 .wz-app-1 .weexplorer-sidebar-icon.video{
 	
-	background-position: -80px 0;
+	width: 16px;
+	background-position: -47px 0;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon.video:hover{
+
+	background-position: -47px -13px;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon.video.active{
+
+	background-position: -47px -26px;
 	
 }
 
 .wz-app-1 .weexplorer-sidebar-icon.doc{
 	
-	background-position: -96px 0;
+	width: 11px;
+	background-position: -63px 0;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon.doc:hover{
+
+	background-position: -63px -13px;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-icon.doc.active{
+
+	background-position: -63px -26px;
 	
 }
 

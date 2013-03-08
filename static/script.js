@@ -1,6 +1,6 @@
 /*global wz:true $:true */
 
-wz.app.addScript( 1, 'main', function( win ){
+wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     // Variables
     var record = [];
@@ -12,12 +12,16 @@ wz.app.addScript( 1, 'main', function( win ){
                     'directory wz-drop-area',
                     'special-directory wz-drop-area',
                     'file',
-                    'temporal-file'
+                    'temporal-file',
+					'null',
+					'null',
+					'received'
                 ];
 
     var nextButton    = $( '.weexplorer-option-next', win );
     var backButton    = $( '.weexplorer-option-back', win );
     var views         = $( '.weexplorer-menu-views', win );
+	var sidebar       = $( '.weexplorer-sidebar', win );
     var fileArea      = $( '.weexplorer-file-zone', win );
     var filePrototype = $( '.weexplorer-file.prototype', win );
     var folderName    = $( '.weexplorer-folder-name', win );
@@ -286,16 +290,6 @@ wz.app.addScript( 1, 'main', function( win ){
 
     // Events
     $( win )
-	
-	.on( 'app-param', function( e, params ){
-		
-		if( params ){
-			openDirectory( params );
-		}else{
-			
-		}
-			
-	})
 		
     .on( 'upload-enqueue', function( e, list ){
         
@@ -316,6 +310,11 @@ wz.app.addScript( 1, 'main', function( win ){
                 .transition({ height : '+=33' }, 500 );
 
             fileArea
+                .clearQueue()
+                .stop()
+                .transition({ height : '-=33' }, 500 );
+				
+			sidebar
                 .clearQueue()
                 .stop()
                 .transition({ height : '-=33' }, 500 );
@@ -355,6 +354,11 @@ wz.app.addScript( 1, 'main', function( win ){
                 .transition({ height : '-=33' }, 500 );
 
             fileArea
+                .clearQueue()
+                .stop()
+                .transition({ height : '+=33' }, 500 );
+				
+			sidebar
                 .clearQueue()
                 .stop()
                 .transition({ height : '+=33' }, 500 );
@@ -609,6 +613,21 @@ wz.app.addScript( 1, 'main', function( win ){
 			if( renaming.size() ){
             	finishRename(); 
         	}
+		}
+	})
+	
+	.on( 'mousedown', '.weexplorer-menu-toggle', function(){
+		if( win.hasClass('sidebar') ){
+			win.transition({ width : 544 }, 250 );
+			$('.weexplorer-menu', win).transition({ width : 268 }, 250);
+			$('.weexplorer-sidebar', win).transition({ width : 0 }, 250);
+			win.removeClass('sidebar');
+		}else{
+			win.transition({ width : 684 }, 250, function(){
+				win.addClass('sidebar');
+			});
+			$('.weexplorer-menu', win).transition({ width : 408 }, 250);
+			$('.weexplorer-sidebar', win).transition({ width : 120 }, 250);
 		}
 	})
     
@@ -879,6 +898,12 @@ wz.app.addScript( 1, 'main', function( win ){
         $(this).data( 'destiny', current );
     });
 	
-	openDirectory( 'root' );
+	if( params ){
+		openDirectory( params );
+	}else{
+		openDirectory( 'root' );
+	}
+	
+	win.addClass('sidebar');
 
 });
