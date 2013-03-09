@@ -1,12 +1,12 @@
 
-wz.app.addScript( 1, 'share', function( win ){
+wz.app.addScript( 1, 'share', function( win, app, lang, params ){
 
 	var shareListUsers 		= $('.share-list-users', win);
 	var shareChosenUsers	= $('.share-chosen-users', win);
 	var shareUserPrototype 	= $('.share-user.prototype', win);
 
 	win
-		.on( 'click', '.share-how article', function(){
+		.on( 'mousedown', '.share-how article', function(){
 			
 			var button = $(this).children('figure');
 			
@@ -22,7 +22,7 @@ wz.app.addScript( 1, 'share', function( win ){
 			
 		})
 		
-		.on( 'click', '.share-user', function(){
+		.on( 'mousedown', '.share-user', function(){
 			
 			if( $(this).parent().hasClass('share-list-users') ){
 				shareChosenUsers.append($(this));
@@ -30,6 +30,23 @@ wz.app.addScript( 1, 'share', function( win ){
 				shareListUsers.append($(this));
 			}
 			
+		})
+		
+		.on( 'mousedown', 'button', function(){
+			
+			/*
+			wz.structure( params, function( error, structure ){
+				
+				sendChosenUsers.children().each( function(){
+					structure.sendTo( $(this).data( 'user-id' ), ' ' );
+				});
+				
+			});*/
+			
+			alert( 'OMFG IT DOESN\'T WORK!!!!' );
+			
+			wz.app.closeWindow( win.data( 'win' ) );
+
 		});
 		
 	wz.user

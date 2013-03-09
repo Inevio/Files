@@ -84,6 +84,35 @@
 
         },
 		
+		"send" : {
+
+            "description" : "",
+            
+            "template" : "send.html",
+
+            "resizable"   : false,
+
+            "width"  : {
+
+                "default" : 630,
+                "min"     : 0,
+                "max"     : 0
+
+            },
+
+            "height" : {
+				
+                "default" : 425,
+                "min"     : 0,
+                "max"     : 0
+
+            },
+
+            "css"    : ["send.css"],
+            "script" : ["send.js"]
+
+        },
+		
 		"properties" : {
 
             "description" : "",

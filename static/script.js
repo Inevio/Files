@@ -18,14 +18,15 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 					'received'
                 ];
 
-    var nextButton    = $( '.weexplorer-option-next', win );
-    var backButton    = $( '.weexplorer-option-back', win );
-    var views         = $( '.weexplorer-menu-views', win );
-	var sidebar       = $( '.weexplorer-sidebar', win );
-    var fileArea      = $( '.weexplorer-file-zone', win );
-    var filePrototype = $( '.weexplorer-file.prototype', win );
-    var folderName    = $( '.weexplorer-folder-name', win );
-    var uploadButton  = $( '.weexplorer-menu-upload', win );
+    var nextButton    	= $( '.weexplorer-option-next', win );
+    var backButton    	= $( '.weexplorer-option-back', win );
+    var views         	= $( '.weexplorer-menu-views', win );
+	var sidebar       	= $( '.weexplorer-sidebar', win );
+	var sidebarElement 	= $( '.weexplorer-sidebar-element.prototype', sidebar );
+    var fileArea      	= $( '.weexplorer-file-zone', win );
+    var filePrototype 	= $( '.weexplorer-file.prototype', win );
+    var folderName    	= $( '.weexplorer-folder-name', win );
+    var uploadButton  	= $( '.weexplorer-menu-upload', win );
 
     var uploading        = $( '.weexplorer-uploading', win );
     var uploadingBar     = $( '.weexplorer-uploading-bar', uploading );
@@ -627,8 +628,20 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 				win.addClass('sidebar');
 			});
 			$('.weexplorer-menu', win).transition({ width : 408 }, 250);
-			$('.weexplorer-sidebar', win).transition({ width : 120 }, 250);
+			$('.weexplorer-sidebar', win).transition({ width : 139 }, 250);
 		}
+	})
+	
+	.on( 'mousedown', '.weexplorer-sidebar-element', function(){
+		if( !$(this).hasClass('active') ){
+			$('.weexplorer-sidebar-element.active', win).removeClass('active');
+			$(this).addClass('active');
+			openDirectory($(this).data('file-id'));
+		}
+	})
+	
+	.on( 'dblclick', '.weexplorer-file.received', function(){
+		console.log('Hola');
 	})
     
     .on( 'dblclick', 'textarea:not([readonly])', function( e ){
@@ -783,47 +796,74 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         var icon = $(this);
         var menu = wz.menu();
-
-        menu
-            .add('Rename', function(){
-                beginRename( icon );
-            })
+		
+		if(icon.hasClass('file')){
 			
-			if(icon.hasClass('file')){
-                menu.add('Create link', function(){
+			menu
+				.add('Rename', function(){
+					beginRename( icon );
+				})
+				.add('Create link', function(){
                 	wz.app.createWindow(1, icon.data( 'file-id' ), 'link');
             	})
-            }
-        
-		menu    
-            .add('Send to...', function(){
-                wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
-            })
-            .add('Share with...', function(){
-                wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
-            })
-			
-			if(icon.hasClass('file')){
-                menu.add('Download', function(){
+				.add('Send to...', function(){
+					wz.app.createWindow(1, icon.data( 'file-id' ), 'send');
+				})
+				.add('Share with...', function(){
+					wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
+				})
+				.add('Download', function(){
                 	$( '.weexplorer-menu-download', win ).click();
             	})
-            }
+				.add('Properties', function(){
+                	wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
+            	})
+            	.add('Delete', function(){
+                	deleteAllActive();
+            	}, 'warning');
 			
-			if(icon.hasClass('directory')){
-                menu.add('Open in a new window', function(){
+		}else if(icon.hasClass('directory')){
+			
+			menu
+				.add('Rename', function(){
+					beginRename( icon );
+				})
+				.add('Send to...', function(){
+					wz.app.createWindow(1, icon.data( 'file-id' ), 'send');
+				})
+				.add('Share with...', function(){
+					wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
+				})
+				.add('Open in a new window', function(){
                 	wz.app.createWindow(1, icon.data( 'file-id' ), 'main');
             	})
-            }
-        
-		menu              
-            .add('Properties', function(){
-                wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
-            })
-            .add('Delete', function(){
-                deleteAllActive();
-            }, 'warning');  
+				.add('Properties', function(){
+                	wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
+            	})
+            	.add('Delete', function(){
+            	    deleteAllActive();
+            	}, 'warning');
+			
+		}else if(icon.hasClass('received')){
+			
+			menu
+				.add('Properties', function(){
+                	wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
+            	})
+				.add('Accept', function(){
+					wz.structure( icon.data( 'file-id' ), function( error, structure ){
+						structure.accept();
+					});
+            	})
+				.add('Refuse', function(){
+                	wz.structure( icon.data( 'file-id' ), function( error, structure ){
+						structure.refuse();
+					});
+            	}, 'warning');
+			
+		}
 
-            menu.render();
+        menu.render();
 
     })
 
@@ -906,4 +946,17 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 	
 	win.addClass('sidebar');
 
+	wz.config( function(error, config){
+		var elementFolder = sidebarElement.clone().removeClass('prototype');
+		var userFolder = elementFolder.clone();
+		userFolder.data( 'file-id', config.user.rootPath ).addClass('active').children('span').text( 'User' );
+		sidebar.append( userFolder );
+		var sharedFolder = elementFolder.clone();
+		sharedFolder.data( 'file-id', config.user.sharedPath ).children('span').text( 'Shared' );
+		sidebar.append( sharedFolder );
+		var receivedFolder = elementFolder.clone();
+		receivedFolder.data( 'file-id', config.user.receivedPath ).children('span').text( 'Received' );
+		sidebar.append( receivedFolder );
+	});
+	
 });

@@ -11,6 +11,10 @@
 	border: 1px solid transparent;
 }
 
+.wz-app-1 textarea[readonly]:hover{
+	cursor: default;
+}
+
 .wz-app-1 .weexplorer-option-back{
 
 	width: 12px;
@@ -381,28 +385,25 @@
 .wz-app-1 .weexplorer-sidebar{
 	
 	width: 0px;
-	height: 530px;
+	height: 550px;
 	float: left;
 	
 	background: #EBEBEB;
 	border-left: solid 1px #D8D8D8;
 	
-	padding-top: 20px;
-	padding-left: 14px;
-	
 }
 
 .wz-app-1.sidebar .weexplorer-sidebar{
 	
-	width: 125px;
+	width: 139px;
 	
 }
 
 .wz-app-1 .weexplorer-sidebar-title{
 		
-	width: 115px;
+	width: 109px;
 	float: left;
-	margin-bottom: 32px;
+	padding: 20px 15px;
 
 }
 
@@ -423,19 +424,24 @@
 
 .wz-app-1 .weexplorer-sidebar-title-name{
 	
-	font-size: 14px;
-	color: #505050;
-	
+	width: 86px;
+	height: 15px;
 	float: left;
 	margin-left: 10px;
+	font-size: 14px;
+	color: #505050;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 	
 }
 
 .wz-app-1 .weexplorer-sidebar-element{
 	
-	width: 115px;
+	width: 109px;
 	float: left;
-	margin-bottom: 15px;
+	height: 15px;
+	padding: 10px 15px;
 	
 }	
 
@@ -444,8 +450,26 @@
 	font-size: 12px;
 	color: #505050;
 	
+	width: 86px;
+	height: 15px;
 	float: left;
 	margin-left: 10px;
+	margin-top: 1px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-element-name{
+	
+	color: #000;
+	
+}
+
+.wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-element-name{
+	
+	color: #108EE5;
 	
 }
 
@@ -474,13 +498,13 @@
 	
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.user:hover{
+.wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.user{
 	
 	background-position: -13px -13px;
 	
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.user.active{
+.wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.user{
 	
 	background-position: -13px -26px;
 	
@@ -492,13 +516,13 @@
 	
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.folder:hover{
+.wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.folder{
 	
 	background-position: -26px -13px;
 	
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.folder.active{
+.wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.folder{
 	
 	background-position: -26px -26px;
 	
@@ -507,17 +531,19 @@
 .wz-app-1 .weexplorer-sidebar-icon.music{
 	
 	width: 8px;
+	margin-left: 3px;
+	margin-right: 2px;
 	background-position: -39px 0;
 	
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.music:hover{
+.wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.music{
 	
 	background-position: -39px -13px;
 	
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.music.active{
+.wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.music{
 	
 	background-position: -39px -26px;
 	
@@ -529,13 +555,13 @@
 	
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.photo:hover{
+.wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.photo{
 	
 	background-position: -74px -13px;
 	
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.photo.active{
+.wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.photo{
 	
 	background-position: -74px -26px;
 	
@@ -544,17 +570,19 @@
 .wz-app-1 .weexplorer-sidebar-icon.video{
 	
 	width: 16px;
+	margin-left: -2px;
+	margin-right: -1px;
 	background-position: -47px 0;
 	
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.video:hover{
+.wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.video{
 
 	background-position: -47px -13px;
 	
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.video.active{
+.wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.video{
 
 	background-position: -47px -26px;
 	
@@ -563,17 +591,19 @@
 .wz-app-1 .weexplorer-sidebar-icon.doc{
 	
 	width: 11px;
+	margin-left: 1px;
+	margin-right: 1px;
 	background-position: -63px 0;
 	
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.doc:hover{
+.wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.doc{
 
 	background-position: -63px -13px;
 	
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.doc.active{
+.wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.doc{
 
 	background-position: -63px -26px;
 	
