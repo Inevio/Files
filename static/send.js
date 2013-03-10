@@ -22,12 +22,12 @@ wz.app.addScript( 1, 'send', function( win, app, lang, params ){
 			wz.structure( params, function( error, structure ){
 				
 				sendChosenUsers.children().each( function(){
-					structure.sendTo( $(this).data( 'user-id' ), ' ' );
+					structure.sendTo( $(this).data( 'user-id' ), $( '.send-message', win).val() );
 				});
 				
 			});
 			
-			alert( 'You file has been sent!' );
+			alert( 'Your file has been sent!' );
 			
 			wz.app.closeWindow( win.data( 'win' ) );
 
