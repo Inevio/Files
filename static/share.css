@@ -174,8 +174,8 @@
 
 .wz-app-1-share button{
 	
-	width: 60px;
-	height: 25px;
+	width: 80px;
+	height: 30px;
 	font-size: 14px;
 	color: #F5F5F5;
 	text-align: center;
@@ -195,6 +195,18 @@
     background-image: -webkit-linear-gradient(-90deg,rgb(60,181,255) 0%,rgb(44,153,255) 100%);
     background-image: -o-linear-gradient(-90deg,rgb(60,181,255) 0%,rgb(44,153,255) 100%);
     background-image: linear-gradient(0deg,rgb(44,153,255) 0%,rgb(60,181,255) 100%); 
+	
+}
+
+.wz-app-1-share button:hover{
+
+	border-top: 1px solid #60CBFF;
+	
+	background-image: -moz-linear-gradient(50% 0% -90deg,rgb(77,197,255) 0%,rgb(56,175,255) 100%); 
+    background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0, rgb(77,197,255)),color-stop(1, rgb(56,175,255)));
+    background-image: -webkit-linear-gradient(-90deg,rgb(77,197,255) 0%,rgb(56,175,255) 100%);
+    background-image: -o-linear-gradient(-90deg,rgb(77,197,255) 0%,rgb(56,175,255) 100%);
+    background-image: linear-gradient(0deg,rgb(56,175,255) 0%,rgb(77,197,255) 100%);	
 	
 }
 
