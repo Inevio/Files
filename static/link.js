@@ -94,6 +94,12 @@ wz.app.addScript( 1, 'link', function( win, app, lang, params ){
 				});
 			});	
 			
+		})
+		
+		.key( 'enter', function(e){
+			if( $(e.target).is( '.link-password input' ) ){
+				$( '.link-password button', win ).mousedown();
+			}
 		});
 
 });
