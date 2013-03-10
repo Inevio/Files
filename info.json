@@ -169,6 +169,35 @@
             "css"    : ["link.css"],
             "script" : ["link.js"]
 
+        },
+		
+		"received" : {
+
+            "description" : "",
+            
+            "template" : "received.html",
+
+            "resizable"   : false,
+
+            "width"  : {
+
+                "default" : 450,
+                "min"     : 0,
+                "max"     : 0
+
+            },
+
+            "height" : {
+				
+                "default" : 355,
+                "min"     : 0,
+                "max"     : 0
+
+            },
+
+            "css"    : ["received.css"],
+            "script" : ["received.js"]
+
         }
 
 

@@ -641,7 +641,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 	})
 	
 	.on( 'dblclick', '.weexplorer-file.received', function(){
-		console.log('Hola');
+		wz.app.createWindow(1, $(this).data( 'file-id' ), 'received');
 	})
     
     .on( 'dblclick', 'textarea:not([readonly])', function( e ){
