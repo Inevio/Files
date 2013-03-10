@@ -29,6 +29,8 @@ wz.app.addScript( 1, 'properties', function( win ){
 			type.text( 'File' );
 		}else if( fileType === 3 ){
 			type.text( 'Temporal File' );
+		}else if( fileType === 6 ){
+			type.text( 'Received File' );
 		}else{
 			type.text( 'Unknown' );
 		}
