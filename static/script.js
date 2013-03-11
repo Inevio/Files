@@ -88,16 +88,84 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         // Clone prototype
         var file = filePrototype.clone().removeClass('prototype');
+		
+		var modifiedToday = false;
+		var createdToday = false;
+		var userDate = new Date();
+		var userDateInfo = userDate.getDate() + '' + userDate.getMonth() + '' + userDate.getFullYear();
 
+		var modifiedDate = new Date( modified );
+		if( userDateInfo !== ( modifiedDate.getDate() + '' + modifiedDate.getMonth() + '' + modifiedDate.getFullYear() ) ){
+			
+			var modifiedDay = modifiedDate.getDate();
+				if( modifiedDay < 10 ){ modifiedDay = '0' + modifiedDay }
+			var modifiedMonth = modifiedDate.getMonth() + 1;
+				if( modifiedMonth < 10 ){ modifiedMonth = '0' + modifiedMonth }
+				
+		}else{
+			
+			modifiedToday = true;
+			
+			var modifiedHour = modifiedDate.getHours();
+				if( modifiedHour < 10 ){ modifiedHour = '0' + modifiedHour }
+			var modifiedMinute = modifiedDate.getMinutes();
+				if( modifiedMinute < 10 ){ modifiedMinute = '0' + modifiedMinute }
+			var modifiedSecond = modifiedDate.getSeconds();
+				if( modifiedSecond < 10 ){ modifiedSecond = '0' + modifiedSecond }
+				
+		}
+			
+		var createdDate = new Date( created );
+		if( userDateInfo !== ( createdDate.getDate() + '' + createdDate.getMonth() + '' + createdDate.getFullYear() ) ){
+			
+			var createdDay = createdDate.getDate();
+				if( createdDay < 10 ){ createdDay = '0' + createdDay }
+			var createdMonth = createdDate.getMonth() + 1;
+				if( createdMonth < 10 ){ createdMonth = '0' + createdMonth }
+				
+		}else{
+			
+			createdToday = true;
+			
+			var createdHour = createdDate.getHours();
+				if( createdHour < 10 ){ createdHour = '0' + createdHour }
+			var createdMinute = createdDate.getMinutes();
+				if( createdMinute < 10 ){ createdMinute = '0' + createdMinute }
+			var createdSecond = createdDate.getSeconds();
+				if( createdSecond < 10 ){ createdSecond = '0' + createdSecond }
+				
+		}
+		
         // Add new properties
         file.children('textarea').text( name );
-        file.children('.weexplorer-file-size').text( size );
-        file.children('.weexplorer-file-date-modification').text( modified );
-        file.children('.weexplorer-file-date-creation').text( created );
+		
+		if( size === null ){
+			file.children('.weexplorer-file-size').text( '--' );
+		}else{
+			file.children('.weexplorer-file-size').text( wz.tool.bytesToUnit( size, 2 ) );
+		}
+		
+		if( modifiedToday ){
+        	file.children('.weexplorer-file-date-modification').text( 'Modified ' + modifiedHour + ':' + modifiedMinute + ':' + modifiedSecond  );
+		}else{
+			file.children('.weexplorer-file-date-modification').text( 'Modified ' + modifiedMonth + '/' + modifiedDay + '/' +  modifiedDate.getFullYear() );
+		}
+		
+		/*
+		if( createdToday ){
+        	file.children('.weexplorer-file-date-creation').text( createdHour + ':' + createdMinute + ':' + createdSecond  );
+		}else{
+			file.children('.weexplorer-file-date-creation').text(  createdMonth + '/' + createdDay + '/' +  createdDate.getFullYear() );
+		}
+		*/
+		
         file.find('img').attr( 'src', 'https://download.weezeel.com/' + id + '/icon/normal' );
         file.addClass( types[ type ] );
         file.addClass( 'weexplorer-file-' + id );
         file.data( 'file-id', id );
+		file.data( 'file-size', size );
+		file.data( 'file-creation', modified );
+		file.data( 'file-modification', created );
 
         // Return icon
         return file;
@@ -219,7 +287,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             response = ' los ' + $('.weexplorer-file.active', win).size() + ' archivos seleccionados? Si lo haces jamás podrás recuperarlos.';
         }
         
-        if (confirm('¿Seguro que quieres eliminar' + response)) {
+        if( confirm( '¿Seguro que quieres eliminar' + response ) ) {
         
             $('.weexplorer-file.active', win).each(function(){
                 
@@ -233,11 +301,11 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     var sortByName = function(a,b){
         
-        if(a.children('textarea').val().toLowerCase() < b.children('textarea').val().toLowerCase() ){
+        if( a.children('textarea').val().toLowerCase() < b.children('textarea').val().toLowerCase() ){
             return -1;
         }
         
-        if(a.children('textarea').val().toLowerCase() > b.children('textarea').val().toLowerCase() ){
+        if( a.children('textarea').val().toLowerCase() > b.children('textarea').val().toLowerCase() ){
             return 1;
         }
         
@@ -247,11 +315,11 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     var sortBySize = function(a,b){
         
-        if(a.children('.weexplorer-file-size').text() < b.children('.weexplorer-file-size').text()){
+        if( a.data( 'file-size' ) < b.data( 'file-size' ) ){
             return -1;
         }
         
-        if(a.children('.weexplorer-file-size').text() > b.children('.weexplorer-file-size').text()){
+        if( a.data( 'file-size' ) > b.data( 'file-size' ) ){
             return 1;
         }
         
@@ -261,11 +329,11 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     var sortByCreationDate = function(a,b){
         
-        if(a.children('.weexplorer-file-date-creation').text() < b.children('.weexplorer-file-date-creation').text()){
+        if( a.data( 'file-creation' ) < b.data( 'file-creation' ) ){
             return -1;
         }
         
-        if(a.children('.weexplorer-file-date-creation').text() > b.children('.weexplorer-file-date-creation').text()){
+        if( a.data( 'file-creation' ) > b.data( 'file-creation' ) ){
             return 1;
         }
         
@@ -275,11 +343,11 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     var sortByModificationDate = function(a,b){
         
-        if(a.children('.weexplorer-file-date-modification').text() < b.children('.weexplorer-file-date-modification').text()){
+        if( a.data( 'file-modification' ) < b.data( 'file-modification' ) ){
             return -1;
         }
         
-        if(a.children('.weexplorer-file-date-modification').text() > b.children('.weexplorer-file-date-modification').text()){
+        if( a.data( 'file-modification' ) > b.data( 'file-modification' ) ){
             return 1;
         }
         
