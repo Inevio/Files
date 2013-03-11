@@ -21,13 +21,13 @@
 	height: 15px;
 	float: left;
 
-    background: url('https://static.weezeel.com/app/1/sprite.png') 0 0; 
+    background: url('https://static.weezeel.com/app/1/arrows.png') -24px 0; 
         
 }
 
 .wz-app-1 .weexplorer-option-back.active{
 	
-	background: #f00;
+	background: url('https://static.weezeel.com/app/1/arrows.png') 0 0;
 	
 }
 
@@ -38,13 +38,13 @@
 	float: left;
 	margin-left: 18px;
 
-    background: url('https://static.weezeel.com/app/1/sprite.png') -13px 0; 
+    background: url('https://static.weezeel.com/app/1/arrows.png') -36px 0; 
         
 }
 
 .wz-app-1 .weexplorer-option-next.active{
 	
-	background: #f00;
+	background: url('https://static.weezeel.com/app/1/arrows.png') -12px 0; 
 	
 }
 
