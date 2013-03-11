@@ -280,6 +280,11 @@
 	background: url("https://static.weezeel.com/app/1/cross.png") no-repeat;
 }
 
+.wz-app-1-link span.link-data{
+	width: auto;
+	float: none;
+}
+
 .wz-app-1-link tr span{
 	position: relative;
 	top: -7px;
