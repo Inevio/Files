@@ -64,7 +64,13 @@
 }
 
 .wz-app-1-received .received-content-name{
+	height: 16px;
+	max-width: 245px;
 	margin-right: 15px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+	vertical-align: bottom;
 }
 
 .wz-app-1-received span.received-content-size{
