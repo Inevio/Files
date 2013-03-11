@@ -106,6 +106,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     var openDirectory = function( id ){
 
+		if( $( '.folder-' + id, sidebar ).size() ){
+			$('.weexplorer-sidebar-element.active', win).removeClass('active');
+			$( '.folder-' + id, sidebar ).addClass('active');
+		}else{
+			$('.weexplorer-sidebar-element.active', win).removeClass('active');
+		}
+		
         // Get Structure Info
         wz.structure( id, function( error, structure ){
 
@@ -634,8 +641,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 	
 	.on( 'mousedown', '.weexplorer-sidebar-element', function(){
 		if( !$(this).hasClass('active') ){
-			$('.weexplorer-sidebar-element.active', win).removeClass('active');
-			$(this).addClass('active');
 			openDirectory($(this).data('file-id'));
 		}
 	})
@@ -670,6 +675,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     .on( 'dblclick', '.weexplorer-file.directory', function(){
         openDirectory($(this).data('file-id'));
+		$('.weexplorer-sidebar-element.active', win).removeClass('active');
     })
 	
 	.key( 'enter', function(e){
@@ -947,16 +953,27 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 	win.addClass('sidebar');
 
 	wz.config( function(error, config){
+		
 		var elementFolder = sidebarElement.clone().removeClass('prototype');
+		
 		var userFolder = elementFolder.clone();
-		userFolder.data( 'file-id', config.user.rootPath ).addClass('active').children('span').text( 'User' );
+		wz.structure( config.user.rootPath, function( error, structure ){
+			userFolder.data( 'file-id', structure.id ).addClass( 'active ' + 'folder-' + structure.id ).children( 'span' ).text( structure.name );
+		});
 		sidebar.append( userFolder );
+		
 		var sharedFolder = elementFolder.clone();
-		sharedFolder.data( 'file-id', config.user.sharedPath ).children('span').text( 'Shared' );
+		wz.structure( config.user.sharedPath, function( error, structure ){
+			sharedFolder.data( 'file-id', structure.id ).addClass( 'folder-' + structure.id ).children( 'span' ).text( structure.name );
+		});
 		sidebar.append( sharedFolder );
+		
 		var receivedFolder = elementFolder.clone();
-		receivedFolder.data( 'file-id', config.user.receivedPath ).children('span').text( 'Received' );
+		wz.structure( config.user.receivedPath, function( error, structure ){
+			receivedFolder.data( 'file-id', structure.id ).addClass( 'folder-' + structure.id ).children( 'span' ).text( structure.name );
+		});
 		sidebar.append( receivedFolder );
+		
 	});
 	
 });
