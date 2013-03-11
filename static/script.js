@@ -373,46 +373,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     })
     
-    .on( 'contextmenu', '.weexplorer-menu-sort', function(){
-        
-        var icon = $(this);
-        var menu = wz.menu();
-        var list = [];
-
-        menu
-            .add('Sort By Name', function(){
-                $( '.weexplorer-file', win ).each(function(){
-                    list.push($(this));
-                });
-                list = list.sort(sortByName);
-                displayIcons(list, true);
-            })
-            .add('Sort by Size', function(){
-                $( '.weexplorer-file', win ).each(function(){
-                    list.push($(this));
-                });
-                list = list.sort(sortBySize);
-                displayIcons(list, true);
-            })
-            .add('Sort By Creation Date', function(){
-                $( '.weexplorer-file', win ).each(function(){
-                    list.push($(this));
-                });
-                list = list.sort(sortByCreationDate);
-                displayIcons(list, true);
-            })
-            .add('Sort By Modification Date', function(){
-                $( '.weexplorer-file', win ).each(function(){
-                    list.push($(this));
-                });
-                list = list.sort(sortByModificationDate);
-                displayIcons(list, true);
-            });
-
-            menu.render();
-        
-    })
-    
     .on( 'structure-remove', function(e, id, quota, parent){
         
         fileArea.children( '.weexplorer-file-' + id ).remove();
@@ -448,6 +408,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         }
         
     })
+	
+	.on( 'wz-blur', function(){
+		$( '.weexplorer-sort', win ).removeClass( 'show' );
+	})
         
     .on( 'click', '.weexplorer-menu-download', function(){
         $('.active.file', win).each(function(){
@@ -536,6 +500,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             .attr('src', structure.icons.normal + '?' + new Date().getTime() );
             
     })
+	
+	.on( 'mousedown', function(){
+		$( '.weexplorer-sort', win ).removeClass( 'show' );	
+	})
     
     .on( 'mousedown', '.weexplorer-file:not(.active)', function( e ){
         
@@ -644,6 +612,62 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 			openDirectory($(this).data('file-id'));
 		}
 	})
+	
+	.on( 'mousedown', '.weexplorer-menu-sort', function( e ){
+        
+		if( !$( '.weexplorer-sort', win ).hasClass( 'show' ) ){
+			$( '.weexplorer-sort', win ).addClass( 'show' );
+			e.stopPropagation();
+		}	
+        
+    })
+	
+	.on( 'mousedown', '.weexplorer-sort li', function(){
+        
+        $( '.weexplorer-sort li.active', win ).removeClass( 'active' );
+		$( this ).addClass( 'active' );
+		
+		list = [];
+		
+		if( $(this).hasClass( 'weexplorer-sort-name' ) ){
+			
+			$( '.weexplorer-file', win ).each(function(){
+                list.push($(this));
+            });
+			
+            list = list.sort(sortByName);
+            displayIcons(list, true);
+			
+		}else if( $(this).hasClass( 'weexplorer-sort-size' ) ){
+			
+			$( '.weexplorer-file', win ).each(function(){
+                list.push($(this));
+            });
+			
+            list = list.sort(sortBySize);
+            displayIcons(list, true);
+			
+		}else if( $(this).hasClass( 'weexplorer-sort-creation' ) ){
+			
+			$( '.weexplorer-file', win ).each(function(){
+                list.push($(this));
+            });
+			
+            list = list.sort(sortByCreationDate);
+            displayIcons(list, true);
+			
+		}else{
+			
+			$( '.weexplorer-file', win ).each(function(){
+                list.push($(this));
+            });
+			
+            list = list.sort(sortByModificationDate);
+            displayIcons(list, true);
+			
+		}	
+        
+    })
 	
 	.on( 'dblclick', '.weexplorer-file.received', function(){
 		wz.app.createWindow(1, $(this).data( 'file-id' ), 'received');

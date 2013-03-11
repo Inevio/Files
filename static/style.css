@@ -660,3 +660,89 @@
 	margin-top: -5px;
 	background: #A43737;
 }
+
+.wz-app-1 .weexplorer-sort{
+	width: 212px;
+	position: absolute;
+	top: 35px;
+	left: 123px;
+    list-style: none;
+	display: none;
+	z-index: 1;
+}
+
+.wz-app-1 .weexplorer-sort.show{
+	display: block;
+}
+
+.wz-app-1 .weexplorer-sort:before{
+	
+    position: relative;
+    top: 2px;
+    left: 75px;
+    float: left;
+    width: 16px;
+    height: 7px;
+    background: url('https://static.weezeel.com/app/1/sort.png') no-repeat;
+    content: '';
+    
+}
+
+.wz-app-1 .weexplorer-sort li:first-child{
+	
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    box-shadow: inset 0px 1px 0px 0px #4D4D4D;
+    
+}
+
+.wz-app-1 .weexplorer-sort li{
+	
+    overflow: hidden; 
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box; 
+    box-sizing: border-box;
+    padding: 10px 10px 0px 10px;
+    width: 100%;
+    height: 29px;
+    background: #404040;
+    color: #E0E0E0;
+    text-overflow: ellipsis;
+    font-size: 15px;
+    line-height: 10px;
+    
+}
+
+.wz-app-1 .weexplorer-sort li:last-child{
+	
+    height: 30px;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    box-shadow: inset 0px -1px 0px 0px #4D4D4D;
+    
+}
+
+.wz-app-1 .weexplorer-sort li:hover{
+    background: #535353;
+}
+
+.wz-app-1 .weexplorer-sort i{
+	width: 10px;
+	height: 7px;
+	float: left;
+	display: block;
+	margin-top: 2px;
+}
+
+.wz-app-1 .weexplorer-sort li.active i{
+	background: url('https://static.weezeel.com/app/1/active.png') no-repeat;
+}
+
+.wz-app-1 .weexplorer-sort span{
+	float: left;
+	margin-left: 8px;
+}
+
+.wz-app-1 .weexplorer-sort li.active span{
+	color: #34A7FF;
+}
