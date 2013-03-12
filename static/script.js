@@ -608,12 +608,14 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             
         }       
         
+		$( '.weexplorer-sort', win ).removeClass( 'show' );	
 		e.stopPropagation();
 		
     })
     
     .on( 'mousedown', '.weexplorer-file.active', function( e ){
         
+		$( '.weexplorer-sort', win ).removeClass( 'show' );	
         e.stopPropagation();
         
         if(e.ctrlKey || e.metaKey){
