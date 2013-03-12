@@ -477,6 +477,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         
     })
 	
+	.on( 'structure-thumbnail', function(e, structure){
+		$( 'weexplorer-file-' + structure.id ).find('img').attr( 'src', 'https://download.weezeel.com/' + structure.id + '/icon/normal?' + Math.random() );
+	})
+	
 	.on( 'wz-blur', function(){
 		$( '.weexplorer-sort', win ).removeClass( 'show' );
 	})
