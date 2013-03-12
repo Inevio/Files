@@ -197,7 +197,6 @@
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	padding-top: 60px;
-	overflow: auto;
 	
 }
 
@@ -240,7 +239,7 @@
 
 .wz-app-1 .list .weexplorer-file{
 	
-	width: 494px;
+	width: 510px;
 	height: 30px;
 	border: solid 1px #fff;
 	float: left;
@@ -344,6 +343,20 @@
 	
 }
 
+.wz-app-1 .list .weexplorer-file.last-active.hidden{
+
+	border: solid 1px transparent;
+	
+}
+
+.wz-app-1 .list .weexplorer-file.last-active:hover{
+
+	background: #eefaff;
+	border: solid 1px #7fbfeb;
+	border-radius: 6px;
+	
+}
+
 .wz-app-1 .list .weexplorer-file:hover{
 
 	background: #eefaff;
@@ -366,6 +379,10 @@
 	border: solid 1px #7fbfeb;
 	border-radius: 6px;
 	
+}
+
+.wz-app-1 .list .weexplorer-file-date-modification{
+	width: 110px;
 }
 
 .wz-app-1 .weexplorer-sidebar{
@@ -471,7 +488,7 @@
 	
 }
 
-.wz-app-1 .weexplorer-directory-over figure{
+.wz-app-1 .weexplorer-directory-over{
 	
 	background: #ceecff;
 	border-radius: 6px;

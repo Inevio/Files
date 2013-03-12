@@ -481,7 +481,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 		$( '.weexplorer-sort', win ).removeClass( 'show' );
 	})
         
-    .on( 'click', '.weexplorer-menu-download', function(){
+    .on( 'mousedown', '.weexplorer-menu-download', function(){
         $('.active.file', win).each(function(){
             wz.structure($(this).data('file-id'), function(e,st){
                 st.download();
@@ -489,22 +489,23 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         });
     })
     
-    .on( 'click', '.weexplorer-option-next', function(){
+    .on( 'mousedown', '.weexplorer-option-next', function(){
         if(nextButton.hasClass('active')){
             recordNext();       
         }
     })
     
-    .on( 'click', '.weexplorer-option-back', function(){
+    .on( 'mousedown', '.weexplorer-option-back', function(){
         if(backButton.hasClass('active')){
             recordBack();       
         }
     })
     
-    .on( 'click', '.weexplorer-menu-views', function(){
+    .on( 'mousedown', '.weexplorer-menu-views', function(){
         if(views.hasClass('grid')){
             views.removeClass('grid').addClass('list');     
             fileArea.removeClass('grid').addClass('list');
+			$( '.weexplorer-file', fileArea ).last().css({ 'margin-bottom' : '15px' });
         }else{
             views.removeClass('list').addClass('grid');
             fileArea.removeClass('list').addClass('grid');
@@ -575,8 +576,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     .on( 'mousedown', '.weexplorer-file:not(.active)', function( e ){
         
-        e.stopPropagation();
-        
         if(e.ctrlKey || e.metaKey){
             
             $( this ).addClass('active');
@@ -605,6 +604,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             
         }       
         
+		e.stopPropagation();
+		
     })
     
     .on( 'mousedown', '.weexplorer-file.active', function( e ){
@@ -790,7 +791,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 			if( $('.weexplorer-file.active', win).size() ){
             	deleteAllActive();
         	}else{
-            	$( '.weexplorer-option-back', win ).click();
+            	$( '.weexplorer-option-back', win ).mousedown();
         	}
 		}
   
@@ -911,7 +912,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 					wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
 				})
 				.add('Download', function(){
-                	$( '.weexplorer-menu-download', win ).click();
+                	$( '.weexplorer-menu-download', win ).mousedown();
             	})
 				.add('Properties', function(){
                 	wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
@@ -970,8 +971,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         if( !($('.weexplorer-file.active', win).size() > 1) ){
             drag.ghost( $(this).cloneWithStyle() );
         }else{
-            var ghost = filePrototype.clone()
-                                        .css({'width':'148px', 'height':'98px', 'background':'green', 'border-radius':'7px', 'border':'solid 1px #fff', 'font-size':'36px', 'color':'white', 'text-align':'center', 'padding-top':'50px'})
+            var ghost = filePrototype.clone().removeClass('prototype')
+                                        .css({'width':'148px', 'height':'98px', 'background':'green', 'border-radius':'6px', 'border':'solid 1px #fff', 'font-size':'36px', 'color':'white', 'text-align':'center', 'padding-top':'50px'})
                                         .text($('.weexplorer-file.active', win).size());
             ghost.find('textarea, img, span').remove()
             drag.ghost( ghost );
@@ -981,7 +982,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     .on( 'wz-drop', '.wz-drop-area', function( e, item ){
         
-        if( item.data('file-id') !== $(this).data('file-id') ){
+        if( !$(this).hasClass('active') && ( item.data('file-id') !== $(this).data('file-id') ) ){
             
             e.stopPropagation();
             
@@ -1021,7 +1022,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         wz.menu()
             .add('Subir archivo', function(){
-                uploadButton.click();
+                uploadButton.mousedown();
             })
             .add('Nuevo directorio', function(){
                 createDirectory();
@@ -1032,7 +1033,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     });
 
-    uploadButton.on( 'click', function(){
+    uploadButton.on( 'mousedown', function(){
         $(this).data( 'destiny', current );
     });
 	
