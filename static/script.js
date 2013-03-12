@@ -363,6 +363,22 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         list = null;
         
     };
+	
+	var notifications = function(){
+
+		wz.structure( $( '.receivedFolder', sidebar ).data('file-id'), function( error, structure ){
+			
+			structure.list( function(error, list){
+				
+				if( list.length ){
+					$( '.receivedFolder', sidebar ).addClass( 'notification' ).find( '.weexplorer-sidebar-notification' ).text( list.length );
+				}
+				
+			});
+			
+		});
+		
+	}
 
     // Events
     $( win )
@@ -479,6 +495,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 	
 	.on( 'structure-thumbnail', function(e, structure){
 		$( 'weexplorer-file-' + structure.id ).find('img').attr( 'src', 'https://download.weezeel.com/' + structure.id + '/icon/normal?' + Math.random() );
+	})
+	
+	.on( 'structure-received', function(){
+		notifications();
 	})
 	
 	.on( 'wz-blur', function(){
@@ -1057,22 +1077,23 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 		
 		var userFolder = elementFolder.clone();
 		wz.structure( config.user.rootPath, function( error, structure ){
-			userFolder.data( 'file-id', structure.id ).addClass( 'active ' + 'folder-' + structure.id ).children( 'span' ).text( structure.name );
+			userFolder.data( 'file-id', structure.id ).addClass( 'active userFolder ' + 'folder-' + structure.id ).children( 'span' ).text( structure.name );
 		});
 		sidebar.append( userFolder );
 		
 		var sharedFolder = elementFolder.clone();
 		wz.structure( config.user.sharedPath, function( error, structure ){
-			sharedFolder.data( 'file-id', structure.id ).addClass( 'folder-' + structure.id ).children( 'span' ).text( structure.name );
+			sharedFolder.data( 'file-id', structure.id ).addClass( 'sharedFolder folder-' + structure.id ).children( 'span' ).text( structure.name );
 		});
 		sidebar.append( sharedFolder );
 		
 		var receivedFolder = elementFolder.clone();
 		wz.structure( config.user.receivedPath, function( error, structure ){
-			receivedFolder.data( 'file-id', structure.id ).addClass( 'folder-' + structure.id ).children( 'span' ).text( structure.name );
+			receivedFolder.data( 'file-id', structure.id ).addClass( 'receivedFolder folder-' + structure.id ).children( 'span' ).text( structure.name );
+			notifications();
 		});
 		sidebar.append( receivedFolder );
 		
-	});
-	
+	});	
+		
 });
