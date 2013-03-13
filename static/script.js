@@ -385,55 +385,59 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 		
     .on( 'upload-enqueue', function( e, list ){
         
-        var length = list.length;
-        var files  = $();
-        
-        if( !length ){
-            return false;
-        }
-
-        // Display Message
-        if( !uploading.hasClass('uploading') ){
-
-            uploading
-                .addClass('uploading')
-                .clearQueue()
-                .stop()
-                .transition({ height : '+=33' }, 500 );
-
-            fileArea
-                .clearQueue()
-                .stop()
-                .transition({ height : '-=33' }, 500 );
-				
-			sidebar
-                .clearQueue()
-                .stop()
-                .transition({ height : '-=33' }, 500 );
-
-            uploadingBar.width(0);
-
-            uploadingItem.text( 0 );
-            uploadingItems.text( list.length );
-            uploadingElapsed.text( 'Calculating...' );
-
-        }else{
-
-            uploadingItems.text( parseInt( uploadingItems.text(), 10 ) + list.length );
-            uploadingElapsed.text( 'Calculating...' );
-
-        }
-        
-        // Generate File icons
-        for( var i = 0; i < length; i++ ){
-            files = files.add( icon( list[ i ].id, list[ i ].name, list[ i ].type, list[ i ].size, list[ i ].modified, list[ i ].created ).addClass('weexplorer-file-uploading') );
-        }
-        
-        // Display icons
-        fileArea.append( files );
-
-        // Nullify
-        files = null;
+		if( list[0].parent === current ){
+			
+			var length = list.length;
+			var files  = $();
+			
+			if( !length ){
+				return false;
+			}
+	
+			// Display Message
+			if( !uploading.hasClass('uploading') ){
+	
+				uploading
+					.addClass('uploading')
+					.clearQueue()
+					.stop()
+					.transition({ height : '+=33' }, 500 );
+	
+				fileArea
+					.clearQueue()
+					.stop()
+					.transition({ height : '-=33' }, 500 );
+					
+				sidebar
+					.clearQueue()
+					.stop()
+					.transition({ height : '-=33' }, 500 );
+	
+				uploadingBar.width(0);
+	
+				uploadingItem.text( 0 );
+				uploadingItems.text( list.length );
+				uploadingElapsed.text( 'Calculating...' );
+	
+			}else{
+	
+				uploadingItems.text( parseInt( uploadingItems.text(), 10 ) + list.length );
+				uploadingElapsed.text( 'Calculating...' );
+	
+			}
+			
+			// Generate File icons
+			for( var i = 0; i < length; i++ ){
+				files = files.add( icon( list[ i ].id, list[ i ].name, list[ i ].type, list[ i ].size, list[ i ].modified, list[ i ].created ).addClass('weexplorer-file-uploading') );
+			}
+			
+			// Display icons
+			fileArea.append( files );
+	
+			// Nullify
+			files = null;
+		
+		}
         
     })
 
@@ -484,12 +488,20 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     })
     
     .on( 'structure-move', function(e, structure, destinyID, originID){
-                
-        if( originID === current ){
-            fileArea.children( '.weexplorer-file-' + structure.id ).remove();
-        }else if( destinyID === current ){
-            fileArea.append( icon( structure.id, structure.name, structure.type, structure.size, structure.modified, structure.created ) );
-        }
+        
+		if( originID !== destinyID ){
+			
+			if( originID === $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
+				notifications();
+			}
+			
+			if( originID === current ){
+				fileArea.children( '.weexplorer-file-' + structure.id ).remove();
+			}else if( destinyID === current ){
+				fileArea.append( icon( structure.id, structure.name, structure.type, structure.size, structure.modified, structure.created ) );
+			}
+		
+		}
         
     })
 	
@@ -506,11 +518,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 	})
         
     .on( 'mousedown', '.weexplorer-menu-download', function(){
-        $('.active.file', win).each(function(){
-            wz.structure($(this).data('file-id'), function(e,st){
-                st.download();
-            });
-        });
+		if( current !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
+			$('.active.file', win).each(function(){
+          		wz.structure($(this).data('file-id'), function(e,st){
+                	st.download();
+            	});
+        	});
+		}  
     })
     
     .on( 'mousedown', '.weexplorer-option-next', function(){
@@ -717,49 +731,61 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 	
 	.on( 'mousedown', '.weexplorer-sort li', function(){
         
-        $( '.weexplorer-sort li.active', win ).removeClass( 'active' );
-		$( this ).addClass( 'active' );
+		if( !$(this).hasClass( 'active' ) ){
+			
+			$( '.weexplorer-sort li.active', win ).removeClass( 'active' );
+			$( this ).addClass( 'active' );
+			
+			list = [];
+			
+			if( $(this).hasClass( 'weexplorer-sort-name' ) ){
+				
+				$( '.weexplorer-menu-sort', win ).text( 'Sort by Name');
+				
+				$( '.weexplorer-file', win ).each(function(){
+					list.push($(this));
+				});
+				
+				list = list.sort(sortByName);
+				displayIcons(list, true);
+				
+			}else if( $(this).hasClass( 'weexplorer-sort-size' ) ){
+				
+				$( '.weexplorer-menu-sort', win ).text( 'Sort by Size');
+				
+				$( '.weexplorer-file', win ).each(function(){
+					list.push($(this));
+				});
+				
+				list = list.sort(sortBySize);
+				displayIcons(list, true);
+				
+			}else if( $(this).hasClass( 'weexplorer-sort-creation' ) ){
+				
+				$( '.weexplorer-menu-sort', win ).text( 'Sort by Creation');
+				
+				$( '.weexplorer-file', win ).each(function(){
+					list.push($(this));
+				});
+				
+				list = list.sort(sortByCreationDate);
+				displayIcons(list, true);
+				
+			}else{
+				
+				$( '.weexplorer-menu-sort', win ).text( 'Sort by Modification');
+				
+				$( '.weexplorer-file', win ).each(function(){
+					list.push($(this));
+				});
+				
+				list = list.sort(sortByModificationDate);
+				displayIcons(list, true);
+				
+			}
 		
-		list = [];
-		
-		if( $(this).hasClass( 'weexplorer-sort-name' ) ){
-			
-			$( '.weexplorer-file', win ).each(function(){
-                list.push($(this));
-            });
-			
-            list = list.sort(sortByName);
-            displayIcons(list, true);
-			
-		}else if( $(this).hasClass( 'weexplorer-sort-size' ) ){
-			
-			$( '.weexplorer-file', win ).each(function(){
-                list.push($(this));
-            });
-			
-            list = list.sort(sortBySize);
-            displayIcons(list, true);
-			
-		}else if( $(this).hasClass( 'weexplorer-sort-creation' ) ){
-			
-			$( '.weexplorer-file', win ).each(function(){
-                list.push($(this));
-            });
-			
-            list = list.sort(sortByCreationDate);
-            displayIcons(list, true);
-			
-		}else{
-			
-			$( '.weexplorer-file', win ).each(function(){
-                list.push($(this));
-            });
-			
-            list = list.sort(sortByModificationDate);
-            displayIcons(list, true);
-			
-		}	
-        
+		}
+  
     })
 	
 	.on( 'dblclick', '.weexplorer-file.received', function(){
@@ -1023,7 +1049,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                     //To Do -> Error
     
                     structure.move( dest, null, function( error ){
-                        // To Do -> Error
+                        if( error ){
+							alert( error );
+						}
                     });
                     
                 });
@@ -1044,7 +1072,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     fileArea.on( 'contextmenu', function(){
 
-        wz.menu()
+		if( current !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
+			
+			wz.menu()
             .add('Subir archivo', function(){
                 uploadButton.mousedown();
             })
@@ -1054,11 +1084,17 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             .separator()
             .add('Obtener información')
             .render();
+			
+		}
 
     });
 
-    uploadButton.on( 'mousedown', function(){
-        $(this).data( 'destiny', current );
+    uploadButton.on( 'mousedown', function( e ){
+		if( current !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
+        	$(this).data( 'destiny', current );
+		}else{
+			$(this).removeData( 'destiny' );
+		}
     });
 	
 	if( params ){
