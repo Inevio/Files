@@ -34,29 +34,26 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
 		
 		.on( 'mousedown', 'button', function(){
 			
-			/*
 			wz.structure( params, function( error, structure ){
 				
-				sendChosenUsers.children().each( function(){
-					structure.sendTo( $(this).data( 'user-id' ), ' ' );
+				shareChosenUsers.children().each( function(){
+					structure.sendTo( $(this).data( 'user-id' ), '' );
 				});
+
+				wz.app.closeWindow( win.data( 'win' ) );
 				
-			});*/
-			
-			alert( 'OMFG IT DOESN\'T WORK!!!!' );
-			
-			wz.app.closeWindow( win.data( 'win' ) );
+			});
 
 		});
 		
 	wz.user
-			
 		.friendList( function( error, list ){
 			
 			for( var i = 0; i < list.length; i++ ){
 												
 				var userCard = shareUserPrototype.clone().removeClass('prototype');
 				//userCard.children('img').attr('src')
+				userCard.data( 'user-id', list[ i ].id );
 				userCard.children('span').text(list[i].fullName);
 				shareListUsers.append(userCard);
 
