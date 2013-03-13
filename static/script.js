@@ -494,7 +494,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     })
 	
 	.on( 'structure-thumbnail', function(e, structure){
-		$( 'weexplorer-file-' + structure.id ).find('img').attr( 'src', 'https://download.weezeel.com/' + structure.id + '/icon/normal?' + Math.random() );
+		$( '.weexplorer-file-' + structure.id ).find('img').attr( 'src', 'https://download.weezeel.com/' + structure.id + '/icon/normal?' + Math.random() );
 	})
 	
 	.on( 'structure-received', function(){
@@ -588,9 +588,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         icon
             .removeClass('weexplorer-file-uploading temporal-file')
-            .addClass('file')
-            .find('img')
-            .attr('src', structure.icons.normal + '?' + new Date().getTime() );
+            .addClass('file');
             
     })
 	
