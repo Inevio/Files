@@ -62,6 +62,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             pointer++;
             record = record.slice( 0, pointer + 1 );
         }
+		
+		fileArea.data( 'file-id', id );
 
         record[ pointer ] = id;
         controlNav = false;
@@ -1031,13 +1033,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     })
     
     .on( 'wz-drop', '.wz-drop-area', function( e, item ){
-        
-        if( !$(this).hasClass('active') && ( item.data('file-id') !== $(this).data('file-id') ) ){
+		
+        if( !$(this).hasClass('active') && ( item.parent().data('file-id') !== $(this).data('file-id') ) ){
             
             e.stopPropagation();
             
             if( $(this).hasClass('directory') ){
-                var dest = $(this).data('file-id');
+                var dest = $(this).data('file-id'); 
             }else{
                 var dest = current;
             }
