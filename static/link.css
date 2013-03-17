@@ -136,11 +136,24 @@
 	
 }
 
-.wz-app-1-link span.wz-selectable{
+.wz-app-1-link .link-url input{
 	
-	float: left;
-	color: #666;
-	width: 245px;
+	border: 1px solid #DDDDDD;
+    border-radius: 3px 3px 3px 3px;
+    color: #666666;
+    float: left;
+    font-size: 14px;
+    margin-top: -3px;
+    padding: 3px 5px;
+    width: 241px;
+	cursor: default;
+	
+}
+
+.wz-app-1-link .link-url input.filled{
+	
+	border: 1px solid #50BDFF;
+	cursor: text;
 	
 }
 
@@ -280,9 +293,13 @@
 	background: url("https://static.weezeel.com/app/1/cross.png") no-repeat;
 }
 
-.wz-app-1-link span.link-data{
-	width: auto;
+.wz-app-1-link input.link-data{
+	width: 160px;
 	float: none;
+	font-size: 13px;
+	position: relative;
+	top: -7px;
+	color: #333;
 }
 
 .wz-app-1-link tr span{

@@ -2,7 +2,7 @@
 wz.app.addScript( 1, 'link', function( win, app, lang, params ){
 
     var file	 	= {};
-    var linkSpan 	= $('.link-url .wz-selectable', win);
+    var linkSpan 	= $('.link-url input', win);
 	var prototype 	= $('.prototype', win);
 	var linkTable	= $( 'table', win );
 	var previus		= $( '.previous', win );
@@ -74,7 +74,7 @@ wz.app.addScript( 1, 'link', function( win, app, lang, params ){
 						userLink.find('.second-column i').addClass( 'link-unprev' );
 					}
 					
-					userLink.find('.link-data').text( links[i].url );
+					userLink.find('.link-data').val( links[i].url );
 					userLink.find('.link-views').text( links[i].visits );
 					userLink.find('.link-downloads').text( links[i].downloads );
 					userLink.find('.link-imports').text( links[i].imports );
@@ -103,8 +103,10 @@ wz.app.addScript( 1, 'link', function( win, app, lang, params ){
 			}
 			
 			wz.structure( params, function( error, structure ){
+				win.data( 'file-id' , structure.id );
+				linkSpan.addClass( 'filled' );
 				structure.createLink( password, preview, function( error, url ){
-					linkSpan.text( url.url );
+					linkSpan.val( url.url );
 				});
 			});		
 	
@@ -121,41 +123,45 @@ wz.app.addScript( 1, 'link', function( win, app, lang, params ){
 			
 		})
 		
-		.on( 'structure-linkCreated', function( e, link ){
+		.on( 'structure-linkCreated', function( e, link, structure ){
+													
+			if( win.data( 'file-id' ) === structure.id ){
 						
-			var alreadyCreated = false;
-			
-			linkTable.find('.link-delete').each( function(){
-				if( $(this).data('id') === link.id ){
-					alreadyCreated = true;
+				var alreadyCreated = false;
+				
+				linkTable.find('.link-delete').each( function(){
+					if( $(this).data('id') === link.id ){
+						alreadyCreated = true;
+					}
+				});
+				
+				if( !alreadyCreated ){
+								
+					var newLink = prototype.clone().removeClass( 'prototype' );
+					
+					if( link.password ){
+						newLink.find('.first-column i').addClass( 'link-lock' );
+					}else{
+						newLink.find('.first-column i').addClass( 'link-unlock' );
+					}
+					
+					if( link.preview ){
+						newLink.find('.second-column i').addClass( 'link-prev' );
+					}else{
+						newLink.find('.second-column i').addClass( 'link-unprev' );
+					}
+					
+					newLink.find('.link-data').val( link.url );
+					newLink.find('.link-views').text( link.visits );
+					newLink.find('.link-downloads').text( link.downloads );
+					newLink.find('.link-imports').text( link.imports );
+					newLink.find('.link-delete').data( 'id', link.id );
+					
+					linkTable.append( newLink );
+					
+					growWindow();
+					
 				}
-			});
-			
-			if( !alreadyCreated ){
-							
-				var newLink = prototype.clone().removeClass( 'prototype' );
-				
-				if( link.password ){
-					newLink.find('.first-column i').addClass( 'link-lock' );
-				}else{
-					newLink.find('.first-column i').addClass( 'link-unlock' );
-				}
-				
-				if( link.preview ){
-					newLink.find('.second-column i').addClass( 'link-prev' );
-				}else{
-					newLink.find('.second-column i').addClass( 'link-unprev' );
-				}
-				
-				newLink.find('.link-data').text( link.url );
-				newLink.find('.link-views').text( link.visits );
-				newLink.find('.link-downloads').text( link.downloads );
-				newLink.find('.link-imports').text( link.imports );
-				newLink.find('.link-delete').data( 'id', link.id );
-				
-				linkTable.append( newLink );
-				
-				growWindow();
 				
 			}
 			
