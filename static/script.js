@@ -461,6 +461,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 .stop()
                 .transition({ height : '+=33' }, 500 );
 
+        wz.banner().title('Upload Complete').text('All the files have been uploaded').render()
+
     })
     
     .on( 'structure-remove', function(e, id, quota, parent){
