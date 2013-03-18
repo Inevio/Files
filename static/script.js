@@ -686,9 +686,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         
 		if( $(this).attr('readonly') ){
 			e.preventDefault();
-			if( $(this).parent().hasClass('active') ){
+			/*if( $(this).parent().hasClass('active') ){
             	beginRename( $(this).parent() );
-        	}
+        	}*/
 		}       
         
     })
@@ -951,9 +951,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 		if(icon.hasClass('file')){
 			
 			menu
-				.add('Rename', function(){
-					beginRename( icon );
-				})
+				.add('Open file', function(){
+                    icon.dblclick();
+                })
 				.add('Create link', function(){
                 	wz.app.createWindow(1, icon.data( 'file-id' ), 'link');
             	})
@@ -966,6 +966,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 				.add('Download', function(){
                 	$( '.weexplorer-menu-download', win ).mousedown();
             	})
+                .add('Rename', function(){
+                    beginRename( icon );
+                })
 				.add('Properties', function(){
                 	wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
             	})
@@ -976,18 +979,21 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 		}else if(icon.hasClass('directory')){
 			
 			menu
-				.add('Rename', function(){
-					beginRename( icon );
-				})
+                .add('Open folder', function(){
+                    icon.dblclick();
+                })
+				.add('Open in a new window', function(){
+                    wz.app.createWindow(1, icon.data( 'file-id' ), 'main');
+                })
 				.add('Send to...', function(){
 					wz.app.createWindow(1, icon.data( 'file-id' ), 'send');
 				})
 				.add('Share with...', function(){
 					wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
 				})
-				.add('Open in a new window', function(){
-                	wz.app.createWindow(1, icon.data( 'file-id' ), 'main');
-            	})
+                .add('Rename', function(){
+                    beginRename( icon );
+                })
 				.add('Properties', function(){
                 	wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
             	})
