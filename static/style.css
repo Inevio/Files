@@ -110,21 +110,21 @@
 
 .wz-app-1 .weexplorer-menu-download{
 	
-	width: 22px;
+	width: 24px;
 	height: 16px;
 	float: left;
 
-    background: url('https://static.weezeel.com/app/1/sprite.png') -50px 0; 
+    background: url('https://static.weezeel.com/app/1/sprite.png') -49px 0; 
 	
 }
 
 .wz-app-1 .weexplorer-menu-upload{
 	
-	width: 22px;
+	width: 24px;
 	height: 16px;
 	float: left;
 
-    background: url('https://static.weezeel.com/app/1/sprite.png') -73px 0; 
+    background: url('https://static.weezeel.com/app/1/sprite.png') -72px 0; 
 	
 }
 
