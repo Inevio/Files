@@ -1,155 +1,155 @@
 
 .wz-app-1-received{
-	
-	background: #FFF;
-	
+    
+    background: #FFF;
+    
 }
 
 .wz-app-1-received .wz-win-menu{
-	
-	border-bottom: 1px solid #E5E5E5;
-	width: 410px;
-	height: 13px;
-	padding: 13px 20px;
-	
+    
+    border-bottom: 1px solid #E5E5E5;
+    width: 410px;
+    height: 13px;
+    padding: 13px 20px;
+    
 }
 
 .wz-app-1-received .wz-win-menu span{
-	
-	font-size: 15px;
-	color: #646464;
-	
+    
+    font-size: 15px;
+    color: #646464;
+    
 }
 
 .wz-app-1-received .wz-win-close{
-	
-	float: right;
-	
+    
+    float: right;
+    
 }
 
 .wz-app-1-received .received-content{
-	
-	height: 265px;
-	width: 410px;
-	float: left;
-	padding: 25px 20px;
-	text-align: center;
-	
+    
+    height: 265px;
+    width: 410px;
+    float: left;
+    padding: 25px 20px;
+    text-align: center;
+    
 }
 
 .wz-app-1-received .received-content-info{
 
-	display: inline-block;	 
-	color: #333333;
+    display: inline-block;   
+    color: #333333;
     font-size: 15px;
-	text-align: center;
-	
+    text-align: center;
+    
 }
 
 .wz-app-1-received .received-content-data{
-	
-	width: 410px;
-	float: left;
-	margin-top: 15px;
-	text-align: center;	 
-	
+    
+    width: 410px;
+    float: left;
+    margin-top: 15px;
+    text-align: center;  
+    
 }
 
 .wz-app-1-received .received-content-data span{
-	
-	color: #333333;
+    
+    color: #333333;
     font-size: 15px;
-	display: inline-block;
-	
+    display: inline-block;
+    
 }
 
 .wz-app-1-received .received-content-name{
-	height: 16px;
-	max-width: 245px;
-	margin-right: 15px;
-	overflow: hidden;
+    height: 16px;
+    max-width: 245px;
+    margin-right: 15px;
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-	vertical-align: bottom;
+    vertical-align: bottom;
 }
 
 .wz-app-1-received span.received-content-size{
-	color: #666666;
-	margin-left: 15px;
+    color: #666666;
+    margin-left: 15px;
 }
 
 .wz-app-1-received .received-content-message{
-	width: 388px;
-	height: 120px;
-	float: left;
-	margin-top: 15px;
-	border-radius: 3px;
-	border: 1px solid #50BDFF;
-	padding: 15px 10px;
-	font-size: 15px;
-	color: #666666;
-	text-align: left;
+    width: 388px;
+    height: 120px;
+    float: left;
+    margin-top: 15px;
+    border-radius: 3px;
+    border: 1px solid #50BDFF;
+    padding: 15px 10px;
+    font-size: 15px;
+    color: #666666;
+    text-align: left;
 }
 
 .wz-app-1-received button{
-	
-	width: 86px;
-	height: 28px;
-	padding: 1px 2px 3px 2px;
-	border-radius: 2px;
-	border-top: 1px solid #50BDFF;
-	text-align: center;
-	font-size: 15px;
-	color: #FFF;
-	box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	cursor: pointer;
-	display: inline-block;
-	
-	background-image: -moz-linear-gradient(50% 0% -90deg,rgb(60,181,255) 0%,rgb(44,153,255) 100%); 
+    
+    width: 86px;
+    height: 28px;
+    padding: 1px 2px 3px 2px;
+    border-radius: 2px;
+    border-top: 1px solid #50BDFF;
+    text-align: center;
+    font-size: 15px;
+    color: #FFF;
+    box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    cursor: pointer;
+    display: inline-block;
+    
+    background-image: -moz-linear-gradient(50% 0% -90deg,rgb(60,181,255) 0%,rgb(44,153,255) 100%); 
     background-image: -webkit-linear-gradient(-90deg,rgb(60,181,255) 0%,rgb(44,153,255) 100%);
     background-image: -o-linear-gradient(-90deg,rgb(60,181,255) 0%,rgb(44,153,255) 100%);
     background-image: linear-gradient(0deg,rgb(44,153,255) 0%,rgb(60,181,255) 100%);
-	
+    
 }
 
 .wz-app-1-received button:hover{
 
-	border-top: 1px solid #60CBFF;
-	
-	background-image: -moz-linear-gradient(50% 0% -90deg,rgb(77,197,255) 0%,rgb(56,175,255) 100%); 
+    border-top: 1px solid #60CBFF;
+    
+    background-image: -moz-linear-gradient(50% 0% -90deg,rgb(77,197,255) 0%,rgb(56,175,255) 100%); 
     background-image: -webkit-linear-gradient(-90deg,rgb(77,197,255) 0%,rgb(56,175,255) 100%);
     background-image: -o-linear-gradient(-90deg,rgb(77,197,255) 0%,rgb(56,175,255) 100%);
-    background-image: linear-gradient(0deg,rgb(56,175,255) 0%,rgb(77,197,255) 100%);	
-	
+    background-image: linear-gradient(0deg,rgb(56,175,255) 0%,rgb(77,197,255) 100%);    
+    
 }
 
 .wz-app-1-received .received-content-buttons{
-	height: 30px;
-	width: 410px;
-	float: left;
-	margin-top: 15px;
-	text-align: center;
+    height: 30px;
+    width: 410px;
+    float: left;
+    margin-top: 15px;
+    text-align: center;
 }
 
 .wz-app-1-received .received-content-accept{
-	margin-right: 50px;
+    margin-right: 50px;
 }
 
 .wz-app-1-received button.received-content-refuse{
-	margin-left: 50px;
-	border-top: 1px solid #D96D60;
-	background-image: -moz-linear-gradient(50% 0% -90deg, #D46355 0%, #B22F27 100%); 
+    margin-left: 50px;
+    border-top: 1px solid #D96D60;
+    background-image: -moz-linear-gradient(50% 0% -90deg, #D46355 0%, #B22F27 100%); 
     background-image: -webkit-linear-gradient(-90deg, #D46355 0%, #B22F27 100%);
     background-image: -o-linear-gradient(-90deg , #D46355) 0%, #B22F27 100%);
     background-image: linear-gradient(0deg, #B22F27 0%, #D46355 100%);
-	
+    
 }
 
 .wz-app-1-received button.received-content-refuse:hover{
-	border-top: 1px solid #E18A80;
-	background-image: -moz-linear-gradient(50% 0% -90deg, #DD8277 0%, #C15851 100%); 
+    border-top: 1px solid #E18A80;
+    background-image: -moz-linear-gradient(50% 0% -90deg, #DD8277 0%, #C15851 100%); 
     background-image: -webkit-linear-gradient(-90deg, #DD8277 0%, #C15851 100%);
     background-image: -o-linear-gradient(-90deg , #DD8277) 0%, #C15851 100%);
     background-image: linear-gradient(0deg, #C15851 0%, #DD8277 100%);

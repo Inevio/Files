@@ -1,712 +1,712 @@
 .wz-app-1.wz-win.sidebar{
-	width: 684px !important;
+    width: 684px !important;
 }
 
 .wz-app-1 textarea{
-	overflow: hidden;
-	border: 1px solid #50BDFF;
+    overflow: hidden;
+    border: 1px solid #50BDFF;
 }
 
 .wz-app-1 textarea[readonly]{
-	border: 1px solid transparent;
-	cursor: default;
+    border: 1px solid transparent;
+    cursor: default;
 }
 
 .wz-app-1 .weexplorer-option-back{
 
-	width: 12px;
-	height: 15px;
-	float: left;
+    width: 12px;
+    height: 15px;
+    float: left;
 
     background: url('https://static.weezeel.com/app/1/arrows.png') -24px 0; 
         
 }
 
 .wz-app-1 .weexplorer-option-back.active{
-	
-	background: url('https://static.weezeel.com/app/1/arrows.png') 0 0;
-	
+    
+    background: url('https://static.weezeel.com/app/1/arrows.png') 0 0;
+    
 }
 
 .wz-app-1 .weexplorer-option-next{
 
-	width: 12px;
-	height: 15px;
-	float: left;
-	margin-left: 18px;
+    width: 12px;
+    height: 15px;
+    float: left;
+    margin-left: 18px;
 
     background: url('https://static.weezeel.com/app/1/arrows.png') -36px 0; 
         
 }
 
 .wz-app-1 .weexplorer-option-next.active{
-	
-	background: url('https://static.weezeel.com/app/1/arrows.png') -12px 0; 
-	
+    
+    background: url('https://static.weezeel.com/app/1/arrows.png') -12px 0; 
+    
 }
 
 .wz-app-1 .weexplorer-menu{
-	
-	width: 268px;
-	float: left;
-	padding: 18px 23px 15px;
-	
+    
+    width: 268px;
+    float: left;
+    padding: 18px 23px 15px;
+    
 }
 
 .wz-app-1.sidebar .weexplorer-menu{
-	width: 408px;
+    width: 408px;
 }
 
 .wz-app-1 .weexplorer-menu article{
-	
-	margin-right: 14px;
-	float: left;
-	
+    
+    margin-right: 14px;
+    float: left;
+    
 }
 
 .wz-app-1 .weexplorer-menu-views{
-	
-	width: 23px;
-	height: 15px;
-	float: left;
-	
+    
+    width: 23px;
+    height: 15px;
+    float: left;
+    
 }
 
 .wz-app-1 .weexplorer-menu-views.grid{
 
     background: url('https://static.weezeel.com/app/1/sprite.png') -26px 0; 
-	
+    
 }
 
 .wz-app-1 .weexplorer-menu-views.list{
 
     background: url('https://static.weezeel.com/app/1/sprite.png') -125px 0; 
-	
+    
 }
 
 .wz-app-1 .weexplorer-menu-display{
-	
-	width: 7px;
-	height: 5px;
-	float: left;
-	margin-left: 5px;
-	margin-top: 6px;
+    
+    width: 7px;
+    height: 5px;
+    float: left;
+    margin-left: 5px;
+    margin-top: 6px;
 
     background: url('https://static.weezeel.com/app/1/sprite.png') -111px -11px; 
-	
+    
 }
 
 .wz-app-1 .weexplorer-menu-sort{
-	
-	max-width: 107px;
-	height: 14px;
-	overflow: hidden;
-	font-size: 12px;
-	color: #818181;
-	
-	float: left;
-	
+    
+    max-width: 107px;
+    height: 14px;
+    overflow: hidden;
+    font-size: 12px;
+    color: #818181;
+    
+    float: left;
+    
 }
 
 .wz-app-1 .weexplorer-menu-download{
-	
-	width: 24px;
-	height: 16px;
-	float: left;
+    
+    width: 24px;
+    height: 16px;
+    float: left;
 
     background: url('https://static.weezeel.com/app/1/sprite.png') -49px 0; 
-	
+    
 }
 
 .wz-app-1 .weexplorer-menu-upload{
-	
-	width: 24px;
-	height: 16px;
-	float: left;
+    
+    width: 24px;
+    height: 16px;
+    float: left;
 
     background: url('https://static.weezeel.com/app/1/sprite.png') -72px 0; 
-	
+    
 }
 
 .wz-app-1 .weexplorer-menu-toggle{
-	
-	width: 15px;
-	height: 15px;
-	float: right;
+    
+    width: 15px;
+    height: 15px;
+    float: right;
 
     background: url('https://static.weezeel.com/app/1/sidebar_toggle.png') 0 0; 
-	
+    
 }
 
 .wz-app-1.sidebar .weexplorer-menu-toggle{
-	
-	width: 15px;
-	height: 15px;
-	float: right;
+    
+    width: 15px;
+    height: 15px;
+    float: right;
 
     background: url('https://static.weezeel.com/app/1/sidebar_toggle.png') -15px 0; 
-	
+    
 }
 
 .wz-app-1 .weexplorer-folder{
-	
-	width: 544px;
-	height: 50px;
-	position: absolute;
-	padding-top: 20px;
-	text-align: center;
-	z-index: 1;
-	
-	background-image: -moz-linear-gradient(50% 0% -90deg,rgba(255,255,255,1) 65%,rgba(255,255,255,0) 100%); 
+    
+    width: 544px;
+    height: 50px;
+    position: absolute;
+    padding-top: 20px;
+    text-align: center;
+    z-index: 1;
+    
+    background-image: -moz-linear-gradient(50% 0% -90deg,rgba(255,255,255,1) 65%,rgba(255,255,255,0) 100%); 
     background-image: -webkit-linear-gradient(-90deg,rgba(255,255,255,1) 65%,rgba(255,255,255,0) 100%);
     background-image: -o-linear-gradient(-90deg,rgba(255,255,255,1) 65%,rgba(255,255,255,0) 100%);
     background-image: linear-gradient(0deg,rgba(255,255,255,0) 0%,rgba(255,255,255,1) 35%);
-	
+    
 }
 
 .wz-app-1 .weexplorer-folder-icon{
-	
-	width: 13px;
-	height: 11px;
-	display: inline-block;
+    
+    width: 13px;
+    height: 11px;
+    display: inline-block;
 
     background: url('https://static.weezeel.com/app/1/sprite.png') -111px 0; 
-	
+    
 }
 
 .wz-app-1 .weexplorer-folder-name{
-	
-	font-size: 14px;
-	color: #545454;
-	margin-left: 6px;
-	
+    
+    font-size: 14px;
+    color: #545454;
+    margin-left: 6px;
+    
 }
 
 .wz-app-1 img{
-	
-	vertical-align: middle;
-	
+    
+    vertical-align: middle;
+    
 }
 
 .wz-app-1 .weexplorer-file-zone{
-	
-	width: 544px;
-	height: 550px;
-	float: left;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	box-sizing: border-box;
-	padding-top: 60px;
-	
+    
+    width: 544px;
+    height: 550px;
+    float: left;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-top: 60px;
+    
 }
 
 .wz-app-1 .grid .weexplorer-file{
-	
-	width: 150px;
-	height: 185px;
-	float: left;
-	margin-left: 25px;
-	margin-bottom: 15px;
-	
+    
+    width: 150px;
+    height: 185px;
+    float: left;
+    margin-left: 25px;
+    margin-bottom: 15px;
+    
 }
 
 .wz-app-1 .grid figure{
-	
-	width: 148px;
-	height: 148px;
-	border: solid 1px transparent;
-	line-height: 150px;
-	text-align: center;
-	
+    
+    width: 148px;
+    height: 148px;
+    border: solid 1px transparent;
+    line-height: 150px;
+    text-align: center;
+    
 }
 
 .wz-app-1 .grid textarea{
-	
-	font-size: 14px;
-	color: #585858;
-	width: 100%;
-	height: 30px;
-	margin-top: 5px;
-	text-align: center;
-	
+    
+    font-size: 14px;
+    color: #585858;
+    width: 100%;
+    height: 30px;
+    margin-top: 5px;
+    text-align: center;
+    
 }
 
 .wz-app-1 .grid span{
-	
-	display: none;
-	
+    
+    display: none;
+    
 }
 
 .wz-app-1 .list .weexplorer-file{
-	
-	width: 510px;
-	height: 30px;
-	border: solid 1px #fff;
-	float: left;
-	margin-left: 15px;
-	
+    
+    width: 510px;
+    height: 30px;
+    border: solid 1px #fff;
+    float: left;
+    margin-left: 15px;
+    
 }
 
 .wz-app-1 .list figure{
-	
-	width: 25px;
-	height: 25px;
-	float: left;
-	margin-left: 15px;
-	margin-top: 2px;
-	line-height: 25px;
-	text-align: center;
-	
+    
+    width: 25px;
+    height: 25px;
+    float: left;
+    margin-left: 15px;
+    margin-top: 2px;
+    line-height: 25px;
+    text-align: center;
+    
 }
 
 .wz-app-1 .list textarea{
-	
-	font-size: 14px;
-	color: #585858;
-	width: 205px;
-	height: 15px;
-	float: left;
-	margin-top: 7px;
-	margin-left: 15px;
-	
+    
+    font-size: 14px;
+    color: #585858;
+    width: 205px;
+    height: 15px;
+    float: left;
+    margin-top: 7px;
+    margin-left: 15px;
+    
 }
 
 .wz-app-1 .list textarea[readonly]{
-	background:transparent;
+    background:transparent;
 }
 
 .wz-app-1 .list span{
-	
-	font-size: 12px;
-	color: #ABABAB;
-	float: right;
-	margin-right: 15px;
-	margin-top: 10px;
-	text-align: right;
-	
+    
+    font-size: 12px;
+    color: #ABABAB;
+    float: right;
+    margin-right: 15px;
+    margin-top: 10px;
+    text-align: right;
+    
 }
 
 .wz-app-1 .list img{
-	max-width: 25px;
-	max-height: 25px;
-	vertical-align: middle;
+    max-width: 25px;
+    max-height: 25px;
+    vertical-align: middle;
 }
 
 .wz-app-1 .grid .last-active figure{
 
-	border: solid 1px rgba(127,191,235,0.5);
-	border-radius: 6px;
-	
+    border: solid 1px rgba(127,191,235,0.5);
+    border-radius: 6px;
+    
 }
 
 .wz-app-1 .grid .last-active.hidden figure{
 
-	border: solid 1px transparent;
-	
+    border: solid 1px transparent;
+    
 }
 
 .wz-app-1 .grid .last-active figure:hover{
 
-	background: #eefaff;
-	border: solid 1px #7fbfeb;
-	border-radius: 6px;
-	
+    background: #eefaff;
+    border: solid 1px #7fbfeb;
+    border-radius: 6px;
+    
 }
 
 .wz-app-1 .grid .active figure{
 
-	background: #ceecff;
-	border: solid 1px #7fbfeb;
-	border-radius: 6px;
-	
+    background: #ceecff;
+    border: solid 1px #7fbfeb;
+    border-radius: 6px;
+    
 }
 
 .wz-app-1 .grid figure:hover{
-	
-	background: #eefaff;
-	border: solid 1px #7fbfeb;
-	border-radius: 6px;
-	
+    
+    background: #eefaff;
+    border: solid 1px #7fbfeb;
+    border-radius: 6px;
+    
 }
 
 .wz-app-1 .grid .active figure:hover{
 
-	background: #ceecff;
-	border: solid 1px #7fbfeb;
-	border-radius: 6px;
-	
+    background: #ceecff;
+    border: solid 1px #7fbfeb;
+    border-radius: 6px;
+    
 }
 
 .wz-app-1 .list .weexplorer-file.last-active{
 
-	border: solid 1px rgba(127,191,235,0.5);
-	border-radius: 6px;
-	
+    border: solid 1px rgba(127,191,235,0.5);
+    border-radius: 6px;
+    
 }
 
 .wz-app-1 .list .weexplorer-file.last-active.hidden{
 
-	border: solid 1px transparent;
-	
+    border: solid 1px transparent;
+    
 }
 
 .wz-app-1 .list .weexplorer-file.last-active:hover{
 
-	background: #eefaff;
-	border: solid 1px #7fbfeb;
-	border-radius: 6px;
-	
+    background: #eefaff;
+    border: solid 1px #7fbfeb;
+    border-radius: 6px;
+    
 }
 
 .wz-app-1 .list .weexplorer-file:hover{
 
-	background: #eefaff;
-	border: solid 1px #7fbfeb;
-	border-radius: 6px;
-	
+    background: #eefaff;
+    border: solid 1px #7fbfeb;
+    border-radius: 6px;
+    
 }
 
 .wz-app-1 .list .weexplorer-file.active:hover{
 
-	background: #ceecff;
-	border: solid 1px #7fbfeb;
-	border-radius: 6px;
-	
+    background: #ceecff;
+    border: solid 1px #7fbfeb;
+    border-radius: 6px;
+    
 }
 
 .wz-app-1 .list .weexplorer-file.active{
 
-	background: #ceecff;
-	border: solid 1px #7fbfeb;
-	border-radius: 6px;
-	
+    background: #ceecff;
+    border: solid 1px #7fbfeb;
+    border-radius: 6px;
+    
 }
 
 .wz-app-1 .list .weexplorer-file-date-modification{
-	width: 114px;
+    width: 114px;
 }
 
 .wz-app-1 .weexplorer-sidebar{
-	
-	width: 0px;
-	height: 550px;
-	float: left;
-	
-	background: #EBEBEB;
-	border-left: solid 1px #D8D8D8;
-	
+    
+    width: 0px;
+    height: 550px;
+    float: left;
+    
+    background: #EBEBEB;
+    border-left: solid 1px #D8D8D8;
+    
 }
 
 .wz-app-1.sidebar .weexplorer-sidebar{
-	
-	width: 139px;
-	
+    
+    width: 139px;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-title{
-		
-	width: 115px;
-	float: left;
-	padding: 20px 12px;
+        
+    width: 115px;
+    float: left;
+    padding: 20px 12px;
 
 }
 
 .wz-app-1 .weexplorer-sidebar-icon{
-	
-	width: 13px;
-	height: 13px;
-	float: left;
-	background: url('https://static.weezeel.com/app/1/sidebar.png');
-	
+    
+    width: 13px;
+    height: 13px;
+    float: left;
+    background: url('https://static.weezeel.com/app/1/sidebar.png');
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-icon .title{
-	
-	background-position: 0 0;
-	
+    
+    background-position: 0 0;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-title-name{
-	
-	width: 86px;
-	height: 15px;
-	float: left;
-	margin-left: 10px;
-	font-size: 14px;
-	color: #505050;
-	overflow: hidden;
+    
+    width: 86px;
+    height: 15px;
+    float: left;
+    margin-left: 10px;
+    font-size: 14px;
+    color: #505050;
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-	
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-element{
-	
-	width: 115px;
-	float: left;
-	height: 15px;
-	padding: 10px 12px;
-	
-}	
+    
+    width: 115px;
+    float: left;
+    height: 15px;
+    padding: 10px 12px;
+    
+}   
 
 .wz-app-1 .weexplorer-sidebar-element-name{
-	
-	font-size: 12px;
-	color: #505050;
-	
-	width: 92px;
-	height: 15px;
-	float: left;
-	margin-left: 8px;
-	margin-top: 1px;
-	overflow: hidden;
+    
+    font-size: 12px;
+    color: #505050;
+    
+    width: 92px;
+    height: 15px;
+    float: left;
+    margin-left: 8px;
+    margin-top: 1px;
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-	
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-element-name{
-	
-	color: #000;
-	
+    
+    color: #000;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-element-name{
-	
-	color: #108EE5;
-	
+    
+    color: #108EE5;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-notification{
-	
-	display: none;
-	float: right;
-	color: #FFF;
-	background: #B22F27;
-	font-size: 13px;
-	padding: 2px 5px;
-	margin-top: -2px;
-	margin-right: -2px;
-	border-radius: 5px;
+    
+    display: none;
+    float: right;
+    color: #FFF;
+    background: #B22F27;
+    font-size: 13px;
+    padding: 2px 5px;
+    margin-top: -2px;
+    margin-right: -2px;
+    border-radius: 5px;
 }
 
 
 .wz-app-1 .weexplorer-sidebar-element.notification .weexplorer-sidebar-notification{
 
-	display: block;
-	
+    display: block;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-element.notification .weexplorer-sidebar-element-name{
-	
-	width: 63px;
-	
+    
+    width: 63px;
+    
 }
 
 .wz-app-1 .weexplorer-file-uploading figure{
-	
-	opacity: 0.5;
-	
-}	
+    
+    opacity: 0.5;
+    
+}   
 
 .wz-app-1 .weexplorer-file-uploading textarea{
-	
-	opacity: 0.5;
-	
+    
+    opacity: 0.5;
+    
 }
 
 .wz-app-1 .weexplorer-directory-over{
-	
-	background: #ceecff;
-	border-radius: 6px;
-	
+    
+    background: #ceecff;
+    border-radius: 6px;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-icon.user{
-	
-	background-position: -13px 0;
-	
+    
+    background-position: -13px 0;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.user{
-	
-	background-position: -13px -13px;
-	
+    
+    background-position: -13px -13px;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.user{
-	
-	background-position: -13px -26px;
-	
+    
+    background-position: -13px -26px;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-icon.folder{
-	
-	background-position: -26px 0;
-	
+    
+    background-position: -26px 0;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.folder{
-	
-	background-position: -26px -13px;
-	
+    
+    background-position: -26px -13px;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.folder{
-	
-	background-position: -26px -26px;
-	
+    
+    background-position: -26px -26px;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-icon.music{
-	
-	width: 8px;
-	margin-left: 3px;
-	margin-right: 2px;
-	background-position: -39px 0;
-	
+    
+    width: 8px;
+    margin-left: 3px;
+    margin-right: 2px;
+    background-position: -39px 0;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.music{
-	
-	background-position: -39px -13px;
-	
+    
+    background-position: -39px -13px;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.music{
-	
-	background-position: -39px -26px;
-	
+    
+    background-position: -39px -26px;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-icon.photo{
-	
-	background-position: -74px 0;
-	
+    
+    background-position: -74px 0;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.photo{
-	
-	background-position: -74px -13px;
-	
+    
+    background-position: -74px -13px;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.photo{
-	
-	background-position: -74px -26px;
-	
+    
+    background-position: -74px -26px;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-icon.video{
-	
-	width: 16px;
-	margin-left: -2px;
-	margin-right: -1px;
-	background-position: -47px 0;
-	
+    
+    width: 16px;
+    margin-left: -2px;
+    margin-right: -1px;
+    background-position: -47px 0;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.video{
 
-	background-position: -47px -13px;
-	
+    background-position: -47px -13px;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.video{
 
-	background-position: -47px -26px;
-	
+    background-position: -47px -26px;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-icon.doc{
-	
-	width: 11px;
-	margin-left: 1px;
-	margin-right: 1px;
-	background-position: -63px 0;
-	
+    
+    width: 11px;
+    margin-left: 1px;
+    margin-right: 1px;
+    background-position: -63px 0;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.doc{
 
-	background-position: -63px -13px;
-	
+    background-position: -63px -13px;
+    
 }
 
 .wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.doc{
 
-	background-position: -63px -26px;
-	
+    background-position: -63px -26px;
+    
 }
 
 .wz-app-1 .weexplorer-uploading{
-	width: 100%;
-	height: 0px;
-	background-image: -moz-linear-gradient(50% 0% -90deg,rgb(78,78,78) 0%,rgb(50,50,50) 100%); 
+    width: 100%;
+    height: 0px;
+    background-image: -moz-linear-gradient(50% 0% -90deg,rgb(78,78,78) 0%,rgb(50,50,50) 100%); 
     background-image: -webkit-linear-gradient(-90deg,rgb(78,78,78) 0%,rgb(50,50,50) 100%);
     background-image: -o-linear-gradient(-90deg,rgb(78,78,78) 0%,rgb(50,50,50) 100%);
     background-image: linear-gradient(0deg,rgb(50,50,50) 0%,rgb(78,78,78) 100%);
-	position: absolute;
-	bottom: 0px;
-	overflow: hidden;
+    position: absolute;
+    bottom: 0px;
+    overflow: hidden;
 }
 
 .wz-app-1 .weexplorer-uploading-bar{
-	width: 0%;
-	height: 5px;
-	background: #1FB3FF;
+    width: 0%;
+    height: 5px;
+    background: #1FB3FF;
 }
 
 .wz-app-1 .weexplorer-uploading-info{
-	height: 15px;
-	margin: 5px auto auto;
-	text-align: center;
+    height: 15px;
+    margin: 5px auto auto;
+    text-align: center;
 }
 
 .wz-app-1 .weexplorer-uploading-info figure{
-	width: 11px;
-	height: 13px;
-	background: url('https://static.weezeel.com/app/1/uploading.png');
-	display: inline-block;
+    width: 11px;
+    height: 13px;
+    background: url('https://static.weezeel.com/app/1/uploading.png');
+    display: inline-block;
 }
 
 .wz-app-1 .weexplorer-uploading-info p{
-	margin-left: 8px;
-	font-size: 13px;
-	color: #C0C0C0;
-	display: inline-block;
+    margin-left: 8px;
+    font-size: 13px;
+    color: #C0C0C0;
+    display: inline-block;
 }
 
 .wz-app-1 .weexplorer-progress-bar{
-	width: 0;
-	height: 5px;
-	margin-top: -5px;
-	background: #1FB3FF;
+    width: 0;
+    height: 5px;
+    margin-top: -5px;
+    background: #1FB3FF;
 }
 
 .wz-app-1 .weexplorer-conversion-bar{
-	width: 75%;
-	height: 5px;
-	margin-top: -5px;
-	background: #A43737;
+    width: 75%;
+    height: 5px;
+    margin-top: -5px;
+    background: #A43737;
 }
 
 .wz-app-1 .weexplorer-sort{
-	width: 212px;
-	position: absolute;
-	top: 35px;
-	left: 123px;
+    width: 212px;
+    position: absolute;
+    top: 35px;
+    left: 123px;
     list-style: none;
-	display: none;
-	z-index: 1;
+    display: none;
+    z-index: 1;
 }
 
 .wz-app-1 .weexplorer-sort.show{
-	display: block;
+    display: block;
 }
 
 .wz-app-1 .weexplorer-sort:before{
-	
+    
     position: relative;
     top: 2px;
     left: 75px;
@@ -719,7 +719,7 @@
 }
 
 .wz-app-1 .weexplorer-sort li:first-child{
-	
+    
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     box-shadow: inset 0px 1px 0px 0px #4D4D4D;
@@ -727,7 +727,7 @@
 }
 
 .wz-app-1 .weexplorer-sort li{
-	
+    
     overflow: hidden; 
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box; 
@@ -744,7 +744,7 @@
 }
 
 .wz-app-1 .weexplorer-sort li:last-child{
-	
+    
     height: 30px;
     border-bottom-right-radius: 6px;
     border-bottom-left-radius: 6px;
@@ -757,22 +757,22 @@
 }
 
 .wz-app-1 .weexplorer-sort i{
-	width: 10px;
-	height: 7px;
-	float: left;
-	display: block;
-	margin-top: 2px;
+    width: 10px;
+    height: 7px;
+    float: left;
+    display: block;
+    margin-top: 2px;
 }
 
 .wz-app-1 .weexplorer-sort li.active i{
-	background: url('https://static.weezeel.com/app/1/active.png') no-repeat;
+    background: url('https://static.weezeel.com/app/1/active.png') no-repeat;
 }
 
 .wz-app-1 .weexplorer-sort span{
-	float: left;
-	margin-left: 8px;
+    float: left;
+    margin-left: 8px;
 }
 
 .wz-app-1 .weexplorer-sort li.active span{
-	color: #34A7FF;
+    color: #34A7FF;
 }

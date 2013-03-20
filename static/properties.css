@@ -1,136 +1,136 @@
 
 .wz-app-1-properties{
-	
-	background: #FFF;
-	
+    
+    background: #FFF;
+    
 }
 
 .wz-app-1-properties .wz-win-menu{
-	
-	border-bottom: 1px solid #E5E5E5;
-	width: 245px;
-	height: 13px;
-	padding: 13px 15px;
-	
+    
+    border-bottom: 1px solid #E5E5E5;
+    width: 245px;
+    height: 13px;
+    padding: 13px 15px;
+    
 }
 
 .wz-app-1-properties .wz-win-menu span{
-	
-	font-size: 15px;
-	color: #646464;
-	
+    
+    font-size: 15px;
+    color: #646464;
+    
 }
 
 .wz-app-1-properties .wz-win-close{
-	
-	float: right;
-	
+    
+    float: right;
+    
 }
 
 .wz-app-1-properties .properties{
-	
-	width: 275px;
-	height: 310px;
-	padding: 15px;
-	
+    
+    width: 275px;
+    height: 310px;
+    padding: 15px;
+    
 }
 
 .wz-app-1-properties .properties article{
-	
-	width: 245px;
-	margin-bottom: 10px;
-	float: left;
-	
+    
+    width: 245px;
+    margin-bottom: 10px;
+    float: left;
+    
 }
 
 .wz-app-1-properties .properties article:first-child{
-	
-	margin-bottom: 5px;
-	
+    
+    margin-bottom: 5px;
+    
 }
 
 .wz-app-1-properties .properties span{
-	
-	width: 160px;
-	float: left;
-	font-size: 15px;
-	color: #666;
-	overflow: hidden;
+    
+    width: 160px;
+    float: left;
+    font-size: 15px;
+    color: #666;
+    overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;	
-	
+    white-space: nowrap;    
+    
 }
 
 .wz-app-1-properties .properties span:first-child{
-	
-	width: 80px;
-	color: #333;
-	
+    
+    width: 80px;
+    color: #333;
+    
 }
 
 .wz-app-1-properties .properties input{
 
-	width: 145px;
-	margin-top: -3px;
-	border-radius: 3px;
-	border: 1px solid #DDD;	
-	font-size: 14px;
-	color: #666;
-	padding: 3px 5px 3px 5px;
-	
+    width: 145px;
+    margin-top: -3px;
+    border-radius: 3px;
+    border: 1px solid #DDD; 
+    font-size: 14px;
+    color: #666;
+    padding: 3px 5px 3px 5px;
+    
 }
 
 .wz-app-1-properties .properties input:focus{
-	border: 1px solid #50BDFF;
+    border: 1px solid #50BDFF;
 }
 
 .wz-app-1-properties article.properties-attr article{
-	
-	width: 100px;
-	float: left;
-	margin-top: 15px;
-	
+    
+    width: 100px;
+    float: left;
+    margin-top: 15px;
+    
 }
 
 .wz-app-1-properties article.properties-attr article:nth-child(2){
 
-	clear: left;	
-	
+    clear: left;    
+    
 }
 
 .wz-app-1-properties article.properties-attr article:nth-child(even){
-	
-	margin-left: 32px;
-	
+    
+    margin-left: 32px;
+    
 }
 
 .wz-app-1-properties .properties-attr span{
-	
-	width: 70px;
-	float: left;
-	position: relative;
-	left: 0px;
-	
+    
+    width: 70px;
+    float: left;
+    position: relative;
+    left: 0px;
+    
 }
 
 .wz-app-1-properties .properties-attr figure{
-	
-	width: 16px;
-	height: 16px;
-	float: left;
-	margin-right: 8px;
-	display: block;
-	
+    
+    width: 16px;
+    height: 16px;
+    float: left;
+    margin-right: 8px;
+    display: block;
+    
 }
 
 .wz-app-1-properties .properties-attr figure.yes{
-	
-	background: url("https://static.weezeel.com/app/1/tick.png") no-repeat;
-	
+    
+    background: url("https://static.weezeel.com/app/1/tick.png") no-repeat;
+    
 }
 
 .wz-app-1-properties .properties-attr figure.no{
 
-	background: url("https://static.weezeel.com/app/1/cross.png") no-repeat;
-	
+    background: url("https://static.weezeel.com/app/1/cross.png") no-repeat;
+    
 }

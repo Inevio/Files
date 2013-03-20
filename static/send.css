@@ -1,191 +1,191 @@
 
 .wz-app-1-send{
-	
-	background: #FFF;
-	
+    
+    background: #FFF;
+    
 }
 
 .wz-app-1-send .wz-win-menu{
-	
-	border-bottom: 1px solid #E5E5E5;
-	width: 600px;
-	height: 13px;
-	padding: 13px 15px;
-	
+    
+    border-bottom: 1px solid #E5E5E5;
+    width: 600px;
+    height: 13px;
+    padding: 13px 15px;
+    
 }
 
 .wz-app-1-send .wz-win-menu span{
-	
-	font-size: 15px;
-	color: #646464;
-	
+    
+    font-size: 15px;
+    color: #646464;
+    
 }
 
 .wz-app-1-send .wz-win-close{
-	
-	float: right;
-	
+    
+    float: right;
+    
 }
 
 .wz-app-1-send .send-list{
-	width: 183px;
-	height: 349px;
-	float: left;
-	margin: 15px;
+    width: 183px;
+    height: 349px;
+    float: left;
+    margin: 15px;
 }
 
 .wz-app-1-send .send-list span{
-	font-size: 15px;
-	color: #333;
-	float: left;
+    font-size: 15px;
+    color: #333;
+    float: left;
 }
 
 .wz-app-1-send .send-list-users{
-	width: 183px;
-	height: 326px;
-	float: left;
-	margin-top: 8px;
-	border-radius: 3px;
-	border: 1px solid #DDD;
-	background: #FAFAFA;
+    width: 183px;
+    height: 326px;
+    float: left;
+    margin-top: 8px;
+    border-radius: 3px;
+    border: 1px solid #DDD;
+    background: #FAFAFA;
 }
 
 .wz-app-1-send .send-chosen{
-	width: 183px;
-	height: 349px;
-	float: left;
-	margin: 15px 15px 15px 0px;
+    width: 183px;
+    height: 349px;
+    float: left;
+    margin: 15px 15px 15px 0px;
 }
 
 .wz-app-1-send .send-chosen span{
-	font-size: 15px;
-	color: #333;
-	float: left;
+    font-size: 15px;
+    color: #333;
+    float: left;
 }
 
 .wz-app-1-send .send-chosen-users{
-	width: 183px;
-	height: 326px;
-	float: left;
-	margin-top: 8px;
-	border-radius: 3px;
-	border: 1px solid #DDD;
-	background: #FAFAFA;
+    width: 183px;
+    height: 326px;
+    float: left;
+    margin-top: 8px;
+    border-radius: 3px;
+    border: 1px solid #DDD;
+    background: #FAFAFA;
 }
 
 .wz-app-1-send .send-how{
-	width: 182px;
-	height: 350px;
-	float: left;
-	margin-top: 15px;
-	margin-left: 10px;
-	position: relative;
+    width: 182px;
+    height: 350px;
+    float: left;
+    margin-top: 15px;
+    margin-left: 10px;
+    position: relative;
 }
 
 .wz-app-1-send .send-how span{
-	font-size: 15px;
-	color: #333;
-	float: left;
-	clear: left;
+    font-size: 15px;
+    color: #333;
+    float: left;
+    clear: left;
 }
 
 .wz-app-1-send span.send-how-explanation{
-	margin-top: 8px;
-	margin-bottom: 15px;
-	font-size: 13px;
-	color: #666;
-	text-align: justify;
+    margin-top: 8px;
+    margin-bottom: 15px;
+    font-size: 13px;
+    color: #666;
+    text-align: justify;
 }
 
 .wz-app-1-send .send-message{
-	width: 172px;
-	height: 90px;
-	border: 1px solid #DDD;
-	border-radius: 3px;
-	color: #666;
-	font-size: 13px;
-	padding: 5px;
+    width: 172px;
+    height: 90px;
+    border: 1px solid #DDD;
+    border-radius: 3px;
+    color: #666;
+    font-size: 13px;
+    padding: 5px;
 }
 
 .wz-app-1-send .send-message:focus{
-	border: 1px solid #50BDFF;
+    border: 1px solid #50BDFF;
 }
 
 .wz-app-1-send button{
-	
-	width: 80px;
-	height: 30px;
-	float: right;
-	margin-top: 12px;
-	margin-right: -2px;
-	font-size: 14px;
-	color: #F5F5F5;
-	text-align: center;
-	border-top: 1px solid #50BDFF;
-	border-radius: 3px;
-	padding-bottom: 1px;
-	-moz-box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	box-sizing: content-box;
-	cursor: pointer;
-	
-	background-image: -moz-linear-gradient(50% 0% -90deg,rgb(60,181,255) 0%,rgb(44,153,255) 100%); 
+    
+    width: 80px;
+    height: 30px;
+    float: right;
+    margin-top: 12px;
+    margin-right: -2px;
+    font-size: 14px;
+    color: #F5F5F5;
+    text-align: center;
+    border-top: 1px solid #50BDFF;
+    border-radius: 3px;
+    padding-bottom: 1px;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    cursor: pointer;
+    
+    background-image: -moz-linear-gradient(50% 0% -90deg,rgb(60,181,255) 0%,rgb(44,153,255) 100%); 
     background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0, rgb(60,181,255)),color-stop(1, rgb(44,153,255)));
     background-image: -webkit-linear-gradient(-90deg,rgb(60,181,255) 0%,rgb(44,153,255) 100%);
     background-image: -o-linear-gradient(-90deg,rgb(60,181,255) 0%,rgb(44,153,255) 100%);
     background-image: linear-gradient(0deg,rgb(44,153,255) 0%,rgb(60,181,255) 100%); 
-	
+    
 }
 
 .wz-app-1-send button:hover{
 
-	border-top: 1px solid #60CBFF;
-	
-	background-image: -moz-linear-gradient(50% 0% -90deg,rgb(77,197,255) 0%,rgb(56,175,255) 100%); 
+    border-top: 1px solid #60CBFF;
+    
+    background-image: -moz-linear-gradient(50% 0% -90deg,rgb(77,197,255) 0%,rgb(56,175,255) 100%); 
     background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0, rgb(77,197,255)),color-stop(1, rgb(56,175,255)));
     background-image: -webkit-linear-gradient(-90deg,rgb(77,197,255) 0%,rgb(56,175,255) 100%);
     background-image: -o-linear-gradient(-90deg,rgb(77,197,255) 0%,rgb(56,175,255) 100%);
-    background-image: linear-gradient(0deg,rgb(56,175,255) 0%,rgb(77,197,255) 100%);	
-	
+    background-image: linear-gradient(0deg,rgb(56,175,255) 0%,rgb(77,197,255) 100%);    
+    
 }
 
 .wz-app-1-send .send-user{
-	
-	width: 176px;
-	height: 20px;
-	float: left;
-	padding: 7px 0px 12px 7px;
-	display: block;
-	overflow: hidden;
-	border-bottom: 1px solid #ECECEC;
-	cursor: pointer;
-	
+    
+    width: 176px;
+    height: 20px;
+    float: left;
+    padding: 7px 0px 12px 7px;
+    display: block;
+    overflow: hidden;
+    border-bottom: 1px solid #ECECEC;
+    cursor: pointer;
+    
 }
 
 .wz-app-1-send .send-user:hover{
-	
-	background: rgba( 80, 189, 255, 0.4 );
-	
+    
+    background: rgba( 80, 189, 255, 0.4 );
+    
 }
 
 .wz-app-1-send .send-user img{
-	width: 25px;
-	height: 25px;
-	float: left;
-	background: #f00;
-	cursor: pointer;
+    width: 25px;
+    height: 25px;
+    float: left;
+    background: #f00;
+    cursor: pointer;
 }
 
 .wz-app-1-send .send-user span{
-	width: 140px;
-	height: 14px;
-	float: left;
-	margin-left: 6px;
-	margin-top: 6px;
-	font-size: 13px;
-	color: #202020;	
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	cursor: pointer;
+    width: 140px;
+    height: 14px;
+    float: left;
+    margin-left: 6px;
+    margin-top: 6px;
+    font-size: 13px;
+    color: #202020; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
 }
