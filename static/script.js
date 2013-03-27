@@ -514,6 +514,37 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     .on( 'structure-received', function(){
         notifications();
     })
+
+    .on( 'structure-conversionStart', function( event, structure ){
+        
+        $( '.weexplorer-file-' + structure + ' article', fileArea )
+            .addClass('weexplorer-conversion-bar');
+        
+    })
+
+    .on( 'structure-conversionProgress', function( event, structure, progress ){
+
+        $( '.weexplorer-file-' + structure + ' article', fileArea )
+            .addClass('weexplorer-conversion-bar')
+            .clearQueue()
+            .stop()
+            .transition( { width: ( progress * 100 ) + '%' }, 150 );
+
+    })
+
+    .on( 'structure-conversionEnd', function( event, structure, progress ){
+
+        $( '.weexplorer-file-' + structure + ' article', fileArea )
+            .addClass('weexplorer-conversion-bar')
+            .transition( { opacity : 0 }, 150, function(){
+
+                $( this )
+                    .removeClass('weexplorer-conversion-bar')
+                    .removeAttr('style');
+
+            });
+
+    })
     
     .on( 'wz-blur', function(){
         $( '.weexplorer-sort', win ).removeClass( 'show' );
