@@ -576,7 +576,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         if(views.hasClass('grid')){
             views.removeClass('grid').addClass('list');     
             fileArea.removeClass('grid').addClass('list');
-            $( '.weexplorer-file', fileArea ).last().css({ 'margin-bottom' : '15px' });
         }else{
             views.removeClass('list').addClass('grid');
             fileArea.removeClass('list').addClass('grid');
