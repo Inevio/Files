@@ -776,3 +776,7 @@
 .wz-app-1 .weexplorer-sort li.active span{
     color: #34A7FF;
 }
+
+.wz-app-1 .list .weexplorer-file:last-child{
+    margin-bottom: 15px;
+}
