@@ -86,7 +86,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     };
 
-    var icon = function( id, name, type, size, modified, created ){
+    var icon = function( structure ){
 
         // Clone prototype
         var file = filePrototype.clone().removeClass('prototype');
@@ -96,7 +96,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         var userDate = new Date();
         var userDateInfo = userDate.getDate() + '' + userDate.getMonth() + '' + userDate.getFullYear();
 
-        var modifiedDate = new Date( modified );
+        var modifiedDate = new Date( structure.modified );
         if( userDateInfo !== ( modifiedDate.getDate() + '' + modifiedDate.getMonth() + '' + modifiedDate.getFullYear() ) ){
             
             var modifiedDay = modifiedDate.getDate();
@@ -117,7 +117,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 
         }
             
-        var createdDate = new Date( created );
+        var createdDate = new Date( structure.created );
         if( userDateInfo !== ( createdDate.getDate() + '' + createdDate.getMonth() + '' + createdDate.getFullYear() ) ){
             
             var createdDay = createdDate.getDate();
@@ -139,12 +139,12 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         }
         
         // Add new properties
-        file.children('textarea').text( name );
+        file.children('textarea').text( structure.name );
         
-        if( size === null ){
+        if( structure.size === null ){
             file.children('.weexplorer-file-size').text( '--' );
         }else{
-            file.children('.weexplorer-file-size').text( wz.tool.bytesToUnit( size, 2 ) );
+            file.children('.weexplorer-file-size').text( wz.tool.bytesToUnit( structure.size, 2 ) );
         }
         
         if( modifiedToday ){
@@ -161,13 +161,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         }
         */
         
-        file.find('img').attr( 'src', 'https://download.weezeel.com/' + id + '/icon/normal' );
-        file.addClass( types[ type ] );
-        file.addClass( 'weexplorer-file-' + id );
-        file.data( 'file-id', id );
-        file.data( 'file-size', size );
-        file.data( 'file-creation', modified );
-        file.data( 'file-modification', created );
+        file.find('img').attr( 'src', structure.icons.normal );
+        file.addClass( types[ structure.type ] );
+        file.addClass( 'weexplorer-file-' + structure.id );
+        file.data( 'file-id', structure.id );
+        file.data( 'file-size', structure.size );
+        file.data( 'file-creation', structure.modified );
+        file.data( 'file-modification', structure.created );
 
         // Return icon
         return file;
@@ -208,7 +208,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                 // Generate File icons
                 for( var i = 0; i < length; i++ ){
-                    files = files.add( icon( list[ i ].id, list[ i ].name, list[ i ].type, list[ i ].size, list[ i ].modified, list[ i ].created ) );
+                    files = files.add( icon( list[ i ] ) );
                 }
 
                 // Display icons
@@ -430,7 +430,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             
             // Generate File icons
             for( var i = 0; i < length; i++ ){
-                files = files.add( icon( list[ i ].id, list[ i ].name, list[ i ].type, list[ i ].size, list[ i ].modified, list[ i ].created ).addClass('weexplorer-file-uploading') );
+                files = files.add( icon( list[ i ] ).addClass('weexplorer-file-uploading') );
             }
             
             // Display icons
@@ -484,7 +484,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     .on( 'structure-new', function(e, structure){
 
         if( structure.parent === current ){
-            fileArea.append( icon( structure.id, structure.name, structure.type, structure.size, structure.modified, structure.created ) );
+            fileArea.append( icon( structure ) );
         }
 
     })
@@ -500,7 +500,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             if( originID === current ){
                 fileArea.children( '.weexplorer-file-' + structure.id ).remove();
             }else if( destinyID === current ){
-                fileArea.append( icon( structure.id, structure.name, structure.type, structure.size, structure.modified, structure.created ) );
+                fileArea.append( icon( structure ) );
             }
         
         }
@@ -508,7 +508,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     })
     
     .on( 'structure-thumbnail', function(e, structure){
-        $( '.weexplorer-file-' + structure.id ).find('img').attr( 'src', 'https://download.weezeel.com/' + structure.id + '/icon/normal?' + Math.random() );
+        $( '.weexplorer-file-' + structure.id ).find('img').attr( 'src', structure.icons.normal + '?' + Math.random() );
     })
     
     .on( 'structure-received', function(){
