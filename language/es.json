@@ -1,4 +1,31 @@
 
 {
-	
+
+	"errorOpenDirectory" : "No ha sido posible abrir el directorio",
+	"deleteFile" : "¿Seguro que quieres eliminar",
+	"deleteFile2" : " el archivo seleccionado? Si lo haces jamás podrás recuperarlo.",
+	"deleteFile3" : " archivos seleccionados? Si lo haces jamás podrás recuperarlos.",
+	"the" : " los ",
+	"calculating" : "Calculando...",
+	"minutes" : " minutos",
+	"seconds" : " segundos",
+	"sortByName" : "Ord. por Nombre",
+	"sortBySize" : "Ord. por Tamaño",
+	"sortByCreation" : "Ord. por Creación",
+	"sortByModif" : "Ord. por Modif",
+	"openFile" : "Abrir archivo",
+	"createLink" : "Crear enlace",
+	"sendTo" : "Enviar a...",
+	"shareWith" : "Compartir con...",
+	"download" : "Descargar",
+	"rename" : "Renombrar",
+	"properties" : "Propiedades",
+	"remove" : "Eliminar",
+	"openFolder" : "Abrir carpeta",
+	"openInNewWindow" : "Abrir en una nueva ventana",
+	"acceptFile" : "Aceptar",
+	"refuseFile" : "Rechazar",
+	"upload" : "Subir archivo",
+	"newDirectory" : "Nuevo directorio",
+	"modified" : "Modificado "
 }

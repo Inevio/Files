@@ -1,4 +1,31 @@
 
 {
-	
+
+	"errorOpenDirectory" : "Error opening the directory",
+	"deleteFile" : "¿Are you sure you want to delete",
+	"deleteFile2" : " the selected file? You'll never de able to recover it.",
+	"deleteFile3" : " selected files? You'll never de able to recover them.",
+	"the" : " the ",
+	"calculating" : "Calculating...",
+	"minutes" : " minutes",
+	"seconds" : " seconds",
+	"sortByName" : "Sort by Name",
+	"sortBySize" : "Sort by Size",
+	"sortByCreation" : "Sort by Creation",
+	"sortByModif" : "Sort by Modif",
+	"openFile" : "Open file",
+	"createLink" : "Create link",
+	"sendTo" : "Send to...",
+	"shareWith" : "Share with...",
+	"download" : "Download",
+	"rename" : "Rename",
+	"properties" : "Properties",
+	"remove" : "Delete",
+	"openFolder" : "Open folder",
+	"openInNewWindow" : "Open in a new window",
+	"acceptFile" : "Accept",
+	"refuseFile" : "Refuse",
+	"upload" : "Upload file",
+	"newDirectory" : "New directory",
+	"modified" : "Modified "
 }
