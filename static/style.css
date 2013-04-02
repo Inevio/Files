@@ -1,5 +1,5 @@
 .wz-app-1.wz-win.sidebar{
-    width: 684px !important;
+    width: 684px; /*!important*/
 }
 
 .wz-app-1 textarea{

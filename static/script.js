@@ -380,7 +380,19 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             
         });
         
-    }
+    };
+
+    var start = function(){
+
+        if( params ){
+            openDirectory( params );
+        }else{
+            openDirectory( 'root' );
+        }
+        
+        win.addClass('sidebar').css( 'width', '' );
+
+    };
 
     // Events
     $( win )
@@ -1135,13 +1147,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         }
     });
     
-    if( params ){
-        openDirectory( params );
-    }else{
-        openDirectory( 'root' );
-    }
-    
-    win.addClass('sidebar');
+    start();
 
     wz.config( function(error, config){
         
