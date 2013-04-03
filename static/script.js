@@ -2,8 +2,6 @@
 
 wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
-    console.log( win, app, lang, params );
-
     // Variables
     var record = [];
     var current = null;
@@ -1133,7 +1131,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             .add( lang.newDirectory, function(){
                 createDirectory();
             })
-            .separator()
             .render();
             
         }
@@ -1174,5 +1171,15 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         sidebar.append( receivedFolder );
         
     }); 
-        
+
+    $( '.weexplorer-menu-sort', win ).text( lang.sortByName );
+    $( '.weexplorer-sidebar-title-name', sidebar ).text( lang.favourites );
+    $( '.item-now-before', win ).text( lang.uploading );
+    $( '.total-items-before', win ).text( lang.of );
+    $( '.elapsed-time-before', win ).text( '-' );
+    $( '.weexplorer-sort-name', win ).find( 'span' ).text( lang.sortByName );
+    $( '.weexplorer-sort-size', win ).find( 'span' ).text( lang.sortBySize );
+    $( '.weexplorer-sort-creation', win ).find( 'span' ).text( lang.sortByCreation );
+    $( '.weexplorer-sort-modification', win ).find( 'span' ).text( lang.sortByModif );
+
 });

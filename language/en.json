@@ -27,5 +27,11 @@
 	"refuseFile" : "Refuse",
 	"upload" : "Upload file",
 	"newDirectory" : "New directory",
-	"modified" : "Modified "
+	"modified" : "Modified ",
+
+	"favourites" : "Favourites",
+	"uploading" : "Uploading",
+	"of"		: "of"
+
+
 }

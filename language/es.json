@@ -27,5 +27,10 @@
 	"refuseFile" : "Rechazar",
 	"upload" : "Subir archivo",
 	"newDirectory" : "Nuevo directorio",
-	"modified" : "Modificado "
+	"modified" : "Modificado ",
+
+	"favourites" : "Favoritos",
+	"uploading" : "Subiendo",
+	"of"		: "de"
+
 }
