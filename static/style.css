@@ -148,6 +148,12 @@
     
 }
 
+.wz-app-1 .weexplorer-main{
+    width: 544px;
+    height: 550px;
+    float: left;;
+}
+
 .wz-app-1 .weexplorer-folder{
     
     width: 544px;
@@ -173,6 +179,7 @@
     background: url('https://static.weezeel.com/app/1/sprite.png') -111px 0; 
     
 }
+
 
 .wz-app-1 .weexplorer-folder-name{
     
