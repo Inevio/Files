@@ -45,6 +45,10 @@
     
 }
 
+.wz-app-1 .wz-win-menu{
+    width: 684px;
+}
+
 .wz-app-1 .weexplorer-menu{
     
     width: 268px;
@@ -244,13 +248,16 @@
     
 }
 
+.wz-app-1 .weexplorer-file-zone.list{
+    padding: 60px 15px 0px;
+}
+
 .wz-app-1 .list .weexplorer-file{
     
-    width: 510px;
+    width: 100%;
     height: 30px;
     border: solid 1px #fff;
     float: left;
-    margin-left: 15px;
     
 }
 
