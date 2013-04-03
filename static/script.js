@@ -187,7 +187,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         wz.structure( id, function( error, structure ){
 
             if( error ){
-                alert('No ha sido posible abrir el directorio');
+                alert('Error opening the directory');
                 return false;
             }
 
@@ -199,7 +199,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             structure.list( function( error, list ){
 
                 if( error ){
-                    alert('No ha sido posible abrir el directorio');
+                    alert('Error opening the directory');
                     return false;
                 }
 
@@ -283,13 +283,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     var deleteAllActive = function(){
         
-        var response = ' el archivo seleccionado? Si lo haces jamás podrás recuperarlo.';
+        var response = ' the selected file? You won\'t be able to recover it.';
         
         if( $('.weexplorer-file.active', win).size() > 1){
-            response = ' los ' + $('.weexplorer-file.active', win).size() + ' archivos seleccionados? Si lo haces jamás podrás recuperarlos.';
+            response = ' the ' + $('.weexplorer-file.active', win).size() + ' selected files? You won\'t be able to recover them.';
         }
         
-        if( confirm( '¿Seguro que quieres eliminar' + response ) ) {
+        if( confirm( 'Are you sure you want to delete' + response ) ) {
         
             $('.weexplorer-file.active', win).each(function(){
                 
@@ -1125,24 +1125,25 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         if( current !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
             
             wz.menu()
-            .add('Subir archivo', function(){
-                uploadButton.mousedown();
+            .add('Upload file', function(){
+                uploadButton.click();
             })
-            .add('Nuevo directorio', function(){
+            .add('Create directory', function(){
                 createDirectory();
             })
-            .separator()
-            .add('Obtener información')
             .render();
             
         }
 
     });
 
-    uploadButton.on( 'mousedown', function( e ){
+    uploadButton.on( 'click', function(){
+        console.log( 'Hola' );
         if( current !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
+            console.log( 'primer' );
             $(this).data( 'destiny', current );
         }else{
+            console.log( 'segun' );
             $(this).removeData( 'destiny' );
         }
     });
