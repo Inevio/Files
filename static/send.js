@@ -29,7 +29,7 @@ wz.app.addScript( 1, 'send', function( win, app, lang, params ){
                 
                 });
             
-                alert( 'Your file has been sent!' );
+                alert( lang.fileSent );
             
                 wz.app.closeWindow( win.data( 'win' ) );
 
@@ -52,5 +52,12 @@ wz.app.addScript( 1, 'send', function( win, app, lang, params ){
             }
                     
         });
+
+    $( '.send-title', win ).text( lang.sendTitle );
+    $( '.send-list-title', win ).text( lang.sendListTitle );
+    $( '.send-chosen-title', win ).text( lang.sendChosenTitle );
+    $( '.send-how-message', win ).text( lang.sendHowMessage );
+    $( '.send-how-explanation', win ).text( lang.sendHowExplanation );
+    $( '.send-how-button', win ).text( lang.sendHowButton );
 
 });

@@ -1,5 +1,5 @@
 
-wz.app.addScript( 1, 'properties', function( win ){
+wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
 
     var input       = $('.properties input', win);
     var type        = $('.properties .type', win);  
@@ -22,17 +22,17 @@ wz.app.addScript( 1, 'properties', function( win ){
         var fileType = structure.type;
         
         if( fileType === 0 ){
-            type.text( 'Directory' );
+            type.text( lang.directory );
         }else if( fileType === 1 ){
-            type.text( 'Special Directory' );
+            type.text( lang.specialDirectory );
         }else if( fileType === 2 ){
-            type.text( 'File' );
+            type.text( lang.file );
         }else if( fileType === 3 ){
-            type.text( 'Temporal File' );
+            type.text( lang.temporalFile );
         }else if( fileType === 6 ){
-            type.text( 'Received File' );
+            type.text( lang.receivedFile );
         }else{
-            type.text( 'Unknown' );
+            type.text( lang.unknown );
         }
         
         size.text( wz.tool.bytesToUnit( structure.size, 2 ) );
@@ -138,4 +138,19 @@ wz.app.addScript( 1, 'properties', function( win ){
             
         });
         
+    $( '.properties-title', win ).text( lang.propertiesTitle );
+    $( '.properties-name', win ).text( '· ' +  lang.propertiesName + ':' );
+    $( '.properties-type', win ).text( '· ' +  lang.propertiesType + ':' );
+    $( '.properties-size', win ).text( '· ' +  lang.propertiesSize + ':' );
+    $( '.properties-created', win ).text( '· ' +  lang.propertiesCreated + ':' );
+    $( '.properties-modified', win ).text( '· ' +  lang.propertiesModified + ':' );
+    $( '.properties-owner', win ).text( '· ' +  lang.propertiesOwner + ':' );
+    $( '.attr', win ).text( '· ' +  lang.attr + ':' );
+    $( '.attr-read', win ).text( lang.attrRead );
+    $( '.attr-modify', win ).text( lang.attrModify );
+    $( '.attr-copy', win ).text( lang.attrCopy );
+    $( '.attr-download', win ).text( lang.attrDownload );
+    $( '.attr-share', win ).text( lang.attrShare );
+    $( '.attr-send', win ).text( lang.attrSend );
+
 });
