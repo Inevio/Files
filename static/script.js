@@ -3,10 +3,11 @@
 wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     // Variables
-    var record = [];
-    var current = null;
-    var pointer = -1;
-    var controlNav = false;
+    var record      = [];
+    var current     = null;
+    var pointer     = -1;
+    var controlNav  = false;
+    var showSidebar = false;
 
     var types = [
                     'directory wz-drop-area',
@@ -18,15 +19,19 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                     'received'
                 ];
 
-    var nextButton      = $( '.weexplorer-option-next', win );
-    var backButton      = $( '.weexplorer-option-back', win );
-    var views           = $( '.weexplorer-menu-views', win );
-    var sidebar         = $( '.weexplorer-sidebar', win );
-    var sidebarElement  = $( '.weexplorer-sidebar-element.prototype', sidebar );
-    var fileArea        = $( '.weexplorer-file-zone', win );
-    var filePrototype   = $( '.weexplorer-file.prototype', win );
-    var folderName      = $( '.weexplorer-folder-name', win );
-    var uploadButton    = $( '.weexplorer-menu-upload', win );
+    var nextButton     = $( '.weexplorer-option-next', win );
+    var backButton     = $( '.weexplorer-option-back', win );
+    var views          = $( '.weexplorer-menu-views', win );
+    var sidebar        = $( '.weexplorer-sidebar', win );
+    var sidebarElement = $( '.weexplorer-sidebar-element.prototype', sidebar );
+    var fileArea       = $( '.weexplorer-file-zone', win );
+    var filePrototype  = $( '.weexplorer-file.prototype', win );
+    var folderName     = $( '.weexplorer-folder-name', win );
+    var folderMain     = $( '.weexplorer-main', win );
+    var uploadButton   = $( '.weexplorer-menu-upload', win );
+    var winMenu        = $( '.wz-win-menu', win );
+    var wxpMenu        = $( '.weexplorer-menu', win );
+    var folderBar      = $( '.weexplorer-folder', win );
 
     var uploading        = $( '.weexplorer-uploading', win );
     var uploadingBar     = $( '.weexplorer-uploading-bar', uploading );
@@ -396,7 +401,45 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     // Events
     $( win )
+    
+    .on( 'wz-resize', function(){
+
+        if( win.hasClass('wz-win-maximized') ){
+
+            if( win.hasClass('sidebar') ){
+                showSidebar = true;
+            }else{
+                showSidebar = false;
+            }
+
+        }else{
+
+            if( win.hasClass('sidebar') && !showSidebar ){
+
+                win
+                    .add( fileArea )
+                    .add( winMenu )
+                    .add( wxpMenu )
+                    .add( folderMain )
+                    .add( folderBar )
+                    .width('+=140');
+
+            }else if( !win.hasClass('sidebar') && showSidebar ){
+                
+                win
+                    .add( fileArea )
+                    .add( winMenu )
+                    .add( wxpMenu )
+                    .add( folderMain )
+                    .add( folderBar )
+                    .width('-=140');
+
+            }
+
+        }
         
+    })
+
     .on( 'upload-enqueue', function( e, list ){
         
         if( list[0].parent === current ){
@@ -744,18 +787,68 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     })
     
     .on( 'mousedown', '.weexplorer-menu-toggle', function(){
-        if( win.hasClass('sidebar') ){
-            win.transition({ width : 544 }, 250 );
-            $('.weexplorer-menu', win).transition({ width : 268 }, 250);
-            $('.weexplorer-sidebar', win).transition({ width : 0 }, 250);
-            win.removeClass('sidebar');
+
+        if( win.hasClass('wz-win-maximized') ){
+
+            if( win.hasClass('sidebar') ){
+
+                fileArea
+                    .add( folderBar )
+                    .transition( { width : '+=140' }, 250 );
+
+                sidebar.transition( { width : 0 }, 245 );
+
+                folderMain.transition( { width : '+=140' }, 250, function(){
+                    win.removeClass('sidebar');
+                });
+
+            }else{
+
+                fileArea
+                    .add( folderBar )
+                    .transition( { width : '-=140' }, 250 );
+
+                sidebar.transition( { width : 139 }, 255, function(){
+                    $( this ).css( 'width', '' );
+                });
+
+                folderMain.transition( { width : '-=140' }, 250, function(){
+                    win.addClass('sidebar');
+                });
+
+            }
+
         }else{
-            win.transition({ width : 684 }, 250, function(){
-                win.addClass('sidebar');
-            });
-            $('.weexplorer-menu', win).transition({ width : 408 }, 250);
-            $('.weexplorer-sidebar', win).transition({ width : 139 }, 250);
+
+            if( win.hasClass('sidebar') ){
+
+                winMenu
+                    .add( wxpMenu )
+                    .transition( { width : '-=140' }, 250 );
+
+                sidebar.transition( { width : 0 }, 245 );
+
+                win.transition( { width : '-=140' }, 250, function(){
+                    win.removeClass('sidebar');
+                });
+
+            }else{
+
+                winMenu
+                    .add( wxpMenu )
+                    .transition( { width : '+=140' }, 250 );
+
+                sidebar.transition( { width : 138 }, 250, function(){
+                    win.addClass('sidebar');
+                    $( this ).css( 'width', '' );
+                });
+
+                win.transition( { width : '+=140' }, 250 );
+
+            }
+
         }
+
     })
     
     .on( 'mousedown', '.weexplorer-sidebar-element', function(){
