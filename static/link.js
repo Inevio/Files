@@ -188,4 +188,17 @@ wz.app.addScript( 1, 'link', function( win, app, lang, params ){
             }
         });
 
+    $( '.link-title', win ).text( lang.linkTitle );
+    $( '.link-question', win ).text( lang.linkQuestion );
+    $( '.link-answer', win ).text( lang.linkAnswer );
+    $( '.link-password span', win ).text( lang.linkPasswordSpan );
+    $( '.link-password button', win ).text( lang.linkPasswordButton );
+    $( '.link-preview span', win ).text( lang.linkPreview );
+    $( '.link-url span', win ).text( lang.linkUrl );
+    $( '.previous-title', win ).text( lang.previousTitle );
+    $( '.previous-url', win ).text( lang.previousUrl );
+    $( '.previous-views', win ).text( lang.previousViews );
+    $( '.previous-downloads', win ).text( lang.previousDownloads );
+    $( '.previous-imports', win ).text( lang.previousImports );
+
 });

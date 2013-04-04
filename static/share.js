@@ -61,4 +61,20 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
                     
         });
 
+    $( '.share-title', win ).text( lang.shareTitle );
+    $( '.share-list-title', win ).text( lang.shareListTitle );
+    $( '.share-chosen-title', win ).text( lang.shareChosenTitle );
+    $( '.share-how-permissions', win ).text( lang.shareHowPermissions );
+    $( '.share-how-explanation', win ).text( lang.shareHowExplanation );
+    $( '.share-how-default', win ).text( lang.shareHowDefault );
+    $( '.share-how-yes', win ).text( lang.shareHowYes );
+    $( '.share-how-no', win ).text( lang.shareHowNo );
+    $( '.share-how-read', win ).text( lang.shareHowRead );
+    $( '.share-how-modify', win ).text( lang.shareHowModify );
+    $( '.share-how-copy', win ).text( lang.shareHowCopy );
+    $( '.share-how-download', win ).text( lang.shareHowDownload );
+    $( '.share-how-share', win ).text( lang.shareHowShare );
+    $( '.share-how-send', win ).text( lang.shareHowSend );
+    $( '.share-save', win ).text( lang.shareSave );
+
 });
