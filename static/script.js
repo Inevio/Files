@@ -1138,14 +1138,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     });
 
     uploadButton.on( 'click', function(){
-        console.log( 'Hola' );
+
         if( current !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
-            console.log( 'primer' );
             $(this).data( 'destiny', current );
         }else{
-            console.log( 'segun' );
             $(this).removeData( 'destiny' );
         }
+        
     });
     
     start();
