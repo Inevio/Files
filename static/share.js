@@ -37,7 +37,7 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
             wz.structure( params, function( error, structure ){
                 
                 shareChosenUsers.children().each( function(){
-                    structure.sendTo( $(this).data( 'user-id' ), '' );
+                    structure.addShare( $(this).data( 'user-id' ), { global : 1 } );
                 });
 
                 wz.app.closeWindow( win.data( 'win' ) );
