@@ -13,11 +13,11 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
             if(button.hasClass('yes')){
                 button.removeClass('yes');
                 button.addClass('no');
-                button.children('span').text('NO');
+                button.children('span').text( lang.shareHowNo );
             }else{
                 button.removeClass('no');
                 button.addClass('yes');
-                button.children('span').text('YES');
+                button.children('span').text( lang.shareHowYes );
             }
             
         })
