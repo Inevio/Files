@@ -8,6 +8,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     var pointer     = -1;
     var controlNav  = false;
     var showSidebar = false;
+    var maximized   = false;
 
     var types = [
                     'directory wz-drop-area',
@@ -424,7 +425,15 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     .on( 'wz-resize', function(){
 
+        if( win.hasClass('wz-win-sticking') ){
+            win.addClass('special-sidebar');
+        }else{
+            win.removeClass('special-sidebar');
+        }
+
         if( win.hasClass('wz-win-maximized') ){
+
+            maximized = true;
 
             if( win.hasClass('sidebar') ){
                 showSidebar = true;
@@ -432,7 +441,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 showSidebar = false;
             }
 
-        }else{
+        }else if( maximized ){
+
+            maximized = false;
 
             if( win.hasClass('sidebar') && !showSidebar ){
 
@@ -456,6 +467,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
             }
 
+        }else{
+            maximized = false;
         }
         
     })
@@ -808,7 +821,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     .on( 'mousedown', '.weexplorer-menu-toggle', function(){
 
-        if( win.hasClass('wz-win-maximized') ){
+        if( win.hasClass('wz-win-maximized') || win.hasClass('special-sidebar') ){
 
             if( win.hasClass('sidebar') ){
 
