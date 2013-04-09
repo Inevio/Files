@@ -15,7 +15,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                     'file',
                     'temporal-file',
                     'null',
-                    'null',
+                    'pointer',
                     'received'
                 ];
 
@@ -173,6 +173,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         file.data( 'file-size', structure.size );
         file.data( 'file-creation', structure.modified );
         file.data( 'file-modification', structure.created );
+
+        if( structure.type === 5 ){
+
+            file.data( 'file-pointer', structure.pointer );
+            file.data( 'file-pointerType', structure.pointerType );
+
+        }
 
         // Return icon
         return file;
@@ -954,8 +961,42 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     })
     
     .on( 'dblclick', '.weexplorer-file.directory', function(){
-        openDirectory($(this).data('file-id'));
-        $('.weexplorer-sidebar-element.active', win).removeClass('active');
+
+        openDirectory( $(this).data('file-id') );
+        $( '.weexplorer-sidebar-element.active', win ).removeClass('active');
+
+    })
+
+    .on( 'dblclick', '.weexplorer-file.pointer', function(){
+        
+        var pointer     = $( this ).data('file-pointer');
+        var pointerType = $( this ).data('file-pointerType');
+
+        if( pointerType === 0 || pointerType === 1 ){
+
+            openDirectory( pointer );
+            $( '.weexplorer-sidebar-element.active', win ).removeClass('active');
+
+        }
+
+        if( pointerType === 2 ){
+
+            wz.structure( pointer, function( error, structure ){
+                
+                structure.associatedApp( function( error, app ){
+
+                    if( app ){
+                        wz.app.createWindow( app, [ pointer ] );
+                    }else{
+                        alert( error );
+                    }
+
+                });
+                
+            });
+            
+        }
+        
     })
     
     .key( 'enter', function(e){
