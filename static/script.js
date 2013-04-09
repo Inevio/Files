@@ -208,6 +208,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 return false;
             }
 
+            /*
             if( !structure.permissions.accepted ){
 
                 $('.weexplorer-sidebar-element.active', win).removeClass('active');
@@ -216,6 +217,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 alert( 'Estructura no aceptada' );
                 return false;
             }
+            */
 
             // Update current
             updateCurrent( structure.id );
