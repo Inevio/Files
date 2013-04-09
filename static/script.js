@@ -176,6 +176,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         if( structure.type === 5 ){
 
+            if( !structure.permissions.accepted ){
+                file.addClass( 'pointer-pending' );
+            }
+
             file.data( 'file-pointer', structure.pointer );
             file.data( 'file-pointerType', structure.pointerType );
 
@@ -200,6 +204,15 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
             if( error ){
                 alert( lang.errorOpenDirectory );
+                return false;
+            }
+
+            if( !structure.permissions.accepted ){
+
+                $('.weexplorer-sidebar-element.active', win).removeClass('active');
+                $( '.folder-' + current, sidebar ).addClass('active');
+
+                alert( 'Estructura no aceptada' );
                 return false;
             }
 
@@ -983,15 +996,21 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
             wz.structure( pointer, function( error, structure ){
                 
-                structure.associatedApp( function( error, app ){
+                if( structure.permissions.accepted ){
 
-                    if( app ){
-                        wz.app.createWindow( app, [ pointer ] );
-                    }else{
-                        alert( error );
-                    }
+                    structure.associatedApp( function( error, app ){
 
-                });
+                        if( app ){
+                            wz.app.createWindow( app, [ pointer ] );
+                        }else{
+                            alert( error );
+                        }
+
+                    });
+
+                }else{
+                    alert('Estructura no aceptada');
+                }
                 
             });
             
@@ -1124,7 +1143,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         var icon = $(this);
         var menu = wz.menu();
         
-        if(icon.hasClass('file')){
+        if( icon.hasClass('file') || ( icon.hasClass('pointer') && !icon.hasClass('pointer-pending') ) ){
             
             menu
                 .add( lang.openFile, function(){
@@ -1191,6 +1210,23 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 .add( lang.refuseFile, function(){
                     wz.structure( icon.data( 'file-id' ), function( error, structure ){
                         structure.refuse();
+                    });
+                }, 'warning');
+            
+        }else if( icon.hasClass('pointer-pending') ){
+            
+            menu
+                .add( lang.acceptFile, function(){
+                    wz.structure( icon.data( 'file-id' ), function( error, structure ){
+                        structure.acceptShare();
+                    });
+                })
+                .add( lang.properties, function(){
+                    wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
+                })
+                .add( lang.refuseFile, function(){
+                    wz.structure( icon.data( 'file-id' ), function( error, structure ){
+                        structure.refuseShare();
                     });
                 }, 'warning');
             
