@@ -1097,27 +1097,27 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     })
     
     .key( 'left', function(e){
-        
+
         if( $(e.target).is('textarea') ){
             e.stopPropagation();
         }else{
-            $( '.weexplorer-file.last-active', fileArea ).prev().not( '.weexplorer-file.prototype' ).mousedown();
+            $( '.weexplorer-file.last-active', fileArea ).prev().not( '.weexplorer-file.prototype' ).mousedown().mouseup();
         }       
         
     })
     
     .key( 'right', function(e){
-        
+
         if( $(e.target).is('textarea') ){
             e.stopPropagation();
         }else{
-            $( '.weexplorer-file.last-active', fileArea ).next().mousedown();
+            $( '.weexplorer-file.last-active', fileArea ).next().mousedown().mouseup();
         }  
         
     })
     
     .key( 'up', function(e){
-        
+
         if( $(e.target).is('textarea') ){
             e.stopPropagation();
         }else{
@@ -1128,27 +1128,27 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 object = object.prev(); 
             }
         
-            object.mousedown();
+            object.mousedown().mouseup();
         }  
           
     })
     
     .key( 'down', function(e){
-        
+
         if( $(e.target).is('textarea') ){
             e.stopPropagation();
         }else{
             var leftStart = $( '.weexplorer-file.last-active', fileArea ).position().left;
             var object = $( '.weexplorer-file.last-active', fileArea ).next();
             
-            while( leftStart !== object.position().left ){
+            while( object.size() && leftStart !== object.position().left ){
                 if(!object.next().size()){
                     break;
                 }
                 object = object.next();             
             }
             
-            object.mousedown();
+            object.mousedown().mouseup();
         }
         
     })
