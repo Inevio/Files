@@ -428,11 +428,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     .on( 'wz-resize', function(){
 
-        console.log( 'Entro' );
-
         if( win.hasClass('wz-win-sticking') ){
-
-            console.log( 1 );
 
             if( win.hasClass('sidebar') ){
                 stickedSidebar = true;
@@ -443,8 +439,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             win.addClass('special-sidebar');
 
         }else if( !win.hasClass('wz-win-maximized') && !maximized ){
-
-            console.log( 2 );
 
             if( win.hasClass('sidebar') && !stickedSidebar ){
 
@@ -478,8 +472,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         if( win.hasClass('wz-win-maximized') ){
 
-            console.log( 3 );
-
             maximized = true;
 
             if( win.hasClass('sidebar') ){
@@ -489,8 +481,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             }
 
         }else if( maximized ){
-
-            console.log( 4 );
 
             maximized = false;
 
