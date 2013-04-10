@@ -1,65 +1,111 @@
 
 wz.app.addScript( 1, 'share', function( win, app, lang, params ){
 
-    var shareListUsers      = $('.share-list-users', win);
-    var shareChosenUsers    = $('.share-chosen-users', win);
-    var shareUserPrototype  = $('.share-user.prototype', win);
+    var shareListUsers     = $('.share-list-users', win);
+    var shareChosenUsers   = $('.share-chosen-users', win);
+    var shareUserPrototype = $('.share-user.prototype', win);
+    var initialUsers       = null;
 
     win
-        .on( 'mousedown', '.share-how article', function(){
-            
-            var button = $(this).children('figure');
-            
-            if(button.hasClass('yes')){
-                button.removeClass('yes');
-                button.addClass('no');
-                button.children('span').text( lang.shareHowNo );
-            }else{
-                button.removeClass('no');
-                button.addClass('yes');
-                button.children('span').text( lang.shareHowYes );
-            }
-            
-        })
+    .on( 'mousedown', '.share-how article', function(){
         
-        .on( 'mousedown', '.share-user', function(){
-            
-            if( $(this).parent().hasClass('share-list-users') ){
-                shareChosenUsers.append($(this));
-            }else{
-                shareListUsers.append($(this));
-            }
-            
-        })
+        var button = $(this).children('figure');
         
-        .on( 'mousedown', 'button', function(){
-            
-            wz.structure( params, function( error, structure ){
-                
-                shareChosenUsers.children().each( function(){
-                    structure.addShare( $(this).data( 'user-id' ), { global : 1 } );
-                });
+        if( button.hasClass('yes') ){
 
-                wz.app.closeWindow( win.data( 'win' ) );
+            button.removeClass('yes');
+            button.addClass('no');
+            button.children('span').text( lang.shareHowNo );
+
+        }else{
+
+            button.removeClass('no');
+            button.addClass('yes');
+            button.children('span').text( lang.shareHowYes );
+            
+        }
+        
+    })
+        
+    .on( 'mousedown', '.share-user', function(){
+        
+        if( $( this ).parent().hasClass('share-list-users') ){
+            shareChosenUsers.append( this );
+        }else{
+            shareListUsers.append( this );
+        }
+        
+    })
+    
+    .on( 'mousedown', 'button', function(){
+        
+        wz.structure( params, function( error, structure ){
+            
+            shareChosenUsers.children().each( function(){
+
+                var userId = $( this ).data('user-id');
+                var index  = $.inArray( userId, initialUsers );
+
+                if( index === -1 ){
+                    structure.addShare( userId, { global : 1 } );
+                }else{
+                    initialUsers[ index ] = null;
+                }
                 
             });
 
-        });
-        
-    wz.user
-        .friendList( function( error, list ){
+            for( var i in initialUsers ){
+
+                if( initialUsers[ i ] !== null ){
+                    structure.removeShare( initialUsers[ i ] );
+                }
+
+            }
+
+            wz.app.closeWindow( win.data( 'win' ) );
             
+        });
+
+    });
+        
+    wz.user.friendList( function( error, list ){
+        
+        for( var i = 0; i < list.length; i++ ){
+                                            
+            var userCard = shareUserPrototype.clone().removeClass('prototype');
+            //userCard.children('img').attr('src')
+            userCard.data( 'user-id', list[ i ].id );
+            userCard.children('span').text( list[ i ].fullName );
+            shareListUsers.append( userCard );
+
+        }
+                
+    });
+
+    wz.structure( params, function( error, structure ){
+
+        structure.sharedWith( function( error, list ){
+
+            var users = [];
+
             for( var i = 0; i < list.length; i++ ){
                                                 
                 var userCard = shareUserPrototype.clone().removeClass('prototype');
                 //userCard.children('img').attr('src')
-                userCard.data( 'user-id', list[ i ].id );
-                userCard.children('span').text(list[i].fullName);
-                shareListUsers.append(userCard);
+                userCard.data( 'user-id', list[ i ].user.id );
+                userCard.children('span').text( list[ i ].user.fullName );
+                shareChosenUsers.append( userCard );
+
+                users.push( list[ i ].user.id );
 
             }
-                    
+
+            initialUsers = users;
+            users = null;
+
         });
+
+    });
 
     $( '.share-title', win ).text( lang.shareTitle );
     $( '.share-list-title', win ).text( lang.shareListTitle );
