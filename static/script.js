@@ -3,12 +3,13 @@
 wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     // Variables
-    var record      = [];
-    var current     = null;
-    var pointer     = -1;
-    var controlNav  = false;
-    var showSidebar = false;
-    var maximized   = false;
+    var record         = [];
+    var current        = null;
+    var pointer        = -1;
+    var controlNav     = false;
+    var showSidebar    = false;
+    var maximized      = false;
+    var stickedSidebar = false;
 
     var types = [
                     'directory wz-drop-area',
@@ -428,9 +429,41 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     .on( 'wz-resize', function(){
 
         if( win.hasClass('wz-win-sticking') ){
+
+            if( win.hasClass('sidebar') ){
+                stickedSidebar = true;
+            }else{
+                stickedSidebar = false;
+            }
+
             win.addClass('special-sidebar');
+
         }else{
+
+            if( win.hasClass('sidebar') && !stickedSidebar ){
+
+                win
+                    .add( fileArea )
+                    .add( winMenu )
+                    .add( wxpMenu )
+                    .add( folderMain )
+                    .add( folderBar )
+                    .width('+=140');
+
+            }else if( !win.hasClass('sidebar') && stickedSidebar ){
+                
+                win
+                    .add( fileArea )
+                    .add( winMenu )
+                    .add( wxpMenu )
+                    .add( folderMain )
+                    .add( folderBar )
+                    .width('-=140');
+
+            }
+
             win.removeClass('special-sidebar');
+
         }
 
         if( win.hasClass('wz-win-maximized') ){
@@ -469,8 +502,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
             }
 
-        }else{
-            maximized = false;
         }
         
     })
