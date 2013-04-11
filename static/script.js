@@ -1346,7 +1346,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             
             wz.menu()
             .add( lang.upload, function(){
-                uploadButton.mousedown();
+                uploadButton.click();
             })
             .add( lang.newDirectory, function(){
                 createDirectory();
