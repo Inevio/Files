@@ -1221,7 +1221,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                     deleteAllActive();
                 }, 'warning');
             
-        }else if(icon.hasClass('directory')){
+        }else if( icon.hasClass('directory') ){
             
             menu
                 .add( lang.openFolder, function(){
@@ -1246,12 +1246,14 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                     deleteAllActive();
                 }, 'warning');
             
-        }else if(icon.hasClass('received')){
+        }else if( icon.hasClass('received') ){
             
             menu
                 .add( lang.acceptFile, function(){
                     wz.structure( icon.data( 'file-id' ), function( error, structure ){
-                        structure.accept();
+                        structure.accept( function(){
+                            notifications();
+                        });
                     });
                 })
                 .add( lang.properties, function(){
@@ -1259,7 +1261,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 })
                 .add( lang.refuseFile, function(){
                     wz.structure( icon.data( 'file-id' ), function( error, structure ){
-                        structure.refuse();
+                        structure.refuse( function(){
+                            notifications();
+                        });
                     });
                 }, 'warning');
             
