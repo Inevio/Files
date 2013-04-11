@@ -44,6 +44,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     var renaming = $();
     var prevName = '';
 
+    var showingSidebar = false;
+
     // Functions
     var recordNavigation = function(){
 
@@ -858,62 +860,80 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     .on( 'mousedown', '.weexplorer-menu-toggle', function(){
 
-        if( win.hasClass('wz-win-maximized') || win.hasClass('special-sidebar') ){
+        if( !showingSidebar ){
 
-            if( win.hasClass('sidebar') ){
+            showingSidebar = true;
 
-                fileArea
-                    .add( folderBar )
-                    .transition( { width : '+=140' }, 250 );
+            if( win.hasClass('wz-win-maximized') || win.hasClass('special-sidebar') ){
 
-                sidebar.transition( { width : 0 }, 245 );
+                if( win.hasClass('sidebar') ){
 
-                folderMain.transition( { width : '+=140' }, 250, function(){
-                    win.removeClass('sidebar');
-                });
+                    fileArea
+                        .add( folderBar )
+                        .transition( { width : '+=140' }, 250 );
 
-            }else{
+                    sidebar.transition( { width : 0 }, 245 );
 
-                fileArea
-                    .add( folderBar )
-                    .transition( { width : '-=140' }, 250 );
+                    folderMain.transition( { width : '+=140' }, 250, function(){
+                        win.removeClass('sidebar');
+                        setTimeout( function(){
+                            showingSidebar = false;
+                        }, 50);
+                        
+                    });
 
-                sidebar.transition( { width : 139 }, 255, function(){
-                    $( this ).css( 'width', '' );
-                });
+                }else{
 
-                folderMain.transition( { width : '-=140' }, 250, function(){
-                    win.addClass('sidebar');
-                });
+                    fileArea
+                        .add( folderBar )
+                        .transition( { width : '-=140' }, 250 );
 
-            }
+                    sidebar.transition( { width : 139 }, 255, function(){
+                        $( this ).css( 'width', '' );
+                        setTimeout( function(){
+                            showingSidebar = false;
+                        }, 50);
+                    });
 
-        }else{
+                    folderMain.transition( { width : '-=140' }, 250, function(){
+                        win.addClass('sidebar');
+                    });
 
-            if( win.hasClass('sidebar') ){
-
-                winMenu
-                    .add( wxpMenu )
-                    .transition( { width : '-=140' }, 250 );
-
-                sidebar.transition( { width : 0 }, 245 );
-
-                win.transition( { width : '-=140' }, 250, function(){
-                    win.removeClass('sidebar');
-                });
+                }
 
             }else{
 
-                winMenu
-                    .add( wxpMenu )
-                    .transition( { width : '+=140' }, 250 );
+                if( win.hasClass('sidebar') ){
 
-                sidebar.transition( { width : 138 }, 250, function(){
-                    win.addClass('sidebar');
-                    $( this ).css( 'width', '' );
-                });
+                    winMenu.animate( { width : '-=140' }, 250 );
+                    wxpMenu.animate( { width : '-=140' }, 250 );
+                        
+                    sidebar.animate( { width : 0 }, 245 );
 
-                win.transition( { width : '+=140' }, 250 );
+                    win.animate( { width : '-=140' }, 250, function(){
+                        win.removeClass('sidebar');
+                        setTimeout( function(){
+                            showingSidebar = false;
+                        }, 50);
+                    });
+
+                }else{
+
+                    winMenu.animate( { width : '+=140' }, 250 );
+                    wxpMenu.animate( { width : '+=140' }, 250 );
+
+                    sidebar.animate( { width : 138 }, 250, function(){
+                        win.addClass('sidebar');
+                        $( this ).css( 'width', '' );
+                    });
+
+                    win.animate( { width : '+=140' }, 250, function(){
+                        setTimeout( function(){
+                            showingSidebar = false;
+                        }, 50);
+                    });
+
+                }
 
             }
 
