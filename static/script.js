@@ -430,6 +430,22 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     .on( 'wz-resize', function(){
 
+        if( fileArea.hasClass('list') ){
+
+            var textareaWidth = 0;
+
+            fileArea.find( '.weexplorer-file' ).not( '.prototype' ).first().children().not( 'textarea, article' ).each( function(){
+                textareaWidth += $(this).outerWidth( true );
+            });
+
+            textareaWidth = fileArea.find( '.weexplorer-file' ).not( '.prototype' ).first().width() - textareaWidth - 28;
+
+            fileArea.find( 'textarea' ).css({ width : textareaWidth + 'px' });
+
+        }else{
+            fileArea.find( 'textarea' ).css({ width : '' });
+        }
+
         if( win.hasClass('wz-win-sticking') ){
 
             if( win.hasClass('sidebar') ){
@@ -700,13 +716,35 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     })
     
     .on( 'mousedown', '.weexplorer-menu-views', function(){
+
         if(views.hasClass('grid')){
+
             views.removeClass('grid').addClass('list');     
             fileArea.removeClass('grid').addClass('list');
+
+            if( win.hasClass( 'wz-win-sticked' ) ){
+
+                var textareaWidth = 0;
+
+                fileArea.find( '.weexplorer-file' ).not( '.prototype' ).first().children().not( 'textarea, article' ).each( function(){
+                    textareaWidth += $(this).outerWidth( true );
+                });
+
+                textareaWidth = fileArea.find( '.weexplorer-file' ).not( '.prototype' ).first().width() - textareaWidth - 28;
+
+                fileArea.find( 'textarea' ).css({ width : textareaWidth + 'px' });
+
+            }
+
         }else{
+
             views.removeClass('list').addClass('grid');
             fileArea.removeClass('list').addClass('grid');
+
+            fileArea.find( 'textarea' ).css({ width : '' });
+
         }
+
     })
     
     .on( 'click', '.weexplorer-file.active', function(e){
