@@ -432,13 +432,30 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         if( fileArea.hasClass('list') ){
 
-            var textareaWidth = 0;
+            var controlTextarea = 0;
+            var biggestTextarea = 0;
 
-            fileArea.find( '.weexplorer-file' ).not( '.prototype' ).first().children().not( 'textarea, article' ).each( function(){
-                textareaWidth += $(this).outerWidth( true );
+            fileArea.find( '.weexplorer-file' ).not( '.prototype' ).each( function(){
+
+                var textareaWidth = 0;
+
+                $(this).first().children().not( 'textarea, article' ).each( function(){
+
+                    textareaWidth += $(this).outerWidth( true );
+
+                    if( textareaWidth > controlTextarea ){
+                        controlTextarea = textareaWidth;
+                    }
+
+                });
+
+                if( controlTextarea > biggestTextarea ){
+                    biggestTextarea = controlTextarea;
+                }  
+
             });
 
-            textareaWidth = fileArea.find( '.weexplorer-file' ).not( '.prototype' ).first().width() - textareaWidth - 28;
+            textareaWidth = fileArea.find( '.weexplorer-file' ).not( '.prototype' ).first().width() - biggestTextarea - 35;
 
             fileArea.find( 'textarea' ).css({ width : textareaWidth + 'px' });
 
@@ -744,13 +761,30 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
             if( win.hasClass( 'wz-win-sticked' ) ){
 
-                var textareaWidth = 0;
+                var controlTextarea = 0;
+                var biggestTextarea = 0;
 
-                fileArea.find( '.weexplorer-file' ).not( '.prototype' ).first().children().not( 'textarea, article' ).each( function(){
-                    textareaWidth += $(this).outerWidth( true );
+                fileArea.find( '.weexplorer-file' ).not( '.prototype' ).each( function(){
+
+                    var textareaWidth = 0;
+
+                    $(this).first().children().not( 'textarea, article' ).each( function(){
+
+                        textareaWidth += $(this).outerWidth( true );
+
+                        if( textareaWidth > controlTextarea ){
+                            controlTextarea = textareaWidth;
+                        }
+
+                    });
+
+                    if( controlTextarea > biggestTextarea ){
+                        biggestTextarea = controlTextarea;
+                    }  
+
                 });
 
-                textareaWidth = fileArea.find( '.weexplorer-file' ).not( '.prototype' ).first().width() - textareaWidth - 28;
+                textareaWidth = fileArea.find( '.weexplorer-file' ).not( '.prototype' ).first().width() - biggestTextarea - 35;
 
                 fileArea.find( 'textarea' ).css({ width : textareaWidth + 'px' });
 
