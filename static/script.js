@@ -468,6 +468,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                     .add( folderBar )
                     .width('+=140');
 
+                if( fileArea.hasClass('list') ){
+                    fileArea.find( 'textarea' ).css({ width : '+=140' });
+                }
+
             }else if( !win.hasClass('sidebar') && stickedSidebar ){
                 
                 win
@@ -477,6 +481,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                     .add( folderMain )
                     .add( folderBar )
                     .width('-=140');
+
+                if( fileArea.hasClass('list') ){
+                    fileArea.find( 'textarea' ).css({ width : '-=140' });
+                }
 
             }
 
@@ -512,6 +520,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                     .add( folderBar )
                     .width('+=140');
 
+                if( fileArea.hasClass('list') ){
+                    fileArea.find( 'textarea' ).css({ width : '+=140' });
+                }
+
             }else if( !win.hasClass('sidebar') && showSidebar ){
                 
                 win
@@ -521,6 +533,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                     .add( folderMain )
                     .add( folderBar )
                     .width('-=140');
+
+                if( fileArea.hasClass('list') ){
+                    fileArea.find( 'textarea' ).css({ width : '-=140' });
+                }
 
             }
 
@@ -717,7 +733,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     .on( 'mousedown', '.weexplorer-menu-views', function(){
 
-        if(views.hasClass('grid')){
+        if( views.hasClass('grid') ){
 
             views.removeClass('grid').addClass('list');     
             fileArea.removeClass('grid').addClass('list');
@@ -908,11 +924,15 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                     fileArea
                         .add( folderBar )
-                        .transition( { width : '+=140' }, 250 );
+                        .animate( { width : '+=140' }, 250 );
 
-                    sidebar.transition( { width : 0 }, 245 );
+                    sidebar.animate( { width : 0 }, 245 );
 
-                    folderMain.transition( { width : '+=140' }, 250, function(){
+                    if( fileArea.hasClass( 'list' ) ){
+                        fileArea.find( 'textarea' ).animate( { width : '+=140' }, 250 );
+                    }                    
+
+                    folderMain.animate( { width : '+=140' }, 250, function(){
                         win.removeClass('sidebar');
                         setTimeout( function(){
                             showingSidebar = false;
@@ -924,16 +944,20 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                     fileArea
                         .add( folderBar )
-                        .transition( { width : '-=140' }, 250 );
+                        .animate( { width : '-=140' }, 250 );
 
-                    sidebar.transition( { width : 139 }, 255, function(){
+                    sidebar.animate( { width : 139 }, 255, function(){
                         $( this ).css( 'width', '' );
                         setTimeout( function(){
                             showingSidebar = false;
                         }, 50);
                     });
 
-                    folderMain.transition( { width : '-=140' }, 250, function(){
+                    if( fileArea.hasClass( 'list' ) ){
+                        fileArea.find( 'textarea' ).animate( { width : '-=140' }, 250 );
+                    }
+
+                    folderMain.animate( { width : '-=140' }, 250, function(){
                         win.addClass('sidebar');
                     });
 
