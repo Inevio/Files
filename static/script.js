@@ -401,10 +401,12 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         wz.structure( $( '.receivedFolder', sidebar ).data('file-id'), function( error, structure ){
             
-            structure.list( function(error, list){
+            structure.list( function( error, list ){
                 
                 if( list.length ){
                     $( '.receivedFolder', sidebar ).addClass( 'notification' ).find( '.weexplorer-sidebar-notification' ).text( list.length );
+                }else{
+                    $( '.receivedFolder', sidebar ).removeClass( 'notification' );
                 }
                 
             });
@@ -651,6 +653,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             openDirectory( parent );
         }
 
+        notifications();
+
     })
     
     .on( 'structure-rename', function(e, structure){
@@ -672,10 +676,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     .on( 'structure-move', function(e, structure, destinyID, originID){
         
         if( originID !== destinyID ){
-            
-            if( originID === $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
-                notifications();
-            }
             
             if( originID === current ){
                 fileArea.children( '.weexplorer-file-' + structure.id ).remove();
