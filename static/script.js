@@ -1369,22 +1369,45 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         }else if( icon.hasClass('received') ){
             
             menu
+
                 .add( lang.acceptFile, function(){
+
                     wz.structure( icon.data( 'file-id' ), function( error, structure ){
-                        structure.accept( function(){
-                            notifications();
+
+                        structure.accept( function( error ){
+
+                            if( error ){
+                                alert( error );
+                            }else{
+                                notifications();
+                            }
+                            
                         });
+
                     });
+
                 })
+
                 .add( lang.properties, function(){
                     wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
                 })
+
                 .add( lang.refuseFile, function(){
+
                     wz.structure( icon.data( 'file-id' ), function( error, structure ){
-                        structure.refuse( function(){
-                            notifications();
+
+                        structure.refuse( function( error ){
+
+                            if( error ){
+                                alert( error );
+                            }else{
+                                notifications();
+                            }
+
                         });
+
                     });
+
                 }, 'warning');
             
         }else if( icon.hasClass('pointer-pending') ){
