@@ -461,12 +461,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             if( win.hasClass('sidebar') && !stickedSidebar ){
 
                 win
-                    .add( fileArea )
                     .add( winMenu )
                     .add( wxpMenu )
                     .add( folderMain )
                     .add( folderBar )
                     .width('+=140');
+
+                fileArea.outerWidth('+=140');
 
                 if( fileArea.hasClass('list') ){
                     fileArea.find( 'textarea' ).css({ width : '+=140' });
@@ -475,12 +476,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             }else if( !win.hasClass('sidebar') && stickedSidebar ){
                 
                 win
-                    .add( fileArea )
                     .add( winMenu )
                     .add( wxpMenu )
                     .add( folderMain )
                     .add( folderBar )
                     .width('-=140');
+
+                fileArea.outerWidth('-=140');
 
                 if( fileArea.hasClass('list') ){
                     fileArea.find( 'textarea' ).css({ width : '-=140' });
@@ -513,12 +515,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             if( win.hasClass('sidebar') && !showSidebar ){
 
                 win
-                    .add( fileArea )
                     .add( winMenu )
                     .add( wxpMenu )
                     .add( folderMain )
                     .add( folderBar )
                     .width('+=140');
+
+                fileArea.outerWidth('+=140');
 
                 if( fileArea.hasClass('list') ){
                     fileArea.find( 'textarea' ).css({ width : '+=140' });
@@ -527,12 +530,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             }else if( !win.hasClass('sidebar') && showSidebar ){
                 
                 win
-                    .add( fileArea )
                     .add( winMenu )
                     .add( wxpMenu )
                     .add( folderMain )
                     .add( folderBar )
                     .width('-=140');
+
+                fileArea.outerWidth('-=140');
 
                 if( fileArea.hasClass('list') ){
                     fileArea.find( 'textarea' ).css({ width : '-=140' });
