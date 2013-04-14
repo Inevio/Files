@@ -37,21 +37,19 @@ wz.app.addScript( 1, 'send', function( win, app, lang, params ){
 
         });
         
-    wz.user
-            
-        .friendList( function( error, list ){
-            
-            for( var i = 0; i < list.length; i++ ){
-                                                
-                var userCard = sendUserPrototype.clone().removeClass('prototype');
-                //userCard.children('img').attr('src')
-                userCard.children('span').text(list[i].fullName);
-                userCard.data( 'user-id', list[i].id );
-                sendListUsers.append(userCard);
+    wz.user.friendList( function( error, list ){
+        
+        for( var i = 0; i < list.length; i++ ){
+                                            
+            var userCard = sendUserPrototype.clone().removeClass('prototype');
+            //userCard.children('img').attr('src')
+            userCard.children('span').text(list[i].fullName);
+            userCard.data( 'user-id', list[i].id );
+            sendListUsers.append(userCard);
 
-            }
+        }
                     
-        });
+    });
 
     $( '.send-title', win ).text( lang.sendTitle );
     $( '.send-list-title', win ).text( lang.sendListTitle );
