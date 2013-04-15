@@ -67,45 +67,84 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
         });
 
     });
+    
+    // Local Functions
+    var getFriendList = function(){
+
+        var deferred = $.Deferred();
         
-    wz.user.friendList( function( error, list ){
-        
-        for( var i = 0; i < list.length; i++ ){
-                                            
-            var userCard = shareUserPrototype.clone().removeClass('prototype');
-            //userCard.children('img').attr('src')
-            userCard.data( 'user-id', list[ i ].id );
-            userCard.children('span').text( list[ i ].fullName );
-            shareListUsers.append( userCard );
+        wz.user.friendList( function( error, list ){
+            deferred.resolve( [ error, list ] );
+        });
 
-        }
-                
-    });
+        return deferred.promise();
 
-    wz.structure( params, function( error, structure ){
+    };
 
-        structure.sharedWith( function( error, list ){
+    var getSharedList = function(){
 
-            var users = [];
+        var deferred = $.Deferred();
 
-            for( var i = 0; i < list.length; i++ ){
-                                                
-                var userCard = shareUserPrototype.clone().removeClass('prototype');
-                //userCard.children('img').attr('src')
-                userCard.data( 'user-id', list[ i ].user.id );
-                userCard.children('span').text( list[ i ].user.fullName );
-                shareChosenUsers.append( userCard );
-
-                users.push( list[ i ].user.id );
-
-            }
-
-            initialUsers = users;
-            users = null;
+        wz.structure( params, function( error, structure ){
+            
+            structure.sharedWith( function( error, list ){
+                deferred.resolve( [ error, list ] );
+            });
 
         });
 
-    });
+        return deferred.promise();
+
+    };
+
+    $.when( getFriendList(), getSharedList() )
+        .then( function( friendList, sharedList ){
+
+            friendList = friendList[ 1 ];
+            sharedList = sharedList[ 1 ];
+
+            var users    = [];
+            var userCard = null;
+
+            var i = 0;
+            var j = 0;
+
+            for( i = 0; i < sharedList.length; i++ ){
+
+                userCard = shareUserPrototype.clone().removeClass('prototype');
+                //userCard.children('img').attr('src')
+                userCard.data( 'user-id', sharedList[ i ].user.id );
+                userCard.children('span').text( sharedList[ i ].user.fullName );
+                shareChosenUsers.append( userCard );
+
+                users.push( sharedList[ i ].user.id );
+
+                for( j = 0; j < friendList.length; j++ ){
+
+                    if( friendList[ j ].id === sharedList[ i ].user.id ){
+                        friendList[ j ] = null;
+                        break;
+                    }
+
+                }
+
+            }
+
+            for( i = 0; i < friendList.length; i++ ){
+
+                if( friendList[ i ] !== null ){
+
+                    userCard = shareUserPrototype.clone().removeClass('prototype');
+                    //userCard.children('img').attr('src')
+                    userCard.data( 'user-id', friendList[ i ].id );
+                    userCard.children('span').text( friendList[ i ].fullName );
+                    shareListUsers.append( userCard );
+
+                }
+
+            }
+
+        });
 
     $( '.share-title', win ).text( lang.shareTitle );
     $( '.share-list-title', win ).text( lang.shareListTitle );
