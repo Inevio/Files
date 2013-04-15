@@ -7,7 +7,7 @@ wz.app.addScript( 1, 'received', function( win, app, lang, params ){
             alert( lang.error );
         }else{
 
-            wz.user.getUser( structure.metadata.received.sender, function( error, user ){
+            wz.user( structure.metadata.received.sender, function( error, user ){
                 $( '.received-content-info.who', win ).text( lang.sentBy + ' ' + user.fullName );
             });
             
@@ -30,15 +30,35 @@ wz.app.addScript( 1, 'received', function( win, app, lang, params ){
             win
             
                 .on( 'mousedown', '.received-content-accept', function(){
-                    structure.accept();
-                    alert( lang.fileAccepted );
-                    wz.app.closeWindow( win.data( 'win' ) );
+
+                    structure.accept( function( error ){
+
+                        if( error ){
+                            alert( error );
+                        }else{
+                            alert( lang.fileAccepted );
+                        }
+
+                        wz.app.closeWindow( win.data( 'win' ) );
+
+                    });   
+
                 })
             
                 .on( 'mousedown', '.received-content-refuse', function(){
-                    structure.refuse();
-                    alert( lang.fileRefused );
-                    wz.app.closeWindow( win.data( 'win' ) );
+
+                    structure.refuse( function( error ){
+
+                        if( error ){
+                            alert( error );
+                        }else{
+                            alert( lang.fileRefused );
+                        }
+
+                        wz.app.closeWindow( win.data( 'win' ) );
+
+                    });
+                    
                 });
                 
         }

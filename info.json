@@ -32,12 +32,13 @@
             
             "template" : "main.html",
 
-            "resizable"   : false,
+            "resizable" : true,
+            "maxizable" : true,
 
             "width"  : {
 
                 "default" : 544,
-                "min"     : 0,
+                "min"     : 515,
                 "max"     : 0
 
             },

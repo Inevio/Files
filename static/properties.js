@@ -64,7 +64,7 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
         created.text( createdMonth + '/' + createdDay + '/' +  createdDate.getFullYear() + ', ' + createdHour + ':' + createdMinute + ':' + createdSecond );
         modified.text( modifiedMonth + '/' + modifiedDay + '/' +  modifiedDate.getFullYear() + ', ' + modifiedHour + ':' + modifiedMinute + ':' + modifiedSecond );
         
-        wz.user.getUser( structure.owner, function( error, user ){
+        wz.user( structure.owner, function( error, user ){
             owner.text( user.fullName );
         });
         
