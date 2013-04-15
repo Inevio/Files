@@ -793,3 +793,76 @@
 .wz-app-1 .list .weexplorer-file:last-child{
     margin-bottom: 15px;
 }
+
+.wz-app-1 .weexplorer-navigation{
+    position: absolute;
+    top: 35px;
+    left: 10px;
+    list-style: none;
+    display: none;
+    z-index: 1;
+}
+
+.wz-app-1 .weexplorer-navigation.show{
+    display: block;
+}
+
+.wz-app-1 .weexplorer-navigation:before{
+    
+    position: relative;
+    top: 2px;
+    left: 14px;
+    float: left;
+    width: 16px;
+    height: 7px;
+    background: url('https://static.weezeel.com/app/1/sort.png') no-repeat;
+    content: '';
+    
+}
+
+.wz-app-1 .weexplorer-navigation.next:before{   
+    left: 40px;
+}
+
+.wz-app-1 .weexplorer-navigation li:nth-child(2){
+    
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    box-shadow: inset 0px 1px 0px 0px #4D4D4D;
+    
+}
+
+.wz-app-1 .weexplorer-navigation li{
+    
+    overflow: hidden; 
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box; 
+    box-sizing: border-box;
+    padding: 10px 15px 0px 10px;
+    width: 100%;
+    height: 29px;
+    background: #404040;
+    color: #E0E0E0;
+    text-overflow: ellipsis;
+    font-size: 15px;
+    line-height: 10px;
+    
+}
+
+.wz-app-1 .weexplorer-navigation li:last-child{
+    
+    height: 30px;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    box-shadow: inset 0px -1px 0px 0px #4D4D4D;
+    
+}
+
+.wz-app-1 .weexplorer-navigation li:hover{
+    background: #535353;
+}
+
+.wz-app-1 .weexplorer-navigation span{
+    float: left;
+    margin-left: 8px;
+}

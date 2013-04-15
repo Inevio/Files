@@ -7,6 +7,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     var current        = null;
     var pointer        = -1;
     var controlNav     = false;
+    var pressedNav     = false;
     var showSidebar    = false;
     var maximized      = false;
     var stickedSidebar = false;
@@ -34,6 +35,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     var winMenu        = $( '.wz-win-menu', win );
     var wxpMenu        = $( '.weexplorer-menu', win );
     var folderBar      = $( '.weexplorer-folder', win );
+    var navigationMenu = $( '.weexplorer-navigation', win );
 
     var uploading        = $( '.weexplorer-uploading', win );
     var uploadingBar     = $( '.weexplorer-uploading-bar', uploading );
@@ -67,15 +69,31 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         current = id;
 
-        if( !controlNav ){
+        if( !controlNav && !pressedNav ){
+
             pointer++;
-            record = record.slice( 0, pointer + 1 );
+            record = record.slice( 0, pointer + 1 );   
+
+        }else if( pressedNav ){
+
+            for( var i = 0 ; i < record.length ; i++ ){
+
+                if( record[i] === id ){
+
+                    pointer = i;
+
+                }
+
+            }
+
         }
-        
+
         fileArea.data( 'file-id', id );
 
         record[ pointer ] = id;
+
         controlNav = false;
+        pressedNav = false;
 
     };
 
@@ -740,14 +758,14 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         }  
     })
     
-    .on( 'mousedown', '.weexplorer-option-next', function(){
-        if(nextButton.hasClass('active')){
+    .on( 'click', '.weexplorer-option-next', function(){
+        if( nextButton.hasClass('active') && !navigationMenu.hasClass( 'show' ) ){
             recordNext();       
         }
     })
     
-    .on( 'mousedown', '.weexplorer-option-back', function(){
-        if(backButton.hasClass('active')){
+    .on( 'click', '.weexplorer-option-back', function(){
+        if( backButton.hasClass('active') && !navigationMenu.hasClass( 'show' ) ){
             recordBack();       
         }
     })
@@ -803,6 +821,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     .on( 'click', '.weexplorer-file.active', function(e){
         
+        navigationMenu.removeClass( 'show' );
+
         if( !e.shiftKey && !e.ctrlKey && !e.metaKey ){
             $(this).addClass('last-active').siblings('.active').removeClass('active last-active hidden');
         }
@@ -891,6 +911,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             
         }       
         
+        navigationMenu.removeClass( 'show' );
         $( '.weexplorer-sort', win ).removeClass( 'show' ); 
         e.stopPropagation();
         
@@ -1048,6 +1069,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     })
     
     .on( 'mousedown', '.weexplorer-menu-sort', function( e ){
+
+        navigationMenu.removeClass( 'show' );
         
         if( !$( '.weexplorer-sort', win ).hasClass( 'show' ) ){
             $( '.weexplorer-sort', win ).addClass( 'show' );
@@ -1485,7 +1508,68 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     .on( 'wz-dropleave', '.weexplorer-file.directory', function(){
         $(this).removeClass('weexplorer-directory-over');
-    })       
+    })
+
+    .on( 'wz-hold', '.weexplorer-option-back.active', function( e ){
+
+        navigationMenu.children().not( '.prototype' ).remove();
+
+        for( var i = pointer - 1 ; i >= 0 ; i-- ){
+
+            wz.structure( record[i], function( error, structure ){
+                var element = navigationMenu.find( '.prototype' ).clone().removeClass();
+                element.data( 'id', structure.id ).find( 'span' ).text( structure.name );
+                navigationMenu.append( element );
+            });
+
+        }
+
+        navigationMenu.removeClass( 'next' );
+
+        if( !navigationMenu.hasClass( 'show' ) ){
+            navigationMenu.addClass( 'show' );
+            e.stopPropagation();
+        }
+        
+    })
+
+    .on( 'wz-hold', '.weexplorer-option-next.active', function( e ){
+
+        navigationMenu.children().not( '.prototype' ).remove();
+
+        for( var i = pointer + 1 ; i < record.length ; i++ ){
+
+            wz.structure( record[i], function( error, structure ){
+                var element = navigationMenu.find( '.prototype' ).clone().removeClass();
+                element.data( 'id', structure.id ).find( 'span' ).text( structure.name );
+                navigationMenu.append( element );
+            });
+
+        }
+
+        navigationMenu.addClass( 'next' );
+
+        if( !navigationMenu.hasClass( 'show' ) ){
+            navigationMenu.addClass( 'show' );
+            e.stopPropagation();
+        }
+
+    })
+
+    .on( 'mousedown', '.weexplorer-navigation li', function(){
+
+        pressedNav = true;
+        openDirectory( $(this).data( 'id' ) );
+
+    })
+
+    .on( 'mousedown', function(){
+        navigationMenu.removeClass( 'show' );
+    })
+
+    .on( 'wz-blur', function(){
+        navigationMenu.removeClass( 'show' );
+    });       
 
     fileArea.on( 'contextmenu', function(){
 
