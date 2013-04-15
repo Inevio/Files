@@ -795,6 +795,7 @@
 }
 
 .wz-app-1 .weexplorer-navigation{
+    min-width: 62px;
     position: absolute;
     top: 35px;
     left: 10px;
