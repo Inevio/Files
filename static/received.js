@@ -7,7 +7,7 @@ wz.app.addScript( 1, 'received', function( win, app, lang, params ){
             alert( lang.error );
         }else{
 
-            wz.user.getUser( structure.metadata.received.sender, function( error, user ){
+            wz.user( structure.metadata.received.sender, function( error, user ){
                 $( '.received-content-info.who', win ).text( lang.sentBy + ' ' + user.fullName );
             });
             
