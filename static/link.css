@@ -261,28 +261,32 @@
     width: 25px;
     height: 25px;
     display: block;
-    background: url("https://static.weezeel.com/app/1/lock.png") no-repeat;
+    background: url("https://staticbeta.weezeel.com/app/1/lock.png") no-repeat;
+    background-size: 25px 25px;
 }
 
 .wz-app-1-link .link-unlock{
     width: 25px;
     height: 25px;
     display: block;
-    background: url("https://static.weezeel.com/app/1/unlock.png") no-repeat;
+    background: url("https://staticbeta.weezeel.com/app/1/unlock.png") no-repeat;
+    background-size: 25px 25px;
 }
 
 .wz-app-1-link .link-prev{
     width: 25px;
     height: 25px;
     display: block;
-    background: url("https://static.weezeel.com/app/1/prev.png") no-repeat;
+    background: url("https://staticbeta.weezeel.com/app/1/prev.png") no-repeat;
+    background-size: 25px 25px;
 }
 
 .wz-app-1-link .link-unprev{
     width: 25px;
     height: 25px;
     display: block;
-    background: url("https://static.weezeel.com/app/1/unprev.png") no-repeat;
+    background: url("https://staticbeta.weezeel.com/app/1/unprev.png") no-repeat;
+    background-size: 25px 25px;
 }
 
 .wz-app-1-link .link-delete{
@@ -290,7 +294,8 @@
     height: 16px;
     display: inline-block;
     margin-top: 5px;
-    background: url("https://static.weezeel.com/app/1/cross.png") no-repeat;
+    background: url("https://staticbeta.weezeel.com/app/1/cross.png") no-repeat;
+    background-size: 16px 16px;
 }
 
 .wz-app-1-link input.link-data{
