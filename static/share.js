@@ -8,16 +8,51 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
     win
         .on( 'mousedown', '.share-how article', function(){
             
-            var button = $(this).children('figure');
-            
-            if(button.hasClass('yes')){
-                button.removeClass('yes');
-                button.addClass('no');
-                button.children('span').text( lang.shareHowNo );
+            var button = $(this).find( 'figure' );
+            var state = $(this).parent( '.share-how' );
+
+            if( button.hasClass( 'default' ) ){
+
+                if( button.hasClass('yes') ){
+
+                    state.removeClass( 'default' );
+                    button.removeClass('yes');
+                    button.addClass('no');
+                    button.find('span').text( lang.shareHowNo );
+
+                }else{
+
+                    state.addClass( 'default' );
+                    $( this ).siblings( 'article' ).find( 'figure' ).removeClass('no').addClass( 'yes' ).find( 'span' ).text( lang.shareHowYes );
+                    button.removeClass('no');
+                    button.addClass('yes');
+                    button.find('span').text( lang.shareHowYes );
+
+                }
+
             }else{
-                button.removeClass('no');
-                button.addClass('yes');
-                button.children('span').text( lang.shareHowYes );
+
+                if( button.hasClass('yes') ){
+
+                    state.removeClass( 'default' );
+                    $( this ).siblings( 'article' ).find( '.default' ).removeClass('yes').addClass('no').find( 'span' ).text( lang.shareHowNo );
+                    button.removeClass('yes');
+                    button.addClass('no');
+                    button.find('span').text( lang.shareHowNo );
+
+                }else{
+
+                    if( !$(this).siblings( 'article' ).find( 'figure' ).not( '.default' ).hasClass( 'no' ) ){
+                        state.addClass( 'default' );
+                        $( this ).siblings( 'article' ).find( '.default' ).removeClass('no').addClass('yes').find( 'span' ).text( lang.shareHowYes );
+                    }
+
+                    button.removeClass('no');
+                    button.addClass('yes');
+                    button.find('span').text( lang.shareHowYes );
+
+                }
+
             }
             
         })
