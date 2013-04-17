@@ -190,6 +190,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         
         file.find('img').attr( 'src', structure.icons.normal );
         file.addClass( types[ structure.type ] );
+        if( structure.type === 3 ){
+            file.addClass( 'weexplorer-file-uploading' );
+        }
         file.addClass( 'weexplorer-file-' + structure.id );
         file.data( 'file-id', structure.id );
         file.data( 'file-size', structure.size );
@@ -1373,9 +1376,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 .add( lang.openInNewWindow, function(){
                     wz.app.createWindow(1, icon.data( 'file-id' ), 'main');
                 })
-                .add( lang.sendTo, function(){
-                    wz.app.createWindow(1, icon.data( 'file-id' ), 'send');
-                })
                 .add( lang.shareWith, function(){
                     wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
                 })
@@ -1434,7 +1434,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 }, 'warning');
             
         }else if( icon.hasClass('pointer-pending') ){
-            
+
             menu
                 .add( lang.acceptFile, function(){
                     wz.structure( icon.data( 'file-id' ), function( error, structure ){
