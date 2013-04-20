@@ -1,9 +1,10 @@
 
 wz.app.addScript( 1, 'share', function( win, app, lang, params ){
 
-    var shareListUsers      = $('.share-list-users', win);
-    var shareChosenUsers    = $('.share-chosen-users', win);
-    var shareUserPrototype  = $('.share-user.prototype', win);
+    var shareListUsers     = $('.share-list-users', win);
+    var shareChosenUsers   = $('.share-chosen-users', win);
+    var shareUserPrototype = $('.share-user.prototype', win);
+    var initialUsers       = null;
 
     win
         .on( 'mousedown', '.share-how article', function(){
@@ -57,43 +58,123 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
             
         })
         
-        .on( 'mousedown', '.share-user', function(){
-            
-            if( $(this).parent().hasClass('share-list-users') ){
-                shareChosenUsers.append($(this));
-            }else{
-                shareListUsers.append($(this));
-            }
-            
-        })
+    .on( 'mousedown', '.share-user', function(){
         
-        .on( 'mousedown', 'button', function(){
+        if( $( this ).parent().hasClass('share-list-users') ){
+            shareChosenUsers.append( this );
+        }else{
+            shareListUsers.append( this );
+        }
+        
+    })
+    
+    .on( 'mousedown', 'button', function(){
+        
+        wz.structure( params, function( error, structure ){
             
-            wz.structure( params, function( error, structure ){
-                
-                shareChosenUsers.children().each( function(){
-                    structure.addShare( $(this).data( 'user-id' ), { global : 1 } );
-                });
+            shareChosenUsers.children().each( function(){
 
-                wz.app.closeWindow( win.data( 'win' ) );
+                var userId = $( this ).data('user-id');
+                var index  = $.inArray( userId, initialUsers );
+
+                if( index === -1 ){
+                    structure.addShare( userId, { global : 1 } );
+                }else{
+                    initialUsers[ index ] = null;
+                }
                 
             });
 
-        });
-        
-    wz.user
-        .friendList( function( error, list ){
-            
-            for( var i = 0; i < list.length; i++ ){
-                                                
-                var userCard = shareUserPrototype.clone().removeClass('prototype');
-                //userCard.children('img').attr('src')
-                userCard.data( 'user-id', list[ i ].id );
-                userCard.children('span').text(list[i].fullName);
-                shareListUsers.append(userCard);
+            for( var i in initialUsers ){
+
+                if( initialUsers[ i ] !== null ){
+                    structure.removeShare( initialUsers[ i ] );
+                }
 
             }
-                    
+
+            wz.app.closeWindow( win.data( 'win' ) );
+            
+        });
+
+    });
+    
+    // Local Functions
+    var getFriendList = function(){
+
+        var deferred = $.Deferred();
+        
+        wz.user.friendList( function( error, list ){
+            deferred.resolve( [ error, list ] );
+        });
+
+        return deferred.promise();
+
+    };
+
+    var getSharedList = function(){
+
+        var deferred = $.Deferred();
+
+        wz.structure( params, function( error, structure ){
+            
+            structure.sharedWith( function( error, list ){
+                deferred.resolve( [ error, list ] );
+            });
+
+        });
+
+        return deferred.promise();
+
+    };
+
+    $.when( getFriendList(), getSharedList() )
+        .then( function( friendList, sharedList ){
+
+            friendList = friendList[ 1 ];
+            sharedList = sharedList[ 1 ];
+
+            var users    = [];
+            var userCard = null;
+
+            var i = 0;
+            var j = 0;
+
+            for( i = 0; i < sharedList.length; i++ ){
+
+                userCard = shareUserPrototype.clone().removeClass('prototype');
+                //userCard.children('img').attr('src')
+                userCard.data( 'user-id', sharedList[ i ].user.id );
+                userCard.children('span').text( sharedList[ i ].user.fullName );
+                shareChosenUsers.append( userCard );
+
+                users.push( sharedList[ i ].user.id );
+
+                for( j = 0; j < friendList.length; j++ ){
+
+                    if( friendList[ j ].id === sharedList[ i ].user.id ){
+                        friendList[ j ] = null;
+                        break;
+                    }
+
+                }
+
+            }
+
+            for( i = 0; i < friendList.length; i++ ){
+
+                if( friendList[ i ] !== null ){
+
+                    userCard = shareUserPrototype.clone().removeClass('prototype');
+                    //userCard.children('img').attr('src')
+                    userCard.data( 'user-id', friendList[ i ].id );
+                    userCard.children('span').text( friendList[ i ].fullName );
+                    shareListUsers.append( userCard );
+
+                }
+
+            }
+
         });
 
     $( '.share-title', win ).text( lang.shareTitle );
