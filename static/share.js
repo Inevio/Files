@@ -118,8 +118,8 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
 
         wz.structure( params, function( error, structure ){
             
-            structure.sharedWith( function( error, list ){
-                deferred.resolve( [ error, list ] );
+            structure.sharedWith( function( error, owner, permissions, list ){
+                deferred.resolve( [ error, owner, permissions, list ] );
             });
 
         });
@@ -131,8 +131,13 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
     $.when( getFriendList(), getSharedList() )
         .then( function( friendList, sharedList ){
 
+            var owner       = sharedList[ 1 ];
+            var permissions = sharedList[ 2 ];
+
+            // To Do -> Cambiar interruptores de permisos
+
             friendList = friendList[ 1 ];
-            sharedList = sharedList[ 1 ];
+            sharedList = sharedList[ 3 ];
 
             var users    = [];
             var userCard = null;
@@ -144,15 +149,15 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
 
                 userCard = shareUserPrototype.clone().removeClass('prototype');
                 //userCard.children('img').attr('src')
-                userCard.data( 'user-id', sharedList[ i ].user.id );
-                userCard.children('span').text( sharedList[ i ].user.fullName );
+                userCard.data( 'user-id', sharedList[ i ].id );
+                userCard.children('span').text( sharedList[ i ].fullName );
                 shareChosenUsers.append( userCard );
 
-                users.push( sharedList[ i ].user.id );
+                users.push( sharedList[ i ].id );
 
                 for( j = 0; j < friendList.length; j++ ){
 
-                    if( friendList[ j ].id === sharedList[ i ].user.id ){
+                    if( friendList[ j ].id === sharedList[ i ].id ){
                         friendList[ j ] = null;
                         break;
                     }
