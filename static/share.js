@@ -5,12 +5,13 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
     var shareChosenUsers   = $('.share-chosen-users', win);
     var shareUserPrototype = $('.share-user.prototype', win);
     var initialUsers       = [];
+    var filePermissions    = {};
+    var state              = $( '.share-how', win ); 
 
     win
         .on( 'mousedown', '.share-how article', function(){
             
             var button = $(this).find( 'figure' );
-            var state = $(this).parent( '.share-how' );
 
             if( button.hasClass( 'default' ) ){
 
@@ -69,8 +70,23 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
     })
     
     .on( 'mousedown', 'button', function(){
+
+        filePermissions = {
+
+            'link'     : ( $( '.share-how-link', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
+            'modify'   : ( $( '.share-how-modify', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
+            'copy'     : ( $( '.share-how-copy', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
+            'download' : ( $( '.share-how-download', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
+            'share'    : ( $( '.share-how-share', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
+            'send'     : ( $( '.share-how-send', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0
+
+        };
         
         wz.structure( params, function( error, structure ){
+
+            var changed = false;
+
+            var promises = [];
             
             shareChosenUsers.children().each( function(){
 
@@ -78,7 +94,15 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
                 var index  = $.inArray( userId, initialUsers );
 
                 if( index === -1 ){
-                    structure.addShare( userId, { global : 1 } );
+
+                    var promiseId = promises.push( $.Deferred().promise() );
+
+                    structure.addShare( userId, filePermissions, function( error ){
+                        promises[ promiseId ].resolve( error );
+                    });
+
+                    changed = true;
+
                 }else{
                     initialUsers[ index ] = null;
                 }
@@ -88,12 +112,38 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
             for( var i in initialUsers ){
 
                 if( initialUsers[ i ] !== null ){
-                    structure.removeShare( initialUsers[ i ] );
+
+                    ( function(){
+                        
+                        var promiseId = promises.push( $.Deferred().promise() );
+
+                        structure.removeShare( initialUsers[ i ], function( error ){
+                            promises[ promiseId ].resolve( error );
+                        });
+
+                    })();
+                   
                 }
 
             }
 
-            wz.app.closeWindow( win.data( 'win' ) );
+            if( !changed ){
+
+                var promiseId = promises.push( $.Deferred().promise() );
+
+                structure.changePermissions( filePermissions, function( error ){
+                    promises[ promiseId ].resolve( error );
+                });
+
+            }
+
+            $.when( promises )
+                .then( function( input ){
+
+                    console.log( input );
+                    wz.app.closeWindow( win.data( 'win' ) );
+
+                });
             
         });
 
@@ -195,7 +245,7 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
     $( '.share-how-default', win ).text( lang.shareHowDefault );
     $( '.share-how-yes', win ).text( lang.shareHowYes );
     $( '.share-how-no', win ).text( lang.shareHowNo );
-    $( '.share-how-read', win ).text( lang.shareHowRead );
+    $( '.share-how-link', win ).text( lang.shareHowLink );
     $( '.share-how-modify', win ).text( lang.shareHowModify );
     $( '.share-how-copy', win ).text( lang.shareHowCopy );
     $( '.share-how-download', win ).text( lang.shareHowDownload );
