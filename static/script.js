@@ -257,10 +257,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                 var length = list.length;
                 var files  = $();
+                var iconFile = null;
 
                 // Generate File icons
                 for( var i = 0; i < length; i++ ){
-                    files = files.add( icon( list[ i ] ) );
+                    iconFile = icon( list[ i ] );
+                    iconFile.data( 'permissions', list[ i ].permissions );
+                    files = files.add( iconFile );
                 }
 
                 // Display icons
@@ -1351,56 +1354,106 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         var icon = $(this);
         var menu = wz.menu();
+        var permissions = icon.data( 'permissions' );
         
         if( icon.hasClass('file') || ( icon.hasClass('pointer') && !icon.hasClass('pointer-pending') ) ){
             
-            menu
-                .add( lang.openFile, function(){
-                    icon.dblclick();
-                })
-                .add( lang.createLink, function(){
+            menu.add( lang.openFile, function(){
+                icon.dblclick();
+            });
+
+            if( permissions.link ){
+
+                menu.add( lang.createLink, function(){
                     wz.app.createWindow(1, icon.data( 'file-id' ), 'link');
-                })
-                .add( lang.sendTo, function(){
+                });
+
+            }
+
+            if( permissions.send ){
+
+                menu.add( lang.sendTo, function(){
                     wz.app.createWindow(1, icon.data( 'file-id' ), 'send');
-                })
-                .add( lang.shareWith, function(){
+                });
+
+            }
+
+            if( permissions.share ){
+
+                menu.add( lang.shareWith, function(){
                     wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
-                })
-                .add( lang.download, function(){
+                });
+
+            }
+            
+            if( permissions.download ){
+
+                menu.add( lang.download, function(){
                     $( '.weexplorer-menu-download', win ).mousedown();
-                })
-                .add( lang.rename, function(){
+                });
+
+            }
+            
+            if( permissions.modify ){
+
+                menu.add( lang.rename, function(){
                     beginRename( icon );
-                })
-                .add( lang.properties, function(){
-                    wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
-                })
-                .add( lang.remove, function(){
+                });
+
+            }
+                
+            menu.add( lang.properties, function(){
+                wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
+            });
+
+            if( permissions.modify ){
+
+                menu.add( lang.remove, function(){
                     deleteAllActive();
                 }, 'warning');
+
+            }
+
             
         }else if( icon.hasClass('directory') ){
             
             menu
+
                 .add( lang.openFolder, function(){
                     icon.dblclick();
                 })
+
                 .add( lang.openInNewWindow, function(){
                     wz.app.createWindow(1, icon.data( 'file-id' ), 'main');
-                })
-                .add( lang.shareWith, function(){
+                });
+
+            if( permissions.share ){
+
+                menu.add( lang.shareWith, function(){
                     wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
-                })
-                .add( lang.rename, function(){
+                });
+
+            }
+
+            if( permissions.modify ){
+
+                menu.add( lang.rename, function(){
                     beginRename( icon );
-                })
-                .add( lang.properties, function(){
-                    wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
-                })
-                .add( lang.remove, function(){
+                });
+
+            }
+
+            menu.add( lang.properties, function(){
+                wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
+            });
+
+            if( permissions.modify ){
+
+                menu.add( lang.remove, function(){
                     deleteAllActive();
                 }, 'warning');
+
+            }
             
         }else if( icon.hasClass('received') ){
             
