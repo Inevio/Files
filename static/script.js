@@ -314,7 +314,15 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             // To Do -> Error
 
             structure.createDirectory( null, function( error, newDirectory ){
-                //To Do -> Error          
+
+                setTimeout( function(){
+
+                    beginRename( $( '.weexplorer-file-' + newDirectory.id, fileArea ) );
+
+                }, 100);
+
+                //To Do -> Error  
+
             });
 
         });
@@ -682,7 +690,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     .on( 'structure-rename', function(e, structure){
 
         if( structure.parent === current ){
-            fileArea.children( '.weexplorer-file-' + structure.id ).children('textarea').val(structure.name);
+            fileArea.children( '.weexplorer-file-' + structure.id ).children( 'textarea' ).val( structure.name );
+        }else if( structure.id === current ){
+            $( '.weexplorer-folder-name', win ).text( structure.name );
         }
 
     })
@@ -1321,7 +1331,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         if( $(e.target).is('textarea') ){
             e.stopPropagation();
         }else if( $( '.weexplorer-file.last-active', fileArea ).size() ){
-            
+
             var leftStart = $( '.weexplorer-file.last-active', fileArea ).position().left;
             var object = $( '.weexplorer-file.last-active', fileArea ).next();
             
