@@ -266,6 +266,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 // Display icons
                 fileArea.children().not('.prototype').remove();
                 fileArea.append( files );
+                fileArea.data( 'data-wz-uploader-destiny', structure.id );
 
                 // Update Folder info
                 folderName.text( structure.name );
