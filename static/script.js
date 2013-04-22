@@ -1302,7 +1302,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         if( $(e.target).is('textarea') ){
             e.stopPropagation();
-        }else{
+        }else if( $( '.weexplorer-file.last-active', fileArea ).size() ){
+
             var leftStart = $( '.weexplorer-file.last-active', fileArea ).position().left;
             var object = $( '.weexplorer-file.last-active', fileArea ).prev();
         
@@ -1319,7 +1320,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         if( $(e.target).is('textarea') ){
             e.stopPropagation();
-        }else{
+        }else if( $( '.weexplorer-file.last-active', fileArea ).size() ){
+            
             var leftStart = $( '.weexplorer-file.last-active', fileArea ).position().left;
             var object = $( '.weexplorer-file.last-active', fileArea ).next();
             
