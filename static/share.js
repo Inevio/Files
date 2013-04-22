@@ -4,7 +4,7 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
     var shareListUsers     = $('.share-list-users', win);
     var shareChosenUsers   = $('.share-chosen-users', win);
     var shareUserPrototype = $('.share-user.prototype', win);
-    var initialUsers       = null;
+    var initialUsers       = [];
 
     win
         .on( 'mousedown', '.share-how article', function(){
@@ -145,7 +145,6 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
             friendList = friendList[ 1 ];
             sharedList = sharedList[ 3 ];
 
-            var users    = [];
             var userCard = null;
 
             var i = 0;
@@ -159,11 +158,11 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
                 userCard.children('span').text( sharedList[ i ].fullName );
                 shareChosenUsers.append( userCard );
 
-                users.push( sharedList[ i ].id );
+                initialUsers.push( sharedList[ i ].id );
 
                 for( j = 0; j < friendList.length; j++ ){
 
-                    if( friendList[ j ].id === sharedList[ i ].id ){
+                    if( friendList[ j ] !== null && friendList[ j ].id === sharedList[ i ].id ){
                         friendList[ j ] = null;
                         break;
                     }
