@@ -134,7 +134,13 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
             var owner       = sharedList[ 1 ];
             var permissions = sharedList[ 2 ];
 
-            // To Do -> Cambiar interruptores de permisos
+            for( var i in permissions ){ 
+
+                if( !permissions[i] ){
+                    $( '.share-how-' + i, win ).mousedown();
+                }
+                
+            }
 
             friendList = friendList[ 1 ];
             sharedList = sharedList[ 3 ];
