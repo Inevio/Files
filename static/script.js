@@ -874,7 +874,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             time = time + lang.seconds;
         }
 
-        uploadingElapsed.text( time + ' ' + 'left' );
+        uploadingElapsed.text( time + ' ' + lang.left );
 
     })
 

@@ -9,6 +9,7 @@
 	"calculating" : "Calculating...",
 	"minutes" : " minutes",
 	"seconds" : " seconds",
+	"left"	: "left",
 	"sortByName" : "Sort by Name",
 	"sortBySize" : "Sort by Size",
 	"sortByCreation" : "Sort by Creation",
