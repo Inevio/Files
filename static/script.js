@@ -17,9 +17,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                     'special-directory wz-drop-area',
                     'file',
                     'temporal-file',
-                    'null',
-                    'pointer',
-                    'received'
+                    'received',
+                    'pointer'/*,
+                    'null'*/
                 ];
 
     var nextButton     = $( '.weexplorer-option-next', win );
