@@ -95,10 +95,12 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
 
                 if( index === -1 ){
 
-                    var promiseId = promises.push( $.Deferred().promise() );
+                    var deferred  = $.Deferred();
+                    
+                    promises.push( deferred.promise() );
 
                     structure.addShare( userId, filePermissions, function( error ){
-                        promises[ promiseId ].resolve( error );
+                        deferred.resolve( error );
                     });
 
                     changed = true;
@@ -109,38 +111,40 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
                 
             });
 
-            for( var i in initialUsers ){
+            initialUsers.map( function( element ){
 
-                if( initialUsers[ i ] !== null ){
+                if( element !== null ){
 
-                    ( function(){
-                        
-                        var promiseId = promises.push( $.Deferred().promise() );
+                    var deferred = $.Deferred();
 
-                        structure.removeShare( initialUsers[ i ], function( error ){
-                            promises[ promiseId ].resolve( error );
-                        });
+                    promises.push( deferred.promise() );
 
-                    })();
+                    structure.removeShare( element, function( error ){
+                        deferred.resolve( error );
+                    });
                    
                 }
 
-            }
+            });
 
-            if( !changed ){
+            if( !changed && shareChosenUsers.length ){
 
-                var promiseId = promises.push( $.Deferred().promise() );
+                var deferred = $.Deferred();
+
+                promises.push( deferred.promise() )
 
                 structure.changePermissions( filePermissions, function( error ){
-                    promises[ promiseId ].resolve( error );
+                    deferred.resolve( error );
                 });
 
             }
 
-            $.when( promises )
-                .then( function( input ){
+            $.when.apply( null, promises )
+                .then( function(){
 
-                    console.log( input );
+                    // To Do -> Hacer cosas con las respuestas de las promesas
+                    console.log( arguments );
+
                     wz.app.closeWindow( win.data( 'win' ) );
 
                 });
