@@ -199,6 +199,10 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
                 if( !permissions[i] ){
                     $( '.share-how-' + i, win ).mousedown();
                 }
+
+                /*if( !owner.current ){
+                    $( '.share-how-' + i, win ).siblings().addClass( 'default' );
+                }*/
                 
             }
 
@@ -212,11 +216,15 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
 
             for( i = 0; i < sharedList.length; i++ ){
 
-                userCard = shareUserPrototype.clone().removeClass('prototype');
-                //userCard.children('img').attr('src')
-                userCard.data( 'user-id', sharedList[ i ].id );
-                userCard.children('span').text( sharedList[ i ].fullName );
-                shareChosenUsers.append( userCard );
+                if( sharedList[ i ].id !== owner.id ){
+
+                    userCard = shareUserPrototype.clone().removeClass('prototype');
+                    //userCard.children('img').attr('src')
+                    userCard.data( 'user-id', sharedList[ i ].id );
+                    userCard.children('span').text( sharedList[ i ].fullName );
+                    shareChosenUsers.append( userCard );
+
+                }
 
                 initialUsers.push( sharedList[ i ].id );
 
