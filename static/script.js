@@ -837,6 +837,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     })
     
     .on( 'click', '.weexplorer-file.active', function(e){
+
+        if( renaming.size() ){
+            finishRename(); 
+        }
         
         navigationMenu.removeClass( 'show' );
 
@@ -1634,6 +1638,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     })
 
     .on( 'wz-blur', function(){
+        if( renaming.size() ){
+            finishRename(); 
+        }
         navigationMenu.removeClass( 'show' );
     });       
 
