@@ -1252,7 +1252,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             if( $('.weexplorer-file.active', win).size() ){
                 deleteAllActive();
             }else{
-                $( '.weexplorer-option-back', win ).mousedown();
+                $( '.weexplorer-option-back', win ).click();
             }
         }
   
