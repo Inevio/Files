@@ -80,6 +80,7 @@
 	"contentRefuse" : "Refuse",
 
 	"fileSent" : "Your file has been sent!",
+	"fileSentCorrectly" : "has been sent correctly",
 	"sendTitle" : "Choose which friends you want to send your file to",
 	"sendListTitle" : "Friends:",
 	"sendChosenTitle" : "Sent to:",

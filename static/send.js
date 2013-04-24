@@ -26,12 +26,17 @@ wz.app.addScript( 1, 'send', function( win, app, lang, params ){
                     sendChosenUsers.children().each( function(){
                         structure.sendTo( $(this).data( 'user-id' ), $( '.send-message', win).val() );
                     });
+
+                    wz.banner()
+                    .title( lang.fileSent )
+                    .text( structure.name + ' ' + lang.fileSentCorrectly )
+                    .image( structure.icons.tiny )
+                    .render();
+                        
+                    wz.app.closeWindow( win.data( 'win' ) );
+
                 
                 });
-            
-                alert( lang.fileSent );
-            
-                wz.app.closeWindow( win.data( 'win' ) );
 
             }
 

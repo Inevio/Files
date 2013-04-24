@@ -80,6 +80,7 @@
 	"contentRefuse" : "Rechazar",
 
 	"fileSent" : "Tu archivo ha sido enviado!",
+	"fileSentCorrectly" : "ha sido enviado correctamente",
 	"sendTitle" : "Elije a quién quieres enviar el archivo",
 	"sendListTitle" : "Amigos:",
 	"sendChosenTitle" : "Enviado a:",
