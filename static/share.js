@@ -145,6 +145,12 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
                     // To Do -> Hacer cosas con las respuestas de las promesas
                     console.log( arguments );
 
+                    wz.banner()
+                        .title( lang.fileShared )
+                        .text( lang.fileSharedStart + ' ' + structure.name + ' ' + lang.fileSharedEnd )
+                        .image( structure.icons.tiny )
+                        .render();
+
                     wz.app.closeWindow( win.data( 'win' ) );
 
                 });

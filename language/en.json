@@ -102,6 +102,9 @@
 	"shareHowDownload" : "Download:",
 	"shareHowShare" : "Share:",
 	"shareHowSend" : "Send:",
-	"shareSave" : "Save"
+	"shareSave" : "Save",
+	"fileShared" : "File shared correctly",
+	"fileSharedStart" : "All the changes on",
+	"fileSharedEnd" : "have been saved"
 
 }

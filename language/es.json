@@ -102,6 +102,9 @@
 	"shareHowDownload" : "Descargar:",
 	"shareHowShare" : "Compartir:",
 	"shareHowSend" : "Enviar:",
-	"shareSave" : "Guardar"
+	"shareSave" : "Guardar",
+	"fileShared" : "Archivo compartido",
+	"fileSharedStart" : "Todos los cambios en",
+	"fileSharedEnd" : "han sido guardados"
 
 }
