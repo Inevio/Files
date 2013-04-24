@@ -263,6 +263,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 // Generate File icons
                 for( var i = 0; i < length; i++ ){
                     iconFile = icon( list[ i ] );
+                    if( list[i].sharedRoot ){
+                        iconFile.addClass( 'shared' );
+                    }
                     files = files.add( iconFile );
                 }
 
