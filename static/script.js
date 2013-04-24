@@ -198,6 +198,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         file.data( 'file-size', structure.size );
         file.data( 'file-creation', structure.modified );
         file.data( 'file-modification', structure.created );
+        file.data( 'permissions', structure.permissions );
 
         if( structure.type === 5 ){
 
@@ -262,7 +263,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 // Generate File icons
                 for( var i = 0; i < length; i++ ){
                     iconFile = icon( list[ i ] );
-                    iconFile.data( 'permissions', list[ i ].permissions );
                     files = files.add( iconFile );
                 }
 
