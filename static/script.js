@@ -202,7 +202,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         if( structure.type === 5 ){
 
-            if( !structure.permissions.accepted ){
+            if( structure.status !== 1 ){
                 file.addClass( 'pointer-pending' );
             }
 
@@ -234,7 +234,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             }
 
             /*
-            if( !structure.permissions.accepted ){
+            if( !structure.status === 1 ){
 
                 $('.weexplorer-sidebar-element.active', win).removeClass('active');
                 $( '.folder-' + current, sidebar ).addClass('active');
@@ -1213,7 +1213,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
             wz.structure( pointer, function( error, structure ){
                 
-                if( structure.permissions.accepted ){
+                if( structure.status === 1 ){
 
                     structure.associatedApp( function( error, app ){
 
