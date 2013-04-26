@@ -238,6 +238,32 @@
     margin-right: -2px;
 }
 
+.wz-app-1-share .share-how.blocked *{
+    cursor: default;
+}
+
+.wz-app-1-share .share-how.blocked figure.no{
+    background: #EAB0A6;
+    border: 1px solid #D09D94;
+}
+
+.wz-app-1-share .share-how.blocked figure.no span{
+    color: #BC9791;
+}
+
+.wz-app-1-share .share-how.blocked figure.yes{
+    background: #C4DBA4;
+    border: 1px solid #B7CD9D;
+}
+
+.wz-app-1-share .share-how.blocked figure.yes span{
+    color: #A0AE8C;
+}
+
+.wz-app-1-share .share-how.blocked i{
+    border: 1px solid #C2C2C2;
+}
+
 .wz-app-1-share button{
     
     width: 80px;

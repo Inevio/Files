@@ -6,52 +6,58 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
     var shareUserPrototype = $('.share-user.prototype', win);
     var initialUsers       = [];
     var filePermissions    = {};
-    var state              = $( '.share-how', win ); 
+    var state              = $( '.share-how', win );
+    var owner              = 0;
+    var loading            = false;
 
     win
         .on( 'mousedown', '.share-how article', function(){
-            
-            var button = $(this).find( 'figure' );
 
-            if( button.hasClass( 'default' ) ){
+            if( owner.current || loading ){
 
-                if( button.hasClass('yes') ){
+                var button = $(this).find( 'figure' );
 
-                    state.removeClass( 'default' );
-                    button.removeClass('yes');
-                    button.addClass('no');
-                    button.find('span').text( lang.shareHowNo );
+                if( button.hasClass( 'default' ) ){
 
-                }else{
+                    if( button.hasClass('yes') ){
 
-                    state.addClass( 'default' );
-                    $( this ).siblings( 'article' ).find( 'figure' ).removeClass('no').addClass( 'yes' ).find( 'span' ).text( lang.shareHowYes );
-                    button.removeClass('no');
-                    button.addClass('yes');
-                    button.find('span').text( lang.shareHowYes );
+                        state.removeClass( 'default' );
+                        button.removeClass('yes');
+                        button.addClass('no');
+                        button.find('span').text( lang.shareHowNo );
 
-                }
+                    }else{
 
-            }else{
-
-                if( button.hasClass('yes') ){
-
-                    state.removeClass( 'default' );
-                    $( this ).siblings( 'article' ).find( '.default' ).removeClass('yes').addClass('no').find( 'span' ).text( lang.shareHowNo );
-                    button.removeClass('yes');
-                    button.addClass('no');
-                    button.find('span').text( lang.shareHowNo );
-
-                }else{
-
-                    if( !$(this).siblings( 'article' ).find( 'figure' ).not( '.default' ).hasClass( 'no' ) ){
                         state.addClass( 'default' );
-                        $( this ).siblings( 'article' ).find( '.default' ).removeClass('no').addClass('yes').find( 'span' ).text( lang.shareHowYes );
+                        $( this ).siblings( 'article' ).find( 'figure' ).removeClass('no').addClass( 'yes' ).find( 'span' ).text( lang.shareHowYes );
+                        button.removeClass('no');
+                        button.addClass('yes');
+                        button.find('span').text( lang.shareHowYes );
+
                     }
 
-                    button.removeClass('no');
-                    button.addClass('yes');
-                    button.find('span').text( lang.shareHowYes );
+                }else{
+
+                    if( button.hasClass('yes') ){
+
+                        state.removeClass( 'default' );
+                        $( this ).siblings( 'article' ).find( '.default' ).removeClass('yes').addClass('no').find( 'span' ).text( lang.shareHowNo );
+                        button.removeClass('yes');
+                        button.addClass('no');
+                        button.find('span').text( lang.shareHowNo );
+
+                    }else{
+
+                        if( !$(this).siblings( 'article' ).find( 'figure' ).not( '.default' ).hasClass( 'no' ) ){
+                            state.addClass( 'default' );
+                            $( this ).siblings( 'article' ).find( '.default' ).removeClass('no').addClass('yes').find( 'span' ).text( lang.shareHowYes );
+                        }
+
+                        button.removeClass('no');
+                        button.addClass('yes');
+                        button.find('span').text( lang.shareHowYes );
+
+                    }
 
                 }
 
@@ -191,20 +197,24 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
     $.when( getFriendList(), getSharedList() )
         .then( function( friendList, sharedList ){
 
-            var owner       = sharedList[ 1 ];
+            owner           = sharedList[ 1 ];
             var permissions = sharedList[ 2 ];
+
+            loading = true;
 
             for( var i in permissions ){ 
 
                 if( !permissions[i] ){
-                    $( '.share-how-' + i, win ).mousedown();
+                    $( '.share-how-' + i, state ).mousedown();
                 }
 
-                /*if( !owner.current ){
-                    $( '.share-how-' + i, win ).siblings().addClass( 'default' );
-                }*/
+                if( !owner.current ){
+                    state.addClass( 'blocked' );
+                }
                 
             }
+
+            loading = false;
 
             friendList = friendList[ 1 ];
             sharedList = sharedList[ 3 ];
