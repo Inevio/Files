@@ -5,6 +5,7 @@
 	"deleteFile" : "¿Are you sure you want to delete",
 	"deleteFile2" : " the selected file? You'll never de able to recover it.",
 	"deleteFile3" : " selected files? You'll never de able to recover them.",
+	"notEnoughPermissions" : "Some files couldn't be removed because you don't have enough permissions.",
 	"the" : " the ",
 	"calculating" : "Calculating...",
 	"minutes" : " minutes",

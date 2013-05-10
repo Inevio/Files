@@ -5,6 +5,7 @@
 	"deleteFile" : "¿Seguro que quieres eliminar",
 	"deleteFile2" : " el archivo seleccionado? Si lo haces jamás podrás recuperarlo.",
 	"deleteFile3" : " archivos seleccionados? Si lo haces jamás podrás recuperarlos.",
+	"notEnoughPermissions" : "Algunos archivos no han podido ser borrados porque no tienes permisos para ello.",
 	"the" : " los ",
 	"calculating" : "Calculando...",
 	"minutes" : " minutos",

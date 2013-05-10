@@ -219,8 +219,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     var openDirectory = function( id ){
 
         if( $( '.folder-' + id, sidebar ).size() ){
+
             $('.weexplorer-sidebar-element.active', win).removeClass('active');
             $( '.folder-' + id, sidebar ).addClass('active');
+
         }else{
             $('.weexplorer-sidebar-element.active', win).removeClass('active');
         }
@@ -229,8 +231,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         wz.structure( id, function( error, structure ){
 
             if( error ){
+
                 alert( lang.errorOpenDirectory );
                 return false;
+
             }
 
             /*
@@ -252,8 +256,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             structure.list( function( error, list ){
 
                 if( error ){
+
                     alert( lang.errorOpenDirectory );
                     return false;
+
                 }
 
                 var length = list.length;
@@ -262,11 +268,15 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                 // Generate File icons
                 for( var i = 0; i < length; i++ ){
+
                     iconFile = icon( list[ i ] );
+
                     if( list[i].sharedRoot ){
                         iconFile.addClass( 'shared' );
                     }
+
                     files = files.add( iconFile );
+
                 }
 
                 // Display icons
@@ -334,19 +344,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         });
 
     };
-
-    var removeStructure = function( id ){
-
-        wz.structure( id, function( error, structure ){
-
-            // To Do -> Error
-            structure.remove( function( error, quota ){
-                // To Do -> Error
-            });
-
-        });
-
-    };
     
     var deleteAllActive = function(){
         
@@ -357,12 +354,44 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         }
         
         if( confirm( lang.deleteFile + response ) ) {
+
+            var notEnoughPermissions = false;
         
             $('.weexplorer-file.active', win).each(function(){
-                
-                removeStructure( $(this).data('file-id') );
-                
+
+                wz.structure( $(this).data( 'file-id' ), function( error, structure ){
+
+                    if( error ){
+
+                        console.log( error );
+
+                    }else if( structure.owner === wz.info.userId() || structure.permissions.modify === 1 ){
+
+                        structure.remove( function( error, quota ){
+
+                            if( error ){
+
+                                console.log( error );
+
+                            }
+
+                        });
+
+                    }else{
+
+                        notEnoughPermissions = true;
+
+                    }
+       
+                });
+                                
             });
+
+            if( notEnoughPermissions ){
+
+                alert( lang.notEnoughPermissions );
+
+            }
         
         }
         
