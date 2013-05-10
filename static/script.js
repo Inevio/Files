@@ -167,26 +167,37 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         
         // Add new properties
         file.children('textarea').text( structure.name );
-        
-        if( structure.size === null ){
-            file.children('.weexplorer-file-size').text( '--' );
+
+        console.log( structure, structure.type );
+
+        if( ( structure.type !== 0 && structure.type !== 1 && structure.type !== 5 ) || ( structure.type === 5 && structure.pointerType !== 0 && structure.pointerType !== 1 ) ){
+
+            if( structure.size === null ){
+                file.children('.weexplorer-file-size').text( '--' );
+            }else{
+                file.children('.weexplorer-file-size').text( wz.tool.bytesToUnit( structure.size, 2 ) );
+            }
+            
+            if( modifiedToday ){
+                file.children('.weexplorer-file-date-modification').text( lang.modified + modifiedHour + ':' + modifiedMinute + ':' + modifiedSecond  );
+            }else{
+                file.children('.weexplorer-file-date-modification').text( lang.modified + modifiedMonth + '/' + modifiedDay + '/' +  modifiedDate.getFullYear() );
+            }
+            
+            /*
+            if( createdToday ){
+                file.children('.weexplorer-file-date-creation').text( createdHour + ':' + createdMinute + ':' + createdSecond  );
+            }else{
+                file.children('.weexplorer-file-date-creation').text(  createdMonth + '/' + createdDay + '/' +  createdDate.getFullYear() );
+            }
+            */
+
         }else{
-            file.children('.weexplorer-file-size').text( wz.tool.bytesToUnit( structure.size, 2 ) );
+
+            file.children('.weexplorer-file-size').text( '--' )
+            file.children('.weexplorer-file-date-modification').text( '--' );
+
         }
-        
-        if( modifiedToday ){
-            file.children('.weexplorer-file-date-modification').text( lang.modified + modifiedHour + ':' + modifiedMinute + ':' + modifiedSecond  );
-        }else{
-            file.children('.weexplorer-file-date-modification').text( lang.modified + modifiedMonth + '/' + modifiedDay + '/' +  modifiedDate.getFullYear() );
-        }
-        
-        /*
-        if( createdToday ){
-            file.children('.weexplorer-file-date-creation').text( createdHour + ':' + createdMinute + ':' + createdSecond  );
-        }else{
-            file.children('.weexplorer-file-date-creation').text(  createdMonth + '/' + createdDay + '/' +  createdDate.getFullYear() );
-        }
-        */
         
         file.find('img').attr( 'src', structure.icons.normal );
         file.addClass( types[ structure.type ] );
