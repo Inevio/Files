@@ -168,8 +168,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         // Add new properties
         file.children('textarea').text( structure.name );
 
-        console.log( structure, structure.type );
-
         if( ( structure.type !== 0 && structure.type !== 1 && structure.type !== 5 ) || ( structure.type === 5 && structure.pointerType !== 0 && structure.pointerType !== 1 ) ){
 
             if( structure.size === null ){
