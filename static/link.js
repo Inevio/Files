@@ -3,7 +3,7 @@ wz.app.addScript( 1, 'link', function( win, app, lang, params ){
 
     var file        = {};
     var linkSpan    = $('.link-url input', win);
-    var prototype   = $('.prototype', win);
+    var prototype   = $('.wz-prototype', win);
     var linkTable   = $( 'table', win );
     var previus     = $( '.previous', win );
     
@@ -60,7 +60,7 @@ wz.app.addScript( 1, 'link', function( win, app, lang, params ){
                 
                 for( var i = 0 ; i < links.length ; i++ ){
                     
-                    var userLink = prototype.clone().removeClass( 'prototype' );
+                    var userLink = prototype.clone().removeClass( 'wz-prototype' );
                     
                     if( links[i].password ){
                         userLink.find('.first-column i').addClass( 'link-lock' );
@@ -137,7 +137,7 @@ wz.app.addScript( 1, 'link', function( win, app, lang, params ){
                 
                 if( !alreadyCreated ){
                                 
-                    var newLink = prototype.clone().removeClass( 'prototype' );
+                    var newLink = prototype.clone().removeClass( 'wz-prototype' );
                     
                     if( link.password ){
                         newLink.find('.first-column i').addClass( 'link-lock' );

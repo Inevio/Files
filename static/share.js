@@ -3,7 +3,7 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
 
     var shareListUsers     = $('.share-list-users', win);
     var shareChosenUsers   = $('.share-chosen-users', win);
-    var shareUserPrototype = $('.share-user.prototype', win);
+    var shareUserPrototype = $('.share-user.wz-prototype', win);
     var initialUsers       = [];
     var filePermissions    = {};
     var state              = $( '.share-how', win );
@@ -228,7 +228,7 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
 
                 if( sharedList[ i ].id !== owner.id ){
 
-                    userCard = shareUserPrototype.clone().removeClass('prototype');
+                    userCard = shareUserPrototype.clone().removeClass('wz-prototype');
                     //userCard.children('img').attr('src')
                     userCard.data( 'user-id', sharedList[ i ].id );
                     userCard.children('span').text( sharedList[ i ].fullName );
@@ -253,7 +253,7 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
 
                 if( friendList[ i ] !== null ){
 
-                    userCard = shareUserPrototype.clone().removeClass('prototype');
+                    userCard = shareUserPrototype.clone().removeClass('wz-prototype');
                     //userCard.children('img').attr('src')
                     userCard.data( 'user-id', friendList[ i ].id );
                     userCard.children('span').text( friendList[ i ].fullName );

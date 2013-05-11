@@ -26,9 +26,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     var backButton     = $( '.weexplorer-option-back', win );
     var views          = $( '.weexplorer-menu-views', win );
     var sidebar        = $( '.weexplorer-sidebar', win );
-    var sidebarElement = $( '.weexplorer-sidebar-element.prototype', sidebar );
+    var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
     var fileArea       = $( '.weexplorer-file-zone', win );
-    var filePrototype  = $( '.weexplorer-file.prototype', win );
+    var filePrototype  = $( '.weexplorer-file.wz-prototype', win );
     var folderName     = $( '.weexplorer-folder-name', win );
     var folderMain     = $( '.weexplorer-main', win );
     var uploadButton   = $( '.weexplorer-menu-upload', win );
@@ -116,7 +116,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     var icon = function( structure ){
 
         // Clone prototype
-        var file = filePrototype.clone().removeClass('prototype');
+        var file = filePrototype.clone().removeClass('wz-prototype');
         
         var modifiedToday = false;
         var createdToday = false;
@@ -291,7 +291,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 }
 
                 // Display icons
-                fileArea.children().not('.prototype').remove();
+                fileArea.children().not('.wz-prototype').remove();
                 fileArea.append( files );
                 fileArea.data( 'data-wz-uploader-destiny', structure.id );
 
@@ -513,7 +513,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             var controlTextarea = 0;
             var biggestTextarea = 0;
 
-            fileArea.find( '.weexplorer-file' ).not( '.prototype' ).each( function(){
+            fileArea.find( '.weexplorer-file' ).not( '.wz-prototype' ).each( function(){
 
                 var textareaWidth = 0;
 
@@ -533,7 +533,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
             });
 
-            textareaWidth = fileArea.find( '.weexplorer-file' ).not( '.prototype' ).first().width() - biggestTextarea - 35;
+            textareaWidth = fileArea.find( '.weexplorer-file' ).not( '.wz-prototype' ).first().width() - biggestTextarea - 35;
 
             fileArea.find( 'textarea' ).css({ width : textareaWidth + 'px' });
 
@@ -842,7 +842,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 var controlTextarea = 0;
                 var biggestTextarea = 0;
 
-                fileArea.find( '.weexplorer-file' ).not( '.prototype' ).each( function(){
+                fileArea.find( '.weexplorer-file' ).not( '.wz-prototype' ).each( function(){
 
                     var textareaWidth = 0;
 
@@ -862,7 +862,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                 });
 
-                textareaWidth = fileArea.find( '.weexplorer-file' ).not( '.prototype' ).first().width() - biggestTextarea - 35;
+                textareaWidth = fileArea.find( '.weexplorer-file' ).not( '.wz-prototype' ).first().width() - biggestTextarea - 35;
 
                 fileArea.find( 'textarea' ).css({ width : textareaWidth + 'px' });
 
@@ -1343,7 +1343,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         if( $(e.target).is('textarea') ){
             e.stopPropagation();
         }else{
-            $( '.weexplorer-file.last-active', fileArea ).prev().not( '.weexplorer-file.prototype' ).mousedown().mouseup();
+            $( '.weexplorer-file.last-active', fileArea ).prev().not( '.weexplorer-file.wz-prototype' ).mousedown().mouseup();
         }       
         
     })
@@ -1574,7 +1574,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         if( !($('.weexplorer-file.active', win).size() > 1) ){
             drag.ghost( $(this).cloneWithStyle() );
         }else{
-            var ghost = filePrototype.clone().removeClass('prototype')
+            var ghost = filePrototype.clone().removeClass('wz-prototype')
                                         .css({'width':'148px', 'height':'98px', 'background':'green', 'border-radius':'6px', 'border':'solid 1px #fff', 'font-size':'36px', 'color':'white', 'text-align':'center', 'padding-top':'50px'})
                                         .text($('.weexplorer-file.active', win).size());
             ghost.find('textarea, img, span').remove()
@@ -1625,12 +1625,12 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     .on( 'wz-hold', '.weexplorer-option-back.active', function( e ){
 
-        navigationMenu.children().not( '.prototype' ).remove();
+        navigationMenu.children().not( '.wz-prototype' ).remove();
 
         for( var i = pointer - 1 ; i >= 0 ; i-- ){
 
             wz.structure( record[i], function( error, structure ){
-                var element = navigationMenu.find( '.prototype' ).clone().removeClass();
+                var element = navigationMenu.find( '.wz-prototype' ).clone().removeClass();
                 element.data( 'id', structure.id ).find( 'span' ).text( structure.name );
                 navigationMenu.append( element );
             });
@@ -1648,12 +1648,12 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     .on( 'wz-hold', '.weexplorer-option-next.active', function( e ){
 
-        navigationMenu.children().not( '.prototype' ).remove();
+        navigationMenu.children().not( '.wz-prototype' ).remove();
 
         for( var i = pointer + 1 ; i < record.length ; i++ ){
 
             wz.structure( record[i], function( error, structure ){
-                var element = navigationMenu.find( '.prototype' ).clone().removeClass();
+                var element = navigationMenu.find( '.wz-prototype' ).clone().removeClass();
                 element.data( 'id', structure.id ).find( 'span' ).text( structure.name );
                 navigationMenu.append( element );
             });
@@ -1718,7 +1718,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     wz.config( function(error, config){
         
-        var elementFolder = sidebarElement.clone().removeClass('prototype');
+        var elementFolder = sidebarElement.clone().removeClass('wz-prototype');
         
         var userFolder = elementFolder.clone();
         wz.structure( config.user.rootPath, function( error, structure ){
