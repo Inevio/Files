@@ -323,7 +323,7 @@
 .wz-app-1 .grid .last-active figure{
 
     border: solid 1px rgba(127,191,235,0.5);
-    border-radius: 6px;
+    border-radius: 3px;
     
 }
 
@@ -337,7 +337,7 @@
 
     background: #eefaff;
     border: solid 1px #7fbfeb;
-    border-radius: 6px;
+    border-radius: 3px;
     
 }
 
@@ -345,7 +345,7 @@
 
     background: #ceecff;
     border: solid 1px #7fbfeb;
-    border-radius: 6px;
+    border-radius: 3px;
     
 }
 
@@ -353,7 +353,7 @@
     
     background: #eefaff;
     border: solid 1px #7fbfeb;
-    border-radius: 6px;
+    border-radius: 3px;
     
 }
 
@@ -361,7 +361,7 @@
 
     background: #ceecff;
     border: solid 1px #7fbfeb;
-    border-radius: 6px;
+    border-radius: 3px;
     
 }
 
@@ -374,7 +374,7 @@
 .wz-app-1 .list .weexplorer-file.last-active{
 
     border: solid 1px rgba(127,191,235,0.5);
-    border-radius: 6px;
+    border-radius: 3px;
     
 }
 
@@ -388,7 +388,7 @@
 
     background: #eefaff;
     border: solid 1px #7fbfeb;
-    border-radius: 6px;
+    border-radius: 3px;
     
 }
 
@@ -396,7 +396,7 @@
 
     background: #eefaff;
     border: solid 1px #7fbfeb;
-    border-radius: 6px;
+    border-radius: 3px;
     
 }
 
@@ -404,7 +404,7 @@
 
     background: #ceecff;
     border: solid 1px #7fbfeb;
-    border-radius: 6px;
+    border-radius: 3px;
     
 }
 
@@ -412,7 +412,7 @@
 
     background: #ceecff;
     border: solid 1px #7fbfeb;
-    border-radius: 6px;
+    border-radius: 3px;
     
 }
 
@@ -428,7 +428,7 @@
     top: 0;
     right: 0;
     background: #323232 !important;
-    border-radius: 6px;
+    border-radius: 3px;
     border: 1px solid #232323 !important;
     line-height: normal;
     display: none;
@@ -463,7 +463,7 @@
     left: 33px;
     background: #88D120 !important;
     border: 1px solid #6DA71A;
-    border-radius: 6px;
+    border-radius: 3px;
     display: none;
 }
 
@@ -577,7 +577,7 @@
     padding: 2px 5px;
     margin-top: -2px;
     margin-right: -2px;
-    border-radius: 5px;
+    border-radius: 2px;
 }
 
 
@@ -608,7 +608,7 @@
 .wz-app-1 .weexplorer-directory-over{
     
     background: #ceecff;
-    border-radius: 6px;
+    border-radius: 3px;
     
 }
 

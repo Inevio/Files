@@ -37,7 +37,7 @@ wz.app.addScript( 1, 'link', function( win, app, lang, params ){
     wz.structure( params, function( error, structure ){
         
         structure.getLinks( function( error, links ){
-            
+
             if( links.length ){
                 
                 previus.removeClass('hidden');
