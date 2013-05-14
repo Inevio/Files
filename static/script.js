@@ -1563,15 +1563,34 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     })
 
     .on( 'wz-dragstart', '.weexplorer-file', function( e, drag ){
-        
-        if( !($('.weexplorer-file.active', win).size() > 1) ){
-            drag.ghost( $(this).cloneWithStyle() );
+                
+        if( $( '.weexplorer-file.active', win ).size() <= 1 ){
+            drag.ghost( $( this ).cloneWithStyle() );
         }else{
-            var ghost = filePrototype.clone().removeClass('wz-prototype')
-                                        .css({'width':'148px', 'height':'98px', 'background':'green', 'border-radius':'6px', 'border':'solid 1px #fff', 'font-size':'36px', 'color':'white', 'text-align':'center', 'padding-top':'50px'})
-                                        .text($('.weexplorer-file.active', win).size());
-            ghost.find('textarea, img, span').remove()
+
+            var ghost = filePrototype.clone().removeClass('wz-prototype');
+
+            ghost.css({
+
+                'width'         : '148px',
+                'height'        : '98px',
+                'background'    : 'green',
+                'border-radius' : '6px',
+                'border'        : 'solid 1px #fff',
+                'font-size'     : '36px',
+                'color'         : '#ff',
+                'text-align'    : 'center',
+                'padding-top'   : '50px'
+
+            }).text( $( '.weexplorer-file.active', win ).size() );
+
+            ghost.find('textarea, img, span').remove();
+
             drag.ghost( ghost );
+
+            // Nullify
+            ghost = null;
+
         }
 
     })
