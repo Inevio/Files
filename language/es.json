@@ -68,6 +68,7 @@
 	"file" : "Archivo",
 	"temporalFile" : "Archivo Temporal",
 	"receivedFile" : "Archivo Recibido",
+	"sharedFile" : "Archivo Compartido",
 	"unknown" : "Desconocido",
 
 	"error" : "Lo siento, ha habido in error",

@@ -29,8 +29,10 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
             type.text( lang.file );
         }else if( fileType === 3 ){
             type.text( lang.temporalFile );
-        }else if( fileType === 6 ){
+        }else if( fileType === 4 ){
             type.text( lang.receivedFile );
+        }else if( fileType === 5 ){
+            type.text( lang.sharedFile );
         }else{
             type.text( lang.unknown );
         }
@@ -64,9 +66,19 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
         created.text( createdMonth + '/' + createdDay + '/' +  createdDate.getFullYear() + ', ' + createdHour + ':' + createdMinute + ':' + createdSecond );
         modified.text( modifiedMonth + '/' + modifiedDay + '/' +  modifiedDate.getFullYear() + ', ' + modifiedHour + ':' + modifiedMinute + ':' + modifiedSecond );
         
-        wz.user( structure.owner, function( error, user ){
-            owner.text( user.fullName );
-        });
+        if( fileType === 5 ){
+
+            wz.user( structure.pointerOwner, function( error, user ){
+                owner.text( user.fullName );
+            });
+
+        }else{
+
+            wz.user( structure.owner, function( error, user ){
+                owner.text( user.fullName );
+            });
+
+        }
         
         var permissions = structure.permissions;
         

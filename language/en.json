@@ -68,6 +68,7 @@
 	"file" : "File",
 	"temporalFile" : "Temporal File",
 	"receivedFile" : "Received File",
+	"sharedFile" : "Shared File",
 	"unknown" : "Unknown",
 
 	"error" : "Sorry, an error occurred",
