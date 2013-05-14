@@ -192,7 +192,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         }else{
 
-            file.children('.weexplorer-file-size').text( '--' )
+            file.children('.weexplorer-file-size').text( '--' );
             file.children('.weexplorer-file-date-modification').text( '--' );
 
         }
