@@ -56,7 +56,7 @@
 	"propertiesModified" : "Modif.",
 	"propertiesOwner" : "Dueño",
 	"attr" : "Permisos",
-	"attrRead" : "Leer",
+	"attrLink" : "Link",
 	"attrModify" : "Modificar",
 	"attrCopy" : "Copiar",
 	"attrDownload" : "Descargar",

@@ -84,6 +84,10 @@
     border: 1px solid #50BDFF;
 }
 
+.wz-app-1-properties article.properties-attr{
+    margin-bottom: 4px;
+}
+
 .wz-app-1-properties article.properties-attr article{
     
     width: 100px;
@@ -100,7 +104,8 @@
 
 .wz-app-1-properties article.properties-attr article:nth-child(even){
     
-    margin-left: 32px;
+    margin-left: 20px;
+    margin-right: 15px;
     
 }
 

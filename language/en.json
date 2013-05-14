@@ -56,7 +56,7 @@
 	"propertiesModified" : "Modified",
 	"propertiesOwner" : "Owner",
 	"attr" : "Attributes",
-	"attrRead" : "Read",
+	"attrLink" : "Link",
 	"attrModify" : "Modify",
 	"attrCopy" : "Copy",
 	"attrDownload" : "Download",

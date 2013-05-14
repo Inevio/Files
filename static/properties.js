@@ -7,7 +7,7 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
     var created     = $('.properties .created', win);
     var modified    = $('.properties .modified', win);
     var owner       = $('.properties .owner', win);
-    var read        = $('.properties .read', win);
+    var link        = $('.properties .link', win);
     var modify      = $('.properties .modify', win);
     var copy        = $('.properties .copy', win);
     var download    = $('.properties .download', win);
@@ -81,41 +81,41 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
         }
         
         var permissions = structure.permissions;
-        
-        if( permissions.read === 0 ){
-            read.addClass('no');
+
+        if( permissions.link === 1 ){
+            link.addClass('yes');
         }else{
-            read.addClass('yes');
+            link.addClass('no');
         }
         
-        if( permissions.modify === 0 ){
-            modify.addClass('no');
-        }else{
+        if( permissions.modify === 1 ){
             modify.addClass('yes');
+        }else{
+            modify.addClass('no');
         }
         
-        if( permissions.copy === 0 ){
-            copy.addClass('no');
-        }else{
+        if( permissions.copy === 1 ){
             copy.addClass('yes');
+        }else{
+            copy.addClass('no');
         }
         
-        if( permissions.download === 0 ){
-            download.addClass('no');
-        }else{
+        if( permissions.download === 1 ){
             download.addClass('yes');
+        }else{
+            download.addClass('no');
         }
         
-        if( permissions.share === 0 ){
-            share.addClass('no');
-        }else{
+        if( permissions.share === 1 ){
             share.addClass('yes');
+        }else{
+            share.addClass('no');
         }
         
-        if( permissions.send === 0 ){
-            send.addClass('no');
-        }else{
+        if( permissions.send === 1 ){
             send.addClass('yes');
+        }else{
+            send.addClass('no');
         }
         
     }
@@ -158,7 +158,7 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
     $( '.properties-modified', win ).text( '· ' +  lang.propertiesModified + ':' );
     $( '.properties-owner', win ).text( '· ' +  lang.propertiesOwner + ':' );
     $( '.attr', win ).text( '· ' +  lang.attr + ':' );
-    $( '.attr-read', win ).text( lang.attrRead );
+    $( '.attr-link', win ).text( lang.attrLink );
     $( '.attr-modify', win ).text( lang.attrModify );
     $( '.attr-copy', win ).text( lang.attrCopy );
     $( '.attr-download', win ).text( lang.attrDownload );
