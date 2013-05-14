@@ -37,8 +37,6 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
             type.text( lang.unknown );
         }
         
-        size.text( wz.tool.bytesToUnit( structure.size, 2 ) );
-        
         var createdDate = new Date( structure.created );
         var createdDay = createdDate.getDate();
             if( createdDay < 10 ){ createdDay = '0' + createdDay }
@@ -62,9 +60,25 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
             if( modifiedMinute < 10 ){ modifiedMinute = '0' + modifiedMinute }
         var modifiedSecond = modifiedDate.getSeconds();
             if( modifiedSecond < 10 ){ modifiedSecond = '0' + modifiedSecond }
-        
-        created.text( createdMonth + '/' + createdDay + '/' +  createdDate.getFullYear() + ', ' + createdHour + ':' + createdMinute + ':' + createdSecond );
-        modified.text( modifiedMonth + '/' + modifiedDay + '/' +  modifiedDate.getFullYear() + ', ' + modifiedHour + ':' + modifiedMinute + ':' + modifiedSecond );
+
+        if( ( fileType !== 0 && fileType !== 1 && fileType !== 5 ) || ( fileType === 5 && structure.pointerType !== 0 && structure.pointerType !== 1 ) ){
+
+            if( structure.size === null ){
+                size.text( '--' );
+            }else{
+                size.text( wz.tool.bytesToUnit( structure.size, 2 ) );
+            }
+            
+            created.text( createdMonth + '/' + createdDay + '/' +  createdDate.getFullYear() + ', ' + createdHour + ':' + createdMinute + ':' + createdSecond );
+            modified.text( modifiedMonth + '/' + modifiedDay + '/' +  modifiedDate.getFullYear() + ', ' + modifiedHour + ':' + modifiedMinute + ':' + modifiedSecond );
+
+        }else{
+
+            size.text( '--' );
+            created.text( createdMonth + '/' + createdDay + '/' +  createdDate.getFullYear() + ', ' + createdHour + ':' + createdMinute + ':' + createdSecond );
+            modified.text( '--' );
+
+        }
         
         if( fileType === 5 ){
 
@@ -127,7 +141,6 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
             wz.structure( params, function( error, structure ){
                 
                 file = structure;
-                
                 properties(structure);
                 
             });
