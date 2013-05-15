@@ -479,7 +479,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     var notifications = function(){
 
-        wz.structure( $( '.receivedFolder', sidebar ).data('file-id'), function( error, structure ){
+        wz.structure( 'received', function( error, structure ){
             
             structure.list( function( error, list ){
                 
@@ -487,6 +487,24 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                     $( '.receivedFolder', sidebar ).addClass( 'notification' ).find( '.weexplorer-sidebar-notification' ).text( list.length );
                 }else{
                     $( '.receivedFolder', sidebar ).removeClass( 'notification' );
+                }
+                
+            });
+            
+        });
+        
+    };
+
+    var sharedNotifications = function(){
+
+        wz.structure( 'shared', function( error, structure ){
+            
+            structure.list( function( error, list ){
+                
+                if( list.length ){
+                    $( '.sharedFolder', sidebar ).addClass( 'notification' ).find( '.weexplorer-sidebar-notification' ).text( list.length );
+                }else{
+                    $( '.sharedFolder', sidebar ).removeClass( 'notification' );
                 }
                 
             });
@@ -775,6 +793,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     .on( 'structure-received', function(){
         notifications();
+    })
+
+    .on( 'structure-shared', function(){
+        sharedNotifications();
     })
 
     .on( 'structure-conversionStart', function( event, structure ){
@@ -1548,18 +1570,45 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         }else if( icon.hasClass('pointer-pending') ){
 
             menu
+
                 .add( lang.acceptFile, function(){
+
                     wz.structure( icon.data( 'file-id' ), function( error, structure ){
-                        structure.acceptShare();
+
+                        structure.acceptShare( function( error ){
+
+                            if( error ){
+                                alert( error );
+                            }else{
+                                sharedNotifications();
+                            }
+
+                        });
+
                     });
+
                 })
+
                 .add( lang.properties, function(){
                     wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
                 })
+
                 .add( lang.refuseFile, function(){
+
                     wz.structure( icon.data( 'file-id' ), function( error, structure ){
-                        structure.refuseShare();
+
+                        structure.refuseShare( function( error ){
+
+                            if( error ){
+                                alert( error );
+                            }else{
+                                sharedNotifications();
+                            }
+
+                        });
+
                     });
+
                 }, 'warning');
             
         }
@@ -1747,6 +1796,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         var sharedFolder = elementFolder.clone();
         wz.structure( config.user.sharedPath, function( error, structure ){
             sharedFolder.data( 'file-id', structure.id ).addClass( 'sharedFolder folder-' + structure.id ).children( 'span' ).text( structure.name );
+            sharedNotifications();
         });
         sidebar.append( sharedFolder );
         
