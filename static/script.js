@@ -1401,7 +1401,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         var menu = wz.menu();
         var permissions = icon.data( 'permissions' );
         
-        if( icon.hasClass('file') || ( icon.hasClass('pointer') && !icon.hasClass('pointer-pending') ) ){
+        if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
             
             menu.add( lang.openFile, function(){
                 icon.dblclick();
@@ -1455,7 +1455,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 deleteAllActive();
             }, 'warning');
             
-        }else if( icon.hasClass('directory') ){
+        }else if( icon.hasClass('directory') || ( icon.data( 'filePointerType' ) === 0 && !icon.hasClass('pointer-pending') ) ){
             
             menu
 
