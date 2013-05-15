@@ -1543,13 +1543,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
             }
 
-            if( permissions.modify ){
-
-                menu.add( lang.remove, function(){
-                    deleteAllActive();
-                }, 'warning');
-
-            }
+            menu.add( lang.remove, function(){
+                deleteAllActive();
+            }, 'warning');
             
         }else if( icon.hasClass('received') ){
             
