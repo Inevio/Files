@@ -30,6 +30,7 @@
 	"upload" : "Upload file",
 	"newDirectory" : "New directory",
 	"modified" : "Modified ",
+	"nameExists" : "There is already a file with the selected name. Please choose another one.",
 
 	"favourites" : "Favourites",
 	"uploading" : "Uploading",

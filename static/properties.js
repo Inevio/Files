@@ -14,6 +14,49 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
     var share       = $('.properties .share', win);
     var send        = $('.properties .send', win);
     var file        = {};
+    var renaming    = false;
+
+    var permissions = function( structure ){
+
+        var permissions = structure.permissions;
+
+        if( permissions.link === 1 ){
+            link.addClass('yes');
+        }else{
+            link.addClass('no');
+        }
+        
+        if( permissions.modify === 1 ){
+            modify.addClass('yes');
+        }else{
+            modify.addClass('no');
+        }
+        
+        if( permissions.copy === 1 ){
+            copy.addClass('yes');
+        }else{
+            copy.addClass('no');
+        }
+        
+        if( permissions.download === 1 ){
+            download.addClass('yes');
+        }else{
+            download.addClass('no');
+        }
+        
+        if( permissions.share === 1 ){
+            share.addClass('yes');
+        }else{
+            share.addClass('no');
+        }
+        
+        if( permissions.send === 1 ){
+            send.addClass('yes');
+        }else{
+            send.addClass('no');
+        }
+
+    }
     
     var properties = function( structure ){
                 
@@ -93,58 +136,47 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
             });
 
         }
-        
-        var permissions = structure.permissions;
 
-        if( permissions.link === 1 ){
-            link.addClass('yes');
-        }else{
-            link.addClass('no');
-        }
-        
-        if( permissions.modify === 1 ){
-            modify.addClass('yes');
-        }else{
-            modify.addClass('no');
-        }
-        
-        if( permissions.copy === 1 ){
-            copy.addClass('yes');
-        }else{
-            copy.addClass('no');
-        }
-        
-        if( permissions.download === 1 ){
-            download.addClass('yes');
-        }else{
-            download.addClass('no');
-        }
-        
-        if( permissions.share === 1 ){
-            share.addClass('yes');
-        }else{
-            share.addClass('no');
-        }
-        
-        if( permissions.send === 1 ){
-            send.addClass('yes');
-        }else{
-            send.addClass('no');
-        }
+        permissions( structure );
         
     }
+
+    wz.structure( params, function( error, structure ){
+                
+        file = structure;
+        properties( structure );
+        
+    });
     
     win
-    
-        .on( 'app-param', function( e, params ){
-            
-            wz.structure( params, function( error, structure ){
-                
+
+        .on( 'structure-remove', function( e, id ){
+
+            if( id === params ){
+                wz.app.closeWindow( win );
+            }
+
+        })
+
+        .on( 'structure-rename', function( e, structure ){
+
+            if( structure.id === params ){
+
+                renaming = true;
+                input.blur();
                 file = structure;
-                properties(structure);
-                
-            });
-            
+                input.val( file.name );
+
+            }
+
+        })
+
+        .on( 'structure-permissions', function( e, id ){
+
+            if( id === params ){
+                permissions( structure );
+            }
+
         })
         
         .key( 'enter', function(){
@@ -157,9 +189,23 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
     
         .on( 'blur', function(){
             
-            if( !(input.val() === file.name) ){
-                file.rename(input.val(), function(error){})
+            if( input.val() !== file.name && !renaming ){
+
+                file.rename( input.val(), function( error ){
+
+                    if( error === 'NAME ALREADY EXISTS' ){
+                        alert( lang.nameExists );
+                    }else if( error ){
+                        alert( error );
+                    }
+
+                    input.val( file.name );
+
+                });
+
             }
+
+            renaming = false;
             
         });
         

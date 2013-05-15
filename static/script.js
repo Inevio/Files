@@ -327,7 +327,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         renaming = $();
 
         wz.structure( icon.data('file-id'), function( error, structure ){
-            structure.rename( $( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass('wz-dragger').val(), function( error ){});
+
+            if( error ){
+                alert( error );
+            }else{
+                structure.rename( $( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass( 'wz-dragger' ).val(), function( error ){} );
+            }
+            
         });
 
     };
@@ -1448,7 +1454,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             }
                 
             menu.add( lang.properties, function(){
-                wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
+                wz.app.createWindow( 1, icon.data( 'file-id' ), 'properties' );
             });
 
             menu.add( lang.remove, function(){

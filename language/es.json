@@ -30,6 +30,7 @@
 	"upload" : "Subir archivo",
 	"newDirectory" : "Nuevo directorio",
 	"modified" : "Modif. ",
+	"nameExists" : "Ya existe un archivo llamado así. Por favor elige otro nombre.",
 
 	"favourites" : "Favoritos",
 	"uploading" : "Subiendo",
