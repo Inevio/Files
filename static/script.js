@@ -1466,6 +1466,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 });
 
             }
+
+            menu.add( lang.properties, function(){
+                wz.app.createWindow( 1, icon.data( 'file-id' ), 'properties' );
+            });
             
             if( permissions.modify ){
 
@@ -1474,10 +1478,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 });
 
             }
-                
-            menu.add( lang.properties, function(){
-                wz.app.createWindow( 1, icon.data( 'file-id' ), 'properties' );
-            });
 
             menu.add( lang.remove, function(){
                 deleteAllActive();
@@ -1503,6 +1503,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
             }
 
+            menu.add( lang.properties, function(){
+                wz.app.createWindow( 1, icon.data( 'file-id' ), 'properties' );
+            });
+
             if( permissions.modify ){
 
                 menu.add( lang.rename, function(){
@@ -1510,10 +1514,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 });
 
             }
-
-            menu.add( lang.properties, function(){
-                wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
-            });
 
             if( permissions.modify ){
 
