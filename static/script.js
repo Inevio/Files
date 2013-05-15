@@ -331,7 +331,23 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             if( error ){
                 alert( error );
             }else{
-                structure.rename( $( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass( 'wz-dragger' ).val(), function( error ){} );
+
+                structure.rename( $( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass( 'wz-dragger' ).val(), function( error ){
+
+                    if( error ){
+
+                        if( error === 'NAME ALREADY EXISTS' ){
+                            alert( lang.nameExists );
+                        }else{
+                            alert( error );
+                        }
+
+                        $( 'textarea', icon ).val( structure.name );
+
+                    }
+
+                });
+
             }
             
         });
