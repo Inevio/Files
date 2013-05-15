@@ -193,13 +193,17 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
 
                 file.rename( input.val(), function( error ){
 
-                    if( error === 'NAME ALREADY EXISTS' ){
-                        alert( lang.nameExists );
-                    }else if( error ){
-                        alert( error );
-                    }
+                    if( error ){
 
-                    input.val( file.name );
+                        if( error === 'NAME ALREADY EXISTS' ){
+                            alert( lang.nameExists );
+                        }else{
+                            alert( error );
+                        }
+
+                        input.val( file.name );
+
+                    }
 
                 });
 
