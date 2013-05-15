@@ -326,31 +326,39 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         var icon = renaming;
         renaming = $();
 
-        wz.structure( icon.data('file-id'), function( error, structure ){
+        if( $( 'textarea', icon ).val() !== prevName ){
 
-            if( error ){
-                alert( error );
-            }else{
+            wz.structure( icon.data('file-id'), function( error, structure ){
 
-                structure.rename( $( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass( 'wz-dragger' ).val(), function( error ){
+                if( error ){
+                    alert( error );
+                }else{
 
-                    if( error ){
+                    structure.rename( $( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass( 'wz-dragger' ).val(), function( error ){
 
-                        if( error === 'NAME ALREADY EXISTS' ){
-                            alert( lang.nameExists );
-                        }else{
-                            alert( error );
+                        if( error ){
+
+                            if( error === 'NAME ALREADY EXISTS' ){
+                                alert( lang.nameExists );
+                            }else{
+                                alert( error );
+                            }
+
+                            $( 'textarea', icon ).val( structure.name );
+
                         }
 
-                        $( 'textarea', icon ).val( structure.name );
+                    });
 
-                    }
+                }
+                
+            });
 
-                });
+        }else{
 
-            }
-            
-        });
+            $( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass( 'wz-dragger' );
+
+        }
 
     };
 
@@ -985,6 +993,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     .on( 'mousedown', function(){
         $( '.weexplorer-sort', win ).removeClass( 'show' ); 
+    })
+
+    .on( 'click', 'textarea:not([readonly])', function( e ){
+        e.stopPropagation();
     })
     
     .on( 'mousedown', '.weexplorer-file:not(.active)', function( e ){
