@@ -243,25 +243,25 @@
 }
 
 .wz-app-1-share .share-how.blocked figure.no{
-    background: #EAB0A6;
-    border: 1px solid #D09D94;
+    background: #EAB0A6 !important;
+    border: 1px solid #D09D94 !important;
 }
 
 .wz-app-1-share .share-how.blocked figure.no span{
-    color: #BC9791;
+    color: #BC9791 !important;
 }
 
 .wz-app-1-share .share-how.blocked figure.yes{
-    background: #C4DBA4;
-    border: 1px solid #B7CD9D;
+    background: #C4DBA4 !important;
+    border: 1px solid #B7CD9D !important;
 }
 
 .wz-app-1-share .share-how.blocked figure.yes span{
-    color: #A0AE8C;
+    color: #A0AE8C !important;
 }
 
 .wz-app-1-share .share-how.blocked i{
-    border: 1px solid #C2C2C2;
+    border: 1px solid #C2C2C2 !important;
 }
 
 .wz-app-1-share button{
