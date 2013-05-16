@@ -1259,6 +1259,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     .on( 'dblclick', '.weexplorer-file.received', function(){
         wz.app.createWindow(1, $(this).data( 'file-id' ), 'received');
     })
+
+    .on( 'dblclick', '.weexplorer-file.pointer-pending', function(){
+        wz.app.createWindow(1, $(this).data( 'file-id' ), 'shared');
+    })
     
     .on( 'dblclick', 'textarea:not([readonly])', function( e ){
         e.stopPropagation();
@@ -1291,7 +1295,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     })
 
-    .on( 'dblclick', '.weexplorer-file.pointer', function(){
+    .on( 'dblclick', '.weexplorer-file.pointer:not( .pointer-pending )', function(){
+
+        console.log( 1 );
         
         var pointer     = $( this ).data('file-pointer');
         var pointerType = $( this ).data('file-pointerType');

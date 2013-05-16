@@ -108,6 +108,15 @@
 	"shareSave" : "Save",
 	"fileShared" : "File shared correctly",
 	"fileSharedStart" : "All the changes on",
-	"fileSharedEnd" : "have been saved"
+	"fileSharedEnd" : "have been saved",
+
+	"folderSharedBy" : "Folder shared by",
+	"fileSharedBy" : "File shared by",
+	"sharedBy" : "Shared by",
+	"sharedFolderTitle" : "Shared folder",
+	"sharedFileTitle" : "Shared file",
+	"folderShareAccepted" : "Folder accepted",
+	"fileShareAccepted" : "File accepted",
+	"beenAccepted" : "has been accepted"
 
 }

@@ -108,6 +108,15 @@
 	"shareSave" : "Guardar",
 	"fileShared" : "Archivo compartido",
 	"fileSharedStart" : "Todos los cambios en",
-	"fileSharedEnd" : "han sido guardados"
+	"fileSharedEnd" : "han sido guardados",
+
+	"folderSharedBy" : "Carpeta compartida por",
+	"fileSharedBy" : "Archivo compartido por",
+	"sharedBy" : "Compartido por",
+	"sharedFolderTitle" : "Carpeta compartida",
+	"sharedFileTitle" : "Archivo compartido",
+	"folderShareAccepted" : "Carpeta aceptada",
+	"fileShareAccepted" : "Archivo aceptado",
+	"beenAccepted" : "ha sido aceptado"
 
 }
