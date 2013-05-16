@@ -90,14 +90,13 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
         
         wz.structure( params, function( error, structure ){
 
-            var changed = false;
-
+            var changed  = false;
             var promises = [];
             
             shareChosenUsers.children().each( function(){
 
                 var userId = $( this ).data('user-id');
-                var index  = $.inArray( userId, initialUsers );
+                var index  = initialUsers.indexOf( userId );
 
                 if( index === -1 ){
 
@@ -149,7 +148,6 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
                 .then( function(){
 
                     // To Do -> Hacer cosas con las respuestas de las promesas
-                    console.log( arguments );
 
                     wz.banner()
                         .title( lang.fileShared )
@@ -234,9 +232,9 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
                     userCard.children('span').text( sharedList[ i ].fullName );
                     shareChosenUsers.append( userCard );
 
-                }
+                    initialUsers.push( sharedList[ i ].id );
 
-                initialUsers.push( sharedList[ i ].id );
+                }
 
                 for( j = 0; j < friendList.length; j++ ){
 
