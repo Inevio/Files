@@ -220,6 +220,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         }
 
+        console.log( 'Hola! -> ', structure, structure.sharedRoot );
+
+        if( structure.sharedRoot ){
+            console.log( 'He entrado!' );
+            file.addClass( 'shared' );
+        }
+
         // Return icon
         return file;
 
@@ -273,18 +280,11 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                 var length = list.length;
                 var files  = $();
-                var iconFile = null;
 
                 // Generate File icons
                 for( var i = 0; i < length; i++ ){
 
-                    iconFile = icon( list[ i ] );
-
-                    if( list[i].sharedRoot ){
-                        iconFile.addClass( 'shared' );
-                    }
-
-                    files = files.add( iconFile );
+                    files = files.add( icon( list[ i ] ) );
 
                 }
 
@@ -1296,8 +1296,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     })
 
     .on( 'dblclick', '.weexplorer-file.pointer:not( .pointer-pending )', function(){
-
-        console.log( 1 );
         
         var pointer     = $( this ).data('file-pointer');
         var pointerType = $( this ).data('file-pointerType');
