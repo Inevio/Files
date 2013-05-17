@@ -16,9 +16,7 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
     var file        = {};
     var renaming    = false;
 
-    var permissions = function( structure ){
-
-        var permissions = structure.permissions;
+    var permissions = function( permissions ){
 
         if( permissions.link === 1 ){
             link.addClass('yes');
@@ -137,7 +135,7 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
 
         }
 
-        permissions( structure );
+        permissions( structure.permissions );
         
     }
 
@@ -171,10 +169,10 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
 
         })
 
-        .on( 'structure-permissions', function( e, id ){
+        .on( 'structure-permissions', function( e, id, newPermissions, allPermissions ){
 
             if( id === params ){
-                permissions( structure );
+                permissions( allPermissions );
             }
 
         })
