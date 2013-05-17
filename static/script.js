@@ -1566,7 +1566,15 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                             if( error ){
                                 alert( error );
                             }else{
+
+                                wz.banner()
+                                    .title( lang.fileShareAccepted )
+                                    .text( structure.name + ' ' + lang.beenAccepted )
+                                    .image( structure.icons.tiny )
+                                    .render();
+
                                 notifications();
+
                             }
                             
                         });
@@ -1576,7 +1584,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 })
 
                 .add( lang.properties, function(){
-                    wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
+                    wz.app.createWindow( 1, icon.data( 'file-id' ), 'properties' );
                 })
 
                 .add( lang.refuseFile, function(){
@@ -1588,7 +1596,15 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                             if( error ){
                                 alert( error );
                             }else{
+
+                                wz.banner()
+                                    .title( lang.fileShareRefused )
+                                    .text( structure.name + ' ' + lang.beenRefused )
+                                    .image( 'https://static.weezeel.com/app/1/refuse.png' )
+                                    .render();
+
                                 notifications();
+
                             }
 
                         });
@@ -1597,7 +1613,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                 }, 'warning');
             
-        }else if( icon.hasClass('pointer-pending') ){
+        }else if( icon.hasClass( 'pointer-pending' ) ){
 
             menu
 
@@ -1635,7 +1651,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 })
 
                 .add( lang.properties, function(){
-                    wz.app.createWindow(1, icon.data( 'file-id' ), 'properties');
+                    wz.app.createWindow( 1, icon.data( 'file-id' ), 'properties' );
                 })
 
                 .add( lang.refuseFile, function(){
@@ -1662,7 +1678,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                                     .render();
 
                                 sharedNotifications();
-                                
+
                             }
 
                         });
@@ -1683,7 +1699,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             drag.ghost( $( this ).cloneWithStyle() );
         }else{
 
-            var ghost = filePrototype.clone().removeClass('wz-prototype');
+            var ghost = filePrototype.clone().removeClass( 'wz-prototype' );
 
             ghost.css({
 
@@ -1699,7 +1715,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
             }).text( $( '.weexplorer-file.active', win ).size() );
 
-            ghost.find('textarea, img, span').remove();
+            ghost.find( 'textarea, img, span' ).remove();
 
             drag.ghost( ghost );
 

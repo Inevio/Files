@@ -36,7 +36,13 @@ wz.app.addScript( 1, 'received', function( win, app, lang, params ){
                         if( error ){
                             alert( error );
                         }else{
-                            alert( lang.fileAccepted );
+
+                            wz.banner()
+                                    .title( lang.fileShareAccepted )
+                                    .text( structure.name + ' ' + lang.beenAccepted )
+                                    .image( structure.icons.tiny )
+                                    .render();
+
                         }
 
                         wz.app.closeWindow( win.data( 'win' ) );
@@ -52,7 +58,13 @@ wz.app.addScript( 1, 'received', function( win, app, lang, params ){
                         if( error ){
                             alert( error );
                         }else{
-                            alert( lang.fileRefused );
+
+                            wz.banner()
+                                    .title( lang.fileShareRefused )
+                                    .text( structure.name + ' ' + lang.beenRefused )
+                                    .image( 'https://static.weezeel.com/app/1/refuse.png' )
+                                    .render();
+
                         }
 
                         wz.app.closeWindow( win.data( 'win' ) );
