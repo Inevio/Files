@@ -117,6 +117,9 @@
 	"sharedFileTitle" : "Archivo compartido",
 	"folderShareAccepted" : "Carpeta aceptada",
 	"fileShareAccepted" : "Archivo aceptado",
-	"beenAccepted" : "ha sido aceptado"
+	"beenAccepted" : "ha sido aceptado",
+	"folderShareRefused" : "Carpeta rechazada",
+	"fileShareRefused" : "Archivo rechazado",
+	"beenRefused" : "ha sido rechazado"
 
 }

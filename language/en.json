@@ -117,6 +117,9 @@
 	"sharedFileTitle" : "Shared file",
 	"folderShareAccepted" : "Folder accepted",
 	"fileShareAccepted" : "File accepted",
-	"beenAccepted" : "has been accepted"
+	"beenAccepted" : "has been accepted",
+	"folderShareRefused" : "Folder refused",
+	"fileShareRefused" : "File refused",
+	"beenRefused" : "has been refused"
 
 }

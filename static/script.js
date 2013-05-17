@@ -1610,7 +1610,22 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                             if( error ){
                                 alert( error );
                             }else{
+
+                                var banner = wz.banner();
+
+                                if( structure.pointerType === 0 ){
+                                    banner.title( lang.folderShareAccepted );
+                                }else{
+                                    banner.title( lang.fileShareAccepted );
+                                }
+
+                                banner
+                                    .text( structure.name + ' ' + lang.beenAccepted )
+                                    .image( structure.icons.tiny )
+                                    .render();
+
                                 sharedNotifications();
+
                             }
 
                         });
@@ -1632,7 +1647,22 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                             if( error ){
                                 alert( error );
                             }else{
+
+                                var banner = wz.banner();
+
+                                if( structure.pointerType === 0 ){
+                                    banner.title( lang.folderShareRefused );
+                                }else{
+                                    banner.title( lang.fileShareRefused );
+                                }
+
+                                banner
+                                    .text( structure.name + ' ' + lang.beenRefused )
+                                    .image( 'https://static.weezeel.com/app/1/refuse.png' )
+                                    .render();
+
                                 sharedNotifications();
+                                
                             }
 
                         });

@@ -85,7 +85,7 @@ wz.app.addScript( 1, 'shared', function( win, app, lang, params ){
                             alert( error );
                         }else{
 
-                            /*var banner = wz.banner();
+                            var banner = wz.banner();
 
                             if( structure.pointerType === 0 ){
                                 banner.title( lang.folderShareAccepted );
@@ -94,8 +94,10 @@ wz.app.addScript( 1, 'shared', function( win, app, lang, params ){
                             }
 
                             banner
-                                .text( structure.name + ' ' + lang.beenAccepted )*/
-                            sharedNotifications();
+                                .text( structure.name + ' ' + lang.beenAccepted )
+                                .image( structure.icons.tiny )
+                                .render();
+
                         }
 
                         wz.app.closeWindow( win.data( 'win' ) );
@@ -111,7 +113,20 @@ wz.app.addScript( 1, 'shared', function( win, app, lang, params ){
                         if( error ){
                             alert( error );
                         }else{
-                            sharedNotifications();
+
+                            var banner = wz.banner();
+
+                            if( structure.pointerType === 0 ){
+                                banner.title( lang.folderShareRefused );
+                            }else{
+                                banner.title( lang.fileShareRefused );
+                            }
+
+                            banner
+                                .text( structure.name + ' ' + lang.beenRefused )
+                                .image( 'https://static.weezeel.com/app/1/refuse.png' )
+                                .render();
+
                         }
 
                         wz.app.closeWindow( win.data( 'win' ) );
