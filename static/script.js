@@ -197,18 +197,23 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         }
         
-        file.find('img').attr( 'src', structure.icons.normal );
+        file.find('img').attr( 'src', structure.icons.normal + ( ( structure.type === 3 ) ? '?upload' : '' ) );
         file.addClass( types[ structure.type ] );
         if( structure.type === 3 ){
             file.addClass( 'weexplorer-file-uploading' );
         }
         file.addClass( 'weexplorer-file-' + structure.id );
-        file.data( 'file-id', structure.id );
-        file.data( 'file-size', structure.size );
-        file.data( 'file-creation', structure.modified );
-        file.data( 'file-modification', structure.created );
-        file.data( 'permissions', structure.permissions );
 
+        file.data( {
+
+            'file-id'           : structure.id,
+            'file-size'         : structure.size,
+            'file-creation'     : structure.modified,
+            'file-modification' : structure.created,
+            'permissions'       : structure.permissions
+
+        } );
+        
         if( structure.type === 5 ){
 
             if( structure.status !== 1 ){
