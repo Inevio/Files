@@ -225,10 +225,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         }
 
-        console.log( 'Hola! -> ', structure, structure.sharedRoot );
-
         if( structure.sharedRoot ){
-            console.log( 'He entrado!' );
             file.addClass( 'shared' );
         }
 
@@ -407,7 +404,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                     if( error ){
 
-                        console.log( error );
+                        alert( error );
 
                     }else if( structure.owner === wz.info.userId() || structure.permissions.modify === 1 ){
 
@@ -415,7 +412,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                             if( error ){
 
-                                console.log( error );
+                                alert( error );
 
                             }
 
