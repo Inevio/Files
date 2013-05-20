@@ -346,7 +346,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                                 alert( error );
                             }
 
-                            $( 'textarea', icon ).val( structure.name );
+                            $( 'textarea', icon ).val( structure.name ).text( structure.name );
 
                         }
 
@@ -1728,7 +1728,12 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     .on( 'wz-drop', '.wz-drop-area', function( e, item ){
         
-        if( !$(this).hasClass('active') && ( item.parent().data('file-id') !== $(this).data('file-id') ) ){
+        if( !$( this ).hasClass( 'active' ) && 
+            ( item.data( 'file-id' ) !== $( this ).data( 'file-id' ) ) &&
+            ( item.parent().data( 'file-id' ) !== $( this ).data( 'file-id' ) ) &&
+            ( item.data( 'file-id' ) !== $( this ).parent().data( 'file-id' ) ) &&
+            ( !( item.hasClass( 'shared' ) && $( this ).hasClass( 'shared' ) ) )
+            ){
             
             e.stopPropagation();
             
@@ -1741,9 +1746,12 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             item.siblings('.active').add( item ).each( function(){
                             
                 wz.structure( $(this).data('file-id'), function( error, structure ){
-                    
-                    //To Do -> Error
-    
+
+                    if( error ){
+                        alert( error );
+                        return false;
+                    }
+
                     structure.move( dest, null, function( error ){
                         if( error ){
                             alert( error );
@@ -1756,10 +1764,18 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     })
 
-    .on( 'wz-dropenter', '.weexplorer-file.directory', function(e, file){
-        if(file.data('file-id') !== $(this).data('file-id')){
+    .on( 'wz-dropenter', '.weexplorer-file.directory', function( e, file ){
+
+        if( ( file.data( 'file-id' ) !== $( this ).data( 'file-id' ) ) &&
+            ( file.parent().data( 'file-id' ) !== $( this ).data( 'file-id' ) ) &&
+            ( file.data( 'file-id' ) !== $( this ).parent().data( 'file-id' ) ) &&
+            ( !( file.hasClass( 'shared' ) && $( this ).hasClass( 'shared' ) ) )
+         ){
+
             $(this).addClass('weexplorer-directory-over');
+
         }
+
     })
 
     .on( 'wz-dropleave', '.weexplorer-file.directory', function(){
