@@ -62,18 +62,20 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
                 
         var fileType = structure.type;
         
-        if( fileType === 0 ){
+        if( fileType === 0 && !structure.shared ){
             type.text( lang.directory );
         }else if( fileType === 1 ){
             type.text( lang.specialDirectory );
-        }else if( fileType === 2 ){
+        }else if( fileType === 2 && !structure.shared ){
             type.text( lang.file );
         }else if( fileType === 3 ){
             type.text( lang.temporalFile );
         }else if( fileType === 4 ){
             type.text( lang.receivedFile );
-        }else if( fileType === 5 ){
+        }else if( ( fileType === 2 && structure.shared ) || ( fileType === 5 && structure.pointerType === 2 ) ){
             type.text( lang.sharedFile );
+        }else if( ( fileType === 0 && structure.shared ) || ( fileType === 5 && structure.pointerType === 0 ) ){
+            type.text( lang.sharedFolder );
         }else{
             type.text( lang.unknown );
         }
