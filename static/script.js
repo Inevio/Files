@@ -777,8 +777,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             openDirectory( parent );
         }
 
-        notifications();
-
     })
     
     .on( 'structure-rename', function(e, structure){
@@ -821,8 +819,66 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         notifications();
     })
 
+    .on( 'structure-accepted', function(){
+        notifications();
+    })
+
+    .on( 'structure-refused', function(){
+        notifications();
+    })
+
     .on( 'structure-shared', function(){
         sharedNotifications();
+    })
+
+    .on( 'structure-sharedAccepted', function(){
+        sharedNotifications();
+    })
+
+    .on( 'structure-sharedRefused', function(){
+        sharedNotifications();
+    })
+
+    .on( 'structure-sharedOut', function( e, structureId, parentId, structureName, user ){
+        
+        wz.banner()
+            .title( structureName + ' ' + lang.fileDeleted )
+            .text( user.fullName + ' ' + lang.refuseAccess + ' ' + structureName )
+            .image( 'https://static.weezeel.com/app/1/refuse.png' )
+            .render();
+
+    })
+
+    .on( 'structure-sharedUserAccepted', function( e, structure, user ){
+        
+        wz.banner()
+            .title( user.name + ' ' + lang.hasAccepted )
+            .text( user.fullName + ' ' + lang.hasAccepted + ' ' + structure.name )
+            .image( structure.icons.tiny )
+            .render();
+
+    })
+
+    .on( 'structure-sharedUserRefused', function( e, structure, user ){
+        
+        wz.banner()
+            .title( user.name + ' ' + lang.hasRefused )
+            .text( user.fullName + ' ' + lang.hasRefused + ' ' + structure.name )
+            .image( structure.icons.tiny )
+            .render();
+
+    })
+
+    .on( 'structure-sharedStart', function( e, structure ){
+
+        $( '.weexplorer-file-' + structure.id, win ).addClass( 'shared' );
+
+    })
+
+    .on( 'structure-sharedStop', function( e, structure ){
+
+        $( '.weexplorer-file-' + structure.id, win ).removeClass( 'shared' );
+
     })
 
     .on( 'structure-conversionStart', function( event, structure ){
@@ -1573,8 +1629,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                                     .image( structure.icons.tiny )
                                     .render();
 
-                                notifications();
-
                             }
                             
                         });
@@ -1602,8 +1656,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                                     .text( structure.name + ' ' + lang.beenRefused )
                                     .image( 'https://static.weezeel.com/app/1/refuse.png' )
                                     .render();
-
-                                notifications();
 
                             }
 
@@ -1640,8 +1692,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                                     .image( structure.icons.tiny )
                                     .render();
 
-                                sharedNotifications();
-
                             }
 
                         });
@@ -1676,8 +1726,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                                     .text( structure.name + ' ' + lang.beenRefused )
                                     .image( 'https://static.weezeel.com/app/1/refuse.png' )
                                     .render();
-
-                                sharedNotifications();
 
                             }
 

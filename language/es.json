@@ -82,6 +82,10 @@
 	"receivedFile" : "Archivo recibido",
 	"contentAccept" : "Aceptar",
 	"contentRefuse" : "Rechazar",
+	"fileDeleted" : "ha sido borrado",
+	"refuseAccess" : "ha decidido denegarte el acceso a",
+	"hasAccepted" : "ha aceptado",
+	"hasRefused" : "ha rechazado",
 
 	"fileSent" : "Tu archivo ha sido enviado!",
 	"fileSentCorrectly" : "ha sido enviado correctamente",
