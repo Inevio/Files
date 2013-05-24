@@ -839,36 +839,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         sharedNotifications();
     })
 
-    .on( 'structure-sharedOut', function( e, structureId, parentId, structureName, user ){
-        
-        wz.banner()
-            .title( structureName + ' ' + lang.fileDeleted )
-            .text( user.fullName + ' ' + lang.refuseAccess + ' ' + structureName )
-            .image( 'https://static.weezeel.com/app/1/refuse.png' )
-            .render();
-
-    })
-
-    .on( 'structure-sharedUserAccepted', function( e, structure, user ){
-        
-        wz.banner()
-            .title( user.name + ' ' + lang.hasAccepted )
-            .text( user.fullName + ' ' + lang.hasAccepted + ' ' + structure.name )
-            .image( structure.icons.tiny )
-            .render();
-
-    })
-
-    .on( 'structure-sharedUserRefused', function( e, structure, user ){
-        
-        wz.banner()
-            .title( user.name + ' ' + lang.hasRefused )
-            .text( user.fullName + ' ' + lang.hasRefused + ' ' + structure.name )
-            .image( structure.icons.tiny )
-            .render();
-
-    })
-
     .on( 'structure-sharedStart', function( e, structure ){
 
         $( '.weexplorer-file-' + structure.id, win ).addClass( 'shared' );

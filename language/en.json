@@ -82,10 +82,6 @@
 	"receivedFile" : "Received file",
 	"contentAccept" : "Accept",
 	"contentRefuse" : "Refuse",
-	"fileDeleted" : "has been deleted",
-	"refuseAccess" : "has decided to stop sharing with you",
-	"hasAccepted" : "has accepted",
-	"hasRefused" : "has refused",
 
 	"fileSent" : "Your file has been sent!",
 	"fileSentCorrectly" : "has been sent correctly",
