@@ -83,7 +83,7 @@
 	"contentAccept" : "Accept",
 	"contentRefuse" : "Refuse",
 	"fileDeleted" : "has been deleted",
-	"refuseAccess" : "has decided to deny your access to",
+	"refuseAccess" : "has decided to stop sharing with you",
 	"hasAccepted" : "has accepted",
 	"hasRefused" : "has refused",
 
