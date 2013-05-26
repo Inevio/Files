@@ -240,9 +240,9 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
                     if( sharedList[ i ].id !== owner.id ){
 
                         userCard = shareUserPrototype.clone().removeClass('wz-prototype');
-                        //userCard.children('img').attr('src')
+                        userCard.children( 'img' ).attr( 'src', sharedList[ i ].avatar.tiny );
                         userCard.data( 'user-id', sharedList[ i ].id );
-                        userCard.children('span').text( sharedList[ i ].fullName );
+                        userCard.children( 'span' ).text( sharedList[ i ].fullName );
                         shareChosenUsers.append( userCard );
 
                         initialUsers.push( sharedList[ i ].id );
@@ -265,9 +265,9 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
                     if( friendList[ i ] !== null ){
 
                         userCard = shareUserPrototype.clone().removeClass('wz-prototype');
-                        //userCard.children('img').attr('src')
+                        userCard.children( 'img' ).attr( 'src', friendList[ i ].avatar.tiny );
                         userCard.data( 'user-id', friendList[ i ].id );
-                        userCard.children('span').text( friendList[ i ].fullName );
+                        userCard.children( 'span' ).text( friendList[ i ].fullName );
                         shareListUsers.append( userCard );
 
                     }

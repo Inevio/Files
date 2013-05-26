@@ -60,10 +60,10 @@ wz.app.addScript( 1, 'send', function( win, app, lang, params ){
         for( var i = 0; i < list.length; i++ ){
                                             
             var userCard = sendUserPrototype.clone().removeClass('wz-prototype');
-            //userCard.children('img').attr('src')
-            userCard.children('span').text(list[i].fullName);
+            userCard.children( 'img' ).attr( 'src', list[i].avatar.tiny);
+            userCard.children( 'span' ).text( list[i].fullName );
             userCard.data( 'user-id', list[i].id );
-            sendListUsers.append(userCard);
+            sendListUsers.append( userCard );
 
         }
                     
