@@ -172,6 +172,8 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
 
     var main = function(){
 
+        initialUsers = [];
+
         shareListUsers.children().not( '.share-chosen-title' ).remove();
         shareChosenUsers.children().not( '.share-chosen-title' ).remove();
         state.addClass( 'default' ).find( 'figure' ).removeClass( 'no' ).addClass( 'yes' );
