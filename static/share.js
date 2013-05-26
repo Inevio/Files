@@ -176,7 +176,7 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
 
         shareListUsers.children().not( '.share-chosen-title' ).remove();
         shareChosenUsers.children().not( '.share-chosen-title' ).remove();
-        state.addClass( 'default' ).find( 'figure' ).removeClass( 'no' ).addClass( 'yes' );
+        state.addClass( 'default' ).find( 'figure' ).removeClass( 'no' ).addClass( 'yes' ).find( 'span' ).text( lang.shareHowYes );
 
         // Local Functions
         var getFriendList = function(){
