@@ -202,6 +202,17 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         if( structure.type === 3 ){
             file.addClass( 'weexplorer-file-uploading' );
         }
+
+        if( structure.type === 5 ){
+
+            if( structure.pointerType === 2 ){
+                file.addClass( 'pointer-file' );
+            }else{
+                file.addClass( 'pointer-directory' );
+            }
+
+        }
+
         file.addClass( 'weexplorer-file-' + structure.id );
 
         file.data( {
@@ -888,7 +899,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         
     .on( 'mousedown', '.weexplorer-menu-download', function(){
         if( current !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
-            $('.active.file', win).each(function(){
+
+            $( '.active.file, .active.pointer-file', win ).each( function(){
                 wz.structure($(this).data('file-id'), function(e,st){
                     st.download();
                 });
