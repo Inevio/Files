@@ -12,41 +12,68 @@
     cursor: default;
 }
 
+.wz-app-1 .weexplorer-navigate{
+    padding: 13px 18px 9px;
+}
+
 .wz-app-1 .weexplorer-option-back{
+    padding-right: 8px;
+}
+
+.wz-app-1 .weexplorer-option-back i{
 
     width: 12px;
-    height: 15px;
+    height: 14px;
     float: left;
 
     background: url('https://static.weezeel.com/app/1/arrows.png') -24px 0;
-    background-size: 48px 15px; 
+    background-size: 48px 15px;
         
 }
 
-.wz-app-1 .weexplorer-option-back.active{
+.wz-app-1 .weexplorer-option-back:hover{
+    border: 1px solid transparent;
+}
+
+.wz-app-1 .weexplorer-option-back.active i{
     
     background: url('https://static.weezeel.com/app/1/arrows.png') 0 0;
     background-size: 48px 15px;
     
 }
 
+.wz-app-1 .weexplorer-option-back.active:hover{
+    border: 1px solid #999;    
+}
+
 .wz-app-1 .weexplorer-option-next{
+    padding-left: 8px;
+}
+
+.wz-app-1 .weexplorer-option-next i{
 
     width: 12px;
-    height: 15px;
+    height: 14px;
     float: left;
-    margin-left: 18px;
 
     background: url('https://static.weezeel.com/app/1/arrows.png') -36px 0; 
     background-size: 48px 15px;
         
 }
 
-.wz-app-1 .weexplorer-option-next.active{
+.wz-app-1 .weexplorer-option-next:hover{
+    border: 1px solid transparent;
+}
+
+.wz-app-1 .weexplorer-option-next.active i{
     
     background: url('https://static.weezeel.com/app/1/arrows.png') -12px 0; 
     background-size: 48px 15px;
     
+}
+
+.wz-app-1 .weexplorer-option-next.active:hover{
+    border: 1px solid #999;    
 }
 
 .wz-app-1 .wz-win-menu{
@@ -57,22 +84,15 @@
     
     width: 268px;
     float: left;
-    padding: 18px 23px 15px;
+    padding: 13px 23px 7px;
     
 }
 
 .wz-app-1.sidebar .weexplorer-menu{
-    width: 408px;
+    width: 404px;
 }
 
-.wz-app-1 .weexplorer-menu article{
-    
-    margin-right: 14px;
-    float: left;
-    
-}
-
-.wz-app-1 .weexplorer-menu-views{
+.wz-app-1 .weexplorer-menu-views i{
     
     width: 22px;
     height: 15px;
@@ -80,14 +100,14 @@
     
 }
 
-.wz-app-1 .weexplorer-menu-views.grid{
+.wz-app-1 .weexplorer-menu-views.grid i{
 
     background: url('https://static.weezeel.com/app/1/sprite.png') 0 0;
     background-size: 115px 16px; 
     
 }
 
-.wz-app-1 .weexplorer-menu-views.list{
+.wz-app-1 .weexplorer-menu-views.list i{
 
     background: url('https://static.weezeel.com/app/1/sprite.png') -93px 0;
     background-size: 115px 16px; 
@@ -107,7 +127,7 @@
     
 }
 
-.wz-app-1 .weexplorer-menu-sort{
+.wz-app-1 .weexplorer-menu-sort span{
     
     max-width: 107px;
     height: 14px;
@@ -119,18 +139,33 @@
     
 }
 
-.wz-app-1 .weexplorer-menu-download{
+.wz-app-1 .weexplorer-menu-download:hover{
+    border: 1px solid transparent;
+}
+
+.wz-app-1 .weexplorer-menu-download.active:hover{
+    border: 1px solid #999;
+}
+
+.wz-app-1 .weexplorer-menu-download i{
     
     width: 22px;
     height: 16px;
     float: left;
+
+    background: url('https://static.weezeel.com/app/1/download_inactive.png') no-repeat;
+    background-size: 22px 16px;
+    
+}
+
+.wz-app-1 .weexplorer-menu-download.active i{
 
     background: url('https://static.weezeel.com/app/1/sprite.png') -22px 0;
     background-size: 115px 16px; 
     
 }
 
-.wz-app-1 .weexplorer-menu-upload{
+.wz-app-1 .weexplorer-menu-upload i{
     
     width: 22px;
     height: 16px;
@@ -141,7 +176,7 @@
     
 }
 
-.wz-app-1 .weexplorer-menu-toggle{
+.wz-app-1 .weexplorer-menu-toggle i{
     
     width: 15px;
     height: 15px;
@@ -152,7 +187,7 @@
     
 }
 
-.wz-app-1.sidebar .weexplorer-menu-toggle{
+.wz-app-1.sidebar .weexplorer-menu-toggle i{
     
     width: 15px;
     height: 15px;

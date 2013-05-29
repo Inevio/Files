@@ -1248,7 +1248,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             
             if( $(this).hasClass( 'weexplorer-sort-name' ) ){
                 
-                $( '.weexplorer-menu-sort', win ).text( lang.sortByName );
+                $( '.weexplorer-menu-sort span', win ).text( lang.sortByName );
                 
                 $( '.weexplorer-file', win ).each(function(){
                     list.push($(this));
@@ -1259,7 +1259,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 
             }else if( $(this).hasClass( 'weexplorer-sort-size' ) ){
                 
-                $( '.weexplorer-menu-sort', win ).text( lang.sortBySize );
+                $( '.weexplorer-menu-sort span', win ).text( lang.sortBySize );
                 
                 $( '.weexplorer-file', win ).each(function(){
                     list.push($(this));
@@ -1270,7 +1270,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 
             }else if( $(this).hasClass( 'weexplorer-sort-creation' ) ){
                 
-                $( '.weexplorer-menu-sort', win ).text( lang.sortByCreation );
+                $( '.weexplorer-menu-sort span', win ).text( lang.sortByCreation );
                 
                 $( '.weexplorer-file', win ).each(function(){
                     list.push($(this));
@@ -1281,7 +1281,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 
             }else{
                 
-                $( '.weexplorer-menu-sort', win ).text( lang.sortByModif );
+                $( '.weexplorer-menu-sort span', win ).text( lang.sortByModif );
                 
                 $( '.weexplorer-file', win ).each(function(){
                     list.push($(this));
@@ -1931,7 +1931,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         
     }); 
 
-    $( '.weexplorer-menu-sort', win ).text( lang.sortByName );
+    $( '.weexplorer-menu-sort span', win ).text( lang.sortByName );
     $( '.weexplorer-sidebar-title-name', sidebar ).text( lang.favourites );
     $( '.item-now-before', win ).text( lang.uploading );
     $( '.total-items-before', win ).text( lang.of );
