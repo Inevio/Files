@@ -8,14 +8,16 @@
 .wz-app-1-properties .wz-win-menu{
     
     border-bottom: 1px solid #E5E5E5;
-    width: 245px;
-    height: 13px;
-    padding: 13px 15px;
+    width: 235px;
+    height: 25px;
+    padding: 7px 20px;
     
 }
 
 .wz-app-1-properties .wz-win-menu span{
     
+    float: left;
+    margin-top: 6px;
     font-size: 15px;
     color: #646464;
     
