@@ -25,6 +25,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     var nextButton     = $( '.weexplorer-option-next', win );
     var backButton     = $( '.weexplorer-option-back', win );
     var views          = $( '.weexplorer-menu-views', win );
+    var downloadFiles  = $( '.weexplorer-menu-download', win );
     var sidebar        = $( '.weexplorer-sidebar', win );
     var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
     var fileArea       = $( '.weexplorer-file-zone', win );
@@ -562,6 +563,27 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     };
 
+    var downloadComprobation = function(){
+
+        if( $( '.weexplorer-file.active' ).not( '.directory' ).size() ){
+
+            $( '.weexplorer-file.active' ).not( '.directory' ).each( function(){
+
+                if( $( this ).data( 'permissions' ).download ){
+                    downloadFiles.addClass( 'active' );
+                    return false;
+                }else{
+                    downloadFiles.removeClass( 'active' );
+                }
+
+            });
+                   
+        }else{
+            downloadFiles.removeClass( 'active' );
+        }
+
+    };
+
     // Events
     $( win )
     
@@ -918,6 +940,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         if( backButton.hasClass('active') && !navigationMenu.hasClass( 'show' ) ){
             recordBack();       
         }
+    })
+
+    .on( 'click', function(){
+        downloadComprobation();
     })
     
     .on( 'mousedown', '.weexplorer-menu-views', function(){
@@ -1396,6 +1422,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 $( '.weexplorer-option-back', win ).click();
             }
         }
+
+        downloadFiles.removeClass( 'active' );
   
     })
     
@@ -1408,6 +1436,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 deleteAllActive();
             }
         }
+
+        downloadFiles.removeClass( 'active' );
         
     })
     
@@ -1421,6 +1451,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         }else{
             $( '.weexplorer-file.active' , fileArea ).removeClass('active');
         }
+
+        downloadComprobation();
         
     })
     
@@ -1442,7 +1474,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             e.stopPropagation();
         }else{
             $( '.weexplorer-file.last-active', fileArea ).prev().not( '.weexplorer-file.wz-prototype' ).mousedown().mouseup();
-        }       
+        }
+
+        downloadComprobation();   
         
     })
     
@@ -1452,7 +1486,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             e.stopPropagation();
         }else{
             $( '.weexplorer-file.last-active', fileArea ).next().mousedown().mouseup();
-        }  
+        }
+
+        downloadComprobation();
         
     })
     
@@ -1470,7 +1506,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             }
         
             object.mousedown().mouseup();
-        }  
+        }
+
+        downloadComprobation();
           
     })
     
@@ -1492,6 +1530,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             
             object.mousedown().mouseup();
         }
+
+        downloadComprobation();
         
     })
 
@@ -1534,7 +1574,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             if( permissions.download ){
 
                 menu.add( lang.download, function(){
-                    $( '.weexplorer-menu-download', win ).mousedown();
+                    downloadFiles.mousedown();
                 });
 
             }
