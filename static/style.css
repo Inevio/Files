@@ -812,6 +812,10 @@
     display: inline-block;
 }
 
+.wz-app-1 .uploaded-percent{
+    margin-left: 8px;
+}
+
 .wz-app-1 .weexplorer-progress-bar{
     width: 0;
     height: 5px;
