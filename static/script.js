@@ -1810,7 +1810,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             e.stopPropagation();
             
             if( $(this).hasClass('directory') ){
-                var dest = $(this).data('file-id'); 
+                var dest = $(this).data('file-id');
+            }else if( $(this).hasClass('weexplorer-sidebar-element') ){
+                var dest = $(this).data('fileId');
             }else{
                 var dest = current;
             }
@@ -1852,35 +1854,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     .on( 'wz-dropleave', '.weexplorer-file.directory', function(){
         $(this).removeClass('weexplorer-directory-over');
-    })
-
-    .on( 'wz-drop', '.weexplorer-sidebar-element', function( e, item ){
-
-        if( item.parent().data( 'file-id' ) !== $( this ).data( 'file-id' ) ){
-
-            var dest = $(this).data('file-id'); 
-            
-            e.stopPropagation();
-                    
-            item.siblings('.active').add( item ).each( function(){
-                            
-                wz.structure( $( this ).data('file-id'), function( error, structure ){
-
-                    if( error ){
-                        alert( error );
-                        return false;
-                    }
-
-                    structure.move( dest, null, function( error ){
-                        if( error ){
-                            alert( error );
-                        }
-                    });
-                    
-                });
-            });
-        }
-
     })
 
     .on( 'wz-dropenter', '.weexplorer-sidebar-element', function( e, file ){
