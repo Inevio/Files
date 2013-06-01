@@ -43,6 +43,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     var uploadingItem    = $( '.item-now', uploading );
     var uploadingItems   = $( '.total-items', uploading );
     var uploadingElapsed = $( '.elapsed-time', uploading );
+    var uploadingPercent = $( '.uploaded-percent', uploading );
 
     var renaming = $();
     var prevName = '';
@@ -1041,6 +1042,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         }
 
         uploadingElapsed.text( time + ' ' + lang.left );
+        uploadingPercent.text( '( ' + parseInt( progress * 100, 10 ) + '% )' );
 
     })
 
