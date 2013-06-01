@@ -567,12 +567,20 @@
 
 .wz-app-1 .weexplorer-sidebar-element{
     
-    width: 115px;
+    width: 113px;
     float: left;
-    height: 15px;
+    height: 13px;
     padding: 10px 12px;
+    border: 1px solid transparent;
     
-}   
+}
+
+.wz-app-1 .weexplorer-sidebar-element-over{
+    
+    border: 1px solid #7FBFEB;
+    background: #CEECFF;
+    
+}
 
 .wz-app-1 .weexplorer-sidebar-element-name{
     

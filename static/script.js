@@ -1852,6 +1852,47 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         $(this).removeClass('weexplorer-directory-over');
     })
 
+    .on( 'wz-drop', '.weexplorer-sidebar-element', function( e, item ){
+
+        if( item.parent().data( 'file-id' ) !== $( this ).data( 'file-id' ) ){
+
+            var dest = $(this).data('file-id'); 
+            
+            e.stopPropagation();
+                    
+            item.siblings('.active').add( item ).each( function(){
+                            
+                wz.structure( $( this ).data('file-id'), function( error, structure ){
+
+                    if( error ){
+                        alert( error );
+                        return false;
+                    }
+
+                    structure.move( dest, null, function( error ){
+                        if( error ){
+                            alert( error );
+                        }
+                    });
+                    
+                });
+            });
+        }
+
+    })
+
+    .on( 'wz-dropenter', '.weexplorer-sidebar-element', function( e, file ){
+
+        if( file.parent().data( 'file-id' ) !== $( this ).data( 'file-id' ) ){
+            $( this ).addClass( 'weexplorer-sidebar-element-over' );
+        }
+
+    })
+
+    .on( 'wz-dropleave', '.weexplorer-sidebar-element', function(){
+        $( this ).removeClass( 'weexplorer-sidebar-element-over' );
+    })
+
     .on( 'wz-hold', '.weexplorer-option-back.active', function( e ){
 
         navigationMenu.children().not( '.wz-prototype' ).remove();
@@ -1951,7 +1992,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         
         var userFolder = elementFolder.clone();
         wz.structure( config.user.rootPath, function( error, structure ){
-            userFolder.data( 'file-id', structure.id ).addClass( 'active userFolder ' + 'folder-' + structure.id ).children( 'span' ).text( structure.name );
+            userFolder.data( 'file-id', structure.id ).addClass( 'active userFolder wz-drop-area folder-' + structure.id ).children( 'span' ).text( structure.name );
         });
         sidebar.append( userFolder );
         
