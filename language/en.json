@@ -48,6 +48,10 @@
 	"previousViews" : "Views",
 	"previousDownloads" : "Downloads",
 	"previousImports" : "Imports",
+	"passwordNo" : "This link doesn't have any password",
+	"passwordYes" : "This link is password protected",
+	"previewNo" : "This link has no preview",
+	"previewYes" : "People can preview this link",
 
 	"propertiesTitle" : "Properties",
 	"propertiesName" : "Name",

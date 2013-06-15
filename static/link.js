@@ -5,7 +5,7 @@ wz.app.addScript( 1, 'link', function( win, app, lang, params ){
     var linkSpan    = $('.link-url input', win);
     var prototype   = $('.wz-prototype', win);
     var linkTable   = $( 'table', win );
-    var previus     = $( '.previous', win );
+    var previous     = $( '.previous', win );
     
     var growWindow = function(){
         
@@ -16,10 +16,10 @@ wz.app.addScript( 1, 'link', function( win, app, lang, params ){
         if( linksOnTable === 0 ){
             win.transition( { 'width' : '365', 'height' : '215' }, 250);
             $( '.wz-win-menu', win ).transition( { 'width' : '335' }, 250, function(){
-                previus.addClass('hidden');
+                previous.addClass('hidden');
             });
         }else if( linksOnTable === 1 ){
-            previus.removeClass('hidden');
+            previous.removeClass('hidden');
             win.transition( { 'width' : '525', 'height' : '340' }, 250);
             $( '.wz-win-menu', win ).transition( { 'width' : '495' }, 250);
         }else if( linksOnTable === 2 ){
@@ -40,7 +40,7 @@ wz.app.addScript( 1, 'link', function( win, app, lang, params ){
 
             if( links.length ){
                 
-                previus.removeClass('hidden');
+                previous.removeClass('hidden');
                 win.css({ 'width' : '525' });
                 $( '.wz-win-menu', win ).css({ 'width' : '495' });
                 
@@ -91,6 +91,50 @@ wz.app.addScript( 1, 'link', function( win, app, lang, params ){
     }); 
 
     win
+
+        .on( 'mouseenter', '.first-column', function( e ){
+
+            if( $( this ).find( '.link-unlock' ).size() ){
+                $( '.previous-explanation', previous ).text( lang.passwordNo );
+            }else{
+                $( '.previous-explanation', previous ).text( lang.passwordYes );
+            }
+
+            $( '.previous-explanation', previous ).css({ 
+
+                left : e.pageX - parseInt( win.css( 'x' ), 10 ) - parseInt( $( '#wz-taskbar' ).css( 'width' ), 10 ), 
+                top : e.pageY - parseInt( win.css( 'y' ), 10 ), 
+                display : 'block' 
+
+            });
+
+        })
+
+        .on( 'mouseleave', '.first-column', function(){
+            $( '.previous-explanation', previous ).css( 'display', 'none' );
+        })
+
+        .on( 'mouseenter', '.second-column', function( e ){
+
+            if( $( this ).find( '.link-prev' ).size() ){
+                $( '.previous-explanation', previous ).text( lang.previewYes );
+            }else{
+                $( '.previous-explanation', previous ).text( lang.previewNo );
+            }
+
+            $( '.previous-explanation', previous ).css({ 
+
+                left : e.pageX - parseInt( win.css( 'x' ), 10 ) - parseInt( $( '#wz-taskbar' ).css( 'width' ), 10 ), 
+                top : e.pageY - parseInt( win.css( 'y' ), 10 ), 
+                display : 'block' 
+
+            });
+
+        })
+
+        .on( 'mouseleave', '.second-column', function(){
+            $( '.previous-explanation', previous ).css( 'display', 'none' );
+        })
     
         .on( 'mousedown', '.link-password button', function(){
     
@@ -193,7 +237,7 @@ wz.app.addScript( 1, 'link', function( win, app, lang, params ){
     $( '.link-answer', win ).text( lang.linkAnswer );
     $( '.link-password span', win ).text( lang.linkPasswordSpan );
     $( '.link-password button', win ).text( lang.linkPasswordButton );
-    $( '.link-preview span', win ).text( lang.linkPreview );
+    $( '.link-preview label', win ).text( lang.linkPreview );
     $( '.link-url span', win ).text( lang.linkUrl );
     $( '.previous-title', win ).text( lang.previousTitle );
     $( '.previous-url', win ).text( lang.previousUrl );

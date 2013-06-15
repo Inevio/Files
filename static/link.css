@@ -142,6 +142,7 @@
     
     border: 1px solid #DDDDDD;
     border-radius: 3px 3px 3px 3px;
+    background: #E9E9E9;
     color: #666666;
     float: left;
     font-size: 14px;
@@ -155,6 +156,7 @@
 .wz-app-1-link .link-url input.filled{
     
     border: 1px solid #50BDFF;
+    background: #FFF;
     cursor: text;
     
 }
@@ -171,7 +173,7 @@
     cursor: pointer;
 }
 
-.wz-app-1-link .link-preview span{
+.wz-app-1-link .link-preview label{
     font-size: 15px;
     color: #666;
     float: left;
@@ -312,4 +314,15 @@
 .wz-app-1-link tr span{
     position: relative;
     top: -7px;
+}
+
+.wz-app-1-link .previous-explanation{
+    position: absolute;
+    display: none;
+    height: 15px;
+    padding: 10px 15px;
+    background: #FFF;
+    border: 1px solid #50BDFF;
+    color: #333;
+    font-size: 15px;
 }
