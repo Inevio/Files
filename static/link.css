@@ -1,11 +1,11 @@
 
-.wz-app-1-link{
+.wz-win{
     
     background: #FFF;
     
 }
 
-.wz-app-1-link .wz-win-menu{
+.wz-win-menu{
     
     border-bottom: 1px solid #E5E5E5;
     width: 325px;
@@ -14,7 +14,7 @@
     
 }
 
-.wz-app-1-link .wz-win-menu span{
+.wz-win-menu span{
     
     float: left;
     margin-top: 6px;
@@ -23,13 +23,13 @@
     
 }
 
-.wz-app-1-link .wz-win-close{
+.wz-win-close{
     
     float: right;
     
 }
 
-.wz-app-1-link hr{
+hr{
     width: 495px;
     height: 0px;
     float: left;
@@ -38,7 +38,7 @@
     border-top: 1px solid #50BDFF;
 }
 
-.wz-app-1-link .link{
+.link{
 
     width: 335px;
     height: 155px;
@@ -47,7 +47,7 @@
     
 }
 
-.wz-app-1-link .link span{
+.link span{
     
     float: left;
     font-size: 15px;
@@ -56,18 +56,18 @@
     
 }
 
-.wz-app-1-link span.link-question{
+span.link-question{
     width: 335px;
 }
 
-.wz-app-1-link span.link-answer{
+span.link-answer{
     width: 335px;
     font-size: 14px;
     color: #666;
     margin-top: 5px;
 }
 
-.wz-app-1-link .link-password{
+.link-password{
 
     width: 335px;   
     float: left;
@@ -75,7 +75,7 @@
     
 }
 
-.wz-app-1-link .link-password input{
+.link-password input{
 
     width: 145px;
     float: left;
@@ -88,11 +88,11 @@
     
 }
 
-.wz-app-1-link .link-password input:focus{
+.link-password input:focus{
     border: 1px solid #50BDFF;
 }
 
-.wz-app-1-link .link-password button{
+.link-password button{
 
     width: 80px;
     height: 24px;
@@ -118,7 +118,7 @@
     
 }
 
-.wz-app-1-link .link-password button:hover{
+.link-password button:hover{
     
     border-top: 1px solid #60CBFF;
     
@@ -130,7 +130,7 @@
     
 }
 
-.wz-app-1-link .link-url{
+.link-url{
 
     width: 335px;   
     float: left;
@@ -138,7 +138,7 @@
     
 }
 
-.wz-app-1-link .link-url input{
+.link-url input{
     
     border: 1px solid #DDDDDD;
     border-radius: 3px 3px 3px 3px;
@@ -153,7 +153,7 @@
     
 }
 
-.wz-app-1-link .link-url input.filled{
+.link-url input.filled{
     
     border: 1px solid #50BDFF;
     background: #FFF;
@@ -161,19 +161,19 @@
     
 }
 
-.wz-app-1-link .link-preview{
+.link-preview{
     width: 335px;
     float: left;
     margin-top: 15px;
 }
 
-.wz-app-1-link .link-preview input{
+.link-preview input{
     float: left;
     margin-top: 2px;
     cursor: pointer;
 }
 
-.wz-app-1-link .link-preview label{
+.link-preview label{
     font-size: 15px;
     color: #666;
     float: left;
@@ -181,17 +181,17 @@
     width: 295px;
 }
 
-.wz-app-1-link table{
+table{
     float: left;
     font-size: 14px;
     color: #333;
 }
 
-.wz-app-1-link table tr, .wz-app-1-link table td{
+table tr, table td{
     border: 1px solid #aaa;
 }
 
-.wz-app-1-link .previous{
+.previous{
     width: 510px;
     height: 239px;
     float: left;
@@ -199,69 +199,69 @@
     overflow: hidden;
 }
 
-.wz-app-1-link .previous.hidden{
+.previous.hidden{
     border: none;
     height: 0px;
 }
 
-.wz-app-1-link .previous-table{
+.previous-table{
     width: 510px;
     height: 200px;
     float: left;
     margin-top: 15px;
 }
 
-.wz-app-1-link .previous-table .wz-scroll-bar{
+.previous-table .wz-scroll-bar{
     width: 7px;
 }
 
-.wz-app-1-link .previous-table .wz-scroll-slider{
+.previous-table .wz-scroll-slider{
     width: 7px;
 }
 
-.wz-app-1-link .previous-title{
+.previous-title{
     float: left;
     font-size: 17px;
     color: #333;
 }
 
-.wz-app-1-link .first-column{
+.first-column{
     width: 25px;
     padding: 5px;
 }
 
-.wz-app-1-link .second-column{
+.second-column{
     width: 25px;
     padding: 5px;
 }
 
-.wz-app-1-link .third-column{
+.third-column{
     width: 174px;
     text-align: center;
 }
 
-.wz-app-1-link .fourth-column{
+.fourth-column{
     width: 73px;
     text-align: center;
 }
 
-.wz-app-1-link .fifth-column{
+.fifth-column{
     width: 73px;
     text-align: center;
 }
 
-.wz-app-1-link .sixth-column{
+.sixth-column{
     width: 73px;
     text-align: center;
 }
 
-.wz-app-1-link .seventh-column{
+.seventh-column{
     width: 25px;
     text-align: center;
     vertical-align: middle;
 }
 
-.wz-app-1-link .link-lock{
+.link-lock{
     width: 25px;
     height: 25px;
     display: block;
@@ -269,7 +269,7 @@
     background-size: 25px 25px;
 }
 
-.wz-app-1-link .link-unlock{
+.link-unlock{
     width: 25px;
     height: 25px;
     display: block;
@@ -277,7 +277,7 @@
     background-size: 25px 25px;
 }
 
-.wz-app-1-link .link-prev{
+.link-prev{
     width: 25px;
     height: 25px;
     display: block;
@@ -285,7 +285,7 @@
     background-size: 25px 25px;
 }
 
-.wz-app-1-link .link-unprev{
+.link-unprev{
     width: 25px;
     height: 25px;
     display: block;
@@ -293,7 +293,7 @@
     background-size: 25px 25px;
 }
 
-.wz-app-1-link .link-delete{
+.link-delete{
     width: 16px;
     height: 16px;
     display: inline-block;
@@ -302,7 +302,7 @@
     background-size: 16px 16px;
 }
 
-.wz-app-1-link input.link-data{
+input.link-data{
     width: 160px;
     float: none;
     font-size: 13px;
@@ -311,12 +311,12 @@
     color: #333;
 }
 
-.wz-app-1-link tr span{
+tr span{
     position: relative;
     top: -7px;
 }
 
-.wz-app-1-link .previous-explanation{
+.previous-explanation{
     position: absolute;
     display: none;
     height: 15px;

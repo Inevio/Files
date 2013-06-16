@@ -1,11 +1,11 @@
 
-.wz-app-1-send{
+.wz-win{
     
     background: #FFF;
     
 }
 
-.wz-app-1-send .wz-win-menu{
+.wz-win-menu{
     
     border-bottom: 1px solid #E5E5E5;
     width: 590px;
@@ -14,7 +14,7 @@
     
 }
 
-.wz-app-1-send .wz-win-menu span{
+.wz-win-menu span{
     
     float: left;
     margin-top: 6px;
@@ -23,26 +23,26 @@
     
 }
 
-.wz-app-1-send .wz-win-close{
+.wz-win-close{
     
     float: right;
     
 }
 
-.wz-app-1-send .send-list{
+.send-list{
     width: 183px;
     height: 349px;
     float: left;
     margin: 15px;
 }
 
-.wz-app-1-send .send-list span{
+.send-list span{
     font-size: 15px;
     color: #333;
     float: left;
 }
 
-.wz-app-1-send .send-list-users{
+.send-list-users{
     width: 183px;
     height: 326px;
     float: left;
@@ -52,20 +52,20 @@
     background: #FAFAFA;
 }
 
-.wz-app-1-send .send-chosen{
+.send-chosen{
     width: 183px;
     height: 349px;
     float: left;
     margin: 15px 15px 15px 0px;
 }
 
-.wz-app-1-send .send-chosen span{
+.send-chosen span{
     font-size: 15px;
     color: #333;
     float: left;
 }
 
-.wz-app-1-send .send-chosen-users{
+.send-chosen-users{
     width: 183px;
     height: 326px;
     float: left;
@@ -75,7 +75,7 @@
     background: #FAFAFA;
 }
 
-.wz-app-1-send .send-how{
+.send-how{
     width: 182px;
     height: 350px;
     float: left;
@@ -84,14 +84,14 @@
     position: relative;
 }
 
-.wz-app-1-send .send-how span{
+.send-how span{
     font-size: 15px;
     color: #333;
     float: left;
     clear: left;
 }
 
-.wz-app-1-send span.send-how-explanation{
+span.send-how-explanation{
     margin-top: 8px;
     margin-bottom: 15px;
     font-size: 13px;
@@ -99,7 +99,7 @@
     text-align: justify;
 }
 
-.wz-app-1-send .send-message{
+.send-message{
     width: 172px;
     height: 90px;
     border: 1px solid #DDD;
@@ -109,11 +109,11 @@
     padding: 5px;
 }
 
-.wz-app-1-send .send-message:focus{
+.send-message:focus{
     border: 1px solid #50BDFF;
 }
 
-.wz-app-1-send button{
+button{
     
     width: 80px;
     height: 30px;
@@ -138,7 +138,7 @@
     
 }
 
-.wz-app-1-send button:hover{
+button:hover{
 
     border-top: 1px solid #60CBFF;
     
@@ -149,7 +149,7 @@
     
 }
 
-.wz-app-1-send .send-user{
+.send-user{
     
     width: 176px;
     height: 20px;
@@ -162,20 +162,20 @@
     
 }
 
-.wz-app-1-send .send-user:hover{
+.send-user:hover{
     
     background: rgba( 80, 189, 255, 0.4 );
     
 }
 
-.wz-app-1-send .send-user img{
+.send-user img{
     width: 25px;
     height: 25px;
     float: left;
     cursor: pointer;
 }
 
-.wz-app-1-send .send-user span{
+.send-user span{
     width: 140px;
     height: 14px;
     float: left;

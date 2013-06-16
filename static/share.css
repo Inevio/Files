@@ -1,11 +1,11 @@
 
-.wz-app-1-share{
+.wz-win{
     
     background: #FFF;
     
 }
 
-.wz-app-1-share .wz-win-menu{
+.wz-win-menu{
     
     border-bottom: 1px solid #E5E5E5;
     width: 590px;
@@ -14,7 +14,7 @@
     
 }
 
-.wz-app-1-share .wz-win-menu span{
+.wz-win-menu span{
     
     float: left;
     margin-top: 6px;
@@ -23,26 +23,26 @@
     
 }
 
-.wz-app-1-share .wz-win-close{
+.wz-win-close{
     
     float: right;
     
 }
 
-.wz-app-1-share .share-list{
+.share-list{
     width: 183px;
     height: 349px;
     float: left;
     margin: 15px;
 }
 
-.wz-app-1-share .share-list span{
+.share-list span{
     font-size: 15px;
     color: #333;
     float: left;
 }
 
-.wz-app-1-share .share-list-users{
+.share-list-users{
     width: 183px;
     height: 326px;
     float: left;
@@ -52,20 +52,20 @@
     background: #FAFAFA;
 }
 
-.wz-app-1-share .share-chosen{
+.share-chosen{
     width: 183px;
     height: 349px;
     float: left;
     margin: 15px 15px 15px 0px;
 }
 
-.wz-app-1-share .share-chosen span{
+.share-chosen span{
     font-size: 15px;
     color: #333;
     float: left;
 }
 
-.wz-app-1-share .share-chosen-users{
+.share-chosen-users{
     width: 183px;
     height: 326px;
     float: left;
@@ -75,7 +75,7 @@
     background: #FAFAFA;
 }
 
-.wz-app-1-share .share-how{
+.share-how{
     width: 182px;
     height: 350px;
     float: left;
@@ -84,14 +84,14 @@
     position: relative;
 }
 
-.wz-app-1-share .share-how span{
+.share-how span{
     font-size: 15px;
     color: #333;
     float: left;
     clear: left;
 }
 
-.wz-app-1-share span.share-how-explanation{
+span.share-how-explanation{
     margin-top: 8px;
     margin-bottom: 15px;
     font-size: 13px;
@@ -99,7 +99,7 @@
     text-align: justify;
 }
 
-.wz-app-1-share .share-how article{
+.share-how article{
     width: 150px;
     height: 20px;   
     float: left;
@@ -109,11 +109,11 @@
     padding-bottom: 2px;
 }
 
-.wz-app-1-share .share-how article span{
+.share-how article span{
     margin-top: 1px;
 }
 
-.wz-app-1-share .share-how figure{
+.share-how figure{
 
     float: right;
     width: 58px;
@@ -123,47 +123,47 @@
     
 }
 
-.wz-app-1-share .share-how figure.yes{
+.share-how figure.yes{
     background: #9DC368;
     border: 1px solid #87AB5B;
 }
 
-.wz-app-1-share .share-how.default figure.yes{
+.share-how.default figure.yes{
     background: #C4DBA4;
     border: 1px solid #B7CD9D;
 }
 
-.wz-app-1-share .share-how figure.yes.default{
+.share-how figure.yes.default{
     background: #C4DBA4;
     border: 1px solid #B7CD9D;
 }
 
-.wz-app-1-share .share-how.default figure.yes.default{
+.share-how.default figure.yes.default{
     background: #9DC368;
     border: 1px solid #87AB5B;
 }
 
-.wz-app-1-share .share-how figure.no{
+.share-how figure.no{
     background: #DC7C6B;
     border: 1px solid #B15B4D;
 }
 
-.wz-app-1-share .share-how.default figure.no{
+.share-how.default figure.no{
     background: #EAB0A6;
     border: 1px solid #D09D94;
 }
 
-.wz-app-1-share .share-how figure.no.default{
+.share-how figure.no.default{
     background: #EAB0A6;
     border: 1px solid #D09D94;
 }
 
-.wz-app-1-share .share-how.default figure.no.default{
+.share-how.default figure.no.default{
     background: #DC7C6B;
     border: 1px solid #B15B4D;
 }
 
-.wz-app-1-share .share-how figure span{
+.share-how figure span{
     font-size: 13px;
     font-weight: bold;
     margin-top: 3px;
@@ -172,43 +172,43 @@
     text-align: center;
 }
 
-.wz-app-1-share .share-how figure.yes span{
+.share-how figure.yes span{
     color: #60783F;
     float: right;
     margin-right: 5px;
 }
 
-.wz-app-1-share .share-how.default figure.yes span{
+.share-how.default figure.yes span{
     color: #A0AE8C;
 }
 
-.wz-app-1-share .share-how figure.yes.default span{
+.share-how figure.yes.default span{
     color: #A0AE8C;
 }
 
-.wz-app-1-share .share-how.default figure.yes.default span{
+.share-how.default figure.yes.default span{
     color: #60783F;
 }
 
-.wz-app-1-share .share-how figure.no span{
+.share-how figure.no span{
     color: #8F5247;
     float: left;
     margin-left: 5px;
 }
 
-.wz-app-1-share .share-how.default figure.no span{
+.share-how.default figure.no span{
     color: #BC9791;
 }
 
-.wz-app-1-share .share-how figure.no.default span{
+.share-how figure.no.default span{
     color: #BC9791;
 }
 
-.wz-app-1-share .share-how.default figure.no.default span{
+.share-how.default figure.no.default span{
     color: #8F5247;
 }
 
-.wz-app-1-share .share-how figure i{
+.share-how figure i{
     width: 22px;
     height: 22px;
     margin-top: -3px;
@@ -218,55 +218,55 @@
     cursor: pointer;
 }
 
-.wz-app-1-share .share-how.default figure i{
+.share-how.default figure i{
     border: 1px solid #C2C2C2;
 }
 
-.wz-app-1-share .share-how figure.default i{
+.share-how figure.default i{
     border: 1px solid #C2C2C2;
 }
 
-.wz-app-1-share .share-how.default figure.default i{
+.share-how.default figure.default i{
     border: 1px solid #999;
 }
 
-.wz-app-1-share .share-how figure.yes i{
+.share-how figure.yes i{
     float: left;
     margin-left: -2px;
 }
 
-.wz-app-1-share .share-how figure.no i{
+.share-how figure.no i{
     float: right;
     margin-right: -2px;
 }
 
-.wz-app-1-share .share-how.blocked *{
+.share-how.blocked *{
     cursor: default;
 }
 
-.wz-app-1-share .share-how.blocked figure.no{
+.share-how.blocked figure.no{
     background: #EAB0A6 !important;
     border: 1px solid #D09D94 !important;
 }
 
-.wz-app-1-share .share-how.blocked figure.no span{
+.share-how.blocked figure.no span{
     color: #BC9791 !important;
 }
 
-.wz-app-1-share .share-how.blocked figure.yes{
+.share-how.blocked figure.yes{
     background: #C4DBA4 !important;
     border: 1px solid #B7CD9D !important;
 }
 
-.wz-app-1-share .share-how.blocked figure.yes span{
+.share-how.blocked figure.yes span{
     color: #A0AE8C !important;
 }
 
-.wz-app-1-share .share-how.blocked i{
+.share-how.blocked i{
     border: 1px solid #C2C2C2 !important;
 }
 
-.wz-app-1-share button{
+button{
     
     width: 80px;
     height: 30px;
@@ -291,7 +291,7 @@
     
 }
 
-.wz-app-1-share button:hover{
+button:hover{
 
     border-top: 1px solid #60CBFF;
     
@@ -302,7 +302,7 @@
     
 }
 
-.wz-app-1-share .share-user{
+.share-user{
     
     width: 176px;
     height: 20px;
@@ -315,20 +315,20 @@
     
 }
 
-.wz-app-1-share .share-user:hover{
+.share-user:hover{
     
     background: rgba( 80, 189, 255, 0.4 );
     
 }
 
-.wz-app-1-share .share-user img{
+.share-user img{
     width: 25px;
     height: 25px;
     float: left;
     cursor: pointer;
 }
 
-.wz-app-1-share .share-user span{
+.share-user span{
     width: 140px;
     height: 14px;
     float: left;
