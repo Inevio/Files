@@ -1,26 +1,26 @@
-.wz-app-1.wz-win.sidebar{
+.wz-win.sidebar{
     width: 684px; /*!important*/
 }
 
-.wz-app-1 textarea{
+textarea{
     overflow: hidden;
     border: 1px solid #50BDFF;
 }
 
-.wz-app-1 textarea[readonly]{
+textarea[readonly]{
     border: 1px solid transparent;
     cursor: default;
 }
 
-.wz-app-1 .weexplorer-navigate{
+.weexplorer-navigate{
     padding: 13px 18px 9px;
 }
 
-.wz-app-1 .weexplorer-option-back{
+.weexplorer-option-back{
     padding-right: 8px;
 }
 
-.wz-app-1 .weexplorer-option-back i{
+.weexplorer-option-back i{
 
     width: 12px;
     height: 14px;
@@ -31,26 +31,26 @@
         
 }
 
-.wz-app-1 .weexplorer-option-back:hover{
+.weexplorer-option-back:hover{
     border: 1px solid transparent;
 }
 
-.wz-app-1 .weexplorer-option-back.active i{
+.weexplorer-option-back.active i{
     
     background: url('https://static.weezeel.com/app/1/arrows.png') 0 0;
     background-size: 48px 15px;
     
 }
 
-.wz-app-1 .weexplorer-option-back.active:hover{
+.weexplorer-option-back.active:hover{
     border: 1px solid #999;    
 }
 
-.wz-app-1 .weexplorer-option-next{
+.weexplorer-option-next{
     padding-left: 8px;
 }
 
-.wz-app-1 .weexplorer-option-next i{
+.weexplorer-option-next i{
 
     width: 12px;
     height: 14px;
@@ -61,26 +61,26 @@
         
 }
 
-.wz-app-1 .weexplorer-option-next:hover{
+.weexplorer-option-next:hover{
     border: 1px solid transparent;
 }
 
-.wz-app-1 .weexplorer-option-next.active i{
+.weexplorer-option-next.active i{
     
     background: url('https://static.weezeel.com/app/1/arrows.png') -12px 0; 
     background-size: 48px 15px;
     
 }
 
-.wz-app-1 .weexplorer-option-next.active:hover{
+.weexplorer-option-next.active:hover{
     border: 1px solid #999;    
 }
 
-.wz-app-1 .wz-win-menu{
+.wz-win-menu{
     width: 684px;
 }
 
-.wz-app-1 .weexplorer-menu{
+.weexplorer-menu{
     
     width: 268px;
     float: left;
@@ -88,11 +88,11 @@
     
 }
 
-.wz-app-1.sidebar .weexplorer-menu{
+.wz-win.sidebar .weexplorer-menu{
     width: 404px;
 }
 
-.wz-app-1 .weexplorer-menu-views i{
+.weexplorer-menu-views i{
     
     width: 22px;
     height: 15px;
@@ -100,21 +100,21 @@
     
 }
 
-.wz-app-1 .weexplorer-menu-views.grid i{
+.weexplorer-menu-views.grid i{
 
     background: url('https://static.weezeel.com/app/1/sprite.png') 0 0;
     background-size: 115px 16px; 
     
 }
 
-.wz-app-1 .weexplorer-menu-views.list i{
+.weexplorer-menu-views.list i{
 
     background: url('https://static.weezeel.com/app/1/sprite.png') -93px 0;
     background-size: 115px 16px; 
     
 }
 
-.wz-app-1 .weexplorer-menu-display{
+.weexplorer-menu-display{
     
     width: 7px;
     height: 5px;
@@ -127,7 +127,7 @@
     
 }
 
-.wz-app-1 .weexplorer-menu-sort span{
+.weexplorer-menu-sort span{
     
     max-width: 107px;
     height: 14px;
@@ -139,15 +139,15 @@
     
 }
 
-.wz-app-1 .weexplorer-menu-download:hover{
+.weexplorer-menu-download:hover{
     border: 1px solid transparent;
 }
 
-.wz-app-1 .weexplorer-menu-download.active:hover{
+.weexplorer-menu-download.active:hover{
     border: 1px solid #999;
 }
 
-.wz-app-1 .weexplorer-menu-download i{
+.weexplorer-menu-download i{
     
     width: 22px;
     height: 16px;
@@ -158,14 +158,14 @@
     
 }
 
-.wz-app-1 .weexplorer-menu-download.active i{
+.weexplorer-menu-download.active i{
 
     background: url('https://static.weezeel.com/app/1/sprite.png') -22px 0;
     background-size: 115px 16px; 
     
 }
 
-.wz-app-1 .weexplorer-menu-upload i{
+.weexplorer-menu-upload i{
     
     width: 22px;
     height: 16px;
@@ -176,7 +176,7 @@
     
 }
 
-.wz-app-1 .weexplorer-menu-toggle i{
+.weexplorer-menu-toggle i{
     
     width: 15px;
     height: 15px;
@@ -187,7 +187,7 @@
     
 }
 
-.wz-app-1.sidebar .weexplorer-menu-toggle i{
+.wz-win.sidebar .weexplorer-menu-toggle i{
     
     width: 15px;
     height: 15px;
@@ -198,13 +198,13 @@
     
 }
 
-.wz-app-1 .weexplorer-main{
+.weexplorer-main{
     width: 544px;
     height: 550px;
     float: left;;
 }
 
-.wz-app-1 .weexplorer-folder{
+.weexplorer-folder{
     
     width: 544px;
     height: 50px;
@@ -220,7 +220,7 @@
     
 }
 
-.wz-app-1 .weexplorer-folder-icon{
+.weexplorer-folder-icon{
     
     width: 13px;
     height: 11px;
@@ -232,7 +232,7 @@
 }
 
 
-.wz-app-1 .weexplorer-folder-name{
+.weexplorer-folder-name{
     
     font-size: 14px;
     color: #545454;
@@ -240,13 +240,13 @@
     
 }
 
-.wz-app-1 img{
+img{
     
     vertical-align: middle;
     
 }
 
-.wz-app-1 .weexplorer-file-zone{
+.weexplorer-file-zone{
     
     width: 544px;
     height: 550px;
@@ -258,7 +258,7 @@
     
 }
 
-.wz-app-1 .grid .weexplorer-file{
+.grid .weexplorer-file{
     
     width: 150px;
     height: 185px;
@@ -269,7 +269,7 @@
     
 }
 
-.wz-app-1 .grid figure{
+.grid figure{
     
     width: 148px;
     height: 148px;
@@ -279,7 +279,7 @@
     
 }
 
-.wz-app-1 .grid textarea{
+.grid textarea{
     
     font-size: 14px;
     color: #585858;
@@ -290,17 +290,17 @@
     
 }
 
-.wz-app-1 .grid span{
+.grid span{
     
     display: none;
     
 }
 
-.wz-app-1 .weexplorer-file-zone.list{
+.weexplorer-file-zone.list{
     padding: 60px 15px 0px;
 }
 
-.wz-app-1 .list .weexplorer-file{
+.list .weexplorer-file{
     
     width: 100%;
     height: 30px;
@@ -310,7 +310,7 @@
     
 }
 
-.wz-app-1 .list figure{
+.list figure{
     
     width: 25px;
     height: 25px;
@@ -322,7 +322,7 @@
     
 }
 
-.wz-app-1 .list textarea{
+.list textarea{
     
     font-size: 14px;
     color: #585858;
@@ -334,11 +334,11 @@
     
 }
 
-.wz-app-1 .list textarea[readonly]{
+.list textarea[readonly]{
     background:transparent;
 }
 
-.wz-app-1 .list span{
+.list span{
     
     font-size: 12px;
     color: #ABABAB;
@@ -349,26 +349,26 @@
     
 }
 
-.wz-app-1 .list img{
+.list img{
     max-width: 25px;
     max-height: 25px;
     vertical-align: middle;
 }
 
-.wz-app-1 .grid .last-active figure{
+.grid .last-active figure{
 
     border: solid 1px rgba(127,191,235,0.5);
     border-radius: 3px;
     
 }
 
-.wz-app-1 .grid .last-active.hidden figure{
+.grid .last-active.hidden figure{
 
     border: solid 1px transparent;
     
 }
 
-.wz-app-1 .grid .last-active figure:hover{
+.grid .last-active figure:hover{
 
     background: #eefaff;
     border: solid 1px #7fbfeb;
@@ -376,7 +376,7 @@
     
 }
 
-.wz-app-1 .grid .active figure{
+.grid .active figure{
 
     background: #ceecff;
     border: solid 1px #7fbfeb;
@@ -384,7 +384,7 @@
     
 }
 
-.wz-app-1 .grid figure:hover{
+.grid figure:hover{
     
     background: #eefaff;
     border: solid 1px #7fbfeb;
@@ -392,7 +392,7 @@
     
 }
 
-.wz-app-1 .grid .active figure:hover{
+.grid .active figure:hover{
 
     background: #ceecff;
     border: solid 1px #7fbfeb;
@@ -400,26 +400,26 @@
     
 }
 
-.wz-app-1 .grid img{
+.grid img{
     max-width: 128px;
     max-height: 128px;
     vertical-align: middle;
 }
 
-.wz-app-1 .list .weexplorer-file.last-active{
+.list .weexplorer-file.last-active{
 
     border: solid 1px rgba(127,191,235,0.5);
     border-radius: 3px;
     
 }
 
-.wz-app-1 .list .weexplorer-file.last-active.hidden{
+.list .weexplorer-file.last-active.hidden{
 
     border: solid 1px transparent;
     
 }
 
-.wz-app-1 .list .weexplorer-file.last-active:hover{
+.list .weexplorer-file.last-active:hover{
 
     background: #eefaff;
     border: solid 1px #7fbfeb;
@@ -427,7 +427,7 @@
     
 }
 
-.wz-app-1 .list .weexplorer-file:hover{
+.list .weexplorer-file:hover{
 
     background: #eefaff;
     border: solid 1px #7fbfeb;
@@ -435,7 +435,7 @@
     
 }
 
-.wz-app-1 .list .weexplorer-file.active:hover{
+.list .weexplorer-file.active:hover{
 
     background: #ceecff;
     border: solid 1px #7fbfeb;
@@ -443,7 +443,7 @@
     
 }
 
-.wz-app-1 .list .weexplorer-file.active{
+.list .weexplorer-file.active{
 
     background: #ceecff;
     border: solid 1px #7fbfeb;
@@ -451,11 +451,11 @@
     
 }
 
-.wz-app-1 .list .weexplorer-file-date-modification{
+.list .weexplorer-file-date-modification{
     width: 114px;
 }
 
-.wz-app-1 .grid .weexplorer-file-shared{
+.grid .weexplorer-file-shared{
     width: 32px;
     height: 32px;
     position: absolute;
@@ -469,16 +469,16 @@
     display: none;
 }
 
-.wz-app-1 .grid .shared .weexplorer-file-shared{
+.grid .shared .weexplorer-file-shared{
     display: block;
 }
 
-.wz-app-1 .grid .weexplorer-file-shared:hover{
+.grid .weexplorer-file-shared:hover{
     background: #323232 !important;
     border: 1px solid #232323 !important;
 }
 
-.wz-app-1 .grid .weexplorer-file-shared i{
+.grid .weexplorer-file-shared i{
     width: 22px;
     height: 22px;
     margin-top: 4px;
@@ -487,7 +487,7 @@
     background-size: 22px 22px;
 }
 
-.wz-app-1 .list .weexplorer-file-shared{
+.list .weexplorer-file-shared{
     width: 11px;
     height: 11px;
     position: absolute;
@@ -502,15 +502,15 @@
     display: none;
 }
 
-.wz-app-1 .list .shared .weexplorer-file-shared{
+.list .shared .weexplorer-file-shared{
     display: block;
 }
 
-.wz-app-1 .list .weexplorer-file-shared i{
+.list .weexplorer-file-shared i{
     display: none;
 }
 
-.wz-app-1 .weexplorer-sidebar{
+.weexplorer-sidebar{
     
     width: 0px;
     height: 550px;
@@ -521,13 +521,13 @@
     
 }
 
-.wz-app-1.sidebar .weexplorer-sidebar{
+.wz-win.sidebar .weexplorer-sidebar{
     
     width: 139px;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-title{
+.weexplorer-sidebar-title{
         
     width: 115px;
     float: left;
@@ -535,7 +535,7 @@
 
 }
 
-.wz-app-1 .weexplorer-sidebar-icon{
+.weexplorer-sidebar-icon{
     
     width: 13px;
     height: 13px;
@@ -545,13 +545,13 @@
     
 }
 
-.wz-app-1 .weexplorer-sidebar-icon .title{
+.weexplorer-sidebar-icon .title{
     
     background-position: 0 0;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-title-name{
+.weexplorer-sidebar-title-name{
     
     width: 86px;
     height: 15px;
@@ -565,7 +565,7 @@
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element{
+.weexplorer-sidebar-element{
     
     width: 113px;
     float: left;
@@ -575,14 +575,14 @@
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element-over{
+.weexplorer-sidebar-element-over{
     
     border: 1px solid #7FBFEB;
     background: #CEECFF;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element-name{
+.weexplorer-sidebar-element-name{
     
     font-size: 12px;
     color: #505050;
@@ -598,19 +598,19 @@
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-element-name{
+.weexplorer-sidebar-element:hover .weexplorer-sidebar-element-name{
     
     color: #000;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-element-name{
+.weexplorer-sidebar-element.active .weexplorer-sidebar-element-name{
     
     color: #108EE5;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-notification{
+.weexplorer-sidebar-notification{
     
     display: none;
     float: right;
@@ -624,74 +624,74 @@
 }
 
 
-.wz-app-1 .weexplorer-sidebar-element.notification .weexplorer-sidebar-notification{
+.weexplorer-sidebar-element.notification .weexplorer-sidebar-notification{
 
     display: block;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element.notification .weexplorer-sidebar-element-name{
+.weexplorer-sidebar-element.notification .weexplorer-sidebar-element-name{
     
     width: 63px;
     
 }
 
-.wz-app-1 .weexplorer-file-uploading figure{
+.weexplorer-file-uploading figure{
     
     opacity: 0.5;
     
 }   
 
-.wz-app-1 .weexplorer-file-uploading textarea{
+.weexplorer-file-uploading textarea{
     
     opacity: 0.5;
     
 }
 
-.wz-app-1 .weexplorer-directory-over{
+.weexplorer-directory-over{
     
     background: #ceecff;
     border-radius: 3px;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.user{
+.weexplorer-sidebar-icon.user{
     
     background-position: -13px 0;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.user{
+.weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.user{
     
     background-position: -13px -13px;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.user{
+.weexplorer-sidebar-element.active .weexplorer-sidebar-icon.user{
     
     background-position: -13px -26px;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.folder{
+.weexplorer-sidebar-icon.folder{
     
     background-position: -26px 0;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.folder{
+.weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.folder{
     
     background-position: -26px -13px;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.folder{
+.weexplorer-sidebar-element.active .weexplorer-sidebar-icon.folder{
     
     background-position: -26px -26px;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.music{
+.weexplorer-sidebar-icon.music{
     
     width: 8px;
     margin-left: 3px;
@@ -700,37 +700,37 @@
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.music{
+.weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.music{
     
     background-position: -39px -13px;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.music{
+.weexplorer-sidebar-element.active .weexplorer-sidebar-icon.music{
     
     background-position: -39px -26px;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.photo{
+.weexplorer-sidebar-icon.photo{
     
     background-position: -74px 0;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.photo{
+.weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.photo{
     
     background-position: -74px -13px;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.photo{
+.weexplorer-sidebar-element.active .weexplorer-sidebar-icon.photo{
     
     background-position: -74px -26px;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.video{
+.weexplorer-sidebar-icon.video{
     
     width: 16px;
     margin-left: -2px;
@@ -739,19 +739,19 @@
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.video{
+.weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.video{
 
     background-position: -47px -13px;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.video{
+.weexplorer-sidebar-element.active .weexplorer-sidebar-icon.video{
 
     background-position: -47px -26px;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-icon.doc{
+.weexplorer-sidebar-icon.doc{
     
     width: 11px;
     margin-left: 1px;
@@ -760,19 +760,19 @@
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.doc{
+.weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.doc{
 
     background-position: -63px -13px;
     
 }
 
-.wz-app-1 .weexplorer-sidebar-element.active .weexplorer-sidebar-icon.doc{
+.weexplorer-sidebar-element.active .weexplorer-sidebar-icon.doc{
 
     background-position: -63px -26px;
     
 }
 
-.wz-app-1 .weexplorer-uploading{
+.weexplorer-uploading{
     width: 100%;
     height: 0px;
     background-image: -moz-linear-gradient(50% 0% -90deg,rgb(78,78,78) 0%,rgb(50,50,50) 100%); 
@@ -784,19 +784,19 @@
     overflow: hidden;
 }
 
-.wz-app-1 .weexplorer-uploading-bar{
+.weexplorer-uploading-bar{
     width: 0%;
     height: 5px;
     background: #1FB3FF;
 }
 
-.wz-app-1 .weexplorer-uploading-info{
+.weexplorer-uploading-info{
     height: 15px;
     margin: 5px auto auto;
     text-align: center;
 }
 
-.wz-app-1 .weexplorer-uploading-info figure{
+.weexplorer-uploading-info figure{
     width: 11px;
     height: 13px;
     background: url('https://static.weezeel.com/app/1/uploading.png');
@@ -805,32 +805,32 @@
     display: inline-block;
 }
 
-.wz-app-1 .weexplorer-uploading-info p{
+.weexplorer-uploading-info p{
     margin-left: 8px;
     font-size: 13px;
     color: #C0C0C0;
     display: inline-block;
 }
 
-.wz-app-1 .uploaded-percent{
+.uploaded-percent{
     margin-left: 8px;
 }
 
-.wz-app-1 .weexplorer-progress-bar{
+.weexplorer-progress-bar{
     width: 0;
     height: 5px;
     margin-top: -5px;
     background: #1FB3FF;
 }
 
-.wz-app-1 .weexplorer-conversion-bar{
+.weexplorer-conversion-bar{
     width: 75%;
     height: 5px;
     margin-top: -5px;
     background: #A43737;
 }
 
-.wz-app-1 .weexplorer-sort{
+.weexplorer-sort{
     position: absolute;
     top: 35px;
     left: 123px;
@@ -839,11 +839,11 @@
     z-index: 1;
 }
 
-.wz-app-1 .weexplorer-sort.show{
+.weexplorer-sort.show{
     display: block;
 }
 
-.wz-app-1 .weexplorer-sort:before{
+.weexplorer-sort:before{
     
     position: relative;
     top: 2px;
@@ -857,7 +857,7 @@
     
 }
 
-.wz-app-1 .weexplorer-sort li:first-child{
+.weexplorer-sort li:first-child{
     
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
@@ -865,7 +865,7 @@
     
 }
 
-.wz-app-1 .weexplorer-sort li{
+.weexplorer-sort li{
     
     overflow: hidden; 
     -webkit-box-sizing: border-box;
@@ -882,7 +882,7 @@
     
 }
 
-.wz-app-1 .weexplorer-sort li:last-child{
+.weexplorer-sort li:last-child{
     
     height: 30px;
     border-bottom-right-radius: 6px;
@@ -891,11 +891,11 @@
     
 }
 
-.wz-app-1 .weexplorer-sort li:hover{
+.weexplorer-sort li:hover{
     background: #535353;
 }
 
-.wz-app-1 .weexplorer-sort i{
+.weexplorer-sort i{
     width: 10px;
     height: 7px;
     float: left;
@@ -903,25 +903,25 @@
     margin-top: 2px;
 }
 
-.wz-app-1 .weexplorer-sort li.active i{
+.weexplorer-sort li.active i{
     background: url('https://static.weezeel.com/app/1/active.png') no-repeat;
     background-size: 10px 7px;
 }
 
-.wz-app-1 .weexplorer-sort span{
+.weexplorer-sort span{
     float: left;
     margin-left: 8px;
 }
 
-.wz-app-1 .weexplorer-sort li.active span{
+.weexplorer-sort li.active span{
     color: #34A7FF;
 }
 
-.wz-app-1 .list .weexplorer-file:last-child{
+.list .weexplorer-file:last-child{
     margin-bottom: 15px;
 }
 
-.wz-app-1 .weexplorer-navigation{
+.weexplorer-navigation{
     min-width: 62px;
     position: absolute;
     top: 35px;
@@ -931,11 +931,11 @@
     z-index: 1;
 }
 
-.wz-app-1 .weexplorer-navigation.show{
+.weexplorer-navigation.show{
     display: block;
 }
 
-.wz-app-1 .weexplorer-navigation:before{
+.weexplorer-navigation:before{
     
     position: relative;
     top: 2px;
@@ -949,11 +949,11 @@
     
 }
 
-.wz-app-1 .weexplorer-navigation.next:before{   
+.weexplorer-navigation.next:before{   
     left: 40px;
 }
 
-.wz-app-1 .weexplorer-navigation li:nth-child(2){
+.weexplorer-navigation li:nth-child(2){
     
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
@@ -961,7 +961,7 @@
     
 }
 
-.wz-app-1 .weexplorer-navigation li{
+.weexplorer-navigation li{
     
     overflow: hidden; 
     -webkit-box-sizing: border-box;
@@ -978,7 +978,7 @@
     
 }
 
-.wz-app-1 .weexplorer-navigation li:last-child{
+.weexplorer-navigation li:last-child{
     
     height: 30px;
     border-bottom-right-radius: 6px;
@@ -987,11 +987,11 @@
     
 }
 
-.wz-app-1 .weexplorer-navigation li:hover{
+.weexplorer-navigation li:hover{
     background: #535353;
 }
 
-.wz-app-1 .weexplorer-navigation span{
+.weexplorer-navigation span{
     float: left;
     margin-left: 8px;
 }
