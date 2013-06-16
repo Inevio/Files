@@ -1042,7 +1042,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         }
 
         uploadingElapsed.text( time + ' ' + lang.left );
-        uploadingPercent.text( '( ' + parseInt( progress * 100, 10 ) + '% )' );
+        uploadingPercent.text( '( ' + parseInt( queueProgress * 100, 10 ) + '% )' );
 
     })
 

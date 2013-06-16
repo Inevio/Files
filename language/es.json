@@ -48,6 +48,10 @@
 	"previousViews" : "Visto",
 	"previousDownloads" : "Descargado",
 	"previousImports" : "Importado",
+	"passwordNo" : "Este enlace no tiene contraseña",
+	"passwordYes" : "Este enlace está protegido por contraseña",
+	"previewNo" : "Este enlace tiene bloqueada la vista previa",
+	"previewYes" : "Este enlace dispone de vista previa",
 
 	"propertiesTitle" : "Propiedades",
 	"propertiesName" : "Nombre",
