@@ -263,7 +263,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
             if( error ){
 
-                alert( lang.errorOpenDirectory );
+                alert( lang.errorOpenDirectory, null, win.data().win );
                 return false;
 
             }
@@ -274,7 +274,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 $('.weexplorer-sidebar-element.active', win).removeClass('active');
                 $( '.folder-' + current, sidebar ).addClass('active');
 
-                alert( 'Estructura no aceptada' );
+                alert( 'Estructura no aceptada', null, win.data().win );
                 return false;
             }
             */
@@ -288,7 +288,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                 if( error ){
 
-                    alert( lang.errorOpenDirectory );
+                    alert( lang.errorOpenDirectory, null, win.data().win );
                     return false;
 
                 }
@@ -346,7 +346,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             wz.structure( icon.data('file-id'), function( error, structure ){
 
                 if( error ){
-                    alert( error );
+                    alert( error, null, win.data().win );
                 }else{
 
                     structure.rename( $( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass( 'wz-dragger' ).val(), function( error ){
@@ -354,9 +354,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                         if( error ){
 
                             if( error === 'NAME ALREADY EXISTS' ){
-                                alert( lang.nameExists );
+                                alert( lang.nameExists, null, win.data().win );
                             }else{
-                                alert( error );
+                                alert( error, null, win.data().win );
                             }
 
                             $( 'textarea', icon ).val( structure.name ).text( structure.name );
@@ -406,48 +406,52 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         if( $('.weexplorer-file.active', win).size() > 1){
             response = lang.the + $('.weexplorer-file.active', win).size() + lang.deleteFile3;
         }
+
+        confirm( lang.deleteFile + response, function( response ){
+
+            if( response ){
+
+                var notEnoughPermissions = false;
         
-        if( confirm( lang.deleteFile + response ) ) {
+                $('.weexplorer-file.active', win).each(function(){
 
-            var notEnoughPermissions = false;
-        
-            $('.weexplorer-file.active', win).each(function(){
+                    wz.structure( $(this).data( 'file-id' ), function( error, structure ){
 
-                wz.structure( $(this).data( 'file-id' ), function( error, structure ){
+                        if( error ){
 
-                    if( error ){
+                            alert( error, null, win.data().win );
 
-                        alert( error );
+                        }else if( structure.owner === wz.info.userId() || structure.permissions.modify === 1 ){
 
-                    }else if( structure.owner === wz.info.userId() || structure.permissions.modify === 1 ){
+                            structure.remove( function( error, quota ){
 
-                        structure.remove( function( error, quota ){
+                                if( error ){
 
-                            if( error ){
+                                    alert( error, null, win.data().win );
 
-                                alert( error );
+                                }
 
-                            }
+                            });
 
-                        });
+                        }else{
 
-                    }else{
+                            notEnoughPermissions = true;
 
-                        notEnoughPermissions = true;
-
-                    }
-       
+                        }
+           
+                    });
+                                    
                 });
-                                
-            });
 
-            if( notEnoughPermissions ){
+                if( notEnoughPermissions ){
 
-                alert( lang.notEnoughPermissions );
+                    alert( lang.notEnoughPermissions, null, win.data().win );
+
+                }
 
             }
-        
-        }
+
+        }, win.data().win );
         
     };  
     
@@ -1347,7 +1351,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 if( app ){
                     wz.app.createWindow( app, [ id ] );
                 }else{
-                    alert( error );
+                    alert( error, null, win.data().win );
                 }
 
             });
@@ -1386,13 +1390,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                         if( app ){
                             wz.app.createWindow( app, [ pointer ] );
                         }else{
-                            alert( error );
+                            alert( error, null, win.data().win );
                         }
 
                     });
 
                 }else{
-                    alert('Estructura no aceptada');
+                    alert( 'Estructura no aceptada', null, win.data().win );
                 }
                 
             });
@@ -1644,7 +1648,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                         structure.accept( function( error ){
 
                             if( error ){
-                                alert( error );
+                                alert( error, null, win.data().win );
                             }else{
 
                                 wz.banner()
@@ -1672,7 +1676,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                         structure.refuse( function( error ){
 
                             if( error ){
-                                alert( error );
+                                alert( error, null, win.data().win );
                             }else{
 
                                 wz.banner()
@@ -1700,7 +1704,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                         structure.acceptShare( function( error ){
 
                             if( error ){
-                                alert( error );
+                                alert( error, null, win.data().win );
                             }else{
 
                                 var banner = wz.banner();
@@ -1735,7 +1739,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                         structure.refuseShare( function( error ){
 
                             if( error ){
-                                alert( error );
+                                alert( error, null, win.data().win );
                             }else{
 
                                 var banner = wz.banner();
@@ -1822,13 +1826,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 wz.structure( $(this).data('file-id'), function( error, structure ){
 
                     if( error ){
-                        alert( error );
+                        alert( error, null, win.data().win );
                         return false;
                     }
 
                     structure.move( dest, null, function( error ){
                         if( error ){
-                            alert( error );
+                            alert( error, null, win.data().win );
                         }
                     });
                     
