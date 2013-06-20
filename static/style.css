@@ -1,5 +1,5 @@
 .wz-win.sidebar{
-    width: 684px; /*!important*/
+    width: 686px; /*!important*/
 }
 
 textarea{
@@ -77,19 +77,19 @@ textarea[readonly]{
 }
 
 .wz-win-menu{
-    width: 684px;
+    width: 686px;
 }
 
 .weexplorer-menu{
     
-    width: 268px;
+    width: 270px;
     float: left;
     padding: 13px 23px 7px;
     
 }
 
 .wz-win.sidebar .weexplorer-menu{
-    width: 404px;
+    width: 406px;
 }
 
 .weexplorer-menu-views i{
@@ -199,14 +199,14 @@ textarea[readonly]{
 }
 
 .weexplorer-main{
-    width: 544px;
+    width: 546px;
     height: 550px;
     float: left;;
 }
 
 .weexplorer-folder{
     
-    width: 544px;
+    width: 546px;
     height: 50px;
     position: absolute;
     padding-top: 20px;
@@ -248,13 +248,11 @@ img{
 
 .weexplorer-file-zone{
     
-    width: 544px;
-    height: 550px;
+    width: 522px;
+    height: 490px;
     float: left;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    padding-top: 60px;
+    padding: 60px 12px 0 12px;
+    text-align: center;
     
 }
 
@@ -263,9 +261,8 @@ img{
     width: 150px;
     height: 185px;
     position: relative;
-    float: left;
-    margin-left: 25px;
-    margin-bottom: 15px;
+    margin: 0 12px 15px 12px;
+    display: inline-block;
     
 }
 
