@@ -1082,16 +1082,16 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         }else if(e.shiftKey){
             
             var icons = $( '.weexplorer-file', win );
-            var begin = icons.index(this);
-            var final = icons.index(icons.filter( '.last-active' ));
+            var beginRow = icons.index( this );
+            var finalRow = icons.index( icons.filter( '.last-active' ) );
             
-            if(begin < final){
-                var row = icons.slice(begin,final+1).addClass('active');
+            if( beginRow < finalRow ){
+                var row = icons.slice( beginRow, finalRow + 1 ).addClass( 'active' );
             }else{
-                var row = icons.slice(final,begin+1).addClass('active');
+                var row = icons.slice( finalRow, beginRow + 1 ).addClass( 'active' );
             }
             
-            icons.not(row).removeClass('active');
+            icons.not( row ).removeClass( 'active' );
             
         }else{
             
