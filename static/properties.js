@@ -196,9 +196,9 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
                     if( error ){
 
                         if( error === 'NAME ALREADY EXISTS' ){
-                            alert( lang.nameExists );
+                            alert( lang.nameExists, null, win.data().win );
                         }else{
-                            alert( error );
+                            alert( error, null, win.data().win );
                         }
 
                         input.val( file.name );

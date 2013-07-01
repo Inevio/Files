@@ -4,7 +4,7 @@ wz.app.addScript( 1, 'received', function( win, app, lang, params ){
     wz.structure( params, function( error, structure ){
         
         if( error ){
-            alert( lang.error );
+            alert( lang.error, null, win.data().win );
         }else{
 
             wz.user( structure.metadata.received.sender, function( error, user ){
@@ -34,7 +34,9 @@ wz.app.addScript( 1, 'received', function( win, app, lang, params ){
                     structure.accept( function( error ){
 
                         if( error ){
-                            alert( error );
+                            alert( error, function(){
+                                wz.app.closeWindow( win.data( 'win' ) );
+                            }, win.data().win );
                         }else{
 
                             wz.banner()
@@ -43,9 +45,9 @@ wz.app.addScript( 1, 'received', function( win, app, lang, params ){
                                     .image( structure.icons.tiny )
                                     .render();
 
-                        }
+                            wz.app.closeWindow( win.data( 'win' ) );
 
-                        wz.app.closeWindow( win.data( 'win' ) );
+                        }
 
                     });   
 
@@ -56,7 +58,9 @@ wz.app.addScript( 1, 'received', function( win, app, lang, params ){
                     structure.refuse( function( error ){
 
                         if( error ){
-                            alert( error );
+                            alert( error, function(){
+                                wz.app.closeWindow( win.data( 'win' ) );
+                            }, win.data().win );
                         }else{
 
                             wz.banner()
@@ -65,9 +69,9 @@ wz.app.addScript( 1, 'received', function( win, app, lang, params ){
                                     .image( 'https://static.weezeel.com/app/1/refuse.png' )
                                     .render();
 
-                        }
+                            wz.app.closeWindow( win.data( 'win' ) );
 
-                        wz.app.closeWindow( win.data( 'win' ) );
+                        }
 
                     });
                     

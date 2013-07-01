@@ -263,7 +263,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
             if( error ){
 
-                alert( lang.errorOpenDirectory );
+                alert( lang.errorOpenDirectory, null, win.data().win );
                 return false;
 
             }
@@ -274,7 +274,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 $('.weexplorer-sidebar-element.active', win).removeClass('active');
                 $( '.folder-' + current, sidebar ).addClass('active');
 
-                alert( 'Estructura no aceptada' );
+                alert( 'Estructura no aceptada', null, win.data().win );
                 return false;
             }
             */
@@ -288,7 +288,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                 if( error ){
 
-                    alert( lang.errorOpenDirectory );
+                    alert( lang.errorOpenDirectory, null, win.data().win );
                     return false;
 
                 }
@@ -346,7 +346,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             wz.structure( icon.data('file-id'), function( error, structure ){
 
                 if( error ){
-                    alert( error );
+                    alert( error, null, win.data().win );
                 }else{
 
                     structure.rename( $( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass( 'wz-dragger' ).val(), function( error ){
@@ -354,9 +354,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                         if( error ){
 
                             if( error === 'NAME ALREADY EXISTS' ){
-                                alert( lang.nameExists );
+                                alert( lang.nameExists, null, win.data().win );
                             }else{
-                                alert( error );
+                                alert( error, null, win.data().win );
                             }
 
                             $( 'textarea', icon ).val( structure.name ).text( structure.name );
@@ -406,48 +406,52 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         if( $('.weexplorer-file.active', win).size() > 1){
             response = lang.the + $('.weexplorer-file.active', win).size() + lang.deleteFile3;
         }
+
+        confirm( lang.deleteFile + response, function( response ){
+
+            if( response ){
+
+                var notEnoughPermissions = false;
         
-        if( confirm( lang.deleteFile + response ) ) {
+                $('.weexplorer-file.active', win).each(function(){
 
-            var notEnoughPermissions = false;
-        
-            $('.weexplorer-file.active', win).each(function(){
+                    wz.structure( $(this).data( 'file-id' ), function( error, structure ){
 
-                wz.structure( $(this).data( 'file-id' ), function( error, structure ){
+                        if( error ){
 
-                    if( error ){
+                            alert( error, null, win.data().win );
 
-                        alert( error );
+                        }else if( structure.owner === wz.info.userId() || structure.permissions.modify === 1 ){
 
-                    }else if( structure.owner === wz.info.userId() || structure.permissions.modify === 1 ){
+                            structure.remove( function( error, quota ){
 
-                        structure.remove( function( error, quota ){
+                                if( error ){
 
-                            if( error ){
+                                    alert( error, null, win.data().win );
 
-                                alert( error );
+                                }
 
-                            }
+                            });
 
-                        });
+                        }else{
 
-                    }else{
+                            notEnoughPermissions = true;
 
-                        notEnoughPermissions = true;
-
-                    }
-       
+                        }
+           
+                    });
+                                    
                 });
-                                
-            });
 
-            if( notEnoughPermissions ){
+                if( notEnoughPermissions ){
 
-                alert( lang.notEnoughPermissions );
+                    alert( lang.notEnoughPermissions, null, win.data().win );
+
+                }
 
             }
-        
-        }
+
+        }, win.data().win );
         
     };  
     
@@ -1190,9 +1194,40 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
         if( !showingSidebar ){
 
-            showingSidebar = true;
+            showingSidebar = true;           
 
-            if( win.hasClass('wz-win-maximized') || win.hasClass('special-sidebar') ){
+            if( win.hasClass( 'sidebar' ) ){
+
+                // Si el tamaño de la ventana es demasiado pequeño para restar el tamaño del sidebar al ocultarlo lo tratamos como especial
+
+                if( ( parseInt( win.css( 'width' ), 10 ) - parseInt( sidebar.css( 'width' ), 10 ) ) < parseInt( win.css( 'min-width' ), 10 ) ){
+
+                    win.addClass( 'min-width-sidebar' );
+
+                }else{
+
+                    win.removeClass( 'min-width-sidebar' );
+
+                }
+
+            }else{
+
+                // Si la ventana está muy cerca del borde derecho de la pantalla y el sidebar se saldría al mostrarlo lo tratamos como especial
+
+                // Añado 145px por el tamaño del sidebar ( 140px ) más un pequeño hueco de 5px
+                if( ( parseInt( win.css( 'width' ), 10 ) + 145 + win.positionX( true ) ) > $( document ).width() ){
+
+                    win.addClass( 'screen-sidebar' );
+
+                }else{
+
+                    win.removeClass( 'screen-sidebar' );
+
+                }
+
+            }
+
+            if( win.hasClass('wz-win-maximized') || win.hasClass('special-sidebar') || win.hasClass( 'min-width-sidebar' ) || win.hasClass( 'screen-sidebar' ) ){
 
                 if( win.hasClass('sidebar') ){
 
@@ -1210,6 +1245,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                     folderMain.animate( { width : '+=140' }, 250, function(){
                         win.removeClass('sidebar');
+                        sidebar.css( 'display', 'none' );
                         setTimeout( function(){
                             showingSidebar = false;
                         }, 50);
@@ -1219,6 +1255,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 }else{
 
                     changeBaseWidth( [ win, winMenu, wxpMenu ], 140 );
+
+                    // To Do -> Ver si es necesario
+                    // sidebar.css( 'display', 'block' );
 
                     fileArea
                         .add( folderBar )
@@ -1276,6 +1315,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                         win.removeClass('sidebar');
 
+                        // To Do -> Ver si es necesario
+                        sidebar.css( 'display', 'none' );
+
                         setTimeout( function(){
                             showingSidebar = false;
                         }, 50 );
@@ -1285,6 +1327,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 }else{
 
                     changeBaseWidth( [ win, winMenu, wxpMenu ], 140 );
+
+                    // To Do -> Ver si es necesario
+                    sidebar.css( 'display', 'block' );
 
                     winMenu.animate( { width : '+=140' }, 250 );
                     wxpMenu.animate( { width : '+=140' }, 250 );
@@ -1411,7 +1456,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 if( app ){
                     wz.app.createWindow( app, [ id ] );
                 }else{
-                    alert( error );
+                    alert( error, null, win.data().win );
                 }
 
             });
@@ -1450,13 +1495,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                         if( app ){
                             wz.app.createWindow( app, [ pointer ] );
                         }else{
-                            alert( error );
+                            alert( error, null, win.data().win );
                         }
 
                     });
 
                 }else{
-                    alert('Estructura no aceptada');
+                    alert( 'Estructura no aceptada', null, win.data().win );
                 }
                 
             });
@@ -1708,7 +1753,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                         structure.accept( function( error ){
 
                             if( error ){
-                                alert( error );
+                                alert( error, null, win.data().win );
                             }else{
 
                                 wz.banner()
@@ -1736,7 +1781,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                         structure.refuse( function( error ){
 
                             if( error ){
-                                alert( error );
+                                alert( error, null, win.data().win );
                             }else{
 
                                 wz.banner()
@@ -1764,7 +1809,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                         structure.acceptShare( function( error ){
 
                             if( error ){
-                                alert( error );
+                                alert( error, null, win.data().win );
                             }else{
 
                                 var banner = wz.banner();
@@ -1799,7 +1844,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                         structure.refuseShare( function( error ){
 
                             if( error ){
-                                alert( error );
+                                alert( error, null, win.data().win );
                             }else{
 
                                 var banner = wz.banner();
@@ -1886,13 +1931,13 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 wz.structure( $(this).data('file-id'), function( error, structure ){
 
                     if( error ){
-                        alert( error );
+                        alert( error, null, win.data().win );
                         return false;
                     }
 
                     structure.move( dest, null, function( error ){
                         if( error ){
-                            alert( error );
+                            alert( error, null, win.data().win );
                         }
                     });
                     
