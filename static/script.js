@@ -656,7 +656,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             fileArea.find( 'textarea' ).css({ width : '' });
         }
 
-        if( win.hasClass('wz-win-sticking') ){
+        if( win.parent().hasClass('wz-win-sticking') ){
 
             if( win.hasClass('sidebar') ){
                 stickedSidebar = true;
@@ -1201,13 +1201,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 // Si el tamaño de la ventana es demasiado pequeño para restar el tamaño del sidebar al ocultarlo lo tratamos como especial
 
                 if( ( parseInt( win.css( 'width' ), 10 ) - parseInt( sidebar.css( 'width' ), 10 ) ) < parseInt( win.css( 'min-width' ), 10 ) ){
-
                     win.addClass( 'min-width-sidebar' );
-
                 }else{
-
                     win.removeClass( 'min-width-sidebar' );
-
                 }
 
             }else{
@@ -1215,14 +1211,10 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 // Si la ventana está muy cerca del borde derecho de la pantalla y el sidebar se saldría al mostrarlo lo tratamos como especial
 
                 // Añado 145px por el tamaño del sidebar ( 140px ) más un pequeño hueco de 5px
-                if( ( parseInt( win.css( 'width' ), 10 ) + 145 + win.positionX( true ) ) > $( document ).width() ){
-
+                if( ( parseInt( win.css( 'width' ), 10 ) + 145 + win.deskitemX( true ) ) > $( document ).width() ){
                     win.addClass( 'screen-sidebar' );
-
                 }else{
-
                     win.removeClass( 'screen-sidebar' );
-
                 }
 
             }
@@ -1244,8 +1236,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                     }                    
 
                     folderMain.animate( { width : '+=140' }, 250, function(){
+                        
                         win.removeClass('sidebar');
-                        sidebar.css( 'display', 'none' );
+
                         setTimeout( function(){
                             showingSidebar = false;
                         }, 50);
@@ -1256,18 +1249,18 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                     changeBaseWidth( [ win, winMenu, wxpMenu ], 140 );
 
-                    // To Do -> Ver si es necesario
-                    // sidebar.css( 'display', 'block' );
-
                     fileArea
                         .add( folderBar )
                         .animate( { width : '-=140' }, 250 );
 
                     sidebar.animate( { width : 139 }, 255, function(){
+
                         $( this ).css( 'width', '' );
+
                         setTimeout( function(){
                             showingSidebar = false;
                         }, 50);
+                        
                     });
 
                     if( fileArea.hasClass( 'list' ) ){
@@ -1315,9 +1308,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                         win.removeClass('sidebar');
 
-                        // To Do -> Ver si es necesario
-                        sidebar.css( 'display', 'none' );
-
                         setTimeout( function(){
                             showingSidebar = false;
                         }, 50 );
@@ -1327,9 +1317,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 }else{
 
                     changeBaseWidth( [ win, winMenu, wxpMenu ], 140 );
-
-                    // To Do -> Ver si es necesario
-                    sidebar.css( 'display', 'block' );
 
                     winMenu.animate( { width : '+=140' }, 250 );
                     wxpMenu.animate( { width : '+=140' }, 250 );
