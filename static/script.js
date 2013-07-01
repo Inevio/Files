@@ -562,6 +562,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         
         win.addClass('sidebar').css( 'width', '' );
 
+        saveBaseWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
+
     };
 
     var downloadComprobation = function(){
@@ -581,6 +583,33 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                    
         }else{
             downloadFiles.removeClass( 'active' );
+        }
+
+    };
+
+    var changeBaseWidth = function( list, width ){
+
+        var length = list.length;
+        var tmp    = null;
+
+        while( length-- ){
+
+            tmp = list[ length ].data( 'wz-fit-base-width' );
+
+            if( tmp ){
+                list[ length ].data( 'wz-fit-base-width', tmp + width );
+            }
+
+        }
+
+    };
+
+    var saveBaseWidth = function( list, width ){
+
+        var length = list.length;
+
+        while( length-- ){
+            list[ length ].data( 'wz-fit-base-width', wz.tool.outerFullWidth( list[ length ], true ) );
         }
 
     };
@@ -1167,6 +1196,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                 if( win.hasClass('sidebar') ){
 
+                    changeBaseWidth( [ win, winMenu, wxpMenu ], -140 );
+
                     fileArea
                         .add( folderBar )
                         .animate( { width : '+=140' }, 250 );
@@ -1186,6 +1217,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                     });
 
                 }else{
+
+                    changeBaseWidth( [ win, winMenu, wxpMenu ], 140 );
 
                     fileArea
                         .add( folderBar )
@@ -1210,34 +1243,65 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
             }else{
 
+                var minWidth  = parseInt( win.css('min-width'), 10 );
+                var safeWidth = minWidth - win.width() + 140;
+
+                if( safeWidth < 0 ){
+                    safeWidth = 0;
+                }
+
                 if( win.hasClass('sidebar') ){
 
-                    winMenu.animate( { width : '-=140' }, 250 );
-                    wxpMenu.animate( { width : '-=140' }, 250 );
-                        
-                    sidebar.animate( { width : 0 }, 245 );
+                    changeBaseWidth( [ win, winMenu, wxpMenu ], -140 - safeWidth );
+                    changeBaseWidth( [ fileArea, folderMain, folderBar ], -safeWidth );
 
-                    win.animate( { width : '-=140' }, 250, function(){
+                    winMenu
+                        .add( wxpMenu )
+                        .animate( { width : '-=' + ( 140 - safeWidth ) }, 250 );
+                    
+                    if( safeWidth ){
+
+                        fileArea
+                            .add( folderMain )
+                            .add( folderBar )
+                            .animate( { width : '+=' + safeWidth }, 250 );
+
+                        if( fileArea.hasClass( 'list' ) ){
+                            fileArea.find( 'textarea' ).animate( { width : '+=' + safeWidth }, 250 );
+                        }
+
+                    }
+
+                    win.animate( { width : '-=' + ( 140 - safeWidth ) }, 250, function(){
+
                         win.removeClass('sidebar');
+
                         setTimeout( function(){
                             showingSidebar = false;
-                        }, 50);
+                        }, 50 );
+
                     });
 
                 }else{
+
+                    changeBaseWidth( [ win, winMenu, wxpMenu ], 140 );
 
                     winMenu.animate( { width : '+=140' }, 250 );
                     wxpMenu.animate( { width : '+=140' }, 250 );
 
                     sidebar.animate( { width : 138 }, 250, function(){
+
                         win.addClass('sidebar');
                         $( this ).css( 'width', '' );
+
                     });
 
                     win.animate( { width : '+=140' }, 250, function(){
+
                         setTimeout( function(){
                             showingSidebar = false;
-                        }, 50);
+                        }, 50 );
+
                     });
 
                 }
@@ -1443,7 +1507,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         
     })
     
-    .key( 'esc', function(e){       
+    .key( 'esc', function(e){
         
         if( $(e.target).is('textarea') ){
             e.preventDefault();

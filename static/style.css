@@ -2,6 +2,10 @@
     width: 684px; /*!important*/
 }
 
+.wz-win.sidebar .weexplorer-sidebar{
+    display: block;
+}
+
 textarea{
     overflow: hidden;
     border: 1px solid #50BDFF;
@@ -518,6 +522,8 @@ img{
     
     background: #EBEBEB;
     border-left: solid 1px #D8D8D8;
+
+    display: none;
     
 }
 
