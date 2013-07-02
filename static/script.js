@@ -1864,7 +1864,23 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     .on( 'wz-dragstart', '.weexplorer-file', function( e, drag ){
                 
         if( $( '.weexplorer-file.active', win ).size() <= 1 ){
-            drag.ghost( $( this ).cloneWithStyle() );
+
+            drag.ghost(
+
+                $( this )
+                    .cloneWithStyle()
+                    .css( {
+
+                        margin : 0,
+                        top    : 'auto',
+                        left   : 'auto',
+                        bottom : 'auto',
+                        right  : 'auto'
+
+                    } )
+
+            );
+
         }else{
 
             var ghost = filePrototype.clone().removeClass( 'wz-prototype' );
