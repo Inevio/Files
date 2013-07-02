@@ -567,6 +567,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         win.addClass('sidebar').css( 'width', '' );
 
         saveBaseWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
+        saveBaseOuterWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
 
     };
 
@@ -608,12 +609,39 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     };
 
+    var changeBaseOuterWidth = function( list, width ){
+
+        var length = list.length;
+        var tmp    = null;
+
+        while( length-- ){
+
+            tmp = list[ length ].data( 'wz-fit-base-outerWidth' );
+
+            if( tmp ){
+                list[ length ].data( 'wz-fit-base-outerWidth', tmp + width );
+            }
+
+        }
+
+    };
+
     var saveBaseWidth = function( list, width ){
 
         var length = list.length;
 
         while( length-- ){
-            list[ length ].data( 'wz-fit-base-width', wz.tool.outerFullWidth( list[ length ], true ) );
+            list[ length ].data( 'wz-fit-base-width', list[ length ].width() );
+        }
+
+    };
+
+    var saveBaseOuterWidth = function( list, width ){
+
+        var length = list.length;
+
+        while( length-- ){
+            list[ length ].data( 'wz-fit-base-outerWidth', wz.tool.outerFullWidth( list[ length ], true ) );
         }
 
     };
@@ -1224,6 +1252,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 if( win.hasClass('sidebar') ){
 
                     changeBaseWidth( [ win, winMenu, wxpMenu ], -140 );
+                    changeBaseOuterWidth( [ win, winMenu, wxpMenu ], -140 );
 
                     fileArea
                         .add( folderBar )
@@ -1248,6 +1277,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 }else{
 
                     changeBaseWidth( [ win, winMenu, wxpMenu ], 140 );
+                    changeBaseOuterWidth( [ win, winMenu, wxpMenu ], 140 );
 
                     fileArea
                         .add( folderBar )
@@ -1285,7 +1315,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 if( win.hasClass('sidebar') ){
 
                     changeBaseWidth( [ win, winMenu, wxpMenu ], -140 - safeWidth );
+                    changeBaseOuterWidth( [ win, winMenu, wxpMenu ], -140 - safeWidth );
                     changeBaseWidth( [ fileArea, folderMain, folderBar ], -safeWidth );
+                    changeBaseOuterWidth( [ fileArea, folderMain, folderBar ], -safeWidth );
 
                     winMenu
                         .add( wxpMenu )
@@ -1317,6 +1349,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 }else{
 
                     changeBaseWidth( [ win, winMenu, wxpMenu ], 140 );
+                    changeBaseOuterWidth( [ win, winMenu, wxpMenu ], 140 );
 
                     winMenu.animate( { width : '+=140' }, 250 );
                     wxpMenu.animate( { width : '+=140' }, 250 );
