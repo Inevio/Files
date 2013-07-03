@@ -226,6 +226,14 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             'permissions'       : structure.permissions
 
         } );
+
+        if( structure.type === 0 ){
+
+            file
+                .addClass('wz-uploader-drag')
+                .data( 'wz-uploader-destiny', structure.id );
+
+        }
         
         if( structure.type === 5 ){
 
@@ -306,7 +314,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 // Display icons
                 fileArea.children().not('.wz-prototype').remove();
                 fileArea.append( files );
-                fileArea.data( 'data-wz-uploader-destiny', structure.id );
+                fileArea.data( 'wz-uploader-destiny', structure.id );
 
                 // Update Folder info
                 folderName.text( structure.name );
@@ -1987,14 +1995,14 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     .on( 'wz-dropenter', '.weexplorer-file.directory', function( e, file ){
 
-        if( ( file.data( 'file-id' ) !== $( this ).data( 'file-id' ) ) &&
+        if( file === 'fileNative' ){
+            $(this).addClass('weexplorer-directory-over');
+        }else if( ( file.data( 'file-id' ) !== $( this ).data( 'file-id' ) ) &&
             ( file.parent().data( 'file-id' ) !== $( this ).data( 'file-id' ) ) &&
             ( file.data( 'file-id' ) !== $( this ).parent().data( 'file-id' ) ) &&
             ( !( file.hasClass( 'shared' ) && $( this ).hasClass( 'shared' ) ) )
          ){
-
             $(this).addClass('weexplorer-directory-over');
-
         }
 
     })
@@ -2005,7 +2013,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
     .on( 'wz-dropenter', '.weexplorer-sidebar-element', function( e, file ){
 
-        if( file.parent().data( 'file-id' ) !== $( this ).data( 'file-id' ) ){
+        if( file === 'fileNative' ){
+            $(this).addClass('weexplorer-directory-over');
+        }else if( file.parent().data( 'file-id' ) !== $( this ).data( 'file-id' ) ){
             $( this ).addClass( 'weexplorer-sidebar-element-over' );
         }
 
