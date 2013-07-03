@@ -1253,6 +1253,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                     changeBaseWidth( [ win, winMenu, wxpMenu ], -140 );
                     changeBaseOuterWidth( [ win, winMenu, wxpMenu ], -140 );
+                    changeBaseWidth( [ fileArea, folderMain, folderBar ], -12 );
+                    changeBaseOuterWidth( [ fileArea, folderMain, folderBar ], -12 );
 
                     fileArea
                         .add( folderBar )
