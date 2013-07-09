@@ -1,7 +1,7 @@
 /*global wz:true $:true */
 
-wz.app.addScript( 1, 'main', function( win, app, lang, params ){
-
+wz.app.addScript( 1, 'main', function( win, app, lang, params, wql ){
+    
     // Variables
     var record         = [];
     var current        = null;
@@ -49,6 +49,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     var prevName = '';
 
     var showingSidebar = false;
+
+    var sortType = 0;
 
     // Functions
     var recordNavigation = function(){
@@ -313,6 +315,17 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                 // Display icons
                 fileArea.children().not('.wz-prototype').remove();
+
+                if( sortType === 1 ){
+                    files.sort( sortBySize );
+                }else if( sortType === 2 ){
+                    files.sort( sortByCreationDate );
+                }else if( sortType === 3 ){
+                    files.sort( sortByModificationDate );
+                }else{
+                    files.sort( sortByName ); 
+                }
+                
                 fileArea.append( files );
                 fileArea.data( 'wz-uploader-destiny', structure.id );
 
@@ -562,21 +575,6 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             
         });
         
-    };
-
-    var start = function(){
-
-        if( params ){
-            openDirectory( params );
-        }else{
-            openDirectory( 'root' );
-        }
-        
-        win.addClass('sidebar').css( 'width', '' );
-
-        saveBaseWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
-        saveBaseOuterWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
-
     };
 
     var downloadComprobation = function(){
@@ -1277,6 +1275,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                     folderMain.animate( { width : '+=140' }, 250, function(){
                         
                         win.removeClass('sidebar');
+                        wql.changeSidebar( 1 );
 
                         setTimeout( function(){
                             showingSidebar = false;
@@ -1309,6 +1308,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                     folderMain.animate( { width : '-=140' }, 250, function(){
                         win.addClass('sidebar');
+                        wql.changeSidebar( 0 );
                     });
 
                 }
@@ -1350,6 +1350,8 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                         win.removeClass('sidebar');
 
+                        wql.changeSidebar( 1 );
+
                         setTimeout( function(){
                             showingSidebar = false;
                         }, 50 );
@@ -1367,6 +1369,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                     sidebar.animate( { width : 138 }, 250, function(){
 
                         win.addClass('sidebar');
+                        wql.changeSidebar( 0 );
                         $( this ).css( 'width', '' );
 
                     });
@@ -1988,7 +1991,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                     });
                     
                 });
+
             });
+
         }
 
     })
@@ -2115,34 +2120,82 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
         }
         
     });
-    
-    start();
 
-    wz.config( function(error, config){
+    /* START APP */
+    
+    if( params ){
+        openDirectory( params );
+    }else{
+        openDirectory( 'root' );
+    }
+
+    wql.getConfig( function( error, result ){
         
+        win.addClass('sidebar').css( 'width', '' );
+
+        saveBaseWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
+        saveBaseOuterWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
+
+        if( result[0].sidebar ){
+            $( '.weexplorer-menu-toggle', wxpMenu ).mousedown();
+            setTimeout( function(){
+                wz.fit( win, result[0].width - win.width(), result[0].height - win.height() );
+            }, 300 );
+        }else{
+            wz.fit( win, result[0].width - win.width(), result[0].height - win.height() );
+        }
+
+        if( result[0].view ){
+            views.mousedown();
+        }
+
+        sortType = result[0].sort;
+
+        if( result[0].sort === 0 ){
+            $( '.weexplorer-sort-name', win ).mousedown();
+        }else if( result[0].sort === 1 ){
+            $( '.weexplorer-sort-size', win ).mousedown();
+        }else if( result[0].sort === 2 ){
+            $( '.weexplorer-sort-creation', win ).mousedown();
+        }else if( result[0].sort === 3 ){
+            $( '.weexplorer-sort-modification', win ).mousedown();
+        }
+
+    });
+
+    wql.getSidebar( function( error, result ){
+
         var elementFolder = sidebarElement.clone().removeClass('wz-prototype');
-        
-        var userFolder = elementFolder.clone();
-        wz.structure( config.user.rootPath, function( error, structure ){
-            userFolder.data( 'file-id', structure.id ).addClass( 'active userFolder wz-drop-area folder-' + structure.id ).children( 'span' ).text( structure.name );
+
+        result.forEach( function( result ){
+
+            var controlFolder = elementFolder.clone();
+
+            wz.structure( result.folder, function( error, structure ){
+
+                controlFolder.data( 'file-id', structure.id ).addClass( 'wz-drop-area folder-' + structure.id ).children( 'span' ).text( structure.name );
+
+                if( structure.id === wz.info.user().rootPath ){
+                    controlFolder.addClass( 'userFolder' );
+                }else if( structure.id === wz.info.user().receivedPath ){
+                    controlFolder.addClass( 'sharedFolder' );
+                    sharedNotifications();
+                }else if( structure.id === wz.info.user().sharedPath ){
+                    controlFolder.addClass( 'receivedFolder' );
+                    notifications();
+                }
+
+                if( result.order === 0 ){
+                    controlFolder.addClass( 'active' );
+                }
+
+                sidebar.append( controlFolder );
+
+            });
+
         });
-        sidebar.append( userFolder );
-        
-        var sharedFolder = elementFolder.clone();
-        wz.structure( config.user.sharedPath, function( error, structure ){
-            sharedFolder.data( 'file-id', structure.id ).addClass( 'sharedFolder folder-' + structure.id ).children( 'span' ).text( structure.name );
-            sharedNotifications();
-        });
-        sidebar.append( sharedFolder );
-        
-        var receivedFolder = elementFolder.clone();
-        wz.structure( config.user.receivedPath, function( error, structure ){
-            receivedFolder.data( 'file-id', structure.id ).addClass( 'receivedFolder folder-' + structure.id ).children( 'span' ).text( structure.name );
-            notifications();
-        });
-        sidebar.append( receivedFolder );
-        
-    }); 
+
+    });
 
     $( '.weexplorer-menu-sort span', win ).text( lang.sortByName );
     $( '.weexplorer-sidebar-title-name', sidebar ).text( lang.favourites );

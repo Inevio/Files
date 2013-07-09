@@ -1,0 +1,17 @@
+
+{
+
+    "insertConfig"  : "INSERT INTO config SET user = @userId",
+    "getConfig"     : "SELECT * FROM config WHERE user = @userId LIMIT 1",
+    "getSidebar"    : "SELECT * FROM sidebar WHERE user = @userId ORDER BY `order` ASC",
+
+    "changeSidebar" : "UPDATE config SET sidebar = ? WHERE user = @userId LIMIT 1",
+    "changeWidth"   : "UPDATE config SET width = ? WHERE user = @userId LIMIT 1",
+    "changeHeight"  : "UPDATE config SET height = ? WHERE user = @userId LIMIT 1",
+    "changeSort"    : "UPDATE config SET sort = ? WHERE user = @userId LIMIT 1",
+    "changeView"    : "UPDATE config SET view = ? WHERE user = @userId LIMIT 1",
+    "addFolder"     : "INSERT INTO sidebar SET user = @userId, folder = ?, order = ?",
+    "removeFolder"  : "DELETE FROM sidebar WHERE user = @userId AND folder = ? LIMIT 1",
+    "changeOrder"   : "UPDATE sidebar SET order = ? WHERE user = @userId AND folder = ? LIMIT 1"
+
+}
