@@ -1,3 +1,8 @@
+
+.wz-win-menu-group.right{
+    padding: 16px 29px 9px;
+}
+
 .wz-win.sidebar{
     width: 686px; /*!important*/
 }
@@ -17,7 +22,7 @@ textarea[readonly]{
 }
 
 .weexplorer-navigate{
-    padding: 13px 18px 9px;
+    padding: 13px 18px 12px;
 }
 
 .weexplorer-option-back{

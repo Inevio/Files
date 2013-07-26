@@ -8,16 +8,16 @@
 .wz-win-menu{
     
     border-bottom: 1px solid #E5E5E5;
-    width: 325px;
-    height: 25px;
-    padding: 7px 20px;
+    width: 335px;
+    height: 23px;
+    padding: 9px 10px 7px 20px;
     
 }
 
 .wz-win-menu span{
     
     float: left;
-    margin-top: 6px;
+    margin-top: 4px;
     font-size: 15px;
     color: #646464;
     
