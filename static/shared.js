@@ -1,6 +1,4 @@
 
-wz.app.addScript( 1, 'shared', function( win, app, lang, params ){
-
     var link        = $('.link', win);
     var modify      = $('.modify', win);
     var copy        = $('.copy', win);
@@ -152,5 +150,3 @@ wz.app.addScript( 1, 'shared', function( win, app, lang, params ){
     $( '.attr-send', win ).text( lang.attrSend );
     $( '.received-content-accept', win ).text( lang.contentAccept );
     $( '.received-content-refuse', win ).text( lang.contentRefuse );
-    
-});

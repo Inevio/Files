@@ -1,6 +1,4 @@
 
-wz.app.addScript( 1, 'share', function( win, app, lang, params ){
-
     var shareListUsers     = $('.share-list-users', win);
     var shareChosenUsers   = $('.share-chosen-users', win);
     var shareUserPrototype = $('.share-user.wz-prototype', win);
@@ -297,5 +295,3 @@ wz.app.addScript( 1, 'share', function( win, app, lang, params ){
     $( '.share-how-share', win ).text( lang.shareHowShare );
     $( '.share-how-send', win ).text( lang.shareHowSend );
     $( '.share-save', win ).text( lang.shareSave );
-
-});

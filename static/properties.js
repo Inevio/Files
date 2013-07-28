@@ -1,6 +1,4 @@
 
-wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
-
     var input       = $('.properties input', win);
     var type        = $('.properties .type', win);  
     var size        = $('.properties .size', win);
@@ -227,5 +225,3 @@ wz.app.addScript( 1, 'properties', function( win, app, lang, params ){
     $( '.attr-download', win ).text( lang.attrDownload );
     $( '.attr-share', win ).text( lang.attrShare );
     $( '.attr-send', win ).text( lang.attrSend );
-
-});

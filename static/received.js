@@ -1,5 +1,3 @@
-
-wz.app.addScript( 1, 'received', function( win, app, lang, params ){
     
     wz.structure( params, function( error, structure ){
         
@@ -84,5 +82,3 @@ wz.app.addScript( 1, 'received', function( win, app, lang, params ){
     $( '.received-file', win ).text( lang.receivedFile );
     $( '.received-content-accept', win ).text( lang.contentAccept );
     $( '.received-content-refuse', win ).text( lang.contentRefuse );
-    
-});

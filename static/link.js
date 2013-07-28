@@ -1,6 +1,4 @@
 
-wz.app.addScript( 1, 'link', function( win, app, lang, params ){
-
     var file        = {};
     var linkSpan    = $('.link-url input', win);
     var prototype   = $('.wz-prototype', win);
@@ -244,5 +242,3 @@ wz.app.addScript( 1, 'link', function( win, app, lang, params ){
     $( '.previous-views', win ).text( lang.previousViews );
     $( '.previous-downloads', win ).text( lang.previousDownloads );
     $( '.previous-imports', win ).text( lang.previousImports );
-
-});

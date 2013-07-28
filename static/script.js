@@ -1,6 +1,3 @@
-/*global wz:true $:true */
-
-wz.app.addScript( 1, 'main', function( win, app, lang, params, wql ){
     
     // Variables
     var record         = [];
@@ -2206,5 +2203,3 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params, wql ){
     $( '.weexplorer-sort-size', win ).find( 'span' ).text( lang.sortBySize );
     $( '.weexplorer-sort-creation', win ).find( 'span' ).text( lang.sortByCreation );
     $( '.weexplorer-sort-modification', win ).find( 'span' ).text( lang.sortByModif );
-
-});

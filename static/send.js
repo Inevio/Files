@@ -1,6 +1,4 @@
 
-wz.app.addScript( 1, 'send', function( win, app, lang, params ){
-
     var sendListUsers       = $('.send-list-users', win);
     var sendChosenUsers     = $('.send-chosen-users', win);
     var sendUserPrototype   = $('.send-user.wz-prototype', win);
@@ -75,5 +73,3 @@ wz.app.addScript( 1, 'send', function( win, app, lang, params ){
     $( '.send-how-message', win ).text( lang.sendHowMessage );
     $( '.send-how-explanation', win ).text( lang.sendHowExplanation );
     $( '.send-how-button', win ).text( lang.sendHowButton );
-
-});
