@@ -305,9 +305,7 @@
 
                 // Generate File icons
                 for( var i = 0; i < length; i++ ){
-
                     files = files.add( icon( list[ i ] ) );
-
                 }
 
                 // Display icons
@@ -320,7 +318,7 @@
                 }else if( sortType === 3 ){
                     files.sort( sortByModificationDate );
                 }else{
-                    files.sort( sortByName ); 
+                    files.sort( sortByName );
                 }
                 
                 fileArea.append( files );
@@ -471,10 +469,13 @@
 
         }, win.data().win );
         
-    };  
+    };
     
     var sortByName = function(a,b){
         
+        a = $( a );
+        b = $( b );
+
         if( a.children('textarea').val().toLowerCase() < b.children('textarea').val().toLowerCase() ){
             return -1;
         }
@@ -488,6 +489,9 @@
     };
     
     var sortBySize = function(a,b){
+
+        a = $( a );
+        b = $( b );
         
         if( a.data( 'file-size' ) < b.data( 'file-size' ) ){
             return -1;
@@ -502,6 +506,9 @@
     };
     
     var sortByCreationDate = function(a,b){
+
+        a = $( a );
+        b = $( b );
         
         if( a.data( 'file-creation' ) < b.data( 'file-creation' ) ){
             return -1;
@@ -516,6 +523,9 @@
     };
     
     var sortByModificationDate = function(a,b){
+
+        a = $( a );
+        b = $( b );
         
         if( a.data( 'file-modification' ) < b.data( 'file-modification' ) ){
             return -1;
@@ -2127,7 +2137,7 @@
     }
 
     wql.getConfig( function( error, result ){
-        
+
         win.addClass('sidebar').css( 'width', '' );
 
         saveBaseWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
