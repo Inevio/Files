@@ -313,7 +313,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
 
                 // Display icons
                 fileArea.children().not('.wz-prototype').remove();
-                fileArea.append( files );
+                displayIcons( files );
                 fileArea.data( 'wz-uploader-destiny', structure.id );
 
                 // Update Folder info
@@ -521,7 +521,9 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     var displayIcons = function(list){
         
-        fileArea.append( list );
+        list.each( function(){
+            fileArea.append( this ).append('\n');
+        });
         
         // Nullify
         list = null;
@@ -843,7 +845,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             }
             
             // Display icons
-            fileArea.append( files );
+            displayIcons( files );
     
             // Nullify
             files = null;
@@ -895,7 +897,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     .on( 'structure-new', function(e, structure){
 
         if( structure.parent === current ){
-            fileArea.append( icon( structure ) );
+            displayIcons( icon( structure ) );
         }
 
     })
@@ -907,7 +909,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
             if( originID === current ){
                 fileArea.children( '.weexplorer-file-' + structure.id ).remove();
             }else if( destinyID === current ){
-                fileArea.append( icon( structure ) );
+                displayIcons( icon( structure ) );
             }
         
         }
@@ -1422,7 +1424,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 });
                 
                 list = list.sort(sortByName);
-                displayIcons(list, true);
+                displayIcons(list);
                 
             }else if( $(this).hasClass( 'weexplorer-sort-size' ) ){
                 
@@ -1433,7 +1435,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 });
                 
                 list = list.sort(sortBySize);
-                displayIcons(list, true);
+                displayIcons(list);
                 
             }else if( $(this).hasClass( 'weexplorer-sort-creation' ) ){
                 
@@ -1444,7 +1446,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
                 });
                 
                 list = list.sort(sortByCreationDate);
-                displayIcons(list, true);
+                displayIcons(list);
                 
             }else{
                 
