@@ -521,7 +521,7 @@ wz.app.addScript( 1, 'main', function( win, app, lang, params ){
     
     var displayIcons = function(list){
         
-        list.each( function(){
+        $( list ).each( function(){
             fileArea.append( this ).append('\n');
         });
         
