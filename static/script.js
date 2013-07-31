@@ -321,7 +321,8 @@
                     files.sort( sortByName );
                 }
                 
-                fileArea.append( files );
+                displayIcons( files );
+
                 fileArea.data( 'wz-uploader-destiny', structure.id );
 
                 // Update Folder info
@@ -541,7 +542,9 @@
     
     var displayIcons = function(list){
         
-        fileArea.append( list );
+        list.each( function(){
+            fileArea.append( this ).append('\n');
+        });
         
         // Nullify
         list = null;
@@ -848,7 +851,7 @@
             }
             
             // Display icons
-            fileArea.append( files );
+            displayIcons( files );
     
             // Nullify
             files = null;
@@ -900,7 +903,7 @@
     .on( 'structure-new', function(e, structure){
 
         if( structure.parent === current ){
-            fileArea.append( icon( structure ) );
+            displayIcons( icon( structure ) );
         }
 
     })
@@ -912,7 +915,7 @@
             if( originID === current ){
                 fileArea.children( '.weexplorer-file-' + structure.id ).remove();
             }else if( destinyID === current ){
-                fileArea.append( icon( structure ) );
+                displayIcons( icon( structure ) );
             }
         
         }
@@ -1432,7 +1435,7 @@
                 });
                 
                 list = list.sort(sortByName);
-                displayIcons(list, true);
+                displayIcons(list);
                 
             }else if( $(this).hasClass( 'weexplorer-sort-size' ) ){
                 
@@ -1443,7 +1446,7 @@
                 });
                 
                 list = list.sort(sortBySize);
-                displayIcons(list, true);
+                displayIcons(list);
                 
             }else if( $(this).hasClass( 'weexplorer-sort-creation' ) ){
                 
@@ -1454,7 +1457,7 @@
                 });
                 
                 list = list.sort(sortByCreationDate);
-                displayIcons(list, true);
+                displayIcons(list);
                 
             }else{
                 
