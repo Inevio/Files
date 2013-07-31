@@ -542,7 +542,7 @@
     
     var displayIcons = function(list){
         
-        list.each( function(){
+        $( list ).each( function(){
             fileArea.append( this ).append('\n');
         });
         
