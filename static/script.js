@@ -543,12 +543,10 @@
     var displayIcons = function(list){
         
         $( list ).filter( '.directory' ).each( function(){
-            console.log( this );
             fileArea.append( this ).append('\n');
         });
 
         $( list ).not( '.directory' ).each( function(){
-            console.log( this );
             fileArea.append( this ).append('\n');
         });
         

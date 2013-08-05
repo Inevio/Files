@@ -240,6 +240,13 @@
             "modify" : true,
             "read"   : true
 
+        },
+
+        "user" : {
+
+            "modify" : true,
+            "read"   : true
+            
         }
 
     }
