@@ -542,7 +542,13 @@
     
     var displayIcons = function(list){
         
-        $( list ).each( function(){
+        $( list ).filter( '.directory' ).each( function(){
+            console.log( this );
+            fileArea.append( this ).append('\n');
+        });
+
+        $( list ).not( '.directory' ).each( function(){
+            console.log( this );
             fileArea.append( this ).append('\n');
         });
         
@@ -1428,14 +1434,14 @@
             $( '.weexplorer-sort li.active', win ).removeClass( 'active' );
             $( this ).addClass( 'active' );
             
-            list = [];
+            list = $();
             
             if( $(this).hasClass( 'weexplorer-sort-name' ) ){
                 
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortByName );
                 
                 $( '.weexplorer-file', win ).each(function(){
-                    list.push($(this));
+                    list = list.add($(this));
                 });
                 
                 list = list.sort(sortByName);
@@ -1448,7 +1454,7 @@
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortBySize );
                 
                 $( '.weexplorer-file', win ).each(function(){
-                    list.push($(this));
+                    list = list.add($(this));
                 });
                 
                 list = list.sort(sortBySize);
@@ -1461,7 +1467,7 @@
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortByCreation );
                 
                 $( '.weexplorer-file', win ).each(function(){
-                    list.push($(this));
+                    list = list.add($(this));
                 });
                 
                 list = list.sort(sortByCreationDate);
@@ -1474,7 +1480,7 @@
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortByModif );
                 
                 $( '.weexplorer-file', win ).each(function(){
-                    list.push($(this));
+                    list = list.add($(this));
                 });
                 
                 list = list.sort(sortByModificationDate);
