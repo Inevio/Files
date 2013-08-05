@@ -1031,6 +1031,8 @@
             views.removeClass('grid').addClass('list');     
             fileArea.removeClass('grid').addClass('list');
 
+            wql.changeView( 1 );
+
             if( win.hasClass( 'wz-win-sticked' ) ){
 
                 var controlTextarea = 0;
@@ -1066,6 +1068,8 @@
 
             views.removeClass('list').addClass('grid');
             fileArea.removeClass('list').addClass('grid');
+
+            wql.changeView( 0 );
 
             fileArea.find( 'textarea' ).css({ width : '' });
 
@@ -1436,6 +1440,8 @@
                 
                 list = list.sort(sortByName);
                 displayIcons(list);
+
+                wql.changeSort(0);
                 
             }else if( $(this).hasClass( 'weexplorer-sort-size' ) ){
                 
@@ -1447,6 +1453,8 @@
                 
                 list = list.sort(sortBySize);
                 displayIcons(list);
+
+                wql.changeSort(1);
                 
             }else if( $(this).hasClass( 'weexplorer-sort-creation' ) ){
                 
@@ -1458,6 +1466,8 @@
                 
                 list = list.sort(sortByCreationDate);
                 displayIcons(list);
+
+                wql.changeSort(2);
                 
             }else{
                 
@@ -1469,6 +1479,8 @@
                 
                 list = list.sort(sortByModificationDate);
                 displayIcons(list, true);
+
+                wql.changeSort(3);
                 
             }
         
