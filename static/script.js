@@ -2159,34 +2159,42 @@
 
     wql.getConfig( function( error, result ){
 
-        win.addClass('sidebar').css( 'width', '' );
+        if( result.length ){
 
-        saveBaseWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
-        saveBaseOuterWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
+            win.addClass('sidebar').css( 'width', '' );
 
-        if( result[0].sidebar ){
-            $( '.weexplorer-menu-toggle', wxpMenu ).mousedown();
-            setTimeout( function(){
+            saveBaseWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
+            saveBaseOuterWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
+
+            if( result[0].sidebar ){
+                $( '.weexplorer-menu-toggle', wxpMenu ).mousedown();
+                setTimeout( function(){
+                    wz.fit( win, result[0].width - win.width(), result[0].height - win.height() );
+                }, 300 );
+            }else{
                 wz.fit( win, result[0].width - win.width(), result[0].height - win.height() );
-            }, 300 );
+            }
+
+            if( result[0].view ){
+                views.mousedown();
+            }
+
+            sortType = result[0].sort;
+
+            if( result[0].sort === 0 ){
+                $( '.weexplorer-sort-name', win ).mousedown();
+            }else if( result[0].sort === 1 ){
+                $( '.weexplorer-sort-size', win ).mousedown();
+            }else if( result[0].sort === 2 ){
+                $( '.weexplorer-sort-creation', win ).mousedown();
+            }else if( result[0].sort === 3 ){
+                $( '.weexplorer-sort-modification', win ).mousedown();
+            }
+
         }else{
-            wz.fit( win, result[0].width - win.width(), result[0].height - win.height() );
-        }
 
-        if( result[0].view ){
-            views.mousedown();
-        }
+            wql.insertConfig();
 
-        sortType = result[0].sort;
-
-        if( result[0].sort === 0 ){
-            $( '.weexplorer-sort-name', win ).mousedown();
-        }else if( result[0].sort === 1 ){
-            $( '.weexplorer-sort-size', win ).mousedown();
-        }else if( result[0].sort === 2 ){
-            $( '.weexplorer-sort-creation', win ).mousedown();
-        }else if( result[0].sort === 3 ){
-            $( '.weexplorer-sort-modification', win ).mousedown();
         }
 
     });
