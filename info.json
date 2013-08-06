@@ -18,7 +18,8 @@
     "common" : {
 
         "css"    : [],
-        "script" : []
+        "script" : [],
+        "start"  : []
 
     },
 
@@ -52,7 +53,8 @@
             },
 
             "css"    : ["style.css"],
-            "script" : ["script.js"]
+            "script" : ["script.js"],
+            "start"  : ["start.js"]
 
         },
         
