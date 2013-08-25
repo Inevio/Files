@@ -23,6 +23,7 @@
 
     },
 
+    "service" : [ "events.js" ],
     "primary" : "main",
 
     "window" : {
