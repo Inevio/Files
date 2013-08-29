@@ -59,39 +59,3 @@ wql.getConfig( function( error, result ){
     start();
 
 });
-
-wql.getSidebar( function( error, result ){
-
-    /*
-    var elementFolder = sidebarElement.clone().removeClass('wz-prototype');
-
-    result.forEach( function( result ){
-
-        var controlFolder = elementFolder.clone();
-
-        wz.structure( result.folder, function( error, structure ){
-
-            controlFolder.data( 'file-id', structure.id ).addClass( 'wz-drop-area folder-' + structure.id ).children( 'span' ).text( structure.name );
-
-            if( structure.id === wz.info.user().rootPath ){
-                controlFolder.addClass( 'userFolder' );
-            }else if( structure.id === wz.info.user().receivedPath ){
-                controlFolder.addClass( 'sharedFolder' );
-                sharedNotifications();
-            }else if( structure.id === wz.info.user().sharedPath ){
-                controlFolder.addClass( 'receivedFolder' );
-                notifications();
-            }
-
-            if( result.order === 0 ){
-                controlFolder.addClass( 'active' );
-            }
-
-            sidebar.append( controlFolder );
-
-        });
-
-    });
-    */
-
-});

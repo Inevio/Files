@@ -2136,7 +2136,44 @@
         openDirectory( 'root' );
     }
 
-    
+    wql.getSidebar( function( error, result ){
+
+        var sidebar        = $( '.weexplorer-sidebar', win );
+        var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
+
+        result.forEach( function( result ){
+
+            var controlFolder = sidebarElement.clone().removeClass('wz-prototype');
+
+            wz.structure( result.folder, function( error, structure ){
+
+                controlFolder
+                    .data( 'file-id', structure.id )
+                    .addClass( 'wz-drop-area folder-' + structure.id )
+                    .children( 'span' )
+                        .text( structure.name );
+
+                if( structure.id === wz.info.user().rootPath ){
+                    controlFolder.addClass( 'userFolder' );
+                }else if( structure.id === wz.info.user().receivedPath ){
+                    controlFolder.addClass( 'sharedFolder' );
+                    sharedNotifications();
+                }else if( structure.id === wz.info.user().sharedPath ){
+                    controlFolder.addClass( 'receivedFolder' );
+                    notifications();
+                }
+
+                if( result.order === 0 ){
+                    controlFolder.addClass( 'active' );
+                }
+
+                sidebar.append( controlFolder );
+
+            });
+
+        });
+
+    });
 
     $( '.weexplorer-menu-sort span', win ).text( lang.sortByName );
     $( '.weexplorer-sidebar-title-name', sidebar ).text( lang.favourites );
