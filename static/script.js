@@ -79,10 +79,8 @@
 
             for( var i = 0 ; i < record.length ; i++ ){
 
-                if( record[i] === id ){
-
+                if( record[ i ] === id ){
                     pointer = i;
-
                 }
 
             }
@@ -120,49 +118,40 @@
         var file = filePrototype.clone().removeClass('wz-prototype');
         
         var modifiedToday = false;
-        var createdToday = false;
-        var userDate = new Date();
-        var userDateInfo = userDate.getDate() + '' + userDate.getMonth() + '' + userDate.getFullYear();
+        var createdToday  = false;
+        var userDate      = new Date();
+        var userDateInfo  = userDate.getDate() + '' + userDate.getMonth() + '' + userDate.getFullYear();
 
+        var createdDate  = new Date( structure.created );
         var modifiedDate = new Date( structure.modified );
+
         if( userDateInfo !== ( modifiedDate.getDate() + '' + modifiedDate.getMonth() + '' + modifiedDate.getFullYear() ) ){
             
-            var modifiedDay = modifiedDate.getDate();
-                if( modifiedDay < 10 ){ modifiedDay = '0' + modifiedDay }
-            var modifiedMonth = modifiedDate.getMonth() + 1;
-                if( modifiedMonth < 10 ){ modifiedMonth = '0' + modifiedMonth }
+            var modifiedDay   = modifiedDate.format('d');
+            var modifiedMonth = modifiedDate.format('m');
                 
         }else{
             
             modifiedToday = true;
             
-            var modifiedHour = modifiedDate.getHours();
-                if( modifiedHour < 10 ){ modifiedHour = '0' + modifiedHour }
-            var modifiedMinute = modifiedDate.getMinutes();
-                if( modifiedMinute < 10 ){ modifiedMinute = '0' + modifiedMinute }
-            var modifiedSecond = modifiedDate.getSeconds();
-                if( modifiedSecond < 10 ){ modifiedSecond = '0' + modifiedSecond }
-                
+            var modifiedHour   = modifiedDate.format('H');
+            var modifiedMinute = modifiedDate.format('i');
+            var modifiedSecond = modifiedDate.format('s');
+
         }
-            
-        var createdDate = new Date( structure.created );
+        
         if( userDateInfo !== ( createdDate.getDate() + '' + createdDate.getMonth() + '' + createdDate.getFullYear() ) ){
             
-            var createdDay = createdDate.getDate();
-                if( createdDay < 10 ){ createdDay = '0' + createdDay }
-            var createdMonth = createdDate.getMonth() + 1;
-                if( createdMonth < 10 ){ createdMonth = '0' + createdMonth }
+            var createdDay   = createdDate.format('d');
+            var createdMonth = createdDate.format('m');
                 
         }else{
             
             createdToday = true;
             
-            var createdHour = createdDate.getHours();
-                if( createdHour < 10 ){ createdHour = '0' + createdHour }
-            var createdMinute = createdDate.getMinutes();
-                if( createdMinute < 10 ){ createdMinute = '0' + createdMinute }
-            var createdSecond = createdDate.getSeconds();
-                if( createdSecond < 10 ){ createdSecond = '0' + createdSecond }
+            var createdHour   = createdDate.format('H');
+            var createdMinute = createdDate.format('i');
+            var createdSecond = createdDate.format('s');
                 
         }
         
@@ -714,46 +703,8 @@
 
             win.addClass('special-sidebar');
 
-        }else if( !win.hasClass('wz-win-maximized') && !maximized ){
-
-            if( win.hasClass('sidebar') && !stickedSidebar ){
-
-                win
-                    .add( winMenu )
-                    .add( wxpMenu )
-                    .add( folderMain )
-                    .add( folderBar )
-                    .width('+=140');
-
-                fileArea.outerWidth('+=140');
-
-                if( fileArea.hasClass('list') ){
-                    fileArea.find( 'textarea' ).css({ width : '+=140' });
-                }
-
-            }else if( !win.hasClass('sidebar') && stickedSidebar ){
-                
-                win
-                    .add( winMenu )
-                    .add( wxpMenu )
-                    .add( folderMain )
-                    .add( folderBar )
-                    .width('-=140');
-
-                fileArea.outerWidth('-=140');
-
-                if( fileArea.hasClass('list') ){
-                    fileArea.find( 'textarea' ).css({ width : '-=140' });
-                }
-
-            }
-
-            win.removeClass('special-sidebar');
-
         }else{
-
             win.removeClass('special-sidebar');
-
         }
 
         if( win.hasClass('wz-win-maximized') ){
