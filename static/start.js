@@ -10,6 +10,10 @@ wql.getConfig( function( error, result ){
         // Redimensionamos la ventana
         wz.fit( win, result.width - win.width(), result.height - win.height() );
 
+        // Guardamos la configuración
+        app.sortType = result.sort;
+        app.sidebar  = Boolean( result.sidebar );
+
         // Añadimos el sidebar si está activado
         if( result.sidebar ){
 

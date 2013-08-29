@@ -46,7 +46,8 @@
     var renaming = $();
     var prevName = '';
 
-    var showingSidebar = false;
+    var sortType       = app.sortType || 0;
+    var showingSidebar = app.sidebar  || false;
 
     // Functions
     var recordNavigation = function(){
@@ -299,11 +300,11 @@
                 // Display icons
                 fileArea.children().not('.wz-prototype').remove();
 
-                if( app.sortType === 1 ){
+                if( sortType === 1 ){
                     files.sort( sortBySize );
-                }else if( app.sortType === 2 ){
+                }else if( sortType === 2 ){
                     files.sort( sortByCreationDate );
-                }else if( app.sortType === 3 ){
+                }else if( sortType === 3 ){
                     files.sort( sortByModificationDate );
                 }else{
                     files.sort( sortByName );
@@ -1194,6 +1195,35 @@
     
     .on( 'mousedown', '.weexplorer-menu-toggle', function(){
 
+        var sidebarWidth = 0;
+
+        if( showingSidebar ){
+
+            sidebarWidth = sidebar.outerWidth( true );
+            win.removeClass( 'sidebar' );
+
+            wql.changeSidebar( 0 );
+            showingSidebar = false;
+
+            folderMain.width( '+=' + sidebarWidth + 'px' );
+            folderBar.width( '+=' + sidebarWidth + 'px' );
+            fileArea.width( '+=' + sidebarWidth + 'px' );
+
+        }else{
+
+            win.addClass( 'sidebar' );
+            sidebarWidth = sidebar.outerWidth( true );
+
+            wql.changeSidebar( 1 );
+            showingSidebar = true;
+
+            folderMain.width( '-=' + sidebarWidth + 'px' );
+            folderBar.width( '-=' + sidebarWidth + 'px' );
+            fileArea.width( '-=' + sidebarWidth + 'px' );
+
+        }
+
+        /*
         if( !showingSidebar ){
 
             showingSidebar = true;           
@@ -1355,6 +1385,7 @@
             }
 
         }
+        */
 
     })
     
