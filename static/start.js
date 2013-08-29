@@ -1,40 +1,39 @@
 
-wql.getConfig( function( error, result ){
+var app = this;
 
-	console.log( error, result );
+wql.getConfig( function( error, result ){
 
     if( result.length ){
 
-    	result = result[ 0 ];
+        result = result[ 0 ];
 
-    	win
-    		.width( result.width )
-    		.height( result.height );
+        // Redimensionamos la ventana
+        wz.fit( win, result.width - win.width(), result.height - win.height() );
 
-    	if( result.sidebar ){
-	    	win.addClass('sidebar');
-	    }
+        // Añadimos el sidebar si está activado
+        if( result.sidebar ){
 
-    	/*
-        win.addClass('sidebar').css( 'width', '' );
+            win.addClass('sidebar');
 
-        saveBaseWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
-        saveBaseOuterWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
+            var sidebarWidth = $( '.weexplorer-sidebar', win ).outerWidth( true );
 
-        if( result[0].sidebar ){
-            $( '.weexplorer-menu-toggle', wxpMenu ).mousedown();
-            setTimeout( function(){
-                wz.fit( win, result[0].width - win.width(), result[0].height - win.height() );
-            }, 300 );
-        }else{
-            wz.fit( win, result[0].width - win.width(), result[0].height - win.height() );
+            $( '.weexplorer-main', win ).width( '-=' + sidebarWidth + 'px' );
+            $( '.weexplorer-folder', win ).width( '-=' + sidebarWidth + 'px' );
+            $( '.weexplorer-file-zone', win ).width( '-=' + sidebarWidth + 'px' );
+
+            app.sortType = result.sort;
+
+            /*
+            saveBaseWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
+            saveBaseOuterWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
+            */
+
         }
 
+        /*
         if( result[0].view ){
             views.mousedown();
         }
-
-        sortType = result[0].sort;
 
         if( result[0].sort === 0 ){
             $( '.weexplorer-sort-name', win ).mousedown();
@@ -53,13 +52,13 @@ wql.getConfig( function( error, result ){
 
     }
 
-    console.log(1);
+    start();
 
 });
 
 wql.getSidebar( function( error, result ){
 
-	/*
+    /*
     var elementFolder = sidebarElement.clone().removeClass('wz-prototype');
 
     result.forEach( function( result ){
@@ -89,10 +88,6 @@ wql.getSidebar( function( error, result ){
         });
 
     });
-	*/
-
-    console.log(2);
+    */
 
 });
-
-start();

@@ -1,5 +1,6 @@
-    
+
     // Variables
+    var app            = this;
     var record         = [];
     var current        = null;
     var pointer        = -1;
@@ -46,8 +47,6 @@
     var prevName = '';
 
     var showingSidebar = false;
-
-    var sortType = 0;
 
     // Functions
     var recordNavigation = function(){
@@ -300,11 +299,11 @@
                 // Display icons
                 fileArea.children().not('.wz-prototype').remove();
 
-                if( sortType === 1 ){
+                if( app.sortType === 1 ){
                     files.sort( sortBySize );
-                }else if( sortType === 2 ){
+                }else if( app.sortType === 2 ){
                     files.sort( sortByCreationDate );
-                }else if( sortType === 3 ){
+                }else if( app.sortType === 3 ){
                     files.sort( sortByModificationDate );
                 }else{
                     files.sort( sortByName );
