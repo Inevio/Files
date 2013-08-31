@@ -27,11 +27,12 @@ wql.getConfig( function( error, result ){
 
             app.sortType = result.sort;
 
+
             /*
             saveBaseWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
             saveBaseOuterWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
             */
-
+		
         }
 
         /*

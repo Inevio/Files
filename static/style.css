@@ -91,14 +91,14 @@ textarea[readonly]{
 
 .weexplorer-menu{
     
-    width: 270px;
+    width: 272px;
     float: left;
     padding: 13px 23px 7px;
     
 }
 
 .wz-win.sidebar .weexplorer-menu{
-    width: 406px;
+    width: 409px;
 }
 
 .weexplorer-menu-views i{
