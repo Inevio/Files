@@ -26,30 +26,9 @@ wql.getConfig( function( error, result ){
             $( '.weexplorer-file-zone', win ).width( '-=' + sidebarWidth + 'px' );
 
             app.sortType = result.sort;
-
-
-            /*
-            saveBaseWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
-            saveBaseOuterWidth( [ win, winMenu, wxpMenu, fileArea, folderMain, folderBar ] );
-            */
+            app.viewType = result.view;
 		
         }
-
-        /*
-        if( result[0].view ){
-            views.mousedown();
-        }
-
-        if( result[0].sort === 0 ){
-            $( '.weexplorer-sort-name', win ).mousedown();
-        }else if( result[0].sort === 1 ){
-            $( '.weexplorer-sort-size', win ).mousedown();
-        }else if( result[0].sort === 2 ){
-            $( '.weexplorer-sort-creation', win ).mousedown();
-        }else if( result[0].sort === 3 ){
-            $( '.weexplorer-sort-modification', win ).mousedown();
-        }
-        */
 
     }else{
 

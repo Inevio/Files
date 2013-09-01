@@ -47,6 +47,7 @@
     var prevName = '';
 
     var sortType       = app.sortType || 0;
+    var viewType       = app.viewType || 0;
     var showingSidebar = app.sidebar  || false;
 
     // Functions
@@ -651,6 +652,42 @@
 
         while( length-- ){
             list[ length ].data( 'wz-fit-base-outerWidth', wz.tool.outerFullWidth( list[ length ], true ) );
+        }
+
+    };
+
+    var translateUi = function(){
+
+        $( '.weexplorer-menu-sort span', win ).text( lang.sortByName );
+        $( '.weexplorer-sidebar-title-name', sidebar ).text( lang.favourites );
+        $( '.item-now-before', win ).text( lang.uploading );
+        $( '.total-items-before', win ).text( lang.of );
+        $( '.elapsed-time-before', win ).text( '-' );
+        $( '.weexplorer-sort-name', win ).find( 'span' ).text( lang.sortByName );
+        $( '.weexplorer-sort-size', win ).find( 'span' ).text( lang.sortBySize );
+        $( '.weexplorer-sort-creation', win ).find( 'span' ).text( lang.sortByCreation );
+        $( '.weexplorer-sort-modification', win ).find( 'span' ).text( lang.sortByModif );
+
+    };
+
+    var setSortType = function( type ){
+
+        if( type === 0 ){
+            $( '.weexplorer-sort-name', win ).mousedown();
+        }else if( type === 1 ){
+            $( '.weexplorer-sort-size', win ).mousedown();
+        }else if( type === 2 ){
+            $( '.weexplorer-sort-creation', win ).mousedown();
+        }else if( type === 3 ){
+            $( '.weexplorer-sort-modification', win ).mousedown();
+        }
+
+    };
+
+    var setViewType = function( type ){
+
+        if( type ){
+            views.mousedown();
         }
 
     };
@@ -2129,6 +2166,9 @@
     });
 
     /* START APP */
+    translateUi();
+    setSortType( app.sortType );
+    setViewType( app.viewType );
     
     if( params ){
         openDirectory( params );
@@ -2174,13 +2214,3 @@
         });
 
     });
-
-    $( '.weexplorer-menu-sort span', win ).text( lang.sortByName );
-    $( '.weexplorer-sidebar-title-name', sidebar ).text( lang.favourites );
-    $( '.item-now-before', win ).text( lang.uploading );
-    $( '.total-items-before', win ).text( lang.of );
-    $( '.elapsed-time-before', win ).text( '-' );
-    $( '.weexplorer-sort-name', win ).find( 'span' ).text( lang.sortByName );
-    $( '.weexplorer-sort-size', win ).find( 'span' ).text( lang.sortBySize );
-    $( '.weexplorer-sort-creation', win ).find( 'span' ).text( lang.sortByCreation );
-    $( '.weexplorer-sort-modification', win ).find( 'span' ).text( lang.sortByModif );
