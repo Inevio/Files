@@ -150,7 +150,7 @@
                         wz.banner()
                             .title( lang.fileShared )
                             .text( lang.fileSharedStart + ' ' + structure.name + ' ' + lang.fileSharedEnd )
-                            .image( structure.icons.tiny )
+                            .icon( structure.icons.tiny )
                             .render();
 
                         wz.app.closeWindow( win.data( 'win' ) );

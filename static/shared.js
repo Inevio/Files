@@ -95,7 +95,7 @@
 
                             banner
                                 .text( structure.name + ' ' + lang.beenAccepted )
-                                .image( structure.icons.tiny )
+                                .icon( structure.icons.tiny )
                                 .render();
 
                             wz.app.closeWindow( win.data( 'win' ) );
@@ -126,7 +126,7 @@
 
                             banner
                                 .text( structure.name + ' ' + lang.beenRefused )
-                                .image( 'https://static.weezeel.com/app/1/refuse.png' )
+                                .icon( 'https://static.weezeel.com/app/1/refuse.png' )
                                 .render();
 
                                 wz.app.closeWindow( win.data( 'win' ) );

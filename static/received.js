@@ -40,7 +40,7 @@
                             wz.banner()
                                     .title( lang.fileShareAccepted )
                                     .text( structure.name + ' ' + lang.beenAccepted )
-                                    .image( structure.icons.tiny )
+                                    .icon( structure.icons.tiny )
                                     .render();
 
                             wz.app.closeWindow( win.data( 'win' ) );
@@ -64,7 +64,7 @@
                             wz.banner()
                                     .title( lang.fileShareRefused )
                                     .text( structure.name + ' ' + lang.beenRefused )
-                                    .image( 'https://static.weezeel.com/app/1/refuse.png' )
+                                    .icon( 'https://static.weezeel.com/app/1/refuse.png' )
                                     .render();
 
                             wz.app.closeWindow( win.data( 'win' ) );
