@@ -49,6 +49,7 @@
     var sortType       = app.sortType || 0;
     var viewType       = app.viewType || 0;
     var showingSidebar = app.sidebar  || false;
+    var firstTime      = true;
 
     // Functions
     var recordNavigation = function(){
@@ -695,9 +696,9 @@
     // Events
     $( win )
     
-    .on( 'wz-resize', function(){
+    .on( 'wz-resize wz-maximize wz-unmaximize', function(){
 
-        if( fileArea.hasClass('list') ){
+        if( viewType ){
 
             var controlTextarea = 0;
             var biggestTextarea = 0;
@@ -722,73 +723,9 @@
 
             });
 
-            textareaWidth = fileArea.find( '.weexplorer-file' ).not( '.wz-prototype' ).first().width() - biggestTextarea - 35;
+            textareaWidth = fileArea.find( '.weexplorer-file' ).not( '.wz-prototype' ).first().width() - biggestTextarea - 35; // To Do -> Estos 35 deben ser obtenidos de algun sitio, no manuales
 
             fileArea.find( 'textarea' ).css({ width : textareaWidth + 'px' });
-
-        }else{
-            fileArea.find( 'textarea' ).css({ width : '' });
-        }
-
-        if( win.parent().hasClass('wz-win-sticking') ){
-
-            if( win.hasClass('sidebar') ){
-                stickedSidebar = true;
-            }else{
-                stickedSidebar = false;
-            }
-
-            win.addClass('special-sidebar');
-
-        }else{
-            win.removeClass('special-sidebar');
-        }
-
-        if( win.hasClass('wz-win-maximized') ){
-
-            maximized = true;
-
-            if( win.hasClass('sidebar') ){
-                showSidebar = true;
-            }else{
-                showSidebar = false;
-            }
-
-        }else if( maximized ){
-
-            maximized = false;
-
-            if( win.hasClass('sidebar') && !showSidebar ){
-
-                win
-                    .add( winMenu )
-                    .add( wxpMenu )
-                    .add( folderMain )
-                    .add( folderBar )
-                    .width('+=140');
-
-                fileArea.outerWidth('+=140');
-
-                if( fileArea.hasClass('list') ){
-                    fileArea.find( 'textarea' ).css({ width : '+=140' });
-                }
-
-            }else if( !win.hasClass('sidebar') && showSidebar ){
-                
-                win
-                    .add( winMenu )
-                    .add( wxpMenu )
-                    .add( folderMain )
-                    .add( folderBar )
-                    .width('-=140');
-
-                fileArea.outerWidth('-=140');
-
-                if( fileArea.hasClass('list') ){
-                    fileArea.find( 'textarea' ).css({ width : '-=140' });
-                }
-
-            }
 
         }
         
@@ -1023,36 +960,16 @@
             views.removeClass('grid').addClass('list');     
             fileArea.removeClass('grid').addClass('list');
 
+            viewType = 1;
+
             wql.changeView( 1 );
 
-            if( win.hasClass( 'wz-win-sticked' ) ){
+            // Si es la primera vez que se produce este evento ignoramos la invocación del evento resize
+            if( !firstTime ){
 
-                var controlTextarea = 0;
-                var biggestTextarea = 0;
+                win.trigger('wz-resize');
 
-                fileArea.find( '.weexplorer-file' ).not( '.wz-prototype' ).each( function(){
-
-                    var textareaWidth = 0;
-
-                    $(this).first().children().not( 'textarea, article' ).each( function(){
-
-                        textareaWidth += $(this).outerWidth( true );
-
-                        if( textareaWidth > controlTextarea ){
-                            controlTextarea = textareaWidth;
-                        }
-
-                    });
-
-                    if( controlTextarea > biggestTextarea ){
-                        biggestTextarea = controlTextarea;
-                    }  
-
-                });
-
-                textareaWidth = fileArea.find( '.weexplorer-file' ).not( '.wz-prototype' ).first().width() - biggestTextarea - 35;
-
-                fileArea.find( 'textarea' ).css({ width : textareaWidth + 'px' });
+                firstTime = false;
 
             }
 
@@ -1060,6 +977,8 @@
 
             views.removeClass('list').addClass('grid');
             fileArea.removeClass('list').addClass('grid');
+
+            viewType = 0;
 
             wql.changeView( 0 );
 
@@ -1259,170 +1178,6 @@
             fileArea.width( '-=' + sidebarWidth + 'px' );
 
         }
-
-        /*
-        if( !showingSidebar ){
-
-            showingSidebar = true;           
-
-            if( win.hasClass( 'sidebar' ) ){
-
-                // Si el tamaño de la ventana es demasiado pequeño para restar el tamaño del sidebar al ocultarlo lo tratamos como especial
-
-                if( ( parseInt( win.css( 'width' ), 10 ) - parseInt( sidebar.css( 'width' ), 10 ) ) < parseInt( win.css( 'min-width' ), 10 ) ){
-                    win.addClass( 'min-width-sidebar' );
-                }else{
-                    win.removeClass( 'min-width-sidebar' );
-                }
-
-            }else{
-
-                // Si la ventana está muy cerca del borde derecho de la pantalla y el sidebar se saldría al mostrarlo lo tratamos como especial
-
-                // Añado 145px por el tamaño del sidebar ( 140px ) más un pequeño hueco de 5px
-                if( ( parseInt( win.css( 'width' ), 10 ) + 145 + win.deskitemX( true ) ) > $( document ).width() ){
-                    win.addClass( 'screen-sidebar' );
-                }else{
-                    win.removeClass( 'screen-sidebar' );
-                }
-
-            }
-
-            if( win.hasClass('wz-win-maximized') || win.hasClass('special-sidebar') || win.hasClass( 'min-width-sidebar' ) || win.hasClass( 'screen-sidebar' ) ){
-
-                if( win.hasClass('sidebar') ){
-
-                    changeBaseWidth( [ win, winMenu, wxpMenu ], -140 );
-                    changeBaseOuterWidth( [ win, winMenu, wxpMenu ], -140 );
-                    changeBaseWidth( [ fileArea, folderMain, folderBar ], -12 );
-                    changeBaseOuterWidth( [ fileArea, folderMain, folderBar ], -12 );
-
-                    fileArea
-                        .add( folderBar )
-                        .animate( { width : '+=140' }, 250 );
-
-                    sidebar.animate( { width : 0 }, 245 );
-
-                    if( fileArea.hasClass( 'list' ) ){
-                        fileArea.find( 'textarea' ).animate( { width : '+=140' }, 250 );
-                    }                    
-
-                    folderMain.animate( { width : '+=140' }, 250, function(){
-                        
-                        win.removeClass('sidebar');
-                        wql.changeSidebar( 1 );
-
-                        setTimeout( function(){
-                            showingSidebar = false;
-                        }, 50);
-                        
-                    });
-
-                }else{
-
-                    changeBaseWidth( [ win, winMenu, wxpMenu ], 140 );
-                    changeBaseOuterWidth( [ win, winMenu, wxpMenu ], 140 );
-
-                    fileArea
-                        .add( folderBar )
-                        .animate( { width : '-=140' }, 250 );
-
-                    sidebar.animate( { width : 139 }, 255, function(){
-
-                        $( this ).css( 'width', '' );
-
-                        setTimeout( function(){
-                            showingSidebar = false;
-                        }, 50);
-                        
-                    });
-
-                    if( fileArea.hasClass( 'list' ) ){
-                        fileArea.find( 'textarea' ).animate( { width : '-=140' }, 250 );
-                    }
-
-                    folderMain.animate( { width : '-=140' }, 250, function(){
-                        win.addClass('sidebar');
-                        wql.changeSidebar( 0 );
-                    });
-
-                }
-
-            }else{
-
-                var minWidth  = parseInt( win.css('min-width'), 10 );
-                var safeWidth = minWidth - win.width() + 140;
-
-                if( safeWidth < 0 ){
-                    safeWidth = 0;
-                }
-
-                if( win.hasClass('sidebar') ){
-
-                    changeBaseWidth( [ win, winMenu, wxpMenu ], -140 - safeWidth );
-                    changeBaseOuterWidth( [ win, winMenu, wxpMenu ], -140 - safeWidth );
-                    changeBaseWidth( [ fileArea, folderMain, folderBar ], -safeWidth );
-                    changeBaseOuterWidth( [ fileArea, folderMain, folderBar ], -safeWidth );
-
-                    winMenu
-                        .add( wxpMenu )
-                        .animate( { width : '-=' + ( 140 - safeWidth ) }, 250 );
-                    
-                    if( safeWidth ){
-
-                        fileArea
-                            .add( folderMain )
-                            .add( folderBar )
-                            .animate( { width : '+=' + safeWidth }, 250 );
-
-                        if( fileArea.hasClass( 'list' ) ){
-                            fileArea.find( 'textarea' ).animate( { width : '+=' + safeWidth }, 250 );
-                        }
-
-                    }
-
-                    win.animate( { width : '-=' + ( 140 - safeWidth ) }, 250, function(){
-
-                        win.removeClass('sidebar');
-
-                        wql.changeSidebar( 1 );
-
-                        setTimeout( function(){
-                            showingSidebar = false;
-                        }, 50 );
-
-                    });
-
-                }else{
-
-                    changeBaseWidth( [ win, winMenu, wxpMenu ], 140 );
-                    changeBaseOuterWidth( [ win, winMenu, wxpMenu ], 140 );
-
-                    winMenu.animate( { width : '+=140' }, 250 );
-                    wxpMenu.animate( { width : '+=140' }, 250 );
-
-                    sidebar.animate( { width : 138 }, 250, function(){
-
-                        win.addClass('sidebar');
-                        wql.changeSidebar( 0 );
-                        $( this ).css( 'width', '' );
-
-                    });
-
-                    win.animate( { width : '+=140' }, 250, function(){
-
-                        setTimeout( function(){
-                            showingSidebar = false;
-                        }, 50 );
-
-                    });
-
-                }
-
-            }
-
-        }
-        */
 
     })
     
@@ -1945,6 +1700,276 @@
 
                 }, 'warning');
             
+        }
+
+        menu.render();
+
+    })
+
+    .on( 'wz-dragstart', '.weexplorer-file', function( e, drag ){
+                
+        if( $( '.weexplorer-file.active', win ).size() <= 1 ){
+
+            drag.ghost(
+
+                $( this )
+                    .cloneWithStyle()
+                    .css( {
+
+                        margin : 0,
+                        top    : 'auto',
+                        left   : 'auto',
+                        bottom : 'auto',
+                        right  : 'auto'
+
+                    } )
+
+            );
+
+        }else{
+
+            var ghost = filePrototype.clone().removeClass( 'wz-prototype' );
+
+            ghost.css({
+
+                'width'         : '148px',
+                'height'        : '98px',
+                'background'    : 'green',
+                'border-radius' : '6px',
+                'border'        : 'solid 1px #fff',
+                'font-size'     : '36px',
+                'color'         : '#ff',
+                'text-align'    : 'center',
+                'padding-top'   : '50px'
+
+            }).text( $( '.weexplorer-file.active', win ).size() );
+
+            ghost.find( 'textarea, img, span' ).remove();
+
+            drag.ghost( ghost );
+
+            // Nullify
+            ghost = null;
+
+        }
+
+    })
+    
+    .on( 'wz-drop', '.wz-drop-area', function( e, item ){
+        
+        if( !$( this ).hasClass( 'active' ) && 
+            ( item.data( 'file-id' ) !== $( this ).data( 'file-id' ) ) &&
+            ( item.parent().data( 'file-id' ) !== $( this ).data( 'file-id' ) ) &&
+            ( item.data( 'file-id' ) !== $( this ).parent().data( 'file-id' ) ) &&
+            ( !( item.hasClass( 'shared' ) && $( this ).hasClass( 'shared' ) ) )
+            ){
+            
+            e.stopPropagation();
+            
+            if( $(this).hasClass('directory') ){
+                var dest = $(this).data('file-id');
+            }else if( $(this).hasClass('weexplorer-sidebar-element') ){
+                var dest = $(this).data('fileId');
+            }else{
+                var dest = current;
+            }
+                    
+            item.siblings('.active').add( item ).each( function(){
+                            
+                wz.structure( $(this).data('file-id'), function( error, structure ){
+
+                    if( error ){
+                        alert( error, null, win.data().win );
+                        return false;
+                    }
+
+                    structure.move( dest, null, function( error ){
+                        if( error ){
+                            alert( error, null, win.data().win );
+                        }
+                    });
+                    
+                });
+
+            });
+
+        }
+
+    })
+
+    .on( 'wz-dropenter', '.weexplorer-file.directory', function( e, file ){
+
+        if( file === 'fileNative' ){
+            $(this).addClass('weexplorer-directory-over');
+        }else if( ( file.data( 'file-id' ) !== $( this ).data( 'file-id' ) ) &&
+            ( file.parent().data( 'file-id' ) !== $( this ).data( 'file-id' ) ) &&
+            ( file.data( 'file-id' ) !== $( this ).parent().data( 'file-id' ) ) &&
+            ( !( file.hasClass( 'shared' ) && $( this ).hasClass( 'shared' ) ) )
+         ){
+            $(this).addClass('weexplorer-directory-over');
+        }
+
+    })
+
+    .on( 'wz-dropleave', '.weexplorer-file.directory', function(){
+        $(this).removeClass('weexplorer-directory-over');
+    })
+
+    .on( 'wz-dropenter', '.weexplorer-sidebar-element', function( e, file ){
+
+        if( file === 'fileNative' ){
+            $(this).addClass('weexplorer-directory-over');
+        }else if( file.parent().data( 'file-id' ) !== $( this ).data( 'file-id' ) ){
+            $( this ).addClass( 'weexplorer-sidebar-element-over' );
+        }
+
+    })
+
+    .on( 'wz-dropleave', '.weexplorer-sidebar-element', function(){
+        $( this ).removeClass( 'weexplorer-sidebar-element-over' );
+    })
+
+    .on( 'wz-hold', '.weexplorer-option-back.active', function( e ){
+
+        navigationMenu.children().not( '.wz-prototype' ).remove();
+
+        for( var i = pointer - 1 ; i >= 0 ; i-- ){
+
+            wz.structure( record[i], function( error, structure ){
+                var element = navigationMenu.find( '.wz-prototype' ).clone().removeClass();
+                element.data( 'id', structure.id ).find( 'span' ).text( structure.name );
+                navigationMenu.append( element );
+            });
+
+        }
+
+        navigationMenu.removeClass( 'next' );
+
+        if( !navigationMenu.hasClass( 'show' ) ){
+            navigationMenu.addClass( 'show' );
+            e.stopPropagation();
+        }
+        
+    })
+
+    .on( 'wz-hold', '.weexplorer-option-next.active', function( e ){
+
+        navigationMenu.children().not( '.wz-prototype' ).remove();
+
+        for( var i = pointer + 1 ; i < record.length ; i++ ){
+
+            wz.structure( record[i], function( error, structure ){
+                var element = navigationMenu.find( '.wz-prototype' ).clone().removeClass();
+                element.data( 'id', structure.id ).find( 'span' ).text( structure.name );
+                navigationMenu.append( element );
+            });
+
+        }
+
+        navigationMenu.addClass( 'next' );
+
+        if( !navigationMenu.hasClass( 'show' ) ){
+            navigationMenu.addClass( 'show' );
+            e.stopPropagation();
+        }
+
+    })
+
+    .on( 'mousedown', '.weexplorer-navigation li', function(){
+
+        pressedNav = true;
+        openDirectory( $(this).data( 'id' ) );
+
+    })
+
+    .on( 'mousedown', function(){
+        navigationMenu.removeClass( 'show' );
+    })
+
+    .on( 'wz-blur', function(){
+        if( renaming.size() ){
+            finishRename(); 
+        }
+        navigationMenu.removeClass( 'show' );
+    });       
+
+    fileArea.on( 'contextmenu', function(){
+
+        if( current !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
+            
+            wz.menu()
+            .add( lang.upload, function(){
+                uploadButton.click();
+            })
+            .add( lang.newDirectory, function(){
+                createDirectory();
+            })
+            .render();
+            
+        }
+
+    });
+
+    uploadButton.on( 'click', function(){
+
+        if( current !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
+            $(this).data( 'destiny', current );
+        }else{
+            $(this).removeData( 'destiny' );
+        }
+        
+    });
+
+    /* START APP */
+    translateUi();
+    setSortType( app.sortType );
+    setViewType( app.viewType );
+    
+    if( params ){
+        openDirectory( params );
+    }else{
+        openDirectory( 'root' );
+    }
+
+    wql.getSidebar( function( error, result ){
+
+        var sidebar        = $( '.weexplorer-sidebar', win );
+        var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
+
+        result.forEach( function( result ){
+
+            var controlFolder = sidebarElement.clone().removeClass('wz-prototype');
+
+            wz.structure( result.folder, function( error, structure ){
+
+                controlFolder
+                    .data( 'file-id', structure.id )
+                    .addClass( 'wz-drop-area folder-' + structure.id )
+                    .children( 'span' )
+                        .text( structure.name );
+
+                if( structure.id === wz.info.user().rootPath ){
+                    controlFolder.addClass( 'userFolder' );
+                }else if( structure.id === wz.info.user().receivedPath ){
+                    controlFolder.addClass( 'sharedFolder' );
+                    sharedNotifications();
+                }else if( structure.id === wz.info.user().sharedPath ){
+                    controlFolder.addClass( 'receivedFolder' );
+                    notifications();
+                }
+
+                if( result.order === 0 ){
+                    controlFolder.addClass( 'active' );
+                }
+
+                sidebar.append( controlFolder );
+
+            });
+
+        });
+
+    });
+     
         }
 
         menu.render();
