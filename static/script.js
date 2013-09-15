@@ -1733,14 +1733,14 @@
             ghost.css({
 
                 'width'         : '148px',
-                'height'        : '98px',
-                'background'    : 'green',
-                'border-radius' : '6px',
-                'border'        : 'solid 1px #fff',
+                'height'        : '93px',
+                'background'    : '#7EBE30',
+                'border-radius' : '3px',
+                'border'        : 'solid 1px #4E9C21',
                 'font-size'     : '36px',
-                'color'         : '#ff',
+                'color'         : '#FFF',
                 'text-align'    : 'center',
-                'padding-top'   : '50px'
+                'padding-top'   : '55px'
 
             }).text( $( '.weexplorer-file.active', win ).size() );
 
