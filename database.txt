@@ -3,19 +3,19 @@ HOW DATABASE WORKS
 
 - Table config:
 
-	user: user's ID (PK)
-	width: last window's width (default 544)
-	height: last window's height (default 600)
-	sidebar: 0 if shown <-> 1 if hidden
-	sort: 0 -> Sort by Name
-		  1 -> Sort by Size
-		  2 -> Sort by Creation
-		  3 -> Sort by Modification
+    user: user's ID (PK)
+    width: last window's width (default 544)
+    height: last window's height (default 600)
+    sidebar: 0 if shown <-> 1 if hidden
+    sort: 0 -> Sort by Name
+          1 -> Sort by Size
+          2 -> Sort by Creation
+          3 -> Sort by Modification
     view: 0 -> View as grid
           1 -> View as list
 
 - Table sidebar:
 
-	user: user's ID (PK)
-	folder: folder's ID
-	order: 0 to 99 which position does the folder have in the sidebar
+    user: user's ID (PK)
+    folder: folder's ID
+    order: 0 to 99 which position does the folder have in the sidebar

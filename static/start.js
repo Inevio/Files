@@ -27,7 +27,7 @@ wql.getConfig( function( error, result ){
 
             app.sortType = result.sort;
             app.viewType = result.view;
-		
+        
         }
 
     }else{
