@@ -1931,35 +1931,37 @@
         openDirectory( 'root' );
     }
 
-    wql.getSidebar( function( error, result ){
+    wz.structure( 'root', function( error, structure ){
+    
+        structure.list( true, function( error, list ){
 
-        var sidebar        = $( '.weexplorer-sidebar', win );
-        var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
+            list = list.filter( function( item ){
+                return item.type === 7;
+            });
 
-        result.forEach( function( result ){
+            list.unshift( structure );
+            
+            var sidebar        = $( '.weexplorer-sidebar', win );
+            var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
 
-            var controlFolder = sidebarElement.clone().removeClass('wz-prototype');
+            list.forEach( function( result ){
 
-            wz.structure( result.folder, function( error, structure ){
+                var controlFolder = sidebarElement.clone().removeClass('wz-prototype');
 
                 controlFolder
-                    .data( 'file-id', structure.id )
-                    .addClass( 'wz-drop-area folder-' + structure.id )
+                    .data( 'file-id', result.id )
+                    .addClass( 'wz-drop-area folder-' + result.id )
                     .children( 'span' )
-                        .text( structure.name );
+                        .text( result.name );
 
-                if( structure.id === wz.info.user().rootPath ){
-                    controlFolder.addClass( 'userFolder' );
-                }else if( structure.id === wz.info.user().receivedPath ){
+                if( result.id === wz.info.user().rootPath ){
+                    controlFolder.addClass( 'userFolder active' );
+                }else if( result.id === wz.info.user().receivedPath ){
                     controlFolder.addClass( 'sharedFolder' );
                     sharedNotifications();
-                }else if( structure.id === wz.info.user().sharedPath ){
+                }else if( result.id === wz.info.user().sharedPath ){
                     controlFolder.addClass( 'receivedFolder' );
                     notifications();
-                }
-
-                if( result.order === 0 ){
-                    controlFolder.addClass( 'active' );
                 }
 
                 sidebar.append( controlFolder );
