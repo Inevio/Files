@@ -7,10 +7,6 @@
     width: 686px; /*!important*/
 }
 
-.wz-win.sidebar .weexplorer-sidebar{
-    display: block;
-}
-
 textarea{
     overflow: hidden;
     border: 1px solid #50BDFF;
@@ -95,10 +91,6 @@ textarea[readonly]{
     float: left;
     padding: 13px 23px 7px;
     
-}
-
-.wz-win.sidebar .weexplorer-menu{
-    width: 409px;
 }
 
 .weexplorer-menu-views i{
@@ -530,9 +522,8 @@ img{
 }
 
 .wz-win.sidebar .weexplorer-sidebar{
-    
     width: 139px;
-    
+    display: block;
 }
 
 .weexplorer-sidebar-title{

@@ -1,7 +1,7 @@
 
 {
 
-    "insertConfig"  : "INSERT INTO config SET user = @userId",
+    "insertConfig"  : "INSERT INTO config SET user = @userId, sidebar = 1",
     "getConfig"     : "SELECT * FROM config WHERE user = @userId LIMIT 1",
     "getSidebar"    : "SELECT * FROM sidebar WHERE user = @userId ORDER BY `order` ASC",
 
