@@ -10,8 +10,8 @@
     "changeHeight"  : "UPDATE config SET height = ? WHERE user = @userId LIMIT 1",
     "changeSort"    : "UPDATE config SET sort = ? WHERE user = @userId LIMIT 1",
     "changeView"    : "UPDATE config SET view = ? WHERE user = @userId LIMIT 1",
-    "addFolder"     : "INSERT INTO sidebar SET user = @userId, folder = ?, order = ?",
+    "addFolder"     : "INSERT INTO sidebar SET user = @userId, folder = ?, `order` = ?",
     "removeFolder"  : "DELETE FROM sidebar WHERE user = @userId AND folder = ? LIMIT 1",
-    "changeOrder"   : "UPDATE sidebar SET order = ? WHERE user = @userId AND folder = ? LIMIT 1"
+    "changeOrder"   : "UPDATE sidebar SET `order` = ? WHERE user = @userId AND folder = ? LIMIT 1"
 
 }

@@ -9,6 +9,7 @@
     var showSidebar    = false;
     var maximized      = false;
     var stickedSidebar = false;
+    var channel        = null;
 
     var types = [
                     'directory wz-drop-area',
@@ -695,9 +696,103 @@
 
     };
 
+    var isInSidebar = function( id, name ){
+        return sidebar.find( '.folder-' + id ).length;
+    };
+
+    var addToSidebar = function( id, name ){
+
+        wql.addFolder( [ id, 0 ], function( error, result ){
+
+            // To Do -> Error
+            if( !error && result.affectedRows ){
+
+                addToSidebarUi( id, name );
+
+                if( channel === null ){
+
+                    wz.channel.create( function( error, chn ){
+
+                        channel = chn;
+                        channel.send( { action : 'addToTaskbar', id : id, name : name } );
+
+                    });
+
+                }else{
+                    channel.send( { action : 'addToTaskbar', id : id, name : name } );
+                }
+
+            }
+            
+        });
+
+    };
+
+    var addToSidebarUi = function( id, name ){
+
+        if( isInSidebar( id ) ){
+            return false;
+        }
+
+        var controlFolder = sidebarElement.clone().removeClass('wz-prototype');
+
+        controlFolder
+            .data( 'file-id', id )
+            .addClass( 'wz-drop-area folder-' + id )
+            .children( 'span' )
+                .text( name );
+
+        sidebar.append( controlFolder );
+
+    };
+
+    var removeFromSidebar = function( id ){
+
+        wql.removeFolder( id, function( error, result ){
+            
+            // To Do -> Error
+            if( !error && result.affectedRows ){
+
+                removeFromSidebarUi( id );
+
+                if( channel === null ){
+
+                    wz.channel.create( function( error, chn ){
+
+                        channel = chn;
+                        channel.send( { action : 'removeFromTaskbar', id : id } );
+
+                    });
+
+                }else{
+                    channel.send( { action : 'removeFromTaskbar', id : id } );
+                }
+
+            }
+
+        });
+
+    };
+
+    var removeFromSidebarUi = function( id ){
+        return sidebar.find( '.folder-' + id ).remove();
+    };
+
     // Events
     $( win )
     
+    .on( 'message', function( e, info, message ){
+
+        message = message[ 0 ];
+
+        if( message.action === 'addToTaskbar' ){
+            addToSidebarUi( message.id, message.name );
+        }else if( message.action === 'removeFromTaskbar' ){
+            removeFromSidebarUi( message.id );
+        }
+
+    })
+
     .on( 'wz-resize wz-maximize wz-unmaximize', function(){
 
         if( viewType ){
@@ -721,7 +816,7 @@
 
                 if( controlTextarea > biggestTextarea ){
                     biggestTextarea = controlTextarea;
-                }  
+                }
 
             });
 
@@ -814,6 +909,7 @@
     .on( 'structure-remove', function(e, id, quota, parent){
         
         fileArea.children( '.weexplorer-file-' + id ).remove();
+        sidebar.children( '.folder-' + id ).remove();
 
         if( current === id ){
             openDirectory( parent );
@@ -1411,7 +1507,7 @@
             $( '.weexplorer-file.last-active', fileArea ).prev().not( '.weexplorer-file.wz-prototype' ).mousedown().mouseup();
         }
 
-        downloadComprobation();   
+        downloadComprobation();
         
     })
     
@@ -1546,6 +1642,20 @@
 
                 menu.add( lang.shareWith, function(){
                     wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
+                });
+
+            }
+
+            if( isInSidebar( icon.data('file-id') ) ){
+
+                menu.add( lang.removeFromSidebar, function(){
+                    removeFromSidebar( icon.data( 'file-id' ) );
+                });
+
+            }else{
+
+                menu.add( lang.addToSidebar, function(){
+                    addToSidebar( icon.data( 'file-id' ), icon.find('textarea').val() );
                 });
 
             }
@@ -1885,7 +1995,7 @@
             finishRename(); 
         }
         navigationMenu.removeClass( 'show' );
-    });       
+    });
 
     fileArea.on( 'contextmenu', function(){
 
@@ -1929,23 +2039,24 @@
 
     // Esta parte la comento porque usa promesas y puede resultar un poco rara si no se han usado nunca
     // Sacamos las estructuras del sidebar asíncronamente
-    // Para ello primero generamos 4 promesas
+    // Para ello primero generamos 5 promesas
     var rootPath   = $.Deferred(); // Para la carpeta del usuario
     var hiddenPath = $.Deferred(); // Para las carpetas escondidas
     var inboxPath  = $.Deferred(); // Para la carpeta de inbox
     var sharedPath = $.Deferred(); // Para la carpeta de compartidos
+    var customPath = $.Deferred(); // Para las carpetas que haya añadido el usuario
 
     // Y determinamos que pasará cuando se cumplan esas promesas, en este caso, generamos el sidebar
-    $.when( rootPath, hiddenPath, inboxPath, sharedPath ).then( function( rootPath, hiddenPath, inboxPath, sharedPath ){
+    $.when( rootPath, hiddenPath, inboxPath, sharedPath, customPath ).then( function( rootPath, hiddenPath, inboxPath, sharedPath, customPath ){
 
         // AVISO -> hiddenPath es un array
         // Ponemos al principio rootPath, inboxPath y sharedPath
         hiddenPath.unshift( rootPath, inboxPath, sharedPath );
 
-        // Y generamos el sidebar
-        var sidebar        = $( '.weexplorer-sidebar', win );
-        var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
+        // Y concatenamos con el listado de carpetas personalizadas
+        hiddenPath = hiddenPath.concat( customPath );
 
+        // Y generamos el sidebar
         hiddenPath.forEach( function( element ){
 
             var controlFolder = sidebarElement.clone().removeClass('wz-prototype');
@@ -2002,5 +2113,60 @@
         
         // Ya tenemos la carpetas de compartidos, cumplimos la promesa
         sharedPath.resolve( structure );
+
+    });
+
+    wql.getSidebar( function( error, rows ){
+
+        // Si hay algún error o no hay carpetas damos la promesa por cumplida
+        if( error || !rows.length ){
+            customPath.resolve( [] );
+            return false;
+        }
+
+        // Si hay carpetas las cargamos asíncronamente, hacemos un array con promesas
+        // Estas promesas se irán cumpliendo según se hayan devuelto todos los datos del servidor
+        var folders = [];
+
+        rows.forEach( function( item ){
+
+            var promise = $.Deferred();
+
+            // Añadimos la promesa al array
+            folders.push( promise );
+
+            wz.structure( item.folder, function( error, structure ){
+
+                if( error ){
+                    promise.resolve( null );
+                }else{
+                    promise.resolve( structure );
+                }
+
+            });
+
+        });
+
+        // Definimos que ocurrirá cuando todas las promesas de listar los directorios ocurran
+        $.when.apply( null, folders ).done( function(){
+
+            // Como el resultado puede cambiar de número tenemos que hacernos un recorrido de arguments
+            // IMPORTANTE arguments no es un array aunque tiene ciertos comportamientos similares
+            // Hay que convertir arguments a un array, y de paso, descartamos las estructuras incorrectas
+
+            var folders = [];
+
+            for( var i in arguments ){
+
+                if( arguments[ i ] !== null ){
+                    folders.push( arguments[ i ] );
+                }
+
+            }
+
+            // Y damos como cumplida la promesa de cargar los directorios personalizados del usuario
+            customPath.resolve( folders );
+
+        });
 
     });

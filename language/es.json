@@ -21,6 +21,8 @@
     "shareWith" : "Compartir con...",
     "download" : "Descargar",
     "rename" : "Renombrar",
+    "addToSidebar" : "Añadir al sidebar",
+    "removeFromSidebar" : "Quitar del sidebar",
     "properties" : "Propiedades",
     "remove" : "Eliminar",
     "openFolder" : "Abrir carpeta",

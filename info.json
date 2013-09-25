@@ -237,6 +237,7 @@
 
     "permissions" : {
 
+        "channel"   : true,
         "structure" : {
 
             "create" : true,
