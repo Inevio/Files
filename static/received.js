@@ -5,11 +5,11 @@
             alert( lang.error, null, win.data().win );
         }else{
 
-            wz.user( structure.metadata.received.sender, function( error, user ){
+            wz.user( structure.metadata.inbox.sender, function( error, user ){
                 $( '.received-content-info.who', win ).text( lang.sentBy + ' ' + user.fullName );
             });
             
-            var date = new Date( parseInt( structure.metadata.received.time ) );
+            var date = new Date( parseInt( structure.metadata.inbox.time ) );
             
             $( '.received-content-info.date', win ).text( ' ' + lang.on + ' ' + date.toLocaleDateString() );
             
@@ -23,7 +23,7 @@
             $( '.received-content-info.hour', win ).text( ' ' + lang.at + ' ' + hour + ':' + minute + ':' + second );
             $( '.received-content-name', win ).text( structure.name );
             $( '.received-content-size', win ).text( wz.tool.bytesToUnit( structure.size, 2 ) );
-            $( '.received-content-message', win ).text( structure.metadata.received.message );
+            $( '.received-content-message', win ).text( structure.metadata.inbox.message );
             
             win
             
@@ -47,7 +47,7 @@
 
                         }
 
-                    });   
+                    });
 
                 })
             

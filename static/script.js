@@ -548,7 +548,7 @@
     
     var notifications = function(){
 
-        wz.structure( 'received', function( error, structure ){
+        wz.structure( 'inbox', function( error, structure ){
             
             structure.list( function( error, list ){
                 
@@ -564,6 +564,7 @@
         
     };
 
+    /*
     var sharedNotifications = function(){
 
         wz.structure( 'shared', function( error, structure ){
@@ -581,6 +582,7 @@
         });
         
     };
+    */
 
     var downloadComprobation = function(){
 
@@ -855,29 +857,19 @@
         $( '.weexplorer-file-' + structure.id ).find('img').attr( 'src', structure.icons.normal + '?' + Math.random() );
     })
     
-    .on( 'structure-received', function(){
-        notifications();
-    })
+    .on( 'structure-inbox' +
+         ' structure-accepted' +
+         ' structure-refused' +
+         ' structure-shared' +
+         ' structure-sharedAccepted' +
+         ' structure-sharedRefused',
 
-    .on( 'structure-accepted', function(){
-        notifications();
-    })
+        function(){
+            console.log('weeXplorer structure-inbox');
+            notifications();
+        }
 
-    .on( 'structure-refused', function(){
-        notifications();
-    })
-
-    .on( 'structure-shared', function(){
-        sharedNotifications();
-    })
-
-    .on( 'structure-sharedAccepted', function(){
-        sharedNotifications();
-    })
-
-    .on( 'structure-sharedRefused', function(){
-        sharedNotifications();
-    })
+    )
 
     .on( 'structure-sharedStart', function( e, structure ){
 
@@ -1757,7 +1749,7 @@
     
     .on( 'wz-drop', '.wz-drop-area', function( e, item ){
         
-        if( !$( this ).hasClass( 'active' ) && 
+        if( !$( this ).hasClass( 'active' ) &&
             ( item.data( 'file-id' ) !== $( this ).data( 'file-id' ) ) &&
             ( item.parent().data( 'file-id' ) !== $( this ).data( 'file-id' ) ) &&
             ( item.data( 'file-id' ) !== $( this ).parent().data( 'file-id' ) ) &&
@@ -1766,12 +1758,14 @@
             
             e.stopPropagation();
             
+            var dest = 0;
+
             if( $(this).hasClass('directory') ){
-                var dest = $(this).data('file-id');
+                dest = $(this).data('file-id');
             }else if( $(this).hasClass('weexplorer-sidebar-element') ){
-                var dest = $(this).data('fileId');
+                dest = $(this).data('fileId');
             }else{
-                var dest = current;
+                dest = current;
             }
                     
             item.siblings('.active').add( item ).each( function(){
@@ -1931,43 +1925,82 @@
         openDirectory( 'root' );
     }
 
+    /* GENERATE SIDEBAR */
+
+    // Esta parte la comento porque usa promesas y puede resultar un poco rara si no se han usado nunca
+    // Sacamos las estructuras del sidebar asíncronamente
+    // Para ello primero generamos 4 promesas
+    var rootPath   = $.Deferred(); // Para la carpeta del usuario
+    var hiddenPath = $.Deferred(); // Para las carpetas escondidas
+    var inboxPath  = $.Deferred(); // Para la carpeta de inbox
+    var sharedPath = $.Deferred(); // Para la carpeta de compartidos
+
+    // Y determinamos que pasará cuando se cumplan esas promesas, en este caso, generamos el sidebar
+    $.when( rootPath, hiddenPath, inboxPath, sharedPath ).then( function( rootPath, hiddenPath, inboxPath, sharedPath ){
+
+        // AVISO -> hiddenPath es un array
+        // Ponemos al principio rootPath, inboxPath y sharedPath
+        hiddenPath.unshift( rootPath, inboxPath, sharedPath );
+
+        // Y generamos el sidebar
+        var sidebar        = $( '.weexplorer-sidebar', win );
+        var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
+
+        hiddenPath.forEach( function( element ){
+
+            var controlFolder = sidebarElement.clone().removeClass('wz-prototype');
+
+            controlFolder
+                .data( 'file-id', element.id )
+                .addClass( 'wz-drop-area folder-' + element.id )
+                .children( 'span' )
+                    .text( element.name );
+
+            if( element.id === wz.info.user().rootPath ){
+                controlFolder.addClass( 'userFolder active' );
+            }else if( element.id === wz.info.user().inboxPath ){
+                controlFolder.addClass( 'receivedFolder' );
+                notifications();
+            }else if( element.id === 'shared' ){
+                controlFolder.addClass( 'sharedFolder' );
+            }
+
+            sidebar.append( controlFolder );
+
+        });
+
+    } );
+
+    // Ahora que ya tenemos definido que va a pasar ejecutamos las peticiones para cumplir las promesas
     wz.structure( 'root', function( error, structure ){
+
+        // Ya tenemos la carpeta del usuario, cumplimos la promesa
+        rootPath.resolve( structure );
     
         structure.list( true, function( error, list ){
 
+            // Vamos a filtrar la lista para quedarnos solo con las carpetas ocultas, es decir, de tipo 7
             list = list.filter( function( item ){
                 return item.type === 7;
             });
 
-            list.unshift( structure );
-            
-            var sidebar        = $( '.weexplorer-sidebar', win );
-            var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
-
-            list.forEach( function( result ){
-
-                var controlFolder = sidebarElement.clone().removeClass('wz-prototype');
-
-                controlFolder
-                    .data( 'file-id', result.id )
-                    .addClass( 'wz-drop-area folder-' + result.id )
-                    .children( 'span' )
-                        .text( result.name );
-
-                if( result.id === wz.info.user().rootPath ){
-                    controlFolder.addClass( 'userFolder active' );
-                }else if( result.id === wz.info.user().receivedPath ){
-                    controlFolder.addClass( 'sharedFolder' );
-                    sharedNotifications();
-                }else if( result.id === wz.info.user().sharedPath ){
-                    controlFolder.addClass( 'receivedFolder' );
-                    notifications();
-                }
-
-                sidebar.append( controlFolder );
-
-            });
+            // Ya tenemos las carpetas ocultas, cumplimos la promesa
+            hiddenPath.resolve( list );
 
         });
+
+    });
+
+    wz.structure( 'inbox', function( error, structure ){
+        
+        // Ya tenemos la carpeta de recibidos, cumplimos la promesa
+        inboxPath.resolve( structure );
+
+    });
+
+    wz.structure( 'shared', function( error, structure ){
+        
+        // Ya tenemos la carpetas de compartidos, cumplimos la promesa
+        sharedPath.resolve( structure );
 
     });
