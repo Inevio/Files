@@ -76,7 +76,7 @@
         if( !controlNav && !pressedNav ){
 
             pointer++;
-            record = record.slice( 0, pointer + 1 );   
+            record = record.slice( 0, pointer + 1 );
 
         }else if( pressedNav ){
 
@@ -1079,7 +1079,7 @@
     .on( 'click', '.weexplorer-file.active', function(e){
 
         if( renaming.size() ){
-            finishRename(); 
+            finishRename();
         }
         
         navigationMenu.removeClass( 'show' );
@@ -1140,7 +1140,7 @@
     })
     
     .on( 'mousedown', function(){
-        $( '.weexplorer-sort', win ).removeClass( 'show' ); 
+        $( '.weexplorer-sort', win ).removeClass( 'show' );
     })
 
     .on( 'click', 'textarea:not([readonly])', function( e ){
@@ -1160,11 +1160,12 @@
             var icons = $( '.weexplorer-file', win );
             var beginRow = icons.index( this );
             var finalRow = icons.index( icons.filter( '.last-active' ) );
+            var row      = null;
             
             if( beginRow < finalRow ){
-                var row = icons.slice( beginRow, finalRow + 1 ).addClass( 'active' );
+                row = icons.slice( beginRow, finalRow + 1 ).addClass( 'active' );
             }else{
-                var row = icons.slice( finalRow, beginRow + 1 ).addClass( 'active' );
+                row = icons.slice( finalRow, beginRow + 1 ).addClass( 'active' );
             }
             
             icons.not( row ).removeClass( 'active' );
@@ -1175,17 +1176,17 @@
             $( '.weexplorer-file.last-active', fileArea ).removeClass('last-active hidden');
             $( this ).addClass('last-active');
             
-        }       
+        }
         
         navigationMenu.removeClass( 'show' );
-        $( '.weexplorer-sort', win ).removeClass( 'show' ); 
+        $( '.weexplorer-sort', win ).removeClass( 'show' );
         e.stopPropagation();
         
     })
     
     .on( 'mousedown', '.weexplorer-file.active', function( e ){
         
-        $( '.weexplorer-sort', win ).removeClass( 'show' ); 
+        $( '.weexplorer-sort', win ).removeClass( 'show' );
         e.stopPropagation();
         
         if(e.ctrlKey || e.metaKey){
@@ -1194,15 +1195,16 @@
             
             var icons = $( '.weexplorer-file', win );
             var begin = icons.index(this);
-            var final = icons.index(icons.filter( '.last-active' ));
-            
-            if(begin < final){
-                var row = icons.slice(begin,final+1).addClass('active');
+            var end   = icons.index(icons.filter( '.last-active' ));
+            var row   = null;
+
+            if( begin < end ){
+                row = icons.slice( begin, end + 1 ).addClass('active');
             }else{
-                var row = icons.slice(final,begin+1).addClass('active');
+                row = icons.slice( end, begin + 1 ).addClass('active');
             }
             
-            icons.not(row).removeClass('active');
+            icons.not( row ).removeClass('active');
             
         }
     
@@ -1211,7 +1213,7 @@
     .on( 'mousedown', '.weexplorer-file-zone', function(){
         
         if( renaming.size() ){
-            finishRename(); 
+            finishRename();
         }
         
         $( '.weexplorer-file.active' , fileArea ).removeClass('active');
@@ -1225,45 +1227,87 @@
             /*if( $(this).parent().hasClass('active') ){
                 beginRename( $(this).parent() );
             }*/
-        }       
+        }
         
     })
     
     .on( 'mousedown', '.weexplorer-file', function(){
         if( $(this).children('textarea').attr('readonly') ){
             if( renaming.size() ){
-                finishRename(); 
+                finishRename();
             }
         }
     })
     
     .on( 'mousedown', '.weexplorer-menu-toggle', function(){
 
-        var sidebarWidth = 0;
+        if( win.hasClass('toggle-sidebar') ){
+            return false;
+        }
+
+        // Para garantizar que las dos animaciones han terminado usamos promesas
+        var folderPromise  = $.Deferred();
+        var sidebarPromise = $.Deferred();
+        var sidebarWidth   = 0;
 
         if( showingSidebar ){
-
-            sidebarWidth = sidebar.outerWidth( true );
-            win.removeClass( 'sidebar' );
-
+            
             wql.changeSidebar( 0 );
-            showingSidebar = false;
 
-            folderMain.width( '+=' + sidebarWidth + 'px' );
-            folderBar.width( '+=' + sidebarWidth + 'px' );
-            fileArea.width( '+=' + sidebarWidth + 'px' );
+            sidebarWidth      = sidebar.width();
+            sidebarOuterWidth = sidebar.outerWidth( true );
+
+            win.addClass('toggle-sidebar');
+            
+            // Transición del sidebar
+            sidebar.transition( { width : 0 }, 238, function(){
+                sidebarPromise.resolve();
+            });
+
+            // Transición de la zona de iconos
+            folderMain.add( folderBar ).add( fileArea ).transition( { width : '+=' + sidebarOuterWidth }, 250, function(){
+                folderPromise.resolve();
+            });
+
+            // Cuando terminan las dos animaciones
+            $.when( folderPromise, sidebarPromise ).done( function(){
+
+                showingSidebar = false;
+
+                win.removeClass('sidebar toggle-sidebar');
+                sidebar.width( sidebarWidth, true );
+
+            });
 
         }else{
 
-            win.addClass( 'sidebar' );
-            sidebarWidth = sidebar.outerWidth( true );
-
             wql.changeSidebar( 1 );
-            showingSidebar = true;
 
-            folderMain.width( '-=' + sidebarWidth + 'px' );
-            folderBar.width( '-=' + sidebarWidth + 'px' );
-            fileArea.width( '-=' + sidebarWidth + 'px' );
+            sidebarWidth      = sidebar.width();
+            sidebarOuterWidth = sidebar.outerWidth( true );
+
+            sidebar.width( 0 );
+
+            win.addClass('toggle-sidebar sidebar');
+            
+            // Transición del sidebar
+            sidebar.transition( { width : sidebarWidth }, 250, function(){
+                sidebarPromise.resolve();
+            });
+
+            // Transición de la zona de iconos
+            folderMain.add( folderBar ).add( fileArea ).transition( { width : '-=' + sidebarOuterWidth }, 238, function(){
+                folderPromise.resolve();
+            });
+
+            // Cuando terminan las dos animaciones
+            $.when( folderPromise, sidebarPromise ).done( function(){
+
+                showingSidebar = true;
+
+                win.removeClass('toggle-sidebar');
+
+            });
 
         }
 
@@ -1282,7 +1326,7 @@
         if( !$( '.weexplorer-sort', win ).hasClass( 'show' ) ){
             $( '.weexplorer-sort', win ).addClass( 'show' );
             e.stopPropagation();
-        }   
+        }
         
     })
     
@@ -1533,7 +1577,7 @@
             var object = $( '.weexplorer-file.last-active', fileArea ).prev();
         
             while( object.size() && leftStart !== object.position().left ){
-                object = object.prev(); 
+                object = object.prev();
             }
         
             object.mousedown().mouseup();
@@ -1553,10 +1597,13 @@
             var object = $( '.weexplorer-file.last-active', fileArea ).next();
             
             while( object.size() && leftStart !== object.position().left ){
-                if(!object.next().size()){
+
+                if( !object.next().size() ){
                     break;
                 }
-                object = object.next();             
+
+                object = object.next();
+
             }
             
             object.mousedown().mouseup();
@@ -1940,9 +1987,12 @@
         for( var i = pointer - 1 ; i >= 0 ; i-- ){
 
             wz.structure( record[i], function( error, structure ){
+
                 var element = navigationMenu.find( '.wz-prototype' ).clone().removeClass();
+
                 element.data( 'id', structure.id ).find( 'span' ).text( structure.name );
                 navigationMenu.append( element );
+
             });
 
         }
@@ -1963,9 +2013,12 @@
         for( var i = pointer + 1 ; i < record.length ; i++ ){
 
             wz.structure( record[i], function( error, structure ){
+
                 var element = navigationMenu.find( '.wz-prototype' ).clone().removeClass();
+
                 element.data( 'id', structure.id ).find( 'span' ).text( structure.name );
                 navigationMenu.append( element );
+
             });
 
         }
@@ -1991,10 +2044,13 @@
     })
 
     .on( 'wz-blur', function(){
+
         if( renaming.size() ){
-            finishRename(); 
+            finishRename();
         }
+
         navigationMenu.removeClass( 'show' );
+
     });
 
     fileArea.on( 'contextmenu', function(){

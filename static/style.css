@@ -183,7 +183,7 @@ textarea[readonly]{
     height: 15px;
     float: right;
 
-    background: url('https://static.weezeel.com/app/1/sidebar_toggle.png') 0 0;
+    background: url('https://static.weezeel.com/app/1/sidebar_toggle.png') -15px 0;
     background-size: 30px 15px; 
     
 }
@@ -194,7 +194,7 @@ textarea[readonly]{
     height: 15px;
     float: right;
 
-    background: url('https://static.weezeel.com/app/1/sidebar_toggle.png') -15px 0;
+    background: url('https://static.weezeel.com/app/1/sidebar_toggle.png') 0 0;
     background-size: 30px 15px; 
     
 }
@@ -510,7 +510,7 @@ img{
 
 .weexplorer-sidebar{
     
-    width: 0px;
+    width: 139px;
     height: 550px;
     float: left;
     
@@ -522,7 +522,6 @@ img{
 }
 
 .wz-win.sidebar .weexplorer-sidebar{
-    width: 139px;
     display: block;
 }
 
