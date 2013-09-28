@@ -925,6 +925,8 @@
             $( '.weexplorer-folder-name', win ).text( structure.name );
         }
 
+        $( '.folder-' + structure.id + ' .weexplorer-sidebar-element-name', sidebar ).text( structure.name );
+
     })
     
     .on( 'structure-new', function(e, structure){
