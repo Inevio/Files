@@ -952,7 +952,7 @@
     })
     
     .on( 'structure-thumbnail', function(e, structure){
-        $( '.weexplorer-file-' + structure.id ).find('img').attr( 'src', structure.icons.normal + '?' + Math.random() );
+        $( '.weexplorer-file-' + structure.id ).find('img').attr( 'src', structure.icons.normal + '?' + Date.now() );
     })
     
     .on( 'structure-inbox' +
@@ -1137,7 +1137,9 @@
 
         icon
             .removeClass('weexplorer-file-uploading temporal-file')
-            .addClass('file');
+            .addClass('file')
+            .find('img')
+                .attr( 'src', structure.icons.normal );
             
     })
     
