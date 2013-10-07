@@ -782,8 +782,6 @@
 
     var centerIcons = function(){
 
-        console.log( 'center icons' );
-
         var minMargin = 5;
 
         $( '.weexplorer-false-file', fileArea ).remove();
