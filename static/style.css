@@ -252,8 +252,8 @@ img{
     width: 668px;
     height: 490px;
     float: left;
-    padding: 60px 12px 0 12px;
-    text-align: justify;
+    padding: 60px 12px 0;
+    text-align: center;
     
 }
 
@@ -262,9 +262,20 @@ img{
     width: 150px;
     height: 185px;
     position: relative;
-    margin: 0 12px 15px 12px;
+    margin: 0 0 15px;
     display: inline-block;
+    vertical-align: top;
     
+}
+
+.grid .weexplorer-false-file{
+    
+    width: 150px;
+    height: 185px;
+    position: relative;
+    margin: 0 5px 15px;
+    display: inline-block;
+
 }
 
 .grid figure{

@@ -541,6 +541,8 @@
         $( list ).not( '.directory' ).each( function(){
             fileArea.append( this ).append('\n');
         });
+
+        centerIcons();
         
         // Nullify
         list = null;
@@ -778,6 +780,45 @@
         return sidebar.find( '.folder-' + id ).remove();
     };
 
+    var centerIcons = function(){
+
+        console.log( 'center icons' );
+
+        var minMargin = 5;
+
+        $( '.weexplorer-false-file', fileArea ).remove();
+
+        /*
+        var anchuraPantalla = fileArea.width();
+        var anchuraIcono    = filePrototype.outerWidth( true );
+        var iconosxLinea    = parseInt( ( anchuraPantalla / anchuraIcono ), 10 );
+        var numeroElementos = $( '.weexplorer-file', fileArea ).not( '.wz-prototype' ).size();
+        var addIcons        = iconosxLinea - ( numeroElementos % iconosxLinea );
+        */
+
+        var iconsRow = parseInt( ( fileArea.width() / ( filePrototype.width() + minMargin * 2 ) ), 10 );
+        var addIcons = iconsRow - ( $( '.weexplorer-file', fileArea ).not( '.wz-prototype' ).size() % iconsRow );
+
+        if( addIcons === iconsRow ){
+            addIcons = 0;
+        }
+        
+        for( var i = 0 ; i < addIcons ; i++ ){
+            fileArea.append( '<div class="weexplorer-false-file"></div>' );
+        }
+
+        /*
+        var leftspace  = anchuraPantalla - filePrototype.width() * iconosxLinea - 12;
+        var iconMargin = leftspace / iconosxLinea / 2;
+        */
+
+        var iconMargin = parseInt( ( fileArea.width() - filePrototype.width() * iconsRow - 18 ) / iconsRow / 2, 10 );
+
+        $( '.weexplorer-file', fileArea ).css({ 'margin-left': iconMargin, 'margin-right': iconMargin });
+        $( '.weexplorer-false-file', fileArea ).css({ 'margin-left': iconMargin, 'margin-right': iconMargin });
+        
+    };
+
     // Events
     $( win )
     
@@ -824,6 +865,8 @@
 
             fileArea.find( 'textarea' ).css({ width : textareaWidth + 'px' });
 
+        }else{
+            centerIcons();
         }
         
     })
@@ -1271,6 +1314,7 @@
             // Transición de la zona de iconos
             folderMain.add( folderBar ).add( fileArea ).transition( { width : '+=' + sidebarOuterWidth }, 250, function(){
                 folderPromise.resolve();
+                centerIcons();
             });
 
             // Cuando terminan las dos animaciones
@@ -1302,6 +1346,7 @@
             // Transición de la zona de iconos
             folderMain.add( folderBar ).add( fileArea ).transition( { width : '-=' + sidebarOuterWidth }, 238, function(){
                 folderPromise.resolve();
+                centerIcons();
             });
 
             // Cuando terminan las dos animaciones
