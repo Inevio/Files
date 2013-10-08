@@ -316,6 +316,21 @@
                 displayIcons( files );
 
                 fileArea.data( 'wz-uploader-destiny', structure.id );
+                
+                if( structure.id === wz.info.user().rootPath ){
+                    folderBar.removeClass( 'folder music photo video doc' ).addClass( 'user' );
+                }else if( structure.name === 'Documents' || structure.name === 'Documentos' ){
+                    folderBar.removeClass( 'folder music photo video user' ).addClass( 'doc' );
+                }else if( structure.name === 'Music' || structure.name === 'Música' ){
+                    folderBar.removeClass( 'folder doc photo video user' ).addClass( 'music' );
+                }else if( structure.name === 'Images' || structure.name === 'Imágenes' ){
+                    folderBar.removeClass( 'folder music doc video user' ).addClass( 'photo' );
+                }else if( structure.name === 'Video' || structure.name === 'Videos' ){
+                    folderBar.removeClass( 'folder music photo doc user' ).addClass( 'video' );
+                }else{
+                    folderBar.removeClass( 'music photo video doc user' ).addClass( 'folder' );
+                }
+                    
 
                 // Update Folder info
                 folderName.text( structure.name );
@@ -2171,12 +2186,22 @@
                     .text( element.name );
 
             if( element.id === wz.info.user().rootPath ){
-                controlFolder.addClass( 'userFolder active' );
+                controlFolder.removeClass( 'folder' ).addClass( 'userFolder user active' );
             }else if( element.id === wz.info.user().inboxPath ){
                 controlFolder.addClass( 'receivedFolder' );
                 notifications();
             }else if( element.id === 'shared' ){
                 controlFolder.addClass( 'sharedFolder' );
+            }
+            
+            if( element.name === 'Documents' || element.name === 'Documentos' ){
+                controlFolder.removeClass( 'folder' ).addClass( 'doc' );
+            }else if( element.name === 'Music' || element.name === 'Música' ){
+                controlFolder.removeClass( 'folder' ).addClass( 'music' );
+            }else if( element.name === 'Images' || element.name === 'Imágenes' ){
+                controlFolder.removeClass( 'folder' ).addClass( 'photo' );
+            }else if( element.name === 'Video' || element.name === 'Videos' ){
+                controlFolder.removeClass( 'folder' ).addClass( 'video' );
             }
 
             sidebar.append( controlFolder );

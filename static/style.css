@@ -224,20 +224,72 @@ textarea[readonly]{
 .weexplorer-folder-icon{
     
     width: 13px;
-    height: 11px;
-    display: inline-block;
-
-    background: url('https://static.weezeel.com/app/1/sprite.png') -80px 0;
-    background-size: 115px 16px; 
+    height: 13px;
+    margin-top: 1px;
+    background: url('https://static.weezeel.com/app/1/sidebar.png');
+    background-size: 87px 39px;
+    display: none;
     
 }
 
+.weexplorer-folder.user .weexplorer-folder-icon{
+    
+    background-position: -13px 0;
+    display: inline-block;
+    
+}
+
+.weexplorer-folder.folder .weexplorer-folder-icon{
+    
+    background-position: -26px 0;
+    display: inline-block;
+    
+}
+
+.weexplorer-folder.music .weexplorer-folder-icon{
+    
+    width: 8px;
+    margin-left: 3px;
+    margin-right: 2px;
+    background-position: -39px 0;
+    display: inline-block;
+    
+}
+
+.weexplorer-folder.photo .weexplorer-folder-icon{
+    
+    background-position: -74px 0;
+    display: inline-block;
+    
+}
+
+.weexplorer-folder.video .weexplorer-folder-icon{
+    
+    width: 16px;
+    margin-left: -2px;
+    margin-right: -1px;
+    background-position: -47px 0;
+    display: inline-block;
+    
+}
+
+.weexplorer-folder.doc .weexplorer-folder-icon{
+    
+    width: 11px;
+    margin-left: 1px;
+    margin-right: 1px;
+    background-position: -63px 0;
+    display: inline-block;
+    
+}
 
 .weexplorer-folder-name{
     
     font-size: 14px;
     color: #545454;
+    display: inline-block;
     margin-left: 6px;
+    vertical-align: top;
     
 }
 
@@ -664,43 +716,43 @@ img{
     
 }
 
-.weexplorer-sidebar-icon.user{
+.weexplorer-sidebar-element.user .weexplorer-sidebar-icon{
     
     background-position: -13px 0;
     
 }
 
-.weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.user{
+.weexplorer-sidebar-element.user:hover .weexplorer-sidebar-icon{
     
     background-position: -13px -13px;
     
 }
 
-.weexplorer-sidebar-element.active .weexplorer-sidebar-icon.user{
+.weexplorer-sidebar-element.user.active .weexplorer-sidebar-icon{
     
     background-position: -13px -26px;
     
 }
 
-.weexplorer-sidebar-icon.folder{
+.weexplorer-sidebar-element.folder .weexplorer-sidebar-icon{
     
     background-position: -26px 0;
     
 }
 
-.weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.folder{
+.weexplorer-sidebar-element.folder:hover .weexplorer-sidebar-icon{
     
     background-position: -26px -13px;
     
 }
 
-.weexplorer-sidebar-element.active .weexplorer-sidebar-icon.folder{
+.weexplorer-sidebar-element.folder.active .weexplorer-sidebar-icon{
     
     background-position: -26px -26px;
     
 }
 
-.weexplorer-sidebar-icon.music{
+.weexplorer-sidebar-element.music .weexplorer-sidebar-icon{
     
     width: 8px;
     margin-left: 3px;
@@ -709,58 +761,57 @@ img{
     
 }
 
-.weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.music{
+.weexplorer-sidebar-element.music:hover .weexplorer-sidebar-icon{
     
     background-position: -39px -13px;
     
 }
 
-.weexplorer-sidebar-element.active .weexplorer-sidebar-icon.music{
+.weexplorer-sidebar-element.music.active .weexplorer-sidebar-icon{
     
     background-position: -39px -26px;
     
 }
 
-.weexplorer-sidebar-icon.photo{
+.weexplorer-sidebar-element.photo .weexplorer-sidebar-icon{
     
     background-position: -74px 0;
     
 }
 
-.weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.photo{
+.weexplorer-sidebar-element.photo:hover .weexplorer-sidebar-icon{
     
     background-position: -74px -13px;
     
 }
 
-.weexplorer-sidebar-element.active .weexplorer-sidebar-icon.photo{
+.weexplorer-sidebar-element.photo.active .weexplorer-sidebar-icon{
     
     background-position: -74px -26px;
     
 }
 
-.weexplorer-sidebar-icon.video{
+.weexplorer-sidebar-element.video .weexplorer-sidebar-icon{
     
     width: 16px;
-    margin-left: -2px;
-    margin-right: -1px;
+    margin: 1px -1px 0 -2px;
     background-position: -47px 0;
     
 }
 
-.weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.video{
+.weexplorer-sidebar-element.video:hover .weexplorer-sidebar-icon{
 
     background-position: -47px -13px;
     
 }
 
-.weexplorer-sidebar-element.active .weexplorer-sidebar-icon.video{
+.weexplorer-sidebar-element.video.active .weexplorer-sidebar-icon{
 
     background-position: -47px -26px;
     
 }
 
-.weexplorer-sidebar-icon.doc{
+.weexplorer-sidebar-element.doc .weexplorer-sidebar-icon{
     
     width: 11px;
     margin-left: 1px;
@@ -769,13 +820,13 @@ img{
     
 }
 
-.weexplorer-sidebar-element:hover .weexplorer-sidebar-icon.doc{
+.weexplorer-sidebar-element.doc:hover .weexplorer-sidebar-icon{
 
     background-position: -63px -13px;
     
 }
 
-.weexplorer-sidebar-element.active .weexplorer-sidebar-icon.doc{
+.weexplorer-sidebar-element.doc.active .weexplorer-sidebar-icon{
 
     background-position: -63px -26px;
     
