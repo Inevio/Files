@@ -325,7 +325,7 @@
                     folderBar.removeClass( 'folder doc photo video user' ).addClass( 'music' );
                 }else if( structure.name === 'Images' || structure.name === 'Imágenes' ){
                     folderBar.removeClass( 'folder music doc video user' ).addClass( 'photo' );
-                }else if( structure.name === 'Video' || structure.name === 'Videos' ){
+                }else if( structure.name === 'Video' || structure.name === 'Vídeos' ){
                     folderBar.removeClass( 'folder music photo doc user' ).addClass( 'video' );
                 }else{
                     folderBar.removeClass( 'music photo video doc user' ).addClass( 'folder' );
