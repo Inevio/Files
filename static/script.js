@@ -2200,7 +2200,7 @@
                 controlFolder.removeClass( 'folder' ).addClass( 'music' );
             }else if( element.name === 'Images' || element.name === 'Imágenes' ){
                 controlFolder.removeClass( 'folder' ).addClass( 'photo' );
-            }else if( element.name === 'Video' || element.name === 'Videos' ){
+            }else if( element.name === 'Video' || element.name === 'Vídeos' ){
                 controlFolder.removeClass( 'folder' ).addClass( 'video' );
             }
 
