@@ -133,14 +133,14 @@ article.properties-attr article:nth-child(even){
 
 .properties-attr figure.yes{
     
-    background: url("https://static.weezeel.com/app/1/tick.png") no-repeat;
+    background: url("@static/tick.png") no-repeat;
     background-size: 16px 16px;
     
 }
 
 .properties-attr figure.no{
 
-    background: url("https://static.weezeel.com/app/1/cross.png") no-repeat;
+    background: url("@static/cross.png") no-repeat;
     background-size: 16px 16px;
     
 }

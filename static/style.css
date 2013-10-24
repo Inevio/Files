@@ -31,7 +31,7 @@ textarea[readonly]{
     height: 14px;
     float: left;
 
-    background: url('https://static.weezeel.com/app/1/arrows.png') -24px 0;
+    background: url('@static/arrows.png') -24px 0;
     background-size: 48px 15px;
         
 }
@@ -42,7 +42,7 @@ textarea[readonly]{
 
 .weexplorer-option-back.active i{
     
-    background: url('https://static.weezeel.com/app/1/arrows.png') 0 0;
+    background: url('@static/arrows.png') 0 0;
     background-size: 48px 15px;
     
 }
@@ -61,7 +61,7 @@ textarea[readonly]{
     height: 14px;
     float: left;
 
-    background: url('https://static.weezeel.com/app/1/arrows.png') -36px 0; 
+    background: url('@static/arrows.png') -36px 0; 
     background-size: 48px 15px;
         
 }
@@ -72,7 +72,7 @@ textarea[readonly]{
 
 .weexplorer-option-next.active i{
     
-    background: url('https://static.weezeel.com/app/1/arrows.png') -12px 0; 
+    background: url('@static/arrows.png') -12px 0; 
     background-size: 48px 15px;
     
 }
@@ -103,14 +103,14 @@ textarea[readonly]{
 
 .weexplorer-menu-views.grid i{
 
-    background: url('https://static.weezeel.com/app/1/sprite.png') 0 0;
+    background: url('@static/sprite.png') 0 0;
     background-size: 115px 16px; 
     
 }
 
 .weexplorer-menu-views.list i{
 
-    background: url('https://static.weezeel.com/app/1/sprite.png') -93px 0;
+    background: url('@static/sprite.png') -93px 0;
     background-size: 115px 16px; 
     
 }
@@ -123,7 +123,7 @@ textarea[readonly]{
     margin-left: 5px;
     margin-top: 6px;
 
-    background: url('https://static.weezeel.com/app/1/sprite.png') -80px -11px;
+    background: url('@static/sprite.png') -80px -11px;
     background-size: 115px 16px; 
     
 }
@@ -154,14 +154,14 @@ textarea[readonly]{
     height: 16px;
     float: left;
 
-    background: url('https://static.weezeel.com/app/1/download_inactive.png') no-repeat;
+    background: url('@static/download_inactive.png') no-repeat;
     background-size: 22px 16px;
     
 }
 
 .weexplorer-menu-download.active i{
 
-    background: url('https://static.weezeel.com/app/1/sprite.png') -22px 0;
+    background: url('@static/sprite.png') -22px 0;
     background-size: 115px 16px; 
     
 }
@@ -172,7 +172,7 @@ textarea[readonly]{
     height: 16px;
     float: left;
 
-    background: url('https://static.weezeel.com/app/1/sprite.png') -44px 0;
+    background: url('@static/sprite.png') -44px 0;
     background-size: 115px 16px; 
     
 }
@@ -183,7 +183,7 @@ textarea[readonly]{
     height: 15px;
     float: right;
 
-    background: url('https://static.weezeel.com/app/1/sidebar_toggle.png') -15px 0;
+    background: url('@static/sidebar_toggle.png') -15px 0;
     background-size: 30px 15px; 
     
 }
@@ -194,7 +194,7 @@ textarea[readonly]{
     height: 15px;
     float: right;
 
-    background: url('https://static.weezeel.com/app/1/sidebar_toggle.png') 0 0;
+    background: url('@static/sidebar_toggle.png') 0 0;
     background-size: 30px 15px; 
     
 }
@@ -226,7 +226,7 @@ textarea[readonly]{
     width: 13px;
     height: 13px;
     margin-top: 1px;
-    background: url('https://static.weezeel.com/app/1/sidebar.png');
+    background: url('@static/sidebar.png');
     background-size: 87px 39px;
     display: none;
     
@@ -544,7 +544,7 @@ img{
     height: 22px;
     margin-top: 4px;
     display: inline-block;
-    background: url('https://static.weezeel.com/app/1/shared.png');
+    background: url('@static/shared.png');
     background-size: 22px 22px;
 }
 
@@ -601,7 +601,7 @@ img{
     width: 13px;
     height: 13px;
     float: left;
-    background: url('https://static.weezeel.com/app/1/sidebar.png');
+    background: url('@static/sidebar.png');
     background-size: 87px 39px;
     
 }
@@ -859,7 +859,7 @@ img{
 .weexplorer-uploading-info figure{
     width: 11px;
     height: 13px;
-    background: url('https://static.weezeel.com/app/1/uploading.png');
+    background: url('@static/uploading.png');
     background-size: 11px 13px;
     margin-bottom: -2px;
     display: inline-block;
@@ -911,7 +911,7 @@ img{
     float: left;
     width: 16px;
     height: 7px;
-    background: url('https://static.weezeel.com/app/1/sort.png') no-repeat;
+    background: url('@static/sort.png') no-repeat;
     background-size: 15px 6px;
     content: '';
     
@@ -964,7 +964,7 @@ img{
 }
 
 .weexplorer-sort li.active i{
-    background: url('https://static.weezeel.com/app/1/active.png') no-repeat;
+    background: url('@static/active.png') no-repeat;
     background-size: 10px 7px;
 }
 
@@ -1003,7 +1003,7 @@ img{
     float: left;
     width: 16px;
     height: 7px;
-    background: url('https://static.weezeel.com/app/1/sort.png') no-repeat;
+    background: url('@static/sort.png') no-repeat;
     background-size: 15px 6px;
     content: '';
     

@@ -265,7 +265,7 @@ table tr, table td{
     width: 25px;
     height: 25px;
     display: block;
-    background: url("https://static.weezeel.com/app/1/lock.png") no-repeat;
+    background: url("@static/lock.png") no-repeat;
     background-size: 25px 25px;
 }
 
@@ -273,7 +273,7 @@ table tr, table td{
     width: 25px;
     height: 25px;
     display: block;
-    background: url("https://static.weezeel.com/app/1/unlock.png") no-repeat;
+    background: url("@static/unlock.png") no-repeat;
     background-size: 25px 25px;
 }
 
@@ -281,7 +281,7 @@ table tr, table td{
     width: 25px;
     height: 25px;
     display: block;
-    background: url("https://static.weezeel.com/app/1/prev.png") no-repeat;
+    background: url("@static/prev.png") no-repeat;
     background-size: 25px 25px;
 }
 
@@ -289,7 +289,7 @@ table tr, table td{
     width: 25px;
     height: 25px;
     display: block;
-    background: url("https://static.weezeel.com/app/1/unprev.png") no-repeat;
+    background: url("@static/unprev.png") no-repeat;
     background-size: 25px 25px;
 }
 
@@ -298,7 +298,7 @@ table tr, table td{
     height: 16px;
     display: inline-block;
     margin-top: 5px;
-    background: url("https://static.weezeel.com/app/1/cross.png") no-repeat;
+    background: url("@static/cross.png") no-repeat;
     background-size: 16px 16px;
 }
 
