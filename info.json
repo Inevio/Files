@@ -3,10 +3,8 @@
 
     "name"    : "weeXplorer",
     "version" : "1.0",
-    "state"   : "beta",
-
-    "developer" : "wz",
-    "authKey"   : "wz",
+    "stage"   : "beta",
+    "api"     : "a100d2",
 
     "language" : {
 
@@ -15,227 +13,220 @@
 
     },
 
-    "common" : {
+    "device" : {
 
-        "css"    : [],
-        "script" : [],
-        "start"  : []
+        "desktop" : {
 
-    },
+            "primary" : "main",
+            "service" : [ "events.js" ],
+            "common"  : {
 
-    "service" : [ "events.js" ],
-    "primary" : "main",
-
-    "window" : {
-
-        "main" : {
-
-            "description" : "",
-            
-            "template" : "main.html",
-
-            "resizable" : true,
-            "maxizable" : true,
-
-            "width"  : {
-
-                "default" : 692,
-                "min"     : 552,
-                "max"     : 0
+                "css"    : [],
+                "script" : [],
+                "start"  : []
 
             },
 
-            "height" : {
+            "view" : {
 
-                "default" : 600,
-                "min"     : 400,
-                "max"     : 0
+                "main" : {
+                    
+                    "template" : "main.html",
 
-            },
+                    "resizable" : true,
+                    "maxizable" : true,
 
-            "css"    : ["style.css"],
-            "script" : ["script.js"],
-            "start"  : ["start.js"]
+                    "width"  : {
 
-        },
-        
-        "share" : {
+                        "default" : 692,
+                        "min"     : 552,
+                        "max"     : 0
 
-            "description" : "",
-            
-            "template" : "share.html",
+                    },
 
-            "resizable"   : false,
+                    "height" : {
 
-            "width"  : {
+                        "default" : 600,
+                        "min"     : 400,
+                        "max"     : 0
 
-                "default" : 630,
-                "min"     : 0,
-                "max"     : 0
+                    },
 
-            },
+                    "css"    : ["style.css"],
+                    "script" : ["script.js"],
+                    "start"  : ["start.js"]
 
-            "height" : {
+                },
                 
-                "default" : 425,
-                "min"     : 0,
-                "max"     : 0
+                "share" : {
+                    
+                    "template" : "share.html",
 
-            },
+                    "resizable"   : false,
 
-            "css"    : ["share.css"],
-            "script" : ["share.js"]
+                    "width"  : {
 
-        },
-        
-        "send" : {
+                        "default" : 630,
+                        "min"     : 0,
+                        "max"     : 0
 
-            "description" : "",
-            
-            "template" : "send.html",
+                    },
 
-            "resizable"   : false,
+                    "height" : {
+                        
+                        "default" : 425,
+                        "min"     : 0,
+                        "max"     : 0
 
-            "width"  : {
+                    },
 
-                "default" : 630,
-                "min"     : 0,
-                "max"     : 0
+                    "css"    : ["share.css"],
+                    "script" : ["share.js"]
 
-            },
-
-            "height" : {
+                },
                 
-                "default" : 425,
-                "min"     : 0,
-                "max"     : 0
+                "send" : {
+                    
+                    "template" : "send.html",
 
-            },
+                    "resizable"   : false,
 
-            "css"    : ["send.css"],
-            "script" : ["send.js"]
+                    "width"  : {
 
-        },
-        
-        "properties" : {
+                        "default" : 630,
+                        "min"     : 0,
+                        "max"     : 0
 
-            "description" : "",
-            
-            "template" : "properties.html",
+                    },
 
-            "resizable"   : false,
+                    "height" : {
+                        
+                        "default" : 425,
+                        "min"     : 0,
+                        "max"     : 0
 
-            "width"  : {
+                    },
 
-                "default" : 275,
-                "min"     : 0,
-                "max"     : 0
+                    "css"    : ["send.css"],
+                    "script" : ["send.js"]
 
-            },
-
-            "height" : {
+                },
                 
-                "default" : 350,
-                "min"     : 0,
-                "max"     : 0
+                "properties" : {
+                    
+                    "template" : "properties.html",
 
-            },
+                    "resizable"   : false,
 
-            "css"    : ["properties.css"],
-            "script" : ["properties.js"]
+                    "width"  : {
 
-        },
-        
-        "link" : {
+                        "default" : 275,
+                        "min"     : 0,
+                        "max"     : 0
 
-            "description" : "",
-            
-            "template" : "link.html",
+                    },
 
-            "resizable"   : false,
+                    "height" : {
+                        
+                        "default" : 350,
+                        "min"     : 0,
+                        "max"     : 0
 
-            "width"  : {
+                    },
 
-                "default" : 365,
-                "min"     : 0,
-                "max"     : 0
+                    "css"    : ["properties.css"],
+                    "script" : ["properties.js"]
 
-            },
-
-            "height" : {
+                },
                 
-                "default" : 220,
-                "min"     : 0,
-                "max"     : 0
+                "link" : {
+                    
+                    "template" : "link.html",
 
-            },
+                    "resizable"   : false,
 
-            "css"    : ["link.css"],
-            "script" : ["link.js"]
+                    "width"  : {
 
-        },
-        
-        "received" : {
+                        "default" : 365,
+                        "min"     : 0,
+                        "max"     : 0
 
-            "description" : "",
-            
-            "template" : "received.html",
+                    },
 
-            "resizable"   : false,
+                    "height" : {
+                        
+                        "default" : 220,
+                        "min"     : 0,
+                        "max"     : 0
 
-            "width"  : {
+                    },
 
-                "default" : 450,
-                "min"     : 0,
-                "max"     : 0
+                    "css"    : ["link.css"],
+                    "script" : ["link.js"]
 
-            },
-
-            "height" : {
+                },
                 
-                "default" : 355,
-                "min"     : 0,
-                "max"     : 0
+                "received" : {
+                    
+                    "template" : "received.html",
 
-            },
+                    "resizable"   : false,
 
-            "css"    : ["received.css"],
-            "script" : ["received.js"]
+                    "width"  : {
 
-        },
-        
-        "shared" : {
+                        "default" : 450,
+                        "min"     : 0,
+                        "max"     : 0
 
-            "description" : "",
-            
-            "template" : "shared.html",
+                    },
 
-            "resizable"   : false,
+                    "height" : {
+                        
+                        "default" : 355,
+                        "min"     : 0,
+                        "max"     : 0
 
-            "width"  : {
+                    },
 
-                "default" : 450,
-                "min"     : 0,
-                "max"     : 0
+                    "css"    : ["received.css"],
+                    "script" : ["received.js"]
 
-            },
-
-            "height" : {
+                },
                 
-                "default" : 335,
-                "min"     : 0,
-                "max"     : 0
+                "shared" : {
+                    
+                    "template" : "shared.html",
 
-            },
+                    "resizable"   : false,
 
-            "css"    : ["shared.css"],
-            "script" : ["shared.js"]
+                    "width"  : {
+
+                        "default" : 450,
+                        "min"     : 0,
+                        "max"     : 0
+
+                    },
+
+                    "height" : {
+                        
+                        "default" : 335,
+                        "min"     : 0,
+                        "max"     : 0
+
+                    },
+
+                    "css"    : ["shared.css"],
+                    "script" : ["shared.js"]
+
+                }
+
+            }
 
         }
 
     },
 
-    "permissions" : {
+    "permission" : {
 
         "channel"   : true,
         "structure" : {

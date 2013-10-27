@@ -1,18 +1,19 @@
-
-    var input       = $('.properties input', win);
-    var type        = $('.properties .type', win);  
-    var size        = $('.properties .size', win);
-    var created     = $('.properties .created', win);
-    var modified    = $('.properties .modified', win);
-    var owner       = $('.properties .owner', win);
-    var link        = $('.properties .link', win);
-    var modify      = $('.properties .modify', win);
-    var copy        = $('.properties .copy', win);
-    var download    = $('.properties .download', win);
-    var share       = $('.properties .share', win);
-    var send        = $('.properties .send', win);
-    var file        = {};
-    var renaming    = false;
+    
+    var win       = $( this );
+    var input     = $('.properties input', win);
+    var type      = $('.properties .type', win);
+    var size      = $('.properties .size', win);
+    var created   = $('.properties .created', win);
+    var modified  = $('.properties .modified', win);
+    var owner     = $('.properties .owner', win);
+    var link      = $('.properties .link', win);
+    var modify    = $('.properties .modify', win);
+    var copy      = $('.properties .copy', win);
+    var download  = $('.properties .download', win);
+    var share     = $('.properties .share', win);
+    var send      = $('.properties .send', win);
+    var file      = {};
+    var renaming  = false;
 
     var permissions = function( permissions ){
 
@@ -52,7 +53,7 @@
             send.addClass('no');
         }
 
-    }
+    };
     
     var properties = function( structure ){
                 

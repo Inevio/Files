@@ -1,7 +1,8 @@
-
-    var sendListUsers       = $('.send-list-users', win);
-    var sendChosenUsers     = $('.send-chosen-users', win);
-    var sendUserPrototype   = $('.send-user.wz-prototype', win);
+    
+    var win               = $( this );
+    var sendListUsers     = $('.send-list-users', win);
+    var sendChosenUsers   = $('.send-chosen-users', win);
+    var sendUserPrototype = $('.send-user.wz-prototype', win);
 
     win
         

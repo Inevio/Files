@@ -1,9 +1,10 @@
-
-    var file        = {};
-    var linkSpan    = $('.link-url input', win);
-    var prototype   = $('.wz-prototype', win);
-    var linkTable   = $( 'table', win );
-    var previous     = $( '.previous', win );
+    
+    var win       = $( this );
+    var file      = {};
+    var linkSpan  = $('.link-url input', win);
+    var prototype = $('.wz-prototype', win);
+    var linkTable = $( 'table', win );
+    var previous  = $( '.previous', win );
     
     var growWindow = function(){
         
@@ -30,7 +31,7 @@
             win.transition( { 'height' : '485' }, 250);
         }
                 
-    }
+    };
         
     wz.structure( params, function( error, structure ){
         
@@ -43,7 +44,7 @@
                 $( '.wz-win-menu', win ).css({ 'width' : '495' });
                 
                 if( links.length === 1 ){
-                    win.css({ 'height' : '340' });      
+                    win.css({ 'height' : '340' });
                 }else if( links.length === 2 ){
                     win.css({ 'height' : '376' });
                 }else if( links.length === 3 ){
@@ -86,10 +87,10 @@
                 
             }
         });
-    }); 
+
+    });
 
     win
-
         .on( 'mouseenter', '.first-column', function( e ){
 
             if( $( this ).find( '.link-unlock' ).size() ){
@@ -98,11 +99,11 @@
                 $( '.previous-explanation', previous ).text( lang.passwordYes );
             }
 
-            $( '.previous-explanation', previous ).css({ 
+            $( '.previous-explanation', previous ).css({
 
-                left : e.pageX - parseInt( win.css( 'x' ), 10 ) - parseInt( $( '#wz-taskbar' ).css( 'width' ), 10 ), 
-                top : e.pageY - parseInt( win.css( 'y' ), 10 ), 
-                display : 'block' 
+                left    : e.pageX - parseInt( win.css( 'x' ), 10 ) - parseInt( $( '#wz-taskbar' ).css( 'width' ), 10 ),
+                top     : e.pageY - parseInt( win.css( 'y' ), 10 ),
+                display : 'block'
 
             });
 
@@ -120,11 +121,11 @@
                 $( '.previous-explanation', previous ).text( lang.previewNo );
             }
 
-            $( '.previous-explanation', previous ).css({ 
+            $( '.previous-explanation', previous ).css({
 
-                left : e.pageX - parseInt( win.css( 'x' ), 10 ) - parseInt( $( '#wz-taskbar' ).css( 'width' ), 10 ), 
-                top : e.pageY - parseInt( win.css( 'y' ), 10 ), 
-                display : 'block' 
+                left    : e.pageX - parseInt( win.css( 'x' ), 10 ) - parseInt( $( '#wz-taskbar' ).css( 'width' ), 10 ),
+                top     : e.pageY - parseInt( win.css( 'y' ), 10 ),
+                display : 'block'
 
             });
 
@@ -145,12 +146,15 @@
             }
             
             wz.structure( params, function( error, structure ){
+
                 win.data( 'file-id' , structure.id );
                 linkSpan.addClass( 'filled' );
+
                 structure.createLink( password, preview, function( error, url ){
                     linkSpan.val( url.url );
                 });
-            });     
+
+            });
     
         })
         
@@ -159,9 +163,8 @@
             var id = $(this).data('id');
             
             wz.structure( params, function( error, structure ){
-                structure.removeLink( id, function( error, deleted ){   
-                });
-            }); 
+                structure.removeLink( id );
+            });
             
         })
         
@@ -225,9 +228,11 @@
         })
         
         .key( 'enter', function(e){
+
             if( $(e.target).is( '.link-password input' ) ){
                 $( '.link-password button', win ).mousedown();
             }
+            
         });
 
     $( '.link-title', win ).text( lang.linkTitle );

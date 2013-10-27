@@ -1,4 +1,5 @@
-
+    
+    var win                = $( this );
     var shareListUsers     = $('.share-list-users', win);
     var shareChosenUsers   = $('.share-chosen-users', win);
     var shareUserPrototype = $('.share-user.wz-prototype', win);

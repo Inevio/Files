@@ -1,6 +1,11 @@
 
+console.log( wz.app );
+
     // Variables
-    var app            = this;
+    //var app            = this;
+    // To Do -> Real app var
+    var app = {};
+    var win            = $( this );
     var record         = [];
     var current        = null;
     var pointer        = -1;
@@ -1460,11 +1465,11 @@
     })
     
     .on( 'dblclick', '.weexplorer-file.received', function(){
-        wz.app.createWindow(1, $(this).data( 'file-id' ), 'received');
+        wz.app.createWindow( $(this).data( 'file-id' ), 'received');
     })
 
     .on( 'dblclick', '.weexplorer-file.pointer-pending', function(){
-        wz.app.createWindow(1, $(this).data( 'file-id' ), 'shared');
+        wz.app.createWindow( $(this).data( 'file-id' ), 'shared');
     })
     
     .on( 'dblclick', 'textarea:not([readonly])', function( e ){
@@ -1480,7 +1485,8 @@
             structure.associatedApp( function( error, app ){
 
                 if( app ){
-                    wz.app.createWindow( app, [ id ] );
+                    alert('ABRIR OTRAS APPS NO ESTÁ IMPLEMENTADO');
+                    // To Do -> wz.app.createWindow( app, [ id ] );
                 }else{
                     alert( error, null, win.data().win );
                 }
@@ -1519,7 +1525,8 @@
                     structure.associatedApp( function( error, app ){
 
                         if( app ){
-                            wz.app.createWindow( app, [ pointer ] );
+                            alert('ABRIR OTRAS APPS NO ESTÁ IMPLEMENTADO');
+                            // To Do -> wz.app.createWindow( app, [ pointer ] );
                         }else{
                             alert( error, null, win.data().win );
                         }
@@ -1596,7 +1603,7 @@
     .key( 'ctrl + enter', function(){
         
         if( $( '.weexplorer-file.active.last-active', fileArea ).hasClass('directory') ){
-            wz.app.createWindow(1, $( '.weexplorer-file.active.last-active', fileArea ).data( 'file-id' ), 'main');
+            wz.app.createWindow( $( '.weexplorer-file.active.last-active', fileArea ).data( 'file-id' ), 'main');
         }
             
     })
@@ -1690,7 +1697,7 @@
             if( permissions.link ){
 
                 menu.add( lang.createLink, function(){
-                    wz.app.createWindow(1, icon.data( 'file-id' ), 'link');
+                    wz.app.createWindow( icon.data( 'file-id' ), 'link');
                 });
 
             }
@@ -1698,7 +1705,7 @@
             if( permissions.send ){
 
                 menu.add( lang.sendTo, function(){
-                    wz.app.createWindow(1, icon.data( 'file-id' ), 'send');
+                    wz.app.createWindow( icon.data( 'file-id' ), 'send');
                 });
 
             }
@@ -1706,7 +1713,7 @@
             if( permissions.share ){
 
                 menu.add( lang.shareWith, function(){
-                    wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
+                    wz.app.createWindow( icon.data( 'file-id' ), 'share');
                 });
 
             }
@@ -1720,7 +1727,7 @@
             }
 
             menu.add( lang.properties, function(){
-                wz.app.createWindow( 1, icon.data( 'file-id' ), 'properties' );
+                wz.app.createWindow( icon.data( 'file-id' ), 'properties' );
             });
             
             if( permissions.modify ){
@@ -1744,13 +1751,13 @@
                 })
 
                 .add( lang.openInNewWindow, function(){
-                    wz.app.createWindow(1, icon.data( 'file-id' ), 'main');
+                    wz.app.createWindow( icon.data( 'file-id' ), 'main');
                 });
 
             if( permissions.share ){
 
                 menu.add( lang.shareWith, function(){
-                    wz.app.createWindow(1, icon.data( 'file-id' ), 'share');
+                    wz.app.createWindow( icon.data( 'file-id' ), 'share');
                 });
 
             }
@@ -1770,7 +1777,7 @@
             }
 
             menu.add( lang.properties, function(){
-                wz.app.createWindow( 1, icon.data( 'file-id' ), 'properties' );
+                wz.app.createWindow( icon.data( 'file-id' ), 'properties' );
             });
 
             if( permissions.modify ){
@@ -1814,7 +1821,7 @@
                 })
 
                 .add( lang.properties, function(){
-                    wz.app.createWindow( 1, icon.data( 'file-id' ), 'properties' );
+                    wz.app.createWindow( icon.data( 'file-id' ), 'properties' );
                 })
 
                 .add( lang.refuseFile, function(){
@@ -1877,7 +1884,7 @@
                 })
 
                 .add( lang.properties, function(){
-                    wz.app.createWindow( 1, icon.data( 'file-id' ), 'properties' );
+                    wz.app.createWindow( icon.data( 'file-id' ), 'properties' );
                 })
 
                 .add( lang.refuseFile, function(){

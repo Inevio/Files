@@ -1,5 +1,7 @@
 
-var app = this;
+//var app            = this;
+// To Do -> Real app var
+var app = {};
 
 wql.getConfig( function( error, result ){
 

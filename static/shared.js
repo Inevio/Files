@@ -1,10 +1,11 @@
-
-    var link        = $('.link', win);
-    var modify      = $('.modify', win);
-    var copy        = $('.copy', win);
-    var download    = $('.download', win);
-    var share       = $('.share', win);
-    var send        = $('.send', win);
+    
+    var win      = $( this );
+    var link     = $('.link', win);
+    var modify   = $('.modify', win);
+    var copy     = $('.copy', win);
+    var download = $('.download', win);
+    var share    = $('.share', win);
+    var send     = $('.send', win);
 
     var permissions = function( structure ){
 
@@ -46,7 +47,7 @@
             send.addClass('no');
         }
 
-    }
+    };
     
     wz.structure( params, function( error, structure ){
         
@@ -100,9 +101,9 @@
 
                             wz.app.closeWindow( win.data( 'win' ) );
 
-                        } 
+                        }
 
-                    });  
+                    });
 
                 })
             
