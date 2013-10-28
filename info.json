@@ -222,6 +222,34 @@
 
             }
 
+        },
+
+        "mobile" : {
+
+            "primary" : "main",
+            "service" : [],
+            "common"  : {
+
+                "css"    : [],
+                "script" : [],
+                "start"  : []
+
+            },
+
+            "view" : {
+
+                "main" : {
+                    
+                    "template" : "mainMobile.html",
+
+                    "css"    : [],
+                    "script" : [],
+                    "start"  : []
+
+                }
+                
+            }
+
         }
 
     },

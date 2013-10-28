@@ -2,6 +2,7 @@
 //var app            = this;
 // To Do -> Real app var
 var app = {};
+var win = $( this );
 
 wql.getConfig( function( error, result ){
 
