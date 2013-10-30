@@ -242,8 +242,8 @@
                     
                     "template" : "mainMobile.html",
 
-                    "css"    : [],
-                    "script" : [],
+                    "css"    : ["mobile/style.css"],
+                    "script" : ["mobile/script.js"],
                     "start"  : []
 
                 }

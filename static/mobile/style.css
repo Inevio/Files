@@ -1,0 +1,165 @@
+
+#weexplorer-menu{
+    width: 100%;
+    height: 48px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: -webkit-linear-gradient(bottom, #d6d6d6, #fff);
+    background-image: -moz-linear-gradient(bottom, #d6d6d6, #fff);
+    background-image: -o-linear-gradient(bottom, #d6d6d6, #fff);
+    background-image: linear-gradient(to top, #d6d6d6, #fff);
+    border-bottom: 1px solid #B6B6B6;
+    box-shadow: 0 2px 4px rgba( 0, 0, 0, 0.1 ), inset 0 1px rgba( 255, 255, 255, 0.1 );
+    text-align: center;
+}
+
+#weexplorer-menu-sidebar{
+    float: left;
+    padding: 12px 10px;
+}
+
+#weexplorer-menu-sidebar-icon{
+    width: 24px;
+    height: 22px;
+    float: left;
+    background: blue;
+}
+
+#weexplorer-menu-options{
+    width: 24px;
+    height: 6px;
+    float: right;
+    margin-top: 19px;
+    margin-right: 15px;
+    background: green;
+}
+
+#weexplorer-menu-name{
+    display: inline-block;
+    margin-top: 15px;
+    font-size: 19px;
+    color: #333;
+}
+
+#weexplorer-content{
+    width: 100%;
+    height: 100%;
+    float: left;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    padding: 49px 10px 0;
+}
+
+.weexplorer-element{
+    width: 100%;
+    height: 44px;
+    padding: 7px 0;
+    float: left;
+    border-bottom: 1px solid #DCDCDC;
+}
+
+#weexplorer-back-arrow{
+    width: 44px;
+    height: 44px;
+    float: left;
+    margin-right: 10px;
+    background: red;
+}
+
+#weexplorer-back-text{
+    float: left;
+    margin-top: 13px;
+    font-size: 17px;
+    color: #666;
+}
+
+.weexplorer-element-icon{
+    width: 44px;
+    height: 44px;
+    float: left;
+    margin-right: 10px;
+    background: red;
+}
+
+.weexplorer-element-info{
+    float: left;
+}
+
+.weexplorer-element-name{
+    font-size: 17px;
+    float: left;
+    margin-top: 4px;
+    color: #4E9C21;
+}
+
+.directory .weexplorer-element-name{
+    margin-top: 13px;
+}
+
+.weexplorer-element-data{
+    font-size: 15px;
+    float: left;
+    margin-top: 4px;
+    clear: both;
+    color: #666;
+}
+
+.weexplorer-element-options{
+    width: 24px;
+    height: 6px;
+    float: right;
+    margin-top: 19px;
+    margin-right: 5px;
+    background: green;
+}
+
+#weexplorer-sidebar{
+    width: 80%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: -80%;
+    background: #EBEBEB;
+    border-right: 1px solid #B6B6B6;
+    box-shadow: 2px 0 4px rgba( 0, 0, 0, 0.1 );
+}
+
+.weexplorer-sidebar-element{
+    width: 100%;
+    height: 52px;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    float: left;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    padding: 0 15px;
+}
+
+.weexplorer-sidebar-container{
+    width: 100%;
+    height: 100%;
+    border-bottom: 1px solid #D8D8D8;
+    float: left;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    padding: 15px 0;
+}
+
+.weexplorer-sidebar-icon{
+    width: 16px;
+    height: 14px;
+    float: left;
+    margin-top: 2px;
+    background: blue;
+}
+
+.weexplorer-sidebar-name{
+    font-size: 17px;
+    color: #666;
+    float: left;
+    margin-left: 10px;
+}
