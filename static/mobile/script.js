@@ -14,6 +14,7 @@
         // Insert data
         file.find('.weexplorer-element-name').text( data.name );
         file.find('.weexplorer-element-icon').attr('src',data.icons.small);
+        file.data( 'id', data.id );
 
         console.log( data );
 
@@ -37,6 +38,24 @@
 
     $( '#weexplorer-sidebar' ).on( 'tap', function( e ){
         e.stopPropagation();
+    });
+
+    $( '#weexplorer-content' ).on( 'tap', '.weexplorer-element', function(){
+
+        wz.structure( $(this).data('id'), function( error, structure ){
+
+            if( error || !structure.open ){
+                // To Do -> Error
+                return false;
+            }
+
+            structure.open( function( error ){
+                win.text( 'hola ' + JSON.stringify( arguments ) );
+                // To Do -> Error
+            });
+
+        });
+
     });
 
     win.on( 'tap', function(){
