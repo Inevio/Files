@@ -65,6 +65,7 @@
     padding: 7px 0;
     float: left;
     border-bottom: 1px solid #DCDCDC;
+    position: relative;
 }
 
 #weexplorer-back-arrow{
@@ -95,12 +96,17 @@
     max-height: 44px;*/
     width: 44px;
     height: 44px;
-    float: left;
+    /*float: left;*/
     margin-right: 10px;
+    position: absolute;
+    top: 7px;
 }
 
 .weexplorer-element-info{
-    float: left;
+    /*float: left;*/
+    width: 100%;
+    padding: 0px 36px 0px 54px;
+    box-sizing: border-box;
 }
 
 .weexplorer-element-name{
@@ -108,6 +114,7 @@
     float: left;
     margin-top: 4px;
     color: #4E9C21;
+    width: 100%;
 }
 
 .directory .weexplorer-element-name{
