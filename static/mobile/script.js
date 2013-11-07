@@ -24,6 +24,32 @@
     };
 
     var iconBack = function(){
+        // To Do
+    };
+
+    var openDirectory = function( id ){
+        
+        wz.structure( id, function( error, structure ){
+
+            // To Do -> Error
+
+            structure.list( function( error, list ){
+
+                // To Do -> Error
+
+                content.children().not( itemProto ).remove();
+
+                var icons = $();
+
+                for( var i in list ){
+                    icons = icons.add( icon( list[ i ] ) );
+                }
+
+                content.append( icons );
+
+            });
+
+        });
 
     };
 
@@ -44,15 +70,20 @@
 
         wz.structure( $(this).data('id'), function( error, structure ){
 
-            if( error || !structure.open ){
-                // To Do -> Error
-                return false;
+            if( error ){
+                return false; // To Do -> Error
             }
 
-            structure.open( function( error ){
-                win.text( 'hola ' + JSON.stringify( arguments ) );
-                // To Do -> Error
-            });
+            // Abrir directorios
+            if( structure.type <= 1 ){
+                openDirectory( structure.id );
+            }else{
+
+                structure.open( function( error ){
+                    // To Do -> Error
+                });
+
+            }
 
         });
 
@@ -70,22 +101,5 @@
 
     });
 
-    wz.structure( 'root', function( error, structure ){
-
-        structure.list( function( error, list ){
-
-            content.children().not( itemProto ).remove();
-
-            console.log( content );
-
-            var icons = $();
-
-            for( var i in list ){
-                icons = icons.add( icon( list[ i ] ) );
-            }
-
-            content.append( icons );
-
-        });
-
-    });
+// Start app
+    openDirectory( 'root' );
