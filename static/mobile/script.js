@@ -4,6 +4,7 @@
     var content   = $( '#weexplorer-content', win );
     var itemProto = $( '.weexplorer-element.wz-prototype', win );
     var itemBack  = $( '.weexplorer-element.back', win );
+    var title     = $( '#weexplorer-menu-name', win );
 
     // Functions
     var icon = function( data ){
@@ -33,6 +34,8 @@
 
             // To Do -> Error
 
+            title.text( structure.name );
+            
             structure.list( function( error, list ){
 
                 // To Do -> Error
