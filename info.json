@@ -250,36 +250,8 @@
                 
             }
 
-        },
-
-        "tv" : {
-
-            "primary" : "main",
-            "service" : [],
-            "common"  : {
-
-                "css"    : [],
-                "script" : [],
-                "start"  : []
-
-            },
-
-            "view" : {
-
-                "main" : {
-                    
-                    "template" : "mainTv.html",
-
-                    "css"    : [],
-                    "script" : [],
-                    "start"  : []
-
-                }
-                
-            }
-
         }
-
+        
     },
 
     "permission" : {
