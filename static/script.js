@@ -1,6 +1,4 @@
 
-console.log( wz.app );
-
     // Variables
     //var app            = this;
     // To Do -> Real app var

@@ -5,6 +5,7 @@
     var itemProto = $( '.weexplorer-element.wz-prototype', win );
     var itemBack  = $( '.weexplorer-element.back', win );
     var title     = $( '#weexplorer-menu-name', win );
+    var record    = [];
 
     // Functions
     var icon = function( data ){
@@ -17,20 +18,45 @@
         file.find('.weexplorer-element-icon').attr('src',data.icons.small);
         file.data( 'id', data.id );
 
-        console.log( data );
-
+        if( data.type < 2 ){
+            file.addClass('directory');
+        }else{
+            file.addClass('file');
+        }
+        
         // Return icon
         return file;
 
     };
 
     var iconBack = function(){
-        // To Do
+
+        if( record.length < 2 ){
+            itemBack.css( 'display', 'none' );
+        }else{
+
+            itemBack
+                .css( 'display', 'block' )
+                .children( '#weexplorer-back-text' )
+                    .text( 'Back to ' + record[ 1 ].name );
+
+        }
+
     };
 
-    var openDirectory = function( id ){
+    var openDirectory = function( id, jump, clear ){
         
         wz.structure( id, function( error, structure ){
+
+            if( !jump ){
+
+                if( clear ){
+                    record = [];
+                }
+
+                record.unshift( { id : id, name : structure.name } );
+
+            }
 
             // To Do -> Error
 
@@ -40,7 +66,7 @@
 
                 // To Do -> Error
 
-                content.children().not( itemProto ).remove();
+                content.children().not( itemProto ).not( itemBack ).remove();
 
                 var icons = $();
 
@@ -48,6 +74,7 @@
                     icons = icons.add( icon( list[ i ] ) );
                 }
 
+                iconBack();
                 content.append( icons );
 
             });
@@ -91,6 +118,14 @@
         });
 
     });
+
+    itemBack.on( 'tap', function(){
+        
+        record.shift();
+        openDirectory( record[ 0 ].id, true );
+
+    });
+
 
     win.on( 'tap', function(){
 

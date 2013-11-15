@@ -69,6 +69,10 @@
     position: relative;
 }
 
+.back{
+    display: none;
+}
+
 #weexplorer-back-arrow{
     width: 30px;
     height: 26px;
@@ -133,8 +137,10 @@
 .weexplorer-element-options{
     width: 24px;
     height: 6px;
-    float: right;
     padding: 19px 6px;
+    position: absolute;
+    top: 7px;
+    right: 0px;
 }
 
 .weexplorer-element-options-icon{
