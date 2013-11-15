@@ -133,7 +133,7 @@
 
     });
 
-    sidebar.on( 'tap', '.weexplorer-sidebar-element:not(.active)', function(){
+    sidebar.on( 'tap', '.weexplorer-sidebar-element', function(){
 
         if( !$(this).hasClass('active') ){
             openDirectory( $(this).data('fileId'), false, true );
