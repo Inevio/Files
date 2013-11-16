@@ -126,6 +126,10 @@
     margin-top: 13px;
 }
 
+.directory .weexplorer-element-data{
+    display: none;
+}
+
 .weexplorer-element-data{
     font-size: 15px;
     float: left;

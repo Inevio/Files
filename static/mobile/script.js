@@ -17,6 +17,7 @@
 
         // Insert data
         file.find('.weexplorer-element-name').text( data.name );
+        file.find('.weexplorer-element-data').text( wz.tool.bytesToUnit( data.size ) );
         file.find('.weexplorer-element-icon').attr('src',data.icons.small);
         file.data( 'id', data.id );
 
