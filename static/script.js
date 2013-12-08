@@ -1479,16 +1479,11 @@
         var id = $(this).data('file-id');
 
         wz.structure( id, function( error, structure ){
-            
-            structure.associatedApp( function( error, app ){
 
-                if( app ){
-                    alert('ABRIR OTRAS APPS NO ESTÁ IMPLEMENTADO');
-                    // To Do -> wz.app.createWindow( app, [ id ] );
-                }else{
-                    alert( error, null, win.data().win );
-                }
+            // To Do -> Error
 
+            structure.open( function( error ){
+                // To Do -> Error
             });
             
         });
