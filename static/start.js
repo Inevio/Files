@@ -1,7 +1,4 @@
 
-//var app            = this;
-// To Do -> Real app var
-var app = {};
 var win = $( this );
 
 wql.getConfig( function( error, result ){
@@ -11,18 +8,18 @@ wql.getConfig( function( error, result ){
         result = result[ 0 ];
 
         // Guardamos la configuración
-        app.sortType = result.sort;
-        app.sidebar  = Boolean( result.sidebar );
-        app.viewType = result.view;
+        wz.app.storage( 'sortType', result.sort );
+        wz.app.storage( 'viewType', result.view );
+        wz.app.storage( 'sidebar', !!result.sidebar );
 
     }else{
 
         wql.insertConfig();
 
         // Guardamos la configuración
-        app.sortType = 0;
-        app.sidebar  = 1;
-        app.viewType = 0;
+        wz.app.storage( 'sortType', 0 );
+        wz.app.storage( 'viewType', 0 );
+        wz.app.storage( 'sidebar', true );
 
         result = {
 
@@ -37,7 +34,7 @@ wql.getConfig( function( error, result ){
     wz.fit( win, result.width - win.width(), result.height - win.height() );
 
     // Añadimos el sidebar si está activado
-    if( app.sidebar ){
+    if( wz.app.storage('sidebar') ){
 
         win.addClass('sidebar');
 

@@ -1,8 +1,5 @@
 
-    // Variables
-    //var app            = this;
-    // To Do -> Real app var
-    var app = {};
+// Variables
     var win            = $( this );
     var record         = [];
     var current        = null;
@@ -50,9 +47,9 @@
     var renaming = $();
     var prevName = '';
 
-    var sortType       = app.sortType || 0;
-    var viewType       = app.viewType || 0;
-    var showingSidebar = app.sidebar  || false;
+    var sortType       = wz.app.storage('sortType') || 0;
+    var viewType       = wz.app.storage('viewType') || 0;
+    var showingSidebar = wz.app.storage('sidebar')  || false;
     var firstTime      = true;
 
     // Functions
@@ -2144,9 +2141,9 @@
 
     /* START APP */
     translateUi();
-    setSortType( app.sortType );
-    setViewType( app.viewType );
-    
+    setSortType( wz.app.storage('sortType') );
+    setViewType( wz.app.storage('viewType') );
+
     if( params ){
         openDirectory( params );
     }else{
