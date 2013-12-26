@@ -104,7 +104,8 @@
         e.stopPropagation();
     });
 
-    $( '#weexplorer-content' ).on( 'tap', '.weexplorer-element', function(){
+    $( '#weexplorer-content' )
+    .on( 'tap', '.weexplorer-element', function(){
 
         wz.structure( $(this).data('id'), function( error, structure ){
 
@@ -123,6 +124,18 @@
 
             }
 
+        });
+
+    })
+
+    .on( 'tap', '.weexplorer-element-options', function( e ){
+
+        e.stopPropagation();
+
+        console.log( $(this).parent().data() );
+
+        wz.structure( $(this).parent().data('id'), function( error, structure ){
+            console.log( structure );
         });
 
     });
