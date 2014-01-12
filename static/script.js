@@ -445,7 +445,7 @@
 
                             alert( error, null, win.data().win );
 
-                        }else if( structure.owner === wz.info.userId() || structure.permissions.modify === 1 ){
+                        }else if( structure.owner === wz.info.user().id || structure.permissions.modify === 1 ){
 
                             structure.remove( function( error, quota ){
 
