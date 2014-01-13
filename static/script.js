@@ -1680,13 +1680,13 @@
         
         if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
             
-            menu.add( lang.openFile, function(){
+            menu.addOption( lang.openFile, function(){
                 icon.dblclick();
             });
 
             if( permissions.link ){
 
-                menu.add( lang.createLink, function(){
+                menu.addOption( lang.createLink, function(){
                     wz.app.createWindow( icon.data( 'file-id' ), 'link');
                 });
 
@@ -1694,7 +1694,7 @@
 
             if( permissions.send ){
 
-                menu.add( lang.sendTo, function(){
+                menu.addOption( lang.sendTo, function(){
                     wz.app.createWindow( icon.data( 'file-id' ), 'send');
                 });
 
@@ -1702,7 +1702,7 @@
 
             if( permissions.share ){
 
-                menu.add( lang.shareWith, function(){
+                menu.addOption( lang.shareWith, function(){
                     wz.app.createWindow( icon.data( 'file-id' ), 'share');
                 });
 
@@ -1710,43 +1710,42 @@
             
             if( permissions.download ){
 
-                menu.add( lang.download, function(){
+                menu.addOption( lang.download, function(){
                     downloadFiles.mousedown();
                 });
 
             }
 
-            menu.add( lang.properties, function(){
+            menu.addOption( lang.properties, function(){
                 wz.app.createWindow( icon.data( 'file-id' ), 'properties' );
             });
             
             if( permissions.modify ){
 
-                menu.add( lang.rename, function(){
+                menu.addOption( lang.rename, function(){
                     beginRename( icon );
                 });
 
             }
 
-            menu.add( lang.remove, function(){
+            menu.addOption( lang.remove, function(){
                 deleteAllActive();
             }, 'warning');
             
         }else if( icon.hasClass('directory') || ( icon.data( 'filePointerType' ) === 0 && !icon.hasClass('pointer-pending') ) ){
             
             menu
-
-                .add( lang.openFolder, function(){
+                .addOption( lang.openFolder, function(){
                     icon.dblclick();
                 })
 
-                .add( lang.openInNewWindow, function(){
+                .addOption( lang.openInNewWindow, function(){
                     wz.app.createWindow( icon.data( 'file-id' ), 'main');
                 });
 
             if( permissions.share ){
 
-                menu.add( lang.shareWith, function(){
+                menu.addOption( lang.shareWith, function(){
                     wz.app.createWindow( icon.data( 'file-id' ), 'share');
                 });
 
@@ -1754,39 +1753,38 @@
 
             if( isInSidebar( icon.data('file-id') ) ){
 
-                menu.add( lang.removeFromSidebar, function(){
+                menu.addOption( lang.removeFromSidebar, function(){
                     removeFromSidebar( icon.data( 'file-id' ) );
                 });
 
             }else{
 
-                menu.add( lang.addToSidebar, function(){
+                menu.addOption( lang.addToSidebar, function(){
                     addToSidebar( icon.data( 'file-id' ), icon.find('textarea').val() );
                 });
 
             }
 
-            menu.add( lang.properties, function(){
+            menu.addOption( lang.properties, function(){
                 wz.app.createWindow( icon.data( 'file-id' ), 'properties' );
             });
 
             if( permissions.modify ){
 
-                menu.add( lang.rename, function(){
+                menu.addOption( lang.rename, function(){
                     beginRename( icon );
                 });
 
             }
 
-            menu.add( lang.remove, function(){
+            menu.addOption( lang.remove, function(){
                 deleteAllActive();
             }, 'warning');
             
         }else if( icon.hasClass('received') ){
             
             menu
-
-                .add( lang.acceptFile, function(){
+                .addOption( lang.acceptFile, function(){
 
                     wz.structure( icon.data( 'file-id' ), function( error, structure ){
 
@@ -1810,11 +1808,11 @@
 
                 })
 
-                .add( lang.properties, function(){
+                .addOption( lang.properties, function(){
                     wz.app.createWindow( icon.data( 'file-id' ), 'properties' );
                 })
 
-                .add( lang.refuseFile, function(){
+                .addOption( lang.refuseFile, function(){
 
                     wz.structure( icon.data( 'file-id' ), function( error, structure ){
 
@@ -1841,8 +1839,7 @@
         }else if( icon.hasClass( 'pointer-pending' ) ){
 
             menu
-
-                .add( lang.acceptFile, function(){
+                .addOption( lang.acceptFile, function(){
 
                     wz.structure( icon.data( 'file-id' ), function( error, structure ){
 
@@ -1873,11 +1870,11 @@
 
                 })
 
-                .add( lang.properties, function(){
+                .addOption( lang.properties, function(){
                     wz.app.createWindow( icon.data( 'file-id' ), 'properties' );
                 })
 
-                .add( lang.refuseFile, function(){
+                .addOption( lang.refuseFile, function(){
 
                     wz.structure( icon.data( 'file-id' ), function( error, structure ){
 
@@ -2117,10 +2114,10 @@
         if( current !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
             
             wz.menu()
-            .add( lang.upload, function(){
+            .addOption( lang.upload, function(){
                 uploadButton.click();
             })
-            .add( lang.newDirectory, function(){
+            .addOption( lang.newDirectory, function(){
                 createDirectory();
             })
             .render();
