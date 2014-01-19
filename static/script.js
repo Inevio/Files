@@ -847,7 +847,7 @@
 
     })
 
-    .on( 'wz-resize wz-maximize wz-unmaximize', function(){
+    .on( 'ui-view-resize ui-view-maximize ui-view-unmaximize', function(){
 
         if( viewType ){
 
@@ -1068,7 +1068,7 @@
 
     })
     
-    .on( 'wz-blur', function(){
+    .on( 'ui-view-blur', function(){
         $( '.weexplorer-sort', win ).removeClass( 'show' );
     })
         
@@ -1113,7 +1113,7 @@
             // Si es la primera vez que se produce este evento ignoramos la invocación del evento resize
             if( !firstTime ){
 
-                win.trigger('wz-resize');
+                win.trigger('ui-view-resize');
 
                 firstTime = false;
 
@@ -2099,7 +2099,7 @@
         navigationMenu.removeClass( 'show' );
     })
 
-    .on( 'wz-blur', function(){
+    .on( 'ui-view-blur', function(){
 
         if( renaming.size() ){
             finishRename();
