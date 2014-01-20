@@ -1460,11 +1460,11 @@
     })
     
     .on( 'dblclick', '.weexplorer-file.received', function(){
-        wz.app.createWindow( $(this).data( 'file-id' ), 'received');
+        wz.app.createView( $(this).data( 'file-id' ), 'received');
     })
 
     .on( 'dblclick', '.weexplorer-file.pointer-pending', function(){
-        wz.app.createWindow( $(this).data( 'file-id' ), 'shared');
+        wz.app.createView( $(this).data( 'file-id' ), 'shared');
     })
     
     .on( 'dblclick', 'textarea:not([readonly])', function( e ){
@@ -1516,7 +1516,7 @@
 
                         if( app ){
                             alert('ABRIR OTRAS APPS NO ESTÁ IMPLEMENTADO');
-                            // To Do -> wz.app.createWindow( app, [ pointer ] );
+                            // To Do -> wz.app.createView( app, [ pointer ] );
                         }else{
                             alert( error, null, win.data().win );
                         }
@@ -1593,7 +1593,7 @@
     .key( 'ctrl + enter', function(){
         
         if( $( '.weexplorer-file.active.last-active', fileArea ).hasClass('directory') ){
-            wz.app.createWindow( $( '.weexplorer-file.active.last-active', fileArea ).data( 'file-id' ), 'main');
+            wz.app.createView( $( '.weexplorer-file.active.last-active', fileArea ).data( 'file-id' ), 'main');
         }
             
     })
@@ -1687,7 +1687,7 @@
             if( permissions.link ){
 
                 menu.addOption( lang.createLink, function(){
-                    wz.app.createWindow( icon.data( 'file-id' ), 'link');
+                    wz.app.createView( icon.data( 'file-id' ), 'link');
                 });
 
             }
@@ -1695,7 +1695,7 @@
             if( permissions.send ){
 
                 menu.addOption( lang.sendTo, function(){
-                    wz.app.createWindow( icon.data( 'file-id' ), 'send');
+                    wz.app.createView( icon.data( 'file-id' ), 'send');
                 });
 
             }
@@ -1703,7 +1703,7 @@
             if( permissions.share ){
 
                 menu.addOption( lang.shareWith, function(){
-                    wz.app.createWindow( icon.data( 'file-id' ), 'share');
+                    wz.app.createView( icon.data( 'file-id' ), 'share');
                 });
 
             }
@@ -1717,7 +1717,7 @@
             }
 
             menu.addOption( lang.properties, function(){
-                wz.app.createWindow( icon.data( 'file-id' ), 'properties' );
+                wz.app.createView( icon.data( 'file-id' ), 'properties' );
             });
             
             if( permissions.modify ){
@@ -1740,13 +1740,13 @@
                 })
 
                 .addOption( lang.openInNewWindow, function(){
-                    wz.app.createWindow( icon.data( 'file-id' ), 'main');
+                    wz.app.createView( icon.data( 'file-id' ), 'main');
                 });
 
             if( permissions.share ){
 
                 menu.addOption( lang.shareWith, function(){
-                    wz.app.createWindow( icon.data( 'file-id' ), 'share');
+                    wz.app.createView( icon.data( 'file-id' ), 'share');
                 });
 
             }
@@ -1766,7 +1766,7 @@
             }
 
             menu.addOption( lang.properties, function(){
-                wz.app.createWindow( icon.data( 'file-id' ), 'properties' );
+                wz.app.createView( icon.data( 'file-id' ), 'properties' );
             });
 
             if( permissions.modify ){
@@ -1809,7 +1809,7 @@
                 })
 
                 .addOption( lang.properties, function(){
-                    wz.app.createWindow( icon.data( 'file-id' ), 'properties' );
+                    wz.app.createView( icon.data( 'file-id' ), 'properties' );
                 })
 
                 .addOption( lang.refuseFile, function(){
@@ -1871,7 +1871,7 @@
                 })
 
                 .addOption( lang.properties, function(){
-                    wz.app.createWindow( icon.data( 'file-id' ), 'properties' );
+                    wz.app.createView( icon.data( 'file-id' ), 'properties' );
                 })
 
                 .addOption( lang.refuseFile, function(){
