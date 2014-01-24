@@ -832,9 +832,106 @@
         
     };
 
-    // Events
-    $( win )
+    // WZ Events
+    wz.structure
+    .on( 'accepted inbox refused shared sharedAccepted sharedRefused', function(){
+        notifications();
+    })
+
+    .on( 'conversionEnd', function( structure, progress ){
+
+        $( '.weexplorer-file-' + structure + ' article', fileArea )
+            .addClass('weexplorer-conversion-bar')
+            .transition( { opacity : 0 }, 150, function(){
+
+                $( this )
+                    .removeClass('weexplorer-conversion-bar')
+                    .removeAttr('style');
+
+            });
+
+    })
+
+    .on( 'conversionProgress', function( structure, progress ){
+
+        $( '.weexplorer-file-' + structure + ' article', fileArea )
+            .addClass('weexplorer-conversion-bar')
+            .clearQueue()
+            .stop()
+            .transition( { width: ( progress * 100 ) + '%' }, 150 );
+
+    })
+
+    .on( 'conversionStart', function( structure ){
+        
+        $( '.weexplorer-file-' + structure + ' article', fileArea )
+            .addClass('weexplorer-conversion-bar');
+        
+    })
+
+    .on( 'move', function( structure, destinyID, originID ){
+        
+        if( originID !== destinyID ){
+            
+            if( originID === current ){
+                fileArea.children( '.weexplorer-file-' + structure.id ).remove();
+            }else if( destinyID === current ){
+                displayIcons( icon( structure ) );
+            }
+        
+        }
+        
+    })
+
+    .on( 'new', function( structure ){
+
+        if( structure.parent === current ){
+            displayIcons( icon( structure ) );
+        }
+
+    })
+
+    .on( 'remove', function( id, quota, parent ){
+        
+        fileArea.children( '.weexplorer-file-' + id ).remove();
+        sidebar.children( '.folder-' + id ).remove();
+
+        if( current === id ){
+            openDirectory( parent );
+        }
+
+    })
     
+    .on( 'rename', function( structure ){
+
+        if( structure.parent === current ){
+            fileArea.children( '.weexplorer-file-' + structure.id ).children( 'textarea' ).val( structure.name );
+        }else if( structure.id === current ){
+            $( '.weexplorer-folder-name', win ).text( structure.name );
+        }
+
+        $( '.folder-' + structure.id + ' .weexplorer-sidebar-element-name', sidebar ).text( structure.name );
+
+    })
+
+    .on( 'sharedStart', function( structure ){
+
+        $( '.weexplorer-file-' + structure.id, win ).addClass( 'shared' );
+
+    })
+
+    .on( 'sharedStop', function( structure ){
+
+        $( '.weexplorer-file-' + structure.id, win ).removeClass( 'shared' );
+
+    })
+
+    .on( 'thumbnail', function( structure ){
+        $( '.weexplorer-file-' + structure.id ).find('img').attr( 'src', structure.icons.normal + '?' + Date.now() );
+    });
+
+    // DOM Events
+    $( win )
     .on( 'message', function( e, info, message ){
 
         message = message[ 0 ];
@@ -959,112 +1056,6 @@
                 .clearQueue()
                 .stop()
                 .transition({ height : '+=33' }, 500 );
-
-    })
-    
-    .on( 'structure-remove', function(e, id, quota, parent){
-        
-        fileArea.children( '.weexplorer-file-' + id ).remove();
-        sidebar.children( '.folder-' + id ).remove();
-
-        if( current === id ){
-            openDirectory( parent );
-        }
-
-    })
-    
-    .on( 'structure-rename', function(e, structure){
-
-        if( structure.parent === current ){
-            fileArea.children( '.weexplorer-file-' + structure.id ).children( 'textarea' ).val( structure.name );
-        }else if( structure.id === current ){
-            $( '.weexplorer-folder-name', win ).text( structure.name );
-        }
-
-        $( '.folder-' + structure.id + ' .weexplorer-sidebar-element-name', sidebar ).text( structure.name );
-
-    })
-    
-    .on( 'structure-new', function(e, structure){
-
-        if( structure.parent === current ){
-            displayIcons( icon( structure ) );
-        }
-
-    })
-    
-    .on( 'structure-move', function(e, structure, destinyID, originID){
-        
-        if( originID !== destinyID ){
-            
-            if( originID === current ){
-                fileArea.children( '.weexplorer-file-' + structure.id ).remove();
-            }else if( destinyID === current ){
-                displayIcons( icon( structure ) );
-            }
-        
-        }
-        
-    })
-    
-    .on( 'structure-thumbnail', function(e, structure){
-        $( '.weexplorer-file-' + structure.id ).find('img').attr( 'src', structure.icons.normal + '?' + Date.now() );
-    })
-    
-    .on( 'structure-inbox' +
-         ' structure-accepted' +
-         ' structure-refused' +
-         ' structure-shared' +
-         ' structure-sharedAccepted' +
-         ' structure-sharedRefused',
-
-        function(){
-            console.log('weeXplorer structure-inbox');
-            notifications();
-        }
-
-    )
-
-    .on( 'structure-sharedStart', function( e, structure ){
-
-        $( '.weexplorer-file-' + structure.id, win ).addClass( 'shared' );
-
-    })
-
-    .on( 'structure-sharedStop', function( e, structure ){
-
-        $( '.weexplorer-file-' + structure.id, win ).removeClass( 'shared' );
-
-    })
-
-    .on( 'structure-conversionStart', function( event, structure ){
-        
-        $( '.weexplorer-file-' + structure + ' article', fileArea )
-            .addClass('weexplorer-conversion-bar');
-        
-    })
-
-    .on( 'structure-conversionProgress', function( event, structure, progress ){
-
-        $( '.weexplorer-file-' + structure + ' article', fileArea )
-            .addClass('weexplorer-conversion-bar')
-            .clearQueue()
-            .stop()
-            .transition( { width: ( progress * 100 ) + '%' }, 150 );
-
-    })
-
-    .on( 'structure-conversionEnd', function( event, structure, progress ){
-
-        $( '.weexplorer-file-' + structure + ' article', fileArea )
-            .addClass('weexplorer-conversion-bar')
-            .transition( { opacity : 0 }, 150, function(){
-
-                $( this )
-                    .removeClass('weexplorer-conversion-bar')
-                    .removeAttr('style');
-
-            });
 
     })
     
