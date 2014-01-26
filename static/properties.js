@@ -140,7 +140,7 @@
         
     }
 
-    wz.structure( params, function( error, structure ){
+    wz.fs( params, function( error, structure ){
                 
         file = structure;
         properties( structure );

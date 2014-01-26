@@ -49,7 +49,7 @@
 
     var openDirectory = function( id, jump, clear ){
         
-        wz.structure( id, function( error, structure ){
+        wz.fs( id, function( error, structure ){
 
             if( !jump ){
 
@@ -107,7 +107,7 @@
     $( '#weexplorer-content' )
     .on( 'tap', '.weexplorer-element', function(){
 
-        wz.structure( $(this).data('id'), function( error, structure ){
+        wz.fs( $(this).data('id'), function( error, structure ){
 
             if( error ){
                 return false; // To Do -> Error
@@ -134,7 +134,7 @@
 
         console.log( $(this).parent().data() );
 
-        wz.structure( $(this).parent().data('id'), function( error, structure ){
+        wz.fs( $(this).parent().data('id'), function( error, structure ){
             console.log( structure );
         });
 
@@ -232,7 +232,7 @@
     } );
 
     // Ahora que ya tenemos definido que va a pasar ejecutamos las peticiones para cumplir las promesas
-    wz.structure( 'root', function( error, structure ){
+    wz.fs( 'root', function( error, structure ){
 
         // Ya tenemos la carpeta del usuario, cumplimos la promesa
         rootPath.resolve( structure );
@@ -251,14 +251,14 @@
 
     });
 
-    wz.structure( 'inbox', function( error, structure ){
+    wz.fs( 'inbox', function( error, structure ){
         
         // Ya tenemos la carpeta de recibidos, cumplimos la promesa
         inboxPath.resolve( structure );
 
     });
 
-    wz.structure( 'shared', function( error, structure ){
+    wz.fs( 'shared', function( error, structure ){
         
         // Ya tenemos la carpetas de compartidos, cumplimos la promesa
         sharedPath.resolve( structure );
@@ -284,7 +284,7 @@
             // Añadimos la promesa al array
             folders.push( promise );
 
-            wz.structure( item.folder, function( error, structure ){
+            wz.fs( item.folder, function( error, structure ){
 
                 if( error ){
                     promise.resolve( null );

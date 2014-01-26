@@ -87,7 +87,7 @@
 
             };
             
-            wz.structure( params, function( error, structure ){
+            wz.fs( params, function( error, structure ){
 
                 var changed  = false;
                 var promises = [];
@@ -194,7 +194,7 @@
 
             var deferred = $.Deferred();
 
-            wz.structure( params, function( error, structure ){
+            wz.fs( params, function( error, structure ){
                 
                 structure.sharedWith( function( error, owner, permissions, list ){
                     deferred.resolve( [ error, owner, permissions, list ] );

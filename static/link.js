@@ -33,7 +33,7 @@
                 
     };
         
-    wz.structure( params, function( error, structure ){
+    wz.fs( params, function( error, structure ){
         
         structure.getLinks( function( error, links ){
 
@@ -145,7 +145,7 @@
                 password = null;
             }
             
-            wz.structure( params, function( error, structure ){
+            wz.fs( params, function( error, structure ){
 
                 win.data( 'file-id' , structure.id );
                 linkSpan.addClass( 'filled' );
@@ -162,7 +162,7 @@
             
             var id = $(this).data('id');
             
-            wz.structure( params, function( error, structure ){
+            wz.fs( params, function( error, structure ){
                 structure.removeLink( id );
             });
             

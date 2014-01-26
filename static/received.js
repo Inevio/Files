@@ -1,5 +1,5 @@
     
-    wz.structure( params, function( error, structure ){
+    wz.fs( params, function( error, structure ){
         
         if( error ){
             alert( lang.error, null, win.data().win );

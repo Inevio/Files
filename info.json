@@ -256,8 +256,8 @@
 
     "permission" : {
 
-        "channel"   : true,
-        "structure" : {
+        "channel" : true,
+        "fs"      : {
 
             "create" : true,
             "modify" : true,

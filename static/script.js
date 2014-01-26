@@ -258,7 +258,7 @@
         }
         
         // Get Structure Info
-        wz.structure( id, function( error, structure ){
+        wz.fs( id, function( error, structure ){
 
             if( error ){
 
@@ -367,7 +367,7 @@
 
         if( $( 'textarea', icon ).val() !== prevName ){
 
-            wz.structure( icon.data('file-id'), function( error, structure ){
+            wz.fs( icon.data('file-id'), function( error, structure ){
 
                 if( error ){
                     alert( error, null, win.data().win );
@@ -403,7 +403,7 @@
 
     var createDirectory = function(){
 
-        wz.structure( current, function( error, structure ){
+        wz.fs( current, function( error, structure ){
 
             // To Do -> Error
 
@@ -439,7 +439,7 @@
         
                 $('.weexplorer-file.active', win).each(function(){
 
-                    wz.structure( $(this).data( 'file-id' ), function( error, structure ){
+                    wz.fs( $(this).data( 'file-id' ), function( error, structure ){
 
                         if( error ){
 
@@ -566,7 +566,7 @@
     
     var notifications = function(){
 
-        wz.structure( 'inbox', function( error, structure ){
+        wz.fs( 'inbox', function( error, structure ){
             
             structure.list( function( error, list ){
                 
@@ -585,7 +585,7 @@
     /*
     var sharedNotifications = function(){
 
-        wz.structure( 'shared', function( error, structure ){
+        wz.fs( 'shared', function( error, structure ){
             
             structure.list( function( error, list ){
                 
@@ -833,7 +833,7 @@
     };
 
     // WZ Events
-    wz.structure
+    wz.fs
     .on( 'accepted inbox refused shared sharedAccepted sharedRefused', function(){
         notifications();
     })
@@ -1067,7 +1067,7 @@
         if( current !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
 
             $( '.active.file, .active.pointer-file', win ).each( function(){
-                wz.structure($(this).data('file-id'), function(e,st){
+                wz.fs($(this).data('file-id'), function(e,st){
                     st.download();
                 });
             });
@@ -1466,7 +1466,7 @@
 
         var id = $(this).data('file-id');
 
-        wz.structure( id, function( error, structure ){
+        wz.fs( id, function( error, structure ){
 
             // To Do -> Error
 
@@ -1499,7 +1499,7 @@
 
         if( pointerType === 2 ){
 
-            wz.structure( pointer, function( error, structure ){
+            wz.fs( pointer, function( error, structure ){
                 
                 if( structure.status === 1 ){
 
@@ -1777,7 +1777,7 @@
             menu
                 .addOption( lang.acceptFile, function(){
 
-                    wz.structure( icon.data( 'file-id' ), function( error, structure ){
+                    wz.fs( icon.data( 'file-id' ), function( error, structure ){
 
                         structure.accept( function( error ){
 
@@ -1805,7 +1805,7 @@
 
                 .addOption( lang.refuseFile, function(){
 
-                    wz.structure( icon.data( 'file-id' ), function( error, structure ){
+                    wz.fs( icon.data( 'file-id' ), function( error, structure ){
 
                         structure.refuse( function( error ){
 
@@ -1832,7 +1832,7 @@
             menu
                 .addOption( lang.acceptFile, function(){
 
-                    wz.structure( icon.data( 'file-id' ), function( error, structure ){
+                    wz.fs( icon.data( 'file-id' ), function( error, structure ){
 
                         structure.acceptShare( function( error ){
 
@@ -1867,7 +1867,7 @@
 
                 .addOption( lang.refuseFile, function(){
 
-                    wz.structure( icon.data( 'file-id' ), function( error, structure ){
+                    wz.fs( icon.data( 'file-id' ), function( error, structure ){
 
                         structure.refuseShare( function( error ){
 
@@ -1974,7 +1974,7 @@
                     
             item.siblings('.active').add( item ).each( function(){
                             
-                wz.structure( $(this).data('file-id'), function( error, structure ){
+                wz.fs( $(this).data('file-id'), function( error, structure ){
 
                     if( error ){
                         alert( error, null, win.data().win );
@@ -2033,7 +2033,7 @@
 
         for( var i = pointer - 1 ; i >= 0 ; i-- ){
 
-            wz.structure( record[i], function( error, structure ){
+            wz.fs( record[i], function( error, structure ){
 
                 var element = navigationMenu.find( '.wz-prototype' ).clone().removeClass();
 
@@ -2059,7 +2059,7 @@
 
         for( var i = pointer + 1 ; i < record.length ; i++ ){
 
-            wz.structure( record[i], function( error, structure ){
+            wz.fs( record[i], function( error, structure ){
 
                 var element = navigationMenu.find( '.wz-prototype' ).clone().removeClass();
 
@@ -2196,7 +2196,7 @@
     } );
 
     // Ahora que ya tenemos definido que va a pasar ejecutamos las peticiones para cumplir las promesas
-    wz.structure( 'root', function( error, structure ){
+    wz.fs( 'root', function( error, structure ){
 
         // Ya tenemos la carpeta del usuario, cumplimos la promesa
         rootPath.resolve( structure );
@@ -2215,14 +2215,14 @@
 
     });
 
-    wz.structure( 'inbox', function( error, structure ){
+    wz.fs( 'inbox', function( error, structure ){
         
         // Ya tenemos la carpeta de recibidos, cumplimos la promesa
         inboxPath.resolve( structure );
 
     });
 
-    wz.structure( 'shared', function( error, structure ){
+    wz.fs( 'shared', function( error, structure ){
         
         // Ya tenemos la carpetas de compartidos, cumplimos la promesa
         sharedPath.resolve( structure );
@@ -2248,7 +2248,7 @@
             // Añadimos la promesa al array
             folders.push( promise );
 
-            wz.structure( item.folder, function( error, structure ){
+            wz.fs( item.folder, function( error, structure ){
 
                 if( error ){
                     promise.resolve( null );

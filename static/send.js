@@ -20,7 +20,7 @@
             
             if( sendChosenUsers.children().size() ){
 
-                wz.structure( params, function( error, structure ){
+                wz.fs( params, function( error, structure ){
 
                     var promises = [];
                 
