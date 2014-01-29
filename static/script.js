@@ -930,58 +930,8 @@
         $( '.weexplorer-file-' + structure.id ).find('img').attr( 'src', structure.icons.normal + '?' + Date.now() );
     });
 
-    // DOM Events
-    $( win )
-    .on( 'message', function( e, info, message ){
-
-        message = message[ 0 ];
-
-        if( message.action === 'addToTaskbar' ){
-            addToSidebarUi( message.id, message.name );
-        }else if( message.action === 'removeFromTaskbar' ){
-            removeFromSidebarUi( message.id );
-        }
-
-    })
-
-    .on( 'ui-view-resize ui-view-maximize ui-view-unmaximize', function(){
-
-        if( viewType ){
-
-            var controlTextarea = 0;
-            var biggestTextarea = 0;
-
-            fileArea.find( '.weexplorer-file' ).not( '.wz-prototype' ).each( function(){
-
-                var textareaWidth = 0;
-
-                $(this).first().children().not( 'textarea, article' ).each( function(){
-
-                    textareaWidth += $(this).outerWidth( true );
-
-                    if( textareaWidth > controlTextarea ){
-                        controlTextarea = textareaWidth;
-                    }
-
-                });
-
-                if( controlTextarea > biggestTextarea ){
-                    biggestTextarea = controlTextarea;
-                }
-
-            });
-
-            textareaWidth = fileArea.find( '.weexplorer-file' ).not( '.wz-prototype' ).first().width() - biggestTextarea - 35; // To Do -> Estos 35 deben ser obtenidos de algun sitio, no manuales
-
-            fileArea.find( 'textarea' ).css({ width : textareaWidth + 'px' });
-
-        }else{
-            centerIcons();
-        }
-        
-    })
-
-    .on( 'upload-enqueue', function( e, list ){
+    wz.upload
+    .on( 'enqueue', function( list ){
         
         if( list[0].parent === current ){
             
@@ -1039,7 +989,7 @@
         
     })
 
-    .on( 'upload-queue-end', function( e ){
+    .on( 'queue-end', function(){
 
         uploading
                 .removeClass('uploading')
@@ -1057,6 +1007,108 @@
                 .stop()
                 .transition({ height : '+=33' }, 500 );
 
+    })
+
+    .on( 'start', function( structure ){
+        uploadingItem.text( parseInt( uploadingItem.text(), 10 ) + 1 );
+        //fileArea.append( icon( structure.id, structure.name, structure.type ) );
+    })
+
+    .on( 'progress', function( structureID, progress, queueProgress, time ){
+
+        fileArea.children( '.weexplorer-file-' + structureID ).children('article')
+            .addClass('weexplorer-progress-bar')
+            .clearQueue()
+            .stop()
+            .transition( { width: ( progress * 100 ) + '%' }, 150 );
+
+        uploadingBar
+            .clearQueue()
+            .stop()
+            .transition( { width: ( queueProgress * 100 ) + '%' }, 150 );
+
+        time = parseInt( time, 10 );
+
+        if( isNaN( time ) ){
+            uploadingElapsed.text( lang.calculating );
+            return false;
+        }
+
+        if( time > 59 ){
+            time = parseInt( time/60, 10 ) + lang.minutes;
+        }else{
+            time = time + lang.seconds;
+        }
+
+        uploadingElapsed.text( time + ' ' + lang.left );
+        uploadingPercent.text( '( ' + parseInt( queueProgress * 100, 10 ) + '% )' );
+
+    })
+
+    .on( 'end', function( structure ){
+
+        var icon = fileArea.children( '.weexplorer-file-' + structure.id );
+
+        icon.children('article')
+            .removeClass('weexplorer-progress-bar');
+
+        icon
+            .removeClass('weexplorer-file-uploading temporal-file')
+            .addClass('file')
+            .find('img')
+                .attr( 'src', structure.icons.normal );
+            
+    });
+
+    // DOM Events
+    $( win )
+    .on( 'message', function( e, info, message ){
+
+        message = message[ 0 ];
+
+        if( message.action === 'addToTaskbar' ){
+            addToSidebarUi( message.id, message.name );
+        }else if( message.action === 'removeFromTaskbar' ){
+            removeFromSidebarUi( message.id );
+        }
+
+    })
+
+    .on( 'ui-view-resize ui-view-maximize ui-view-unmaximize', function(){
+
+        if( viewType ){
+
+            var controlTextarea = 0;
+            var biggestTextarea = 0;
+
+            fileArea.find( '.weexplorer-file' ).not( '.wz-prototype' ).each( function(){
+
+                var textareaWidth = 0;
+
+                $(this).first().children().not( 'textarea, article' ).each( function(){
+
+                    textareaWidth += $(this).outerWidth( true );
+
+                    if( textareaWidth > controlTextarea ){
+                        controlTextarea = textareaWidth;
+                    }
+
+                });
+
+                if( controlTextarea > biggestTextarea ){
+                    biggestTextarea = controlTextarea;
+                }
+
+            });
+
+            textareaWidth = fileArea.find( '.weexplorer-file' ).not( '.wz-prototype' ).first().width() - biggestTextarea - 35; // To Do -> Estos 35 deben ser obtenidos de algun sitio, no manuales
+
+            fileArea.find( 'textarea' ).css({ width : textareaWidth + 'px' });
+
+        }else{
+            centerIcons();
+        }
+        
     })
     
     .on( 'ui-view-blur', function(){
@@ -1137,57 +1189,6 @@
             $(this).addClass('last-active').siblings('.active').removeClass('active last-active hidden');
         }
         
-    })
-
-    .on( 'upload-start', function( e, structure ){
-        uploadingItem.text( parseInt( uploadingItem.text(), 10 ) + 1 );
-        //fileArea.append( icon( structure.id, structure.name, structure.type ) );
-    })
-
-    .on( 'upload-progress', function( e, structureID, progress, queueProgress, time ){
-
-        fileArea.children( '.weexplorer-file-' + structureID ).children('article')
-            .addClass('weexplorer-progress-bar')
-            .clearQueue()
-            .stop()
-            .transition( { width: ( progress * 100 ) + '%' }, 150 );
-
-        uploadingBar
-            .clearQueue()
-            .stop()
-            .transition( { width: ( queueProgress * 100 ) + '%' }, 150 );
-
-        time = parseInt( time, 10 );
-
-        if( isNaN( time ) ){
-            uploadingElapsed.text( lang.calculating );
-            return false;
-        }
-
-        if( time > 59 ){
-            time = parseInt( time/60, 10 ) + lang.minutes;
-        }else{
-            time = time + lang.seconds;
-        }
-
-        uploadingElapsed.text( time + ' ' + lang.left );
-        uploadingPercent.text( '( ' + parseInt( queueProgress * 100, 10 ) + '% )' );
-
-    })
-
-    .on( 'upload-end', function( e, structure ){
-
-        var icon = fileArea.children( '.weexplorer-file-' + structure.id );
-
-        icon.children('article')
-            .removeClass('weexplorer-progress-bar');
-
-        icon
-            .removeClass('weexplorer-file-uploading temporal-file')
-            .addClass('file')
-            .find('img')
-                .attr( 'src', structure.icons.normal );
-            
     })
     
     .on( 'mousedown', function(){
