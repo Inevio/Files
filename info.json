@@ -265,6 +265,12 @@
 
         },
 
+        "upload" : {
+
+            "file" : true
+            
+        },
+
         "user" : {
 
             "modify" : true,
