@@ -204,9 +204,9 @@
                 .find( 'span' )
                     .text( element.name );
 
-            if( element.id === wz.info.user().rootPath ){
+            if( element.id === wz.system.user().rootPath ){
                 controlFolder.removeClass( 'folder' ).addClass( 'userFolder user' );
-            }else if( element.id === wz.info.user().inboxPath ){
+            }else if( element.id === wz.system.user().inboxPath ){
                 controlFolder.addClass( 'receivedFolder' );
                 //notifications();
             }else if( element.id === 'shared' ){

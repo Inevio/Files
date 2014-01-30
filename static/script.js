@@ -317,7 +317,7 @@
 
                 fileArea.data( 'wz-uploader-destiny', structure.id );
                 
-                if( structure.id === wz.info.user().rootPath ){
+                if( structure.id === wz.system.user().rootPath ){
                     folderBar.removeClass( 'folder music photo video doc' ).addClass( 'user' );
                 }else if( structure.name === 'Documents' || structure.name === 'Documentos' ){
                     folderBar.removeClass( 'folder music photo video user' ).addClass( 'doc' );
@@ -445,7 +445,7 @@
 
                             alert( error, null, win.data().win );
 
-                        }else if( structure.owner === wz.info.user().id || structure.permissions.modify === 1 ){
+                        }else if( structure.owner === wz.system.user().id || structure.permissions.modify === 1 ){
 
                             structure.remove( function( error, quota ){
 
@@ -2171,9 +2171,9 @@
                 .children( 'span' )
                     .text( element.name );
 
-            if( element.id === wz.info.user().rootPath ){
+            if( element.id === wz.system.user().rootPath ){
                 controlFolder.removeClass( 'folder' ).addClass( 'userFolder user active' );
-            }else if( element.id === wz.info.user().inboxPath ){
+            }else if( element.id === wz.system.user().inboxPath ){
                 controlFolder.addClass( 'receivedFolder' );
                 notifications();
             }else if( element.id === 'shared' ){
