@@ -268,7 +268,7 @@
                             .icon( structure.icons.tiny )
                             .render();
 
-                        wz.app.closeWindow( win.data( 'win' ) );
+                        wz.app.removeView( win.data( 'win' ) );
 
                     });
                 

@@ -81,7 +81,7 @@
 
                         if( error ){
                             alert( error, function(){
-                                wz.app.closeWindow( win.data( 'win' ) );
+                                wz.app.removeView( win.data( 'win' ) );
                             }, win.data().win );
                         }else{
 
@@ -98,7 +98,7 @@
                                 .icon( structure.icons.tiny )
                                 .render();
 
-                            wz.app.closeWindow( win.data( 'win' ) );
+                            wz.app.removeView( win.data( 'win' ) );
 
                         }
 
@@ -112,7 +112,7 @@
 
                         if( error ){
                             alert( error, function(){
-                                wz.app.closeWindow( win.data( 'win' ) );
+                                wz.app.removeView( win.data( 'win' ) );
                             }, win.data().win );
                         }else{
 
@@ -129,7 +129,7 @@
                                 .icon( 'https://static.weezeel.com/app/1/refuse.png' )
                                 .render();
 
-                                wz.app.closeWindow( win.data( 'win' ) );
+                                wz.app.removeView( win.data( 'win' ) );
 
                         }
 

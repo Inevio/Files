@@ -152,7 +152,7 @@
     .on( 'remove', function( id ){
 
             if( id === params ){
-                wz.app.closeWindow( win );
+                wz.app.removeView( win );
             }
 
     })
