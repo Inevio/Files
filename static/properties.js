@@ -81,27 +81,27 @@
         
         var createdDate = new Date( structure.created );
         var createdDay = createdDate.getDate();
-            if( createdDay < 10 ){ createdDay = '0' + createdDay }
+            if( createdDay < 10 ){ createdDay = '0' + createdDay; }
         var createdMonth = createdDate.getMonth() + 1;
-            if( createdMonth < 10 ){ createdMonth = '0' + createdMonth }
+            if( createdMonth < 10 ){ createdMonth = '0' + createdMonth; }
         var createdHour = createdDate.getHours();
-            if( createdHour < 10 ){ createdHour = '0' + createdHour }
+            if( createdHour < 10 ){ createdHour = '0' + createdHour; }
         var createdMinute = createdDate.getMinutes();
-            if( createdMinute < 10 ){ createdMinute = '0' + createdMinute }
+            if( createdMinute < 10 ){ createdMinute = '0' + createdMinute; }
         var createdSecond = createdDate.getSeconds();
-            if( createdSecond < 10 ){ createdSecond = '0' + createdSecond }
+            if( createdSecond < 10 ){ createdSecond = '0' + createdSecond; }
         
         var modifiedDate = new Date( structure.modified );
         var modifiedDay = modifiedDate.getDate();
-            if( modifiedDay < 10 ){ modifiedDay = '0' + modifiedDay }
+            if( modifiedDay < 10 ){ modifiedDay = '0' + modifiedDay; }
         var modifiedMonth = modifiedDate.getMonth() + 1;
-            if( modifiedMonth < 10 ){ modifiedMonth = '0' + modifiedMonth }
+            if( modifiedMonth < 10 ){ modifiedMonth = '0' + modifiedMonth; }
         var modifiedHour = modifiedDate.getHours();
-            if( modifiedHour < 10 ){ modifiedHour = '0' + modifiedHour }
+            if( modifiedHour < 10 ){ modifiedHour = '0' + modifiedHour; }
         var modifiedMinute = modifiedDate.getMinutes();
-            if( modifiedMinute < 10 ){ modifiedMinute = '0' + modifiedMinute }
+            if( modifiedMinute < 10 ){ modifiedMinute = '0' + modifiedMinute; }
         var modifiedSecond = modifiedDate.getSeconds();
-            if( modifiedSecond < 10 ){ modifiedSecond = '0' + modifiedSecond }
+            if( modifiedSecond < 10 ){ modifiedSecond = '0' + modifiedSecond; }
 
         if( ( fileType !== 0 && fileType !== 1 && fileType !== 5 ) || ( fileType === 5 && structure.pointerType !== 0 && structure.pointerType !== 1 ) ){
 
@@ -138,7 +138,7 @@
 
         permissions( structure.permissions );
         
-    }
+    };
 
     wz.fs( params, function( error, structure ){
                 
@@ -147,38 +147,38 @@
         
     });
     
-    win
-
-        .on( 'structure-remove', function( e, id ){
+    // WZ Events
+    wz.fs
+    .on( 'remove', function( id ){
 
             if( id === params ){
                 wz.app.closeWindow( win );
             }
 
-        })
+    })
 
-        .on( 'structure-rename', function( e, structure ){
+    .on( 'rename', function( structure ){
 
-            if( structure.id === params ){
+        if( structure.id === params ){
 
-                renaming = true;
-                input.blur();
-                file = structure;
-                input.val( file.name );
+            renaming = true;
+            input.blur();
+            file = structure;
+            input.val( file.name );
 
-            }
+        }
 
-        })
+    })
 
-        .on( 'structure-permissions', function( e, id, newPermissions, allPermissions ){
+    .on( 'permissions', function( id, newPermissions, allPermissions ){
 
-            if( id === params ){
-                permissions( allPermissions );
-            }
+        if( id === params ){
+            permissions( allPermissions );
+        }
 
-        })
-        
-        .key( 'enter', function(){
+    });
+
+    win .key( 'enter', function(){
             
             input.blur();
             

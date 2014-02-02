@@ -75,7 +75,6 @@
             permissions( structure );
             
             win
-            
                 .on( 'mousedown', '.received-content-accept', function(){
 
                     structure.acceptShare( function( error ){

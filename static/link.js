@@ -90,6 +90,68 @@
 
     });
 
+    // WZ Events
+    wz.fs
+    .on( 'linkCreated', function( link, structure ){
+                                                    
+        if( win.data( 'file-id' ) === structure.id ){
+                    
+            var alreadyCreated = false;
+            
+            linkTable.find('.link-delete').each( function(){
+                if( $(this).data('id') === link.id ){
+                    alreadyCreated = true;
+                }
+            });
+            
+            if( !alreadyCreated ){
+                            
+                var newLink = prototype.clone().removeClass( 'wz-prototype' );
+                
+                if( link.password ){
+                    newLink.find('.first-column i').addClass( 'link-lock' );
+                }else{
+                    newLink.find('.first-column i').addClass( 'link-unlock' );
+                }
+                
+                if( link.preview ){
+                    newLink.find('.second-column i').addClass( 'link-prev' );
+                }else{
+                    newLink.find('.second-column i').addClass( 'link-unprev' );
+                }
+                
+                newLink.find('.link-data').val( link.url );
+                newLink.find('.link-views').text( link.visits );
+                newLink.find('.link-downloads').text( link.downloads );
+                newLink.find('.link-imports').text( link.imports );
+                newLink.find('.link-delete').data( 'id', link.id );
+                
+                linkTable.append( newLink );
+                
+                growWindow();
+                
+            }
+            
+        }
+        
+    })
+    
+    .on( 'linkRemoved', function( hash ){
+                    
+        linkTable.find('.link-delete').each( function(){
+            
+            if( $(this).data('id') === hash ){
+                $(this).parents('tr').remove();
+                return false;
+            }
+            
+        });
+        
+        growWindow();
+        
+    });
+
+    // DOM Events
     win
         .on( 'mouseenter', '.first-column', function( e ){
 
@@ -165,65 +227,6 @@
             wz.fs( params, function( error, structure ){
                 structure.removeLink( id );
             });
-            
-        })
-        
-        .on( 'structure-linkCreated', function( e, link, structure ){
-                                                    
-            if( win.data( 'file-id' ) === structure.id ){
-                        
-                var alreadyCreated = false;
-                
-                linkTable.find('.link-delete').each( function(){
-                    if( $(this).data('id') === link.id ){
-                        alreadyCreated = true;
-                    }
-                });
-                
-                if( !alreadyCreated ){
-                                
-                    var newLink = prototype.clone().removeClass( 'wz-prototype' );
-                    
-                    if( link.password ){
-                        newLink.find('.first-column i').addClass( 'link-lock' );
-                    }else{
-                        newLink.find('.first-column i').addClass( 'link-unlock' );
-                    }
-                    
-                    if( link.preview ){
-                        newLink.find('.second-column i').addClass( 'link-prev' );
-                    }else{
-                        newLink.find('.second-column i').addClass( 'link-unprev' );
-                    }
-                    
-                    newLink.find('.link-data').val( link.url );
-                    newLink.find('.link-views').text( link.visits );
-                    newLink.find('.link-downloads').text( link.downloads );
-                    newLink.find('.link-imports').text( link.imports );
-                    newLink.find('.link-delete').data( 'id', link.id );
-                    
-                    linkTable.append( newLink );
-                    
-                    growWindow();
-                    
-                }
-                
-            }
-            
-        })
-        
-        .on( 'structure-linkRemoved', function( e, hash ){
-                        
-            linkTable.find('.link-delete').each( function(){
-                
-                if( $(this).data('id') === hash ){
-                    $(this).parents('tr').remove();
-                    return false;
-                }
-                
-            });
-            
-            growWindow();
             
         })
         

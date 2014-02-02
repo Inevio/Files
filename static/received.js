@@ -9,7 +9,7 @@
                 $( '.received-content-info.who', win ).text( lang.sentBy + ' ' + user.fullName );
             });
             
-            var date = new Date( parseInt( structure.metadata.inbox.time ) );
+            var date = new Date( parseInt( structure.metadata.inbox.time, 10 ) );
             
             $( '.received-content-info.date', win ).text( ' ' + lang.on + ' ' + date.toLocaleDateString() );
             
