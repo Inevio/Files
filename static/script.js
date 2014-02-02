@@ -931,7 +931,7 @@
     });
 
     wz.upload
-    .on( 'enqueue', function( list ){
+    .on( 'fsnodeEnqueue', function( list ){
         
         if( list[0].parent === current ){
             
@@ -989,7 +989,7 @@
         
     })
 
-    .on( 'queue-end', function(){
+    .on( 'fsnodeQueueEnd', function(){
 
         uploading
                 .removeClass('uploading')
@@ -1009,12 +1009,12 @@
 
     })
 
-    .on( 'start', function( structure ){
+    .on( 'fsnodeStart', function( structure ){
         uploadingItem.text( parseInt( uploadingItem.text(), 10 ) + 1 );
         //fileArea.append( icon( structure.id, structure.name, structure.type ) );
     })
 
-    .on( 'progress', function( structureID, progress, queueProgress, time ){
+    .on( 'fsnodeProgress', function( structureID, progress, queueProgress, time ){
 
         fileArea.children( '.weexplorer-file-' + structureID ).children('article')
             .addClass('weexplorer-progress-bar')
@@ -1045,7 +1045,7 @@
 
     })
 
-    .on( 'end', function( structure ){
+    .on( 'fsnodeEnd', function( structure ){
 
         var icon = fileArea.children( '.weexplorer-file-' + structure.id );
 
