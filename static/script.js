@@ -728,7 +728,7 @@
 
                 if( channel === null ){
 
-                    wz.channel.create( function( error, chn ){
+                    wz.channel( function( error, chn ){
 
                         channel = chn;
                         channel.send( { action : 'addToTaskbar', id : id, name : name } );
@@ -774,7 +774,7 @@
 
                 if( channel === null ){
 
-                    wz.channel.create( function( error, chn ){
+                    wz.channel( function( error, chn ){
 
                         channel = chn;
                         channel.send( { action : 'removeFromTaskbar', id : id } );
