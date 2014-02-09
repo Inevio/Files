@@ -1,9 +1,9 @@
 
-.wz-win-menu-group.right{
+.wz-view-menu-group.right{
     padding: 16px 29px 9px 28px;
 }
 
-.wz-win.sidebar{
+.wz-view.sidebar{
     width: 686px; /*!important*/
 }
 
@@ -81,7 +81,7 @@ textarea[readonly]{
     border: 1px solid #999;    
 }
 
-.wz-win-menu{
+.wz-view-menu{
     width: 692px;
 }
 
@@ -188,7 +188,7 @@ textarea[readonly]{
     
 }
 
-.wz-win.sidebar .weexplorer-menu-toggle i{
+.wz-view.sidebar .weexplorer-menu-toggle i{
     
     width: 15px;
     height: 15px;
@@ -584,7 +584,7 @@ img{
     
 }
 
-.wz-win.sidebar .weexplorer-sidebar{
+.wz-view.sidebar .weexplorer-sidebar{
     display: block;
 }
 

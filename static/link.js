@@ -14,13 +14,13 @@
         
         if( linksOnTable === 0 ){
             win.transition( { 'width' : '365', 'height' : '215' }, 250);
-            $( '.wz-win-menu', win ).transition( { 'width' : '335' }, 250, function(){
+            $( '.wz-view-menu', win ).transition( { 'width' : '335' }, 250, function(){
                 previous.addClass('hidden');
             });
         }else if( linksOnTable === 1 ){
             previous.removeClass('hidden');
             win.transition( { 'width' : '525', 'height' : '340' }, 250);
-            $( '.wz-win-menu', win ).transition( { 'width' : '495' }, 250);
+            $( '.wz-view-menu', win ).transition( { 'width' : '495' }, 250);
         }else if( linksOnTable === 2 ){
             win.transition( { 'height' : '376' }, 250);
         }else if( linksOnTable === 3 ){
@@ -41,7 +41,7 @@
                 
                 previous.removeClass('hidden');
                 win.css({ 'width' : '525' });
-                $( '.wz-win-menu', win ).css({ 'width' : '495' });
+                $( '.wz-view-menu', win ).css({ 'width' : '495' });
                 
                 if( links.length === 1 ){
                     win.css({ 'height' : '340' });
