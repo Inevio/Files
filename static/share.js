@@ -268,7 +268,7 @@
                             .icon( structure.icons.tiny )
                             .render();
 
-                        wz.app.removeView( win.data( 'win' ) );
+                        wz.view.remove();
 
                     });
                 
