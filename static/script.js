@@ -1372,9 +1372,11 @@
     })
     
     .on( 'mousedown', '.weexplorer-sidebar-element', function(){
+
         if( !$(this).hasClass('active') ){
-            openDirectory($(this).data('file-id'));
+            openDirectory( $(this).data('file-id') );
         }
+
     })
     
     .on( 'mousedown', '.weexplorer-menu-sort', function( e ){
@@ -1760,7 +1762,14 @@
             }else{
 
                 menu.add( lang.addToSidebar, function(){
-                    addToSidebar( icon.data( 'file-id' ), icon.find('textarea').val() );
+
+                    if( icon.data('filePointer') ){
+                        addToSidebar( icon.data( 'filePointer' ), icon.find('textarea').val() );
+                    }else{
+                        addToSidebar( icon.data( 'file-id' ), icon.find('textarea').val() );
+                    }
+
+
                 });
 
             }
