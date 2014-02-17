@@ -10,6 +10,7 @@
     var maximized      = false;
     var stickedSidebar = false;
     var channel        = null;
+    var minMargin      = 5;
 
     var types = [
                     'directory wz-drop-area',
@@ -50,7 +51,6 @@
     var sortType       = app.sortType || 0;
     var viewType       = app.viewType || 0;
     var showingSidebar = app.sidebar  || false;
-    var firstTime      = true;
 
     // Functions
     var recordNavigation = function(){
@@ -797,9 +797,20 @@
 
     var centerIcons = function(){
 
-        var minMargin = 5;
-
         $( '.weexplorer-false-file', fileArea ).remove();
+
+        if( viewType ){
+            
+            $( '.weexplorer-file', fileArea ).css({
+
+                'margin-left'  : 0,
+                'margin-right' : 0
+
+            });
+
+            return false;
+
+        }
 
         /*
         var anchuraPantalla = fileArea.width();
@@ -849,37 +860,29 @@
 
     .on( 'wz-resize wz-maximize wz-unmaximize', function(){
 
+        centerIcons();
+
         if( viewType ){
 
-            var controlTextarea = 0;
-            var biggestTextarea = 0;
+            // Tenemos que hacer el cálculo teniendo el cuenta el width del padre porque
+            // no siempre vamos a tener elementos en los que basarnos y el prototype tiene
+            // como width() 100, que quiere decir 100%.
 
-            fileArea.find( '.weexplorer-file' ).not( '.wz-prototype' ).each( function(){
+            var items    = fileArea.find('.weexplorer-file');
+            var item     = items.first();
+            var textarea = item.children('textarea');
+            var width    = parseInt( item.css('border-left-width'), 10 )
+                            + parseInt( item.css('border-right-width'), 10 )
+                            + parseInt( textarea.css('margin-left'), 10 )
+                            + parseInt( textarea.css('border-left-width') )
+                            + parseInt( textarea.css('border-right-width'), 10 );
 
-                var textareaWidth = 0;
-
-                $(this).first().children().not( 'textarea, article' ).each( function(){
-
-                    textareaWidth += $(this).outerWidth( true );
-
-                    if( textareaWidth > controlTextarea ){
-                        controlTextarea = textareaWidth;
-                    }
-
-                });
-
-                if( controlTextarea > biggestTextarea ){
-                    biggestTextarea = controlTextarea;
-                }
-
+            item.children().not('textarea').each( function(){
+                width += $( this ).outerWidth( true );
             });
 
-            textareaWidth = fileArea.find( '.weexplorer-file' ).not( '.wz-prototype' ).first().width() - biggestTextarea - 35; // To Do -> Estos 35 deben ser obtenidos de algun sitio, no manuales
+            $( 'textarea', items ).width( fileArea.width() - width );
 
-            fileArea.find( 'textarea' ).css({ width : textareaWidth + 'px' });
-
-        }else{
-            centerIcons();
         }
         
     })
@@ -1110,15 +1113,6 @@
 
             wql.changeView( 1 );
 
-            // Si es la primera vez que se produce este evento ignoramos la invocación del evento resize
-            if( !firstTime ){
-
-                win.trigger('wz-resize');
-
-                firstTime = false;
-
-            }
-
         }else{
 
             views.removeClass('list').addClass('grid');
@@ -1131,6 +1125,8 @@
             fileArea.find( 'textarea' ).css({ width : '' });
 
         }
+
+        win.trigger('wz-resize');
 
     })
     
