@@ -201,7 +201,7 @@
             if( structure.pointerType === 2 ){
                 file.addClass( 'pointer-file' );
             }else{
-                file.addClass( 'pointer-directory' );
+                file.addClass( 'pointer-directory wz-drop-area' );
             }
 
         }
@@ -1975,14 +1975,14 @@
             
             var dest = 0;
 
-            if( $(this).hasClass('directory') ){
+            if( $(this).hasClass('directory') || $(this).hasClass('pointer-directory') ){
                 dest = $(this).data('file-id');
             }else if( $(this).hasClass('weexplorer-sidebar-element') ){
                 dest = $(this).data('fileId');
             }else{
                 dest = current;
             }
-                    
+            
             item.siblings('.active').add( item ).each( function(){
                             
                 wz.structure( $(this).data('file-id'), function( error, structure ){
@@ -1993,9 +1993,11 @@
                     }
 
                     structure.move( dest, null, function( error ){
+
                         if( error ){
                             alert( error, null, win.data().win );
                         }
+
                     });
                     
                 });
@@ -2006,7 +2008,7 @@
 
     })
 
-    .on( 'wz-dropenter', '.weexplorer-file.directory', function( e, file ){
+    .on( 'wz-dropenter', '.weexplorer-file.directory, .weexplorer-file.pointer-directory', function( e, file ){
 
         if( file === 'fileNative' ){
             $(this).addClass('weexplorer-directory-over');
@@ -2020,7 +2022,7 @@
 
     })
 
-    .on( 'wz-dropleave', '.weexplorer-file.directory', function(){
+    .on( 'wz-dropleave', '.weexplorer-file.directory, .weexplorer-file.pointer-directory', function(){
         $(this).removeClass('weexplorer-directory-over');
     })
 
