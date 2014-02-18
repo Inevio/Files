@@ -1,4 +1,6 @@
     
+    var win = $( this );
+    
     wz.fs( params, function( error, structure ){
         
         if( error ){

@@ -58,11 +58,15 @@
             wz.user( structure.pointerOwner, function( error, user ){
 
                 if( structure.pointerType === 0 ){
+
                     $( '.received-file', win ).text( lang.sharedFolderTitle );
                     $( '.received-content-info.who', win ).text( lang.folderSharedBy + ' ' + user.fullName );
+
                 }else if( structure.pointerType === 2 ){
+
                     $( '.received-file', win ).text( lang.sharedFileTitle );
                     $( '.received-content-info.who', win ).text( lang.fileSharedBy + ' ' + user.fullName );
+                    
                 }else{
                     $( '.received-content-info.who', win ).text( lang.sharedBy + ' ' + user.fullName );
                 }
