@@ -10,6 +10,7 @@
     var maximized      = false;
     var stickedSidebar = false;
     var channel        = null;
+    var minMargin      = 5;
 
     var types = [
                     'directory wz-drop-area',
@@ -50,7 +51,6 @@
     var sortType       = wz.app.storage('sortType') || 0;
     var viewType       = wz.app.storage('viewType') || 0;
     var showingSidebar = wz.app.storage('sidebar')  || false;
-    var firstTime      = true;
 
     // Functions
     var recordNavigation = function(){
@@ -201,7 +201,7 @@
             if( structure.pointerType === 2 ){
                 file.addClass( 'pointer-file' );
             }else{
-                file.addClass( 'pointer-directory' );
+                file.addClass( 'pointer-directory wz-drop-area' );
             }
 
         }
@@ -797,9 +797,20 @@
 
     var centerIcons = function(){
 
-        var minMargin = 5;
-
         $( '.weexplorer-false-file', fileArea ).remove();
+
+        if( viewType ){
+            
+            $( '.weexplorer-file', fileArea ).css({
+
+                'margin-left'  : 0,
+                'margin-right' : 0
+
+            });
+
+            return false;
+
+        }
 
         /*
         var anchuraPantalla = fileArea.width();
@@ -1076,37 +1087,29 @@
 
     .on( 'ui-view-resize ui-view-maximize ui-view-unmaximize', function(){
 
+        centerIcons();
+
         if( viewType ){
 
-            var controlTextarea = 0;
-            var biggestTextarea = 0;
+            // Tenemos que hacer el cálculo teniendo el cuenta el width del padre porque
+            // no siempre vamos a tener elementos en los que basarnos y el prototype tiene
+            // como width() 100, que quiere decir 100%.
 
-            fileArea.find( '.weexplorer-file' ).not( '.wz-prototype' ).each( function(){
+            var items    = fileArea.find('.weexplorer-file');
+            var item     = items.first();
+            var textarea = item.children('textarea');
+            var width    = parseInt( item.css('border-left-width'), 10 )
+                            + parseInt( item.css('border-right-width'), 10 )
+                            + parseInt( textarea.css('margin-left'), 10 )
+                            + parseInt( textarea.css('border-left-width') )
+                            + parseInt( textarea.css('border-right-width'), 10 );
 
-                var textareaWidth = 0;
-
-                $(this).first().children().not( 'textarea, article' ).each( function(){
-
-                    textareaWidth += $(this).outerWidth( true );
-
-                    if( textareaWidth > controlTextarea ){
-                        controlTextarea = textareaWidth;
-                    }
-
-                });
-
-                if( controlTextarea > biggestTextarea ){
-                    biggestTextarea = controlTextarea;
-                }
-
+            item.children().not('textarea').each( function(){
+                width += $( this ).outerWidth( true );
             });
 
-            textareaWidth = fileArea.find( '.weexplorer-file' ).not( '.wz-prototype' ).first().width() - biggestTextarea - 35; // To Do -> Estos 35 deben ser obtenidos de algun sitio, no manuales
+            $( 'textarea', items ).width( fileArea.width() - width );
 
-            fileArea.find( 'textarea' ).css({ width : textareaWidth + 'px' });
-
-        }else{
-            centerIcons();
         }
         
     })
@@ -1153,15 +1156,6 @@
 
             wql.changeView( 1 );
 
-            // Si es la primera vez que se produce este evento ignoramos la invocación del evento resize
-            if( !firstTime ){
-
-                win.trigger('ui-view-resize');
-
-                firstTime = false;
-
-            }
-
         }else{
 
             views.removeClass('list').addClass('grid');
@@ -1174,6 +1168,8 @@
             fileArea.find( 'textarea' ).css({ width : '' });
 
         }
+
+        win.trigger('wz-resize');
 
     })
     
@@ -1368,9 +1364,11 @@
     })
     
     .on( 'mousedown', '.weexplorer-sidebar-element', function(){
+
         if( !$(this).hasClass('active') ){
-            openDirectory($(this).data('file-id'));
+            openDirectory( $(this).data('file-id') );
         }
+
     })
     
     .on( 'mousedown', '.weexplorer-menu-sort', function( e ){
@@ -1752,7 +1750,13 @@
             }else{
 
                 menu.addOption( lang.addToSidebar, function(){
-                    addToSidebar( icon.data( 'file-id' ), icon.find('textarea').val() );
+
+                    if( icon.data('filePointer') ){
+                        addToSidebar( icon.data( 'filePointer' ), icon.find('textarea').val() );
+                    }else{
+                        addToSidebar( icon.data( 'file-id' ), icon.find('textarea').val() );
+                    }
+
                 });
 
             }
@@ -1965,14 +1969,14 @@
             
             var dest = 0;
 
-            if( $(this).hasClass('directory') ){
+            if( $(this).hasClass('directory') || $(this).hasClass('pointer-directory') ){
                 dest = $(this).data('file-id');
             }else if( $(this).hasClass('weexplorer-sidebar-element') ){
                 dest = $(this).data('fileId');
             }else{
                 dest = current;
             }
-                    
+            
             item.siblings('.active').add( item ).each( function(){
                             
                 wz.fs( $(this).data('file-id'), function( error, structure ){
@@ -1983,9 +1987,11 @@
                     }
 
                     structure.move( dest, null, function( error ){
+
                         if( error ){
                             alert( error, null, win.data().win );
                         }
+
                     });
                     
                 });
@@ -1996,7 +2002,7 @@
 
     })
 
-    .on( 'wz-dropenter', '.weexplorer-file.directory', function( e, file ){
+    .on( 'wz-dropenter', '.weexplorer-file.directory, .weexplorer-file.pointer-directory', function( e, file ){
 
         if( file === 'fileNative' ){
             $(this).addClass('weexplorer-directory-over');
@@ -2010,7 +2016,7 @@
 
     })
 
-    .on( 'wz-dropleave', '.weexplorer-file.directory', function(){
+    .on( 'wz-dropleave', '.weexplorer-file.directory, .weexplorer-file.pointer-directory', function(){
         $(this).removeClass('weexplorer-directory-over');
     })
 
