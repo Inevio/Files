@@ -882,6 +882,10 @@ img{
     display: inline-block;
 }
 
+.weexplorer-uploading-info span{
+    display: inline-block;
+}
+
 .uploaded-percent{
     margin-left: 8px;
 }
