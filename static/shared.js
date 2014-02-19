@@ -52,7 +52,7 @@
     wz.fs( params, function( error, structure ){
         
         if( error ){
-            alert( lang.error, null, win.data().win );
+            alert( lang.error );
         }else{
 
             wz.user( structure.pointerOwner, function( error, user ){

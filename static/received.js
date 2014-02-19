@@ -4,7 +4,7 @@
     wz.fs( params, function( error, structure ){
         
         if( error ){
-            alert( lang.error, null, win.data().win );
+            alert( lang.error );
         }else{
 
             wz.user( structure.metadata.inbox.sender, function( error, user ){
@@ -34,16 +34,14 @@
                     structure.accept( function( error ){
 
                         if( error ){
-                            alert( error, function(){
-                                wz.view.remove();
-                            }, win.data().win );
+                            alert( error, wz.view.remove );
                         }else{
 
                             wz.banner()
-                                    .title( lang.fileShareAccepted )
-                                    .text( structure.name + ' ' + lang.beenAccepted )
-                                    .icon( structure.icons.tiny )
-                                    .render();
+                                .title( lang.fileShareAccepted )
+                                .text( structure.name + ' ' + lang.beenAccepted )
+                                .icon( structure.icons.tiny )
+                                .render();
 
                             wz.view.remove();
 
@@ -58,16 +56,14 @@
                     structure.refuse( function( error ){
 
                         if( error ){
-                            alert( error, function(){
-                                wz.view.remove();
-                            }, win.data().win );
+                            alert( error, wz.view.remove );
                         }else{
 
                             wz.banner()
-                                    .title( lang.fileShareRefused )
-                                    .text( structure.name + ' ' + lang.beenRefused )
-                                    .icon( 'https://static.weezeel.com/app/1/refuse.png' )
-                                    .render();
+                                .title( lang.fileShareRefused )
+                                .text( structure.name + ' ' + lang.beenRefused )
+                                .icon( 'https://static.weezeel.com/app/1/refuse.png' )
+                                .render();
 
                             wz.view.remove();
 

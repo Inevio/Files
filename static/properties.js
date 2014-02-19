@@ -195,9 +195,9 @@
                     if( error ){
 
                         if( error === 'NAME ALREADY EXISTS' ){
-                            alert( lang.nameExists, null, win.data().win );
+                            alert( lang.nameExists );
                         }else{
-                            alert( error, null, win.data().win );
+                            alert( error );
                         }
 
                         input.val( file.name );

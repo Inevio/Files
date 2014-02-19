@@ -261,22 +261,9 @@
         wz.fs( id, function( error, structure ){
 
             if( error ){
-
-                alert( lang.errorOpenDirectory, null, win.data().win );
-                return false;
-
-            }
-
-            /*
-            if( !structure.status === 1 ){
-
-                $('.weexplorer-sidebar-element.active', win).removeClass('active');
-                $( '.folder-' + current, sidebar ).addClass('active');
-
-                alert( 'Estructura no aceptada', null, win.data().win );
+                alert( lang.errorOpenDirectory );
                 return false;
             }
-            */
 
             // Update current
             updateCurrent( structure.id );
@@ -286,10 +273,8 @@
             structure.list( function( error, list ){
 
                 if( error ){
-
-                    alert( lang.errorOpenDirectory, null, win.data().win );
+                    alert( lang.errorOpenDirectory );
                     return false;
-
                 }
 
                 var length = list.length;
@@ -370,7 +355,7 @@
             wz.fs( icon.data('file-id'), function( error, structure ){
 
                 if( error ){
-                    alert( error, null, win.data().win );
+                    alert( error );
                 }else{
 
                     structure.rename( $( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass( 'wz-dragger' ).val(), function( error ){
@@ -378,9 +363,9 @@
                         if( error ){
 
                             if( error === 'NAME ALREADY EXISTS' ){
-                                alert( lang.nameExists, null, win.data().win );
+                                alert( lang.nameExists );
                             }else{
-                                alert( error, null, win.data().win );
+                                alert( error );
                             }
 
                             $( 'textarea', icon ).val( structure.name ).text( structure.name );
@@ -442,25 +427,19 @@
                     wz.fs( $(this).data( 'file-id' ), function( error, structure ){
 
                         if( error ){
-
-                            alert( error, null, win.data().win );
-
+                            alert( error );
                         }else if( structure.owner === wz.system.user().id || structure.permissions.modify === 1 ){
 
                             structure.remove( function( error, quota ){
 
                                 if( error ){
-
-                                    alert( error, null, win.data().win );
-
+                                    alert( error );
                                 }
 
                             });
 
                         }else{
-
                             notEnoughPermissions = true;
-
                         }
            
                     });
@@ -468,14 +447,12 @@
                 });
 
                 if( notEnoughPermissions ){
-
-                    alert( lang.notEnoughPermissions, null, win.data().win );
-
+                    alert( lang.notEnoughPermissions );
                 }
 
             }
 
-        }, win.data().win );
+        });
         
     };
     
@@ -1508,13 +1485,13 @@
                             alert('ABRIR OTRAS APPS NO ESTÁ IMPLEMENTADO');
                             // To Do -> wz.app.createView( app, [ pointer ] );
                         }else{
-                            alert( error, null, win.data().win );
+                            alert( error );
                         }
 
                     });
 
                 }else{
-                    alert( 'Estructura no aceptada', null, win.data().win );
+                    alert( 'Estructura no aceptada' );
                 }
                 
             });
@@ -1787,7 +1764,7 @@
                         structure.accept( function( error ){
 
                             if( error ){
-                                alert( error, null, win.data().win );
+                                alert( error );
                             }else{
 
                                 wz.banner()
@@ -1815,7 +1792,7 @@
                         structure.refuse( function( error ){
 
                             if( error ){
-                                alert( error, null, win.data().win );
+                                alert( error );
                             }else{
 
                                 wz.banner()
@@ -1842,7 +1819,7 @@
                         structure.acceptShare( function( error ){
 
                             if( error ){
-                                alert( error, null, win.data().win );
+                                alert( error );
                             }else{
 
                                 var banner = wz.banner();
@@ -1877,7 +1854,7 @@
                         structure.refuseShare( function( error ){
 
                             if( error ){
-                                alert( error, null, win.data().win );
+                                alert( error );
                             }else{
 
                                 var banner = wz.banner();
@@ -1982,14 +1959,14 @@
                 wz.fs( $(this).data('file-id'), function( error, structure ){
 
                     if( error ){
-                        alert( error, null, win.data().win );
+                        alert( error );
                         return false;
                     }
 
                     structure.move( dest, null, function( error ){
 
                         if( error ){
-                            alert( error, null, win.data().win );
+                            alert( error );
                         }
 
                     });
