@@ -82,7 +82,7 @@
 
                         userCard = shareUserPrototype.clone().removeClass('wz-prototype');
                         userCard.children( 'img' ).attr( 'src', sharedList[ i ].avatar.tiny );
-                        userCard.data( 'user-id', sharedList[ i ].id );
+                        userCard.data( 'userId', sharedList[ i ].id );
                         userCard.children( 'span' ).text( sharedList[ i ].fullName );
                         shareChosenUsers.append( userCard );
 
@@ -107,7 +107,7 @@
 
                         userCard = shareUserPrototype.clone().removeClass('wz-prototype');
                         userCard.children( 'img' ).attr( 'src', friendList[ i ].avatar.tiny );
-                        userCard.data( 'user-id', friendList[ i ].id );
+                        userCard.data( 'userId', friendList[ i ].id );
                         userCard.children( 'span' ).text( friendList[ i ].fullName );
                         shareListUsers.append( userCard );
 
@@ -208,7 +208,8 @@
                 
                 shareChosenUsers.children().each( function(){
 
-                    var userId = $( this ).data('user-id');
+                    console.log( $(this).data() );
+                    var userId = $( this ).data('userId');
                     var index  = initialUsers.indexOf( userId );
 
                     if( index === -1 ){
