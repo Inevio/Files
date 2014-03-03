@@ -17,9 +17,7 @@
                     'special-directory wz-drop-area',
                     'file',
                     'temporal-file',
-                    'received',
-                    'pointer'/*,
-                    'null'*/
+                    'received'
                 ];
 
     var nextButton     = $( '.weexplorer-option-next', win );
@@ -237,7 +235,7 @@
 
         }
 
-        if( structure.sharedRoot ){
+        if( structure.id === structure.shareRoot ){
             file.addClass( 'shared' );
         }
 
