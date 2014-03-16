@@ -16,8 +16,7 @@
                     'directory wz-drop-area',
                     'special-directory wz-drop-area',
                     'file',
-                    'temporal-file',
-                    'received'
+                    'temporal-file'
                 ];
 
     var nextButton     = $( '.weexplorer-option-next', win );
@@ -189,7 +188,9 @@
         }
         
         file.find('img').attr( 'src', structure.icons.normal + ( ( structure.type === 3 ) ? '?upload' : '' ) );
+        
         file.addClass( types[ structure.type ] );
+        
         if( structure.type === 3 ){
             file.addClass( 'weexplorer-file-uploading' );
         }
@@ -202,6 +203,11 @@
                 file.addClass( 'pointer-directory wz-drop-area' );
             }
 
+        }
+
+        console.log( structure.status, structure );
+        if( !structure.status ){
+            file.addClass('received');
         }
 
         file.addClass( 'weexplorer-file-' + structure.id );
@@ -1643,7 +1649,7 @@
         var menu = wz.menu();
         var permissions = icon.data( 'permissions' );
         
-        if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
+        if( !icon.hasClass('received') && ( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ) ){
             
             menu.addOption( lang.openFile, function(){
                 icon.dblclick();
@@ -1697,7 +1703,7 @@
                 deleteAllActive();
             }, 'warning');
             
-        }else if( icon.hasClass('directory') || ( icon.data( 'filePointerType' ) === 0 && !icon.hasClass('pointer-pending') ) ){
+        }else if( !icon.hasClass('received') && ( icon.hasClass('directory') || ( icon.data( 'filePointerType' ) === 0 && !icon.hasClass('pointer-pending') ) ) ){
             
             menu
                 .addOption( lang.openFolder, function(){
