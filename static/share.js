@@ -36,8 +36,8 @@
 
             wz.fs( params, function( error, structure ){
                 
-                structure.sharedWith( function( error, owner, permissions, list ){
-                    deferred.resolve( [ error, owner, permissions, list ] );
+                structure.sharedWith( true, function( error, list ){
+                    deferred.resolve( [ error, structure, list ] );
                 });
 
             });
@@ -49,8 +49,8 @@
         $.when( getFriendList(), getSharedList() )
             .then( function( friendList, sharedList ){
 
-                owner           = sharedList[ 1 ];
-                var permissions = sharedList[ 2 ];
+                owner           = sharedList[ 1 ].owner;
+                var permissions = sharedList[ 1 ].permissions;
 
                 loading = true;
 
@@ -69,7 +69,7 @@
                 loading = false;
 
                 friendList = friendList[ 1 ];
-                sharedList = sharedList[ 3 ];
+                sharedList = sharedList[ 2 ];
 
                 var userCard = null;
 
@@ -208,7 +208,6 @@
                 
                 shareChosenUsers.children().each( function(){
 
-                    console.log( $(this).data() );
                     var userId = $( this ).data('userId');
                     var index  = initialUsers.indexOf( userId );
 
@@ -230,15 +229,15 @@
                     
                 });
 
-                initialUsers.map( function( element ){
+                initialUsers.map( function( userId ){
 
-                    if( element !== null ){
+                    if( userId !== null ){
 
                         var deferred = $.Deferred();
 
                         promises.push( deferred.promise() );
 
-                        structure.removeShare( element, function( error ){
+                        structure.removeShare( userId, function( error ){
                             deferred.resolve( error );
                         });
                        

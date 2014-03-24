@@ -92,7 +92,7 @@
 
     // WZ Events
     wz.fs
-    .on( 'linkCreated', function( link, structure ){
+    .on( 'linkAdded', function( link, structure ){
                                                     
         if( win.data( 'file-id' ) === structure.id ){
                     
@@ -212,7 +212,7 @@
                 win.data( 'file-id' , structure.id );
                 linkSpan.addClass( 'filled' );
 
-                structure.createLink( password, preview, function( error, url ){
+                structure.addLink( password, preview, function( error, url ){
                     linkSpan.val( url.url );
                 });
 

@@ -16,8 +16,7 @@
                     'directory wz-drop-area',
                     'special-directory wz-drop-area',
                     'file',
-                    'temporal-file',
-                    'received'
+                    'temporal-file'
                 ];
 
     var nextButton     = $( '.weexplorer-option-next', win );
@@ -224,6 +223,7 @@
 
         }
         
+        /*
         if( structure.type === 5 ){
 
             if( structure.status !== 1 ){
@@ -234,9 +234,21 @@
             file.data( 'file-pointerType', structure.pointerType );
 
         }
+        */
 
         if( structure.id === structure.shareRoot ){
+            
             file.addClass( 'shared' );
+
+            if( structure.status !== 1 ){
+                file.addClass( 'shared-pending' );
+            }
+
+            /*
+            file.data( 'file-pointer', structure.pointer );
+            file.data( 'file-pointerType', structure.pointerType );
+            */
+
         }
 
         // Return icon
@@ -1094,14 +1106,19 @@
     })
         
     .on( 'mousedown', '.weexplorer-menu-download', function(){
+
         if( current !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
 
             $( '.active.file, .active.pointer-file', win ).each( function(){
+
                 wz.fs($(this).data('file-id'), function(e,st){
                     st.download();
                 });
+
             });
-        }  
+
+        }
+
     })
     
     .on( 'click', '.weexplorer-option-next', function(){
@@ -1643,7 +1660,74 @@
         var menu = wz.menu();
         var permissions = icon.data( 'permissions' );
         
-        if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
+        if( icon.hasClass( 'shared-pending' ) ){
+
+            menu
+            .addOption( lang.acceptFile, function(){
+
+                wz.fs( icon.data( 'file-id' ), function( error, structure ){
+
+                    structure.accept( function( error ){
+
+                        if( error ){
+                            alert( error );
+                            return;
+                        }
+
+                        var banner = wz.banner();
+
+                        if( structure.pointerType === 0 ){
+                            banner.title( lang.folderShareAccepted );
+                        }else{
+                            banner.title( lang.fileShareAccepted );
+                        }
+
+                        banner
+                            .text( structure.name + ' ' + lang.beenAccepted )
+                            .icon( structure.icons.tiny )
+                            .render();
+
+                    });
+
+                });
+
+            })
+
+            .addOption( lang.properties, function(){
+                wz.app.createView( icon.data( 'file-id' ), 'properties' );
+            })
+
+            .addOption( lang.refuseFile, function(){
+
+                wz.fs( icon.data( 'file-id' ), function( error, structure ){
+
+                    structure.refuse( function( error ){
+
+                        if( error ){
+                            alert( error );
+                            return;
+                        }
+
+                        var banner = wz.banner();
+
+                        if( structure.pointerType === 0 ){
+                            banner.title( lang.folderShareRefused );
+                        }else{
+                            banner.title( lang.fileShareRefused );
+                        }
+
+                        banner
+                            .text( structure.name + ' ' + lang.beenRefused )
+                            .icon( 'https://static.weezeel.com/app/1/refuse.png' )
+                            .render();
+
+                    });
+
+                });
+
+            }, 'warning');
+
+        }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
             
             menu.addOption( lang.openFile, function(){
                 icon.dblclick();
@@ -1809,72 +1893,7 @@
             
         }else if( icon.hasClass( 'pointer-pending' ) ){
 
-            menu
-                .addOption( lang.acceptFile, function(){
-
-                    wz.fs( icon.data( 'file-id' ), function( error, structure ){
-
-                        structure.acceptShare( function( error ){
-
-                            if( error ){
-                                alert( error );
-                            }else{
-
-                                var banner = wz.banner();
-
-                                if( structure.pointerType === 0 ){
-                                    banner.title( lang.folderShareAccepted );
-                                }else{
-                                    banner.title( lang.fileShareAccepted );
-                                }
-
-                                banner
-                                    .text( structure.name + ' ' + lang.beenAccepted )
-                                    .icon( structure.icons.tiny )
-                                    .render();
-
-                            }
-
-                        });
-
-                    });
-
-                })
-
-                .addOption( lang.properties, function(){
-                    wz.app.createView( icon.data( 'file-id' ), 'properties' );
-                })
-
-                .addOption( lang.refuseFile, function(){
-
-                    wz.fs( icon.data( 'file-id' ), function( error, structure ){
-
-                        structure.refuseShare( function( error ){
-
-                            if( error ){
-                                alert( error );
-                            }else{
-
-                                var banner = wz.banner();
-
-                                if( structure.pointerType === 0 ){
-                                    banner.title( lang.folderShareRefused );
-                                }else{
-                                    banner.title( lang.fileShareRefused );
-                                }
-
-                                banner
-                                    .text( structure.name + ' ' + lang.beenRefused )
-                                    .icon( 'https://static.weezeel.com/app/1/refuse.png' )
-                                    .render();
-
-                            }
-
-                        });
-
-                    });
-
-                }, 'warning');
+            
             
         }
 
