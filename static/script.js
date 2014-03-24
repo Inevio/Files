@@ -188,7 +188,9 @@
         }
         
         file.find('img').attr( 'src', structure.icons.normal + ( ( structure.type === 3 ) ? '?upload' : '' ) );
+        
         file.addClass( types[ structure.type ] );
+        
         if( structure.type === 3 ){
             file.addClass( 'weexplorer-file-uploading' );
         }
@@ -201,6 +203,11 @@
                 file.addClass( 'pointer-directory wz-drop-area' );
             }
 
+        }
+
+        console.log( structure.status, structure );
+        if( !structure.status ){
+            file.addClass('received');
         }
 
         file.addClass( 'weexplorer-file-' + structure.id );
@@ -1892,9 +1899,7 @@
                 }, 'warning');
             
         }else if( icon.hasClass( 'pointer-pending' ) ){
-
-            
-            
+            // To Do
         }
 
         menu.render();
