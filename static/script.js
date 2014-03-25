@@ -2176,22 +2176,22 @@
                 .children( 'span' )
                     .text( element.name );
 
-            if( element.id === wz.system.user().rootPath ){
+            if( element.alias === 'root' ){
                 controlFolder.removeClass( 'folder' ).addClass( 'userFolder user active' );
-            }else if( element.id === wz.system.user().inboxPath ){
+            }else if( element.alias === 'inbox' ){
                 controlFolder.addClass( 'receivedFolder' );
                 notifications();
             }else if( element.id === 'shared' ){
                 controlFolder.addClass( 'sharedFolder' );
             }
             
-            if( element.name === 'Documents' || element.name === 'Documentos' ){
+            if( element.alias === 'documents' ){
                 controlFolder.removeClass( 'folder' ).addClass( 'doc' );
-            }else if( element.name === 'Music' || element.name === 'Música' ){
+            }else if( element.alias === 'music' ){
                 controlFolder.removeClass( 'folder' ).addClass( 'music' );
-            }else if( element.name === 'Images' || element.name === 'Imágenes' ){
+            }else if( element.alias === 'images' ){
                 controlFolder.removeClass( 'folder' ).addClass( 'photo' );
-            }else if( element.name === 'Video' || element.name === 'Vídeos' ){
+            }else if( element.alias === 'video' ){
                 controlFolder.removeClass( 'folder' ).addClass( 'video' );
             }
 
@@ -2209,9 +2209,9 @@
     
         structure.list( true, function( error, list ){
 
-            // Vamos a filtrar la lista para quedarnos solo con las carpetas ocultas, es decir, de tipo 7
+            // Vamos a filtrar la lista para quedarnos solo con las carpetas especiales, es decir, de tipo 1
             list = list.filter( function( item ){
-                return item.type === 7;
+                return item.type === 1;
             });
 
             // Ya tenemos las carpetas ocultas, cumplimos la promesa
