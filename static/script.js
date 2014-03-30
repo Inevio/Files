@@ -2191,7 +2191,7 @@
                 controlFolder.removeClass( 'folder' ).addClass( 'music' );
             }else if( element.alias === 'images' ){
                 controlFolder.removeClass( 'folder' ).addClass( 'photo' );
-            }else if( element.alias === 'video' ){
+            }else if( element.alias === 'videos' ){
                 controlFolder.removeClass( 'folder' ).addClass( 'video' );
             }
 
