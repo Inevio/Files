@@ -1,6 +1,6 @@
 
 .wz-view-menu-group.right{
-    padding: 16px 29px 9px 28px;
+    padding: 10px 29px 6px 28px;
 }
 
 .wz-view.sidebar{
@@ -18,7 +18,7 @@ textarea[readonly]{
 }
 
 .weexplorer-navigate{
-    padding: 13px 18px 12px;
+    padding: 8px 14px;
 }
 
 .weexplorer-option-back{
@@ -87,9 +87,9 @@ textarea[readonly]{
 
 .weexplorer-menu{
     
-    width: 413px;
+    width: 429px;
     float: left;
-    padding: 13px 23px 7px;
+    padding: 7px 19px 4px;
     
 }
 
