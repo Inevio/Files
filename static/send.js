@@ -39,9 +39,9 @@
                     $.when.apply( null, promises ).then( function(){
 
                         wz.banner()
-                            .title( lang.fileSent )
-                            .text( structure.name + ' ' + lang.fileSentCorrectly )
-                            .icon( structure.icons.tiny )
+                            .setTitle( lang.fileSent )
+                            .setText( structure.name + ' ' + lang.fileSentCorrectly )
+                            .setIcon( structure.icons.tiny )
                             .render();
                                 
                         wz.view.remove();

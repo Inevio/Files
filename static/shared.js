@@ -93,14 +93,14 @@
                             var banner = wz.banner();
 
                             if( structure.pointerType === 0 ){
-                                banner.title( lang.folderShareAccepted );
+                                banner.setTitle( lang.folderShareAccepted );
                             }else{
-                                banner.title( lang.fileShareAccepted );
+                                banner.setTitle( lang.fileShareAccepted );
                             }
 
                             banner
-                                .text( structure.name + ' ' + lang.beenAccepted )
-                                .icon( structure.icons.tiny )
+                                .setText( structure.name + ' ' + lang.beenAccepted )
+                                .setIcon( structure.icons.tiny )
                                 .render();
 
                             wz.view.remove();
@@ -124,14 +124,14 @@
                             var banner = wz.banner();
 
                             if( structure.pointerType === 0 ){
-                                banner.title( lang.folderShareRefused );
+                                banner.setTitle( lang.folderShareRefused );
                             }else{
-                                banner.title( lang.fileShareRefused );
+                                banner.setTitle( lang.fileShareRefused );
                             }
 
                             banner
-                                .text( structure.name + ' ' + lang.beenRefused )
-                                .icon( 'https://static.weezeel.com/app/1/refuse.png' )
+                                .setText( structure.name + ' ' + lang.beenRefused )
+                                .setIcon( 'https://static.weezeel.com/app/1/refuse.png' )
                                 .render();
 
                                 wz.view.remove();

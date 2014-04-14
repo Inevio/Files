@@ -38,9 +38,9 @@
                         }else{
 
                             wz.banner()
-                                .title( lang.fileShareAccepted )
-                                .text( structure.name + ' ' + lang.beenAccepted )
-                                .icon( structure.icons.tiny )
+                                .setTitle( lang.fileShareAccepted )
+                                .setText( structure.name + ' ' + lang.beenAccepted )
+                                .setIcon( structure.icons.tiny )
                                 .render();
 
                             wz.view.remove();
@@ -60,9 +60,9 @@
                         }else{
 
                             wz.banner()
-                                .title( lang.fileShareRefused )
-                                .text( structure.name + ' ' + lang.beenRefused )
-                                .icon( 'https://static.weezeel.com/app/1/refuse.png' )
+                                .setTitle( lang.fileShareRefused )
+                                .setText( structure.name + ' ' + lang.beenRefused )
+                                .setIcon( 'https://static.weezeel.com/app/1/refuse.png' )
                                 .render();
 
                             wz.view.remove();

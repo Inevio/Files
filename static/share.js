@@ -263,9 +263,9 @@
                         // To Do -> Hacer cosas con las respuestas de las promesas
 
                         wz.banner()
-                            .title( lang.fileShared )
-                            .text( lang.fileSharedStart + ' ' + structure.name + ' ' + lang.fileSharedEnd )
-                            .icon( structure.icons.tiny )
+                            .setTitle( lang.fileShared )
+                            .setText( lang.fileSharedStart + ' ' + structure.name + ' ' + lang.fileSharedEnd )
+                            .setIcon( structure.icons.tiny )
                             .render();
 
                         wz.view.remove();
