@@ -205,7 +205,6 @@
 
         }
 
-        console.log( structure.status, structure );
         if( !structure.status ){
             file.addClass('received');
         }
