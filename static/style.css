@@ -203,6 +203,7 @@ textarea[readonly]{
     width: 692px;
     height: 550px;
     float: left;
+    background: #f00;
 }
 
 .weexplorer-folder{

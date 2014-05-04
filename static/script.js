@@ -50,6 +50,97 @@
     var showingSidebar = wz.app.storage('sidebar')  || false;
 
     // Functions
+    var _fit_baseWidth = function( object, newValue ){
+
+        object = $( object );
+
+        if( typeof newValue !== 'undefined' ){
+            object.data( 'wz-fit-base-width', newValue );
+            return;
+        }
+
+        var value = object.data('wz-fit-base-width');
+
+        if( !value ){
+            
+            value = object.width();
+
+            object.data( 'wz-fit-base-width', value );
+
+        }
+
+        return value;
+
+    };
+
+    var _fit_baseHeight = function( object, newValue ){
+
+        object = $( object );
+
+        if( typeof newValue !== 'undefined' ){
+            object.data( 'wz-fit-base-height', newValue );
+            return;
+        }
+
+        var value = object.data('wz-fit-base-height');
+
+        if( !value ){
+            
+            value = object.height();
+
+            object.data( 'wz-fit-base-height', value );
+
+        }
+
+        return value;
+
+    };
+
+    var _fit_baseOuterWidth = function( object, newValue ){
+
+        object = $( object );
+
+        if( typeof newValue !== 'undefined' ){
+            object.data( 'wz-fit-base-outerWidth', newValue );
+            return;
+        }
+
+        var value = object.data('wz-fit-base-outerWidth');
+
+        if( !value ){
+            
+            value = _fn.tool.outerFullWidth( object );
+
+            object.data( 'wz-fit-base-outerWidth', value );
+
+        }
+
+        return value;
+
+    };
+
+    var _fit_baseOuterHeight = function( object, newValue ){
+
+        object = $( object );
+
+        if( typeof newValue !== 'undefined' ){
+            object.data( 'wz-fit-base-outerHeight', newValue );
+            return;
+        }
+
+        var value = object.data('wz-fit-base-outerHeight');
+
+        if( !value ){
+            
+            value = _fn.tool.outerFullHeight( object );
+
+            object.data( 'wz-fit-base-outerHeight', value );
+
+        }
+
+        return value;
+
+    };
     var recordNavigation = function(){
 
         if( record[ pointer + 1 ] ){
@@ -1310,6 +1401,13 @@
                 sidebarPromise.resolve();
             });
 
+            // Actualizamos los tamaños de referencia
+            _fit_baseWidth( folderBar, folderBar.width() + sidebarOuterWidth );
+            _fit_baseWidth( folderMain, folderMain.width() + sidebarOuterWidth );
+            _fit_baseWidth( fileArea, fileArea.width() + sidebarOuterWidth );
+
+            console.log( sidebarOuterWidth );
+
             // Transición de la zona de iconos
             folderMain.add( folderBar ).add( fileArea ).transition( { width : '+=' + sidebarOuterWidth }, 250, function(){
                 folderPromise.resolve();
@@ -1341,6 +1439,13 @@
             sidebar.transition( { width : sidebarWidth }, 250, function(){
                 sidebarPromise.resolve();
             });
+
+            // Actualizamos los tamaños de referencia
+            _fit_baseWidth( folderBar, folderBar.width() - sidebarOuterWidth );
+            _fit_baseWidth( folderMain, folderMain.width() - sidebarOuterWidth );
+            _fit_baseWidth( fileArea, fileArea.width() - sidebarOuterWidth );
+
+            console.log( sidebarOuterWidth );
 
             // Transición de la zona de iconos
             folderMain.add( folderBar ).add( fileArea ).transition( { width : '-=' + sidebarOuterWidth }, 238, function(){
