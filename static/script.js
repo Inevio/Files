@@ -109,7 +109,7 @@
 
         if( !value ){
             
-            value = _fn.tool.outerFullWidth( object );
+            value = object.outerWidth( true );
 
             object.data( 'wz-fit-base-outerWidth', value );
 
@@ -132,7 +132,7 @@
 
         if( !value ){
             
-            value = _fn.tool.outerFullHeight( object );
+            value = object.outerHeight( true );
 
             object.data( 'wz-fit-base-outerHeight', value );
 
@@ -141,6 +141,7 @@
         return value;
 
     };
+
     var recordNavigation = function(){
 
         if( record[ pointer + 1 ] ){
@@ -1402,11 +1403,13 @@
             });
 
             // Actualizamos los tamaños de referencia
-            _fit_baseWidth( folderBar, folderBar.width() + sidebarOuterWidth );
-            _fit_baseWidth( folderMain, folderMain.width() + sidebarOuterWidth );
-            _fit_baseWidth( fileArea, fileArea.width() + sidebarOuterWidth );
+            _fit_baseWidth( folderBar, _fit_baseWidth( folderBar ) + sidebarOuterWidth );
+            _fit_baseWidth( folderMain, _fit_baseWidth( folderMain ) + sidebarOuterWidth );
+            _fit_baseWidth( fileArea, _fit_baseWidth( fileArea ) + sidebarOuterWidth );
 
-            console.log( sidebarOuterWidth );
+            _fit_baseOuterWidth( folderBar, _fit_baseOuterWidth( folderBar ) + sidebarOuterWidth );
+            _fit_baseOuterWidth( folderMain, _fit_baseOuterWidth( folderMain ) + sidebarOuterWidth );
+            _fit_baseOuterWidth( fileArea, _fit_baseOuterWidth( fileArea ) + sidebarOuterWidth );
 
             // Transición de la zona de iconos
             folderMain.add( folderBar ).add( fileArea ).transition( { width : '+=' + sidebarOuterWidth }, 250, function(){
@@ -1441,11 +1444,13 @@
             });
 
             // Actualizamos los tamaños de referencia
-            _fit_baseWidth( folderBar, folderBar.width() - sidebarOuterWidth );
-            _fit_baseWidth( folderMain, folderMain.width() - sidebarOuterWidth );
-            _fit_baseWidth( fileArea, fileArea.width() - sidebarOuterWidth );
+            _fit_baseWidth( folderBar, _fit_baseWidth( folderBar ) - sidebarOuterWidth );
+            _fit_baseWidth( folderMain, _fit_baseWidth( folderMain ) - sidebarOuterWidth );
+            _fit_baseWidth( fileArea, _fit_baseWidth( fileArea ) - sidebarOuterWidth );
 
-            console.log( sidebarOuterWidth );
+            _fit_baseOuterWidth( folderBar, _fit_baseOuterWidth( folderBar ) - sidebarOuterWidth );
+            _fit_baseOuterWidth( folderMain, _fit_baseOuterWidth( folderMain ) - sidebarOuterWidth );
+            _fit_baseOuterWidth( fileArea, _fit_baseOuterWidth( fileArea ) - sidebarOuterWidth );
 
             // Transición de la zona de iconos
             folderMain.add( folderBar ).add( fileArea ).transition( { width : '-=' + sidebarOuterWidth }, 238, function(){
