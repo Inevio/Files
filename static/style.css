@@ -83,6 +83,7 @@ textarea[readonly]{
 
 .wz-ui-header{
     width: 692px;
+    z-index: 2;
 }
 
 .weexplorer-menu{
