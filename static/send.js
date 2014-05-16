@@ -54,7 +54,7 @@
 
         });
         
-    wz.user.friendList( function( error, list ){
+    wz.user.friendList( false, function( error, list ){
         
         for( var i = 0; i < list.length; i++ ){
                                             

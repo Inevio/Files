@@ -22,7 +22,7 @@
 
             var deferred = $.Deferred();
             
-            wz.user.friendList( function( error, list ){
+            wz.user.friendList( false, function( error, list ){
                 deferred.resolve( [ error, list ] );
             });
 
