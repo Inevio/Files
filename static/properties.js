@@ -15,6 +15,16 @@
     var file      = {};
     var renaming  = false;
 
+    var addZero = function( value ){
+
+        if( value < 10 ){
+            return '0' + value;
+        }else{
+            return value;
+        }
+
+    };
+
     var permissions = function( permissions ){
 
         if( permissions.link === 1 ){
@@ -79,29 +89,8 @@
             type.text( lang.unknown );
         }
         
-        var createdDate = new Date( structure.created );
-        var createdDay = createdDate.getDate();
-            if( createdDay < 10 ){ createdDay = '0' + createdDay; }
-        var createdMonth = createdDate.getMonth() + 1;
-            if( createdMonth < 10 ){ createdMonth = '0' + createdMonth; }
-        var createdHour = createdDate.getHours();
-            if( createdHour < 10 ){ createdHour = '0' + createdHour; }
-        var createdMinute = createdDate.getMinutes();
-            if( createdMinute < 10 ){ createdMinute = '0' + createdMinute; }
-        var createdSecond = createdDate.getSeconds();
-            if( createdSecond < 10 ){ createdSecond = '0' + createdSecond; }
-        
+        var createdDate  = new Date( structure.created );
         var modifiedDate = new Date( structure.modified );
-        var modifiedDay = modifiedDate.getDate();
-            if( modifiedDay < 10 ){ modifiedDay = '0' + modifiedDay; }
-        var modifiedMonth = modifiedDate.getMonth() + 1;
-            if( modifiedMonth < 10 ){ modifiedMonth = '0' + modifiedMonth; }
-        var modifiedHour = modifiedDate.getHours();
-            if( modifiedHour < 10 ){ modifiedHour = '0' + modifiedHour; }
-        var modifiedMinute = modifiedDate.getMinutes();
-            if( modifiedMinute < 10 ){ modifiedMinute = '0' + modifiedMinute; }
-        var modifiedSecond = modifiedDate.getSeconds();
-            if( modifiedSecond < 10 ){ modifiedSecond = '0' + modifiedSecond; }
 
         if( ( fileType !== 0 && fileType !== 1 && fileType !== 5 ) || ( fileType === 5 && structure.pointerType !== 0 && structure.pointerType !== 1 ) ){
 
@@ -111,13 +100,46 @@
                 size.text( wz.tool.bytesToUnit( structure.size, 2 ) );
             }
             
-            created.text( createdMonth + '/' + createdDay + '/' +  createdDate.getFullYear() + ', ' + createdHour + ':' + createdMinute + ':' + createdSecond );
-            modified.text( modifiedMonth + '/' + modifiedDay + '/' +  modifiedDate.getFullYear() + ', ' + modifiedHour + ':' + modifiedMinute + ':' + modifiedSecond );
+            // To Do -> Usar la función format
+            created.text(
+
+                addZero( createdDate.getMonth() + 1 ) + '/' +
+                addZero( createdDate.getDate() ) + '/' +
+                createdDate.getFullYear() + ', ' +
+                addZero( createdDate.getHours() ) + ':' +
+                addZero( createdDate.getMinutes() ) + ':' +
+                addZero( createdDate.getSeconds() )
+
+            );
+
+            // To Do -> Usar la función format
+            modified.text(
+
+                addZero( modifiedDate.getMonth() + 1 ) + '/' +
+                addZero( modifiedDate.getDate() ) + '/' +
+                modifiedDate.getFullYear() + ', ' +
+                addZero( modifiedDate.getHours() ) + ':' +
+                addZero( modifiedDate.getMinutes() ) + ':' +
+                addZero( modifiedDate.getSeconds() )
+
+            );
 
         }else{
 
             size.text( '--' );
-            created.text( createdMonth + '/' + createdDay + '/' +  createdDate.getFullYear() + ', ' + createdHour + ':' + createdMinute + ':' + createdSecond );
+
+            // To Do -> Usar la función format
+            created.text(
+
+                addZero( createdDate.getMonth() + 1 ) + '/' +
+                addZero( createdDate.getDate() ) + '/' +
+                createdDate.getFullYear() + ', ' +
+                addZero( createdDate.getHours() ) + ':' +
+                addZero( createdDate.getMinutes() ) + ':' +
+                addZero( createdDate.getSeconds() )
+
+            );
+
             modified.text( '--' );
 
         }
@@ -178,39 +200,35 @@
 
     });
 
-    win .key( 'enter', function(){
-            
-            input.blur();
-            
-        });
+    win.key( 'enter', function(){
+        input.blur();
+    });
         
-    input
-    
-        .on( 'blur', function(){
-            
-            if( input.val() !== file.name && !renaming ){
+    input.on( 'blur', function(){
+        
+        if( input.val() !== file.name && !renaming ){
 
-                file.rename( input.val(), function( error ){
+            file.rename( input.val(), function( error ){
 
-                    if( error ){
+                if( error ){
 
-                        if( error === 'NAME ALREADY EXISTS' ){
-                            alert( lang.nameExists );
-                        }else{
-                            alert( error );
-                        }
-
-                        input.val( file.name );
-
+                    if( error === 'NAME ALREADY EXISTS' ){
+                        alert( lang.nameExists );
+                    }else{
+                        alert( error );
                     }
 
-                });
+                    input.val( file.name );
 
-            }
+                }
 
-            renaming = false;
-            
-        });
+            });
+
+        }
+
+        renaming = false;
+        
+    });
         
     $( '.properties-title', win ).text( lang.propertiesTitle );
     $( '.properties-name', win ).text( '· ' +  lang.propertiesName + ':' );
