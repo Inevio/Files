@@ -218,6 +218,64 @@
                     "css"    : ["shared.css"],
                     "script" : ["shared.js"]
 
+                },
+
+                "openFile" : {
+
+                    "template" : "openFile.html",
+
+                    "resizable" : true,
+                    "maxizable" : true,
+
+                    "width"  : {
+
+                        "default" : 692,
+                        "min"     : 552,
+                        "max"     : 0
+
+                    },
+
+                    "height" : {
+
+                        "default" : 591,
+                        "min"     : 400,
+                        "max"     : 0
+
+                    },
+
+                    "css"    : ["openFile.css"],
+                    "script" : ["openFile.js"],
+                    "start"  : []
+
+                },
+
+                "saveFile" : {
+
+                    "template" : "saveFile.html",
+
+                    "resizable" : true,
+                    "maxizable" : true,
+
+                    "width"  : {
+
+                        "default" : 692,
+                        "min"     : 552,
+                        "max"     : 0
+
+                    },
+
+                    "height" : {
+
+                        "default" : 591,
+                        "min"     : 400,
+                        "max"     : 0
+
+                    },
+
+                    "css"    : ["saveFile.css"],
+                    "script" : ["saveFile.js"],
+                    "start"  : []
+
                 }
 
             }
