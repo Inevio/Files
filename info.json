@@ -220,9 +220,9 @@
 
                 },
 
-                "openFile" : {
+                "selectFile" : {
 
-                    "template" : "openFile.html",
+                    "template" : "selectFile.html",
 
                     "resizable" : true,
                     "maxizable" : true,
@@ -243,8 +243,8 @@
 
                     },
 
-                    "css"    : ["openFile.css"],
-                    "script" : ["openFile.js"],
+                    "css"    : ["selectFile.css"],
+                    "script" : ["selectFile.js"],
                     "start"  : []
 
                 },
