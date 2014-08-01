@@ -224,8 +224,8 @@
 
                     "template" : "selectFile.html",
 
-                    "resizable" : true,
-                    "maxizable" : true,
+                    "resizable" : false,
+                    "maxizable" : false,
 
                     "width"  : {
 
@@ -253,8 +253,8 @@
 
                     "template" : "saveFile.html",
 
-                    "resizable" : true,
-                    "maxizable" : true,
+                    "resizable" : false,
+                    "maxizable" : false,
 
                     "width"  : {
 
