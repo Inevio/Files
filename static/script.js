@@ -1843,6 +1843,61 @@
 
             }, 'warning');
 
+        }else if( icon.hasClass('received') ){
+            
+            menu
+                .addOption( lang.acceptFile, function(){
+
+                    wz.fs( icon.data( 'file-id' ), function( error, structure ){
+
+                        structure.accept( function( error ){
+
+                            if( error ){
+                                alert( error );
+                            }else{
+
+                                wz.banner()
+                                    .setTitle( lang.fileShareAccepted )
+                                    .setText( structure.name + ' ' + lang.beenAccepted )
+                                    .setIcon( structure.icons.tiny )
+                                    .render();
+
+                            }
+                            
+                        });
+
+                    });
+
+                })
+
+                .addOption( lang.properties, function(){
+                    wz.app.createView( icon.data( 'file-id' ), 'properties' );
+                })
+
+                .addOption( lang.refuseFile, function(){
+
+                    wz.fs( icon.data( 'file-id' ), function( error, structure ){
+
+                        structure.refuse( function( error ){
+
+                            if( error ){
+                                alert( error );
+                            }else{
+
+                                wz.banner()
+                                    .setTitle( lang.fileShareRefused )
+                                    .setText( structure.name + ' ' + lang.beenRefused )
+                                    .setIcon( 'https://static.weezeel.com/app/1/refuse.png' )
+                                    .render();
+
+                            }
+
+                        });
+
+                    });
+
+                }, 'warning');
+            
         }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
             
             menu.addOption( lang.openFile, function(){
@@ -1951,61 +2006,6 @@
             menu.addOption( lang.remove, function(){
                 deleteAllActive();
             }, 'warning');
-            
-        }else if( icon.hasClass('received') ){
-            
-            menu
-                .addOption( lang.acceptFile, function(){
-
-                    wz.fs( icon.data( 'file-id' ), function( error, structure ){
-
-                        structure.accept( function( error ){
-
-                            if( error ){
-                                alert( error );
-                            }else{
-
-                                wz.banner()
-                                    .setTitle( lang.fileShareAccepted )
-                                    .setText( structure.name + ' ' + lang.beenAccepted )
-                                    .setIcon( structure.icons.tiny )
-                                    .render();
-
-                            }
-                            
-                        });
-
-                    });
-
-                })
-
-                .addOption( lang.properties, function(){
-                    wz.app.createView( icon.data( 'file-id' ), 'properties' );
-                })
-
-                .addOption( lang.refuseFile, function(){
-
-                    wz.fs( icon.data( 'file-id' ), function( error, structure ){
-
-                        structure.refuse( function( error ){
-
-                            if( error ){
-                                alert( error );
-                            }else{
-
-                                wz.banner()
-                                    .setTitle( lang.fileShareRefused )
-                                    .setText( structure.name + ' ' + lang.beenRefused )
-                                    .setIcon( 'https://static.weezeel.com/app/1/refuse.png' )
-                                    .render();
-
-                            }
-
-                        });
-
-                    });
-
-                }, 'warning');
             
         }else if( icon.hasClass( 'pointer-pending' ) ){
             // To Do
