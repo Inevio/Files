@@ -1835,7 +1835,7 @@
                                 wz.banner()
                                     .title( lang.fileShareRefused )
                                     .text( structure.name + ' ' + lang.beenRefused )
-                                    .icon( 'https://static.weezeel.com/app/1/refuse.png' )
+                                    .icon( 'https://static.inevio.com/app/1/refuse.png' )
                                     .render();
 
                             }
@@ -1905,7 +1905,7 @@
 
                                 banner
                                     .text( structure.name + ' ' + lang.beenRefused )
-                                    .icon( 'https://static.weezeel.com/app/1/refuse.png' )
+                                    .icon( 'https://static.inevio.com/app/1/refuse.png' )
                                     .render();
 
                             }

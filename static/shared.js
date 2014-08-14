@@ -126,7 +126,7 @@
 
                             banner
                                 .text( structure.name + ' ' + lang.beenRefused )
-                                .icon( 'https://static.weezeel.com/app/1/refuse.png' )
+                                .icon( 'https://static.inevio.com/app/1/refuse.png' )
                                 .render();
 
                                 wz.app.closeWindow( win.data( 'win' ) );
