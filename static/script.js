@@ -1887,7 +1887,7 @@
                                 wz.banner()
                                     .setTitle( lang.fileShareRefused )
                                     .setText( structure.name + ' ' + lang.beenRefused )
-                                    .setIcon( 'https://static.weezeel.com/app/1/refuse.png' )
+                                    .setIcon( 'https://static.inevio.com/app/1/refuse.png' )
                                     .render();
 
                             }
@@ -1977,7 +1977,14 @@
                     removeFromSidebar( icon.data( 'file-id' ) );
                 });
 
+<<<<<<< HEAD
             }else{
+=======
+                                banner
+                                    .text( structure.name + ' ' + lang.beenRefused )
+                                    .icon( 'https://static.inevio.com/app/1/refuse.png' )
+                                    .render();
+>>>>>>> master
 
                 menu.addOption( lang.addToSidebar, function(){
 
