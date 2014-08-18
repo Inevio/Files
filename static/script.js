@@ -1977,14 +1977,7 @@
                     removeFromSidebar( icon.data( 'file-id' ) );
                 });
 
-<<<<<<< HEAD
             }else{
-=======
-                                banner
-                                    .text( structure.name + ' ' + lang.beenRefused )
-                                    .icon( 'https://static.inevio.com/app/1/refuse.png' )
-                                    .render();
->>>>>>> master
 
                 menu.addOption( lang.addToSidebar, function(){
 
