@@ -68,8 +68,33 @@
 
                 loading = false;
 
-                friendList = friendList[ 1 ];
-                sharedList = sharedList[ 2 ];
+                friendList = friendList[ 1 ].sort( function( a, b ){
+
+                    if( a.fullName > b.fullName ){
+                        return 1;
+                    }
+
+                    if( a.fullName < b.fullName ){
+                        return -1;
+                    }
+
+                    return 0;
+
+                });
+
+                sharedList = sharedList[ 2 ].sort( function( a, b ){
+
+                    if( a.fullName > b.fullName ){
+                        return 1;
+                    }
+
+                    if( a.fullName < b.fullName ){
+                        return -1;
+                    }
+
+                    return 0;
+                    
+                });
 
                 var userCard = null;
 
