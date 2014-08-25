@@ -444,11 +444,25 @@
 
         renaming = icon;
         prevName = $( 'textarea', icon).val();
+
+        var nameLength = 0;
+
+        if( /\.tar\.gz$/ig.test( prevName ) ){
+            nameLength = prevName.lastIndexOf('.tar.gz');
+        }else if( /\.tar\.bz2$/ig.test( prevName ) ){
+            nameLength = prevName.lastIndexOf('.tar.bz2');
+        }else{
+            nameLength = prevName.lastIndexOf('.');
+        }
+
+        if( nameLength <= 0 ){
+            nameLength = prevName.length;
+        }
         
         $( 'textarea', icon)
             .removeAttr('readonly')
             .focus()
-            .select()
+            .selection( 0, nameLength )
             .removeClass('wz-dragger');
 
     };
