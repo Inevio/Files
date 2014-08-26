@@ -1848,7 +1848,7 @@
 
                         banner
                             .setText( structure.name + ' ' + lang.beenRefused )
-                            .setIcon( 'https://static.weezeel.com/app/1/refuse.png' )
+                            .setIcon( 'https://static.inevio.com/app/1/refuse.png' )
                             .render();
 
                     });
