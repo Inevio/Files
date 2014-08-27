@@ -57,17 +57,7 @@
     wz.user.friendList( false, function( error, list ){
 
         list = list.sort( function( a, b ){
-
-            if( a.fullName > b.fullName ){
-                return 1;
-            }
-
-            if( a.fullName < b.fullName ){
-                return -1;
-            }
-
-            return 0;
-
+            return a.fullName.localeCompare( b.fullName );
         });
         
         for( var i = 0; i < list.length; i++ ){
