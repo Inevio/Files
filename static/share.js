@@ -60,7 +60,7 @@
                         $( '.share-how-' + i, state ).mousedown();
                     }
 
-                    if( !owner.current ){
+                    if( owner !== wz.system.user().id ){
                         state.addClass( 'blocked' );
                     }
                     
@@ -83,7 +83,7 @@
 
                 for( i = 0; i < sharedList.length; i++ ){
 
-                    if( sharedList[ i ].id !== owner.id ){
+                    if( sharedList[ i ].id !== owner ){
 
                         userCard = shareUserPrototype.clone().removeClass('wz-prototype');
                         userCard.children( 'img' ).attr( 'src', sharedList[ i ].avatar.tiny );
@@ -129,157 +129,157 @@
 
     // DOM Events
     win
-        .on( 'mousedown', '.share-how article', function(){
+    .on( 'mousedown', '.share-how article', function(){
 
-            if( owner.current || loading ){
+        if( owner === wz.system.user().id || loading ){
 
-                var button = $(this).find( 'figure' );
+            var button = $(this).find( 'figure' );
 
-                if( button.hasClass( 'default' ) ){
+            if( button.hasClass( 'default' ) ){
+                
+                if( button.hasClass('yes') ){
 
-                    if( button.hasClass('yes') ){
-
-                        state.removeClass( 'default' );
-                        button.removeClass('yes');
-                        button.addClass('no');
-                        button.find('span').text( lang.shareHowNo );
-
-                    }else{
-
-                        state.addClass( 'default' );
-                        $( this ).siblings( 'article' ).find( 'figure' ).removeClass('no').addClass( 'yes' ).find( 'span' ).text( lang.shareHowYes );
-                        button.removeClass('no');
-                        button.addClass('yes');
-                        button.find('span').text( lang.shareHowYes );
-
-                    }
+                    state.removeClass( 'default' );
+                    button.removeClass('yes');
+                    button.addClass('no');
+                    button.find('span').text( lang.shareHowNo );
 
                 }else{
 
-                    if( button.hasClass('yes') ){
+                    state.addClass( 'default' );
+                    $( this ).siblings( 'article' ).find( 'figure' ).removeClass('no').addClass( 'yes' ).find( 'span' ).text( lang.shareHowYes );
+                    button.removeClass('no');
+                    button.addClass('yes');
+                    button.find('span').text( lang.shareHowYes );
 
-                        state.removeClass( 'default' );
-                        $( this ).siblings( 'article' ).find( '.default' ).removeClass('yes').addClass('no').find( 'span' ).text( lang.shareHowNo );
-                        button.removeClass('yes');
-                        button.addClass('no');
-                        button.find('span').text( lang.shareHowNo );
+                }
 
-                    }else{
+            }else{
 
-                        if( !$(this).siblings( 'article' ).find( 'figure' ).not( '.default' ).hasClass( 'no' ) ){
-                            state.addClass( 'default' );
-                            $( this ).siblings( 'article' ).find( '.default' ).removeClass('no').addClass('yes').find( 'span' ).text( lang.shareHowYes );
-                        }
+                if( button.hasClass('yes') ){
 
-                        button.removeClass('no');
-                        button.addClass('yes');
-                        button.find('span').text( lang.shareHowYes );
+                    state.removeClass( 'default' );
+                    $( this ).siblings( 'article' ).find( '.default' ).removeClass('yes').addClass('no').find( 'span' ).text( lang.shareHowNo );
+                    button.removeClass('yes');
+                    button.addClass('no');
+                    button.find('span').text( lang.shareHowNo );
 
+                }else{
+
+                    if( !$(this).siblings( 'article' ).find( 'figure' ).not( '.default' ).hasClass( 'no' ) ){
+                        state.addClass( 'default' );
+                        $( this ).siblings( 'article' ).find( '.default' ).removeClass('no').addClass('yes').find( 'span' ).text( lang.shareHowYes );
                     }
+
+                    button.removeClass('no');
+                    button.addClass('yes');
+                    button.find('span').text( lang.shareHowYes );
 
                 }
 
             }
-            
-        })
+
+        }
         
-        .on( 'mousedown', '.share-user', function(){
-            
-            if( $( this ).parent().hasClass('share-list-users') ){
-                shareChosenUsers.append( this );
-            }else{
-                shareListUsers.append( this );
-            }
-            
-        })
+    })
     
-        .on( 'mousedown', 'button', function(){
+    .on( 'mousedown', '.share-user', function(){
+        
+        if( $( this ).parent().hasClass('share-list-users') ){
+            shareChosenUsers.append( this );
+        }else{
+            shareListUsers.append( this );
+        }
+        
+    })
 
-            filePermissions = {
+    .on( 'mousedown', 'button', function(){
 
-                'link'     : ( $( '.share-how-link', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
-                'modify'   : ( $( '.share-how-modify', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
-                'copy'     : ( $( '.share-how-copy', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
-                'download' : ( $( '.share-how-download', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
-                'share'    : ( $( '.share-how-share', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
-                'send'     : ( $( '.share-how-send', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0
+        filePermissions = {
 
-            };
+            'link'     : ( $( '.share-how-link', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
+            'modify'   : ( $( '.share-how-modify', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
+            'copy'     : ( $( '.share-how-copy', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
+            'download' : ( $( '.share-how-download', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
+            'share'    : ( $( '.share-how-share', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
+            'send'     : ( $( '.share-how-send', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0
+
+        };
+        
+        wz.fs( params, function( error, structure ){
+
+            var changed  = false;
+            var promises = [];
             
-            wz.fs( params, function( error, structure ){
+            shareChosenUsers.children().each( function(){
 
-                var changed  = false;
-                var promises = [];
-                
-                shareChosenUsers.children().each( function(){
+                var userId = $( this ).data('userId');
+                var index  = initialUsers.indexOf( userId );
 
-                    var userId = $( this ).data('userId');
-                    var index  = initialUsers.indexOf( userId );
+                if( index === -1 ){
 
-                    if( index === -1 ){
-
-                        var deferred  = $.Deferred();
-                        
-                        promises.push( deferred.promise() );
-
-                        structure.addShare( userId, filePermissions, function( error ){
-                            deferred.resolve( error );
-                        });
-
-                        changed = true;
-
-                    }else{
-                        initialUsers[ index ] = null;
-                    }
+                    var deferred  = $.Deferred();
                     
-                });
+                    promises.push( deferred.promise() );
 
-                initialUsers.map( function( userId ){
+                    structure.addShare( userId, filePermissions, function( error ){
+                        deferred.resolve( error );
+                    });
 
-                    if( userId !== null ){
+                    changed = true;
 
-                        var deferred = $.Deferred();
+                }else{
+                    initialUsers[ index ] = null;
+                }
+                
+            });
 
-                        promises.push( deferred.promise() );
+            initialUsers.map( function( userId ){
 
-                        structure.removeShare( userId, function( error ){
-                            deferred.resolve( error );
-                        });
-                       
-                    }
-
-                });
-
-                if( !changed && shareChosenUsers.length ){
+                if( userId !== null ){
 
                     var deferred = $.Deferred();
 
                     promises.push( deferred.promise() );
 
-                    structure.changePermissions( filePermissions, function( error ){
+                    structure.removeShare( userId, function( error ){
                         deferred.resolve( error );
                     });
-
+                   
                 }
 
-                $.when.apply( null, promises )
-                    .then( function(){
-
-                        // To Do -> Hacer cosas con las respuestas de las promesas
-
-                        wz.banner()
-                            .setTitle( lang.fileShared )
-                            .setText( lang.fileSharedStart + ' ' + structure.name + ' ' + lang.fileSharedEnd )
-                            .setIcon( structure.icons.tiny )
-                            .render();
-
-                        wz.view.remove();
-
-                    });
-                
             });
 
+            if( !changed && shareChosenUsers.length ){
+
+                var deferred = $.Deferred();
+
+                promises.push( deferred.promise() );
+
+                structure.changePermissions( filePermissions, function( error ){
+                    deferred.resolve( error );
+                });
+
+            }
+
+            $.when.apply( null, promises )
+                .then( function(){
+
+                    // To Do -> Hacer cosas con las respuestas de las promesas
+
+                    wz.banner()
+                        .setTitle( lang.fileShared )
+                        .setText( lang.fileSharedStart + ' ' + structure.name + ' ' + lang.fileSharedEnd )
+                        .setIcon( structure.icons.tiny )
+                        .render();
+
+                    wz.view.remove();
+
+                });
+            
         });
+
+    });
 
     main();
     
