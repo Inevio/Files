@@ -1070,3 +1070,10 @@ img{
     float: left;
     margin-left: 8px;
 }
+
+.directory-status{
+    font-size: 36px;
+    color: #767776;
+    font-family: Lato;
+    font-weight: 200;
+}

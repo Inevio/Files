@@ -19,21 +19,22 @@
                     'temporal-file'
                 ];
 
-    var nextButton     = $( '.weexplorer-option-next', win );
-    var backButton     = $( '.weexplorer-option-back', win );
-    var views          = $( '.weexplorer-menu-views', win );
-    var downloadFiles  = $( '.weexplorer-menu-download', win );
-    var sidebar        = $( '.weexplorer-sidebar', win );
-    var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
-    var fileArea       = $( '.weexplorer-file-zone', win );
-    var filePrototype  = $( '.weexplorer-file.wz-prototype', win );
-    var folderName     = $( '.weexplorer-folder-name', win );
-    var folderMain     = $( '.weexplorer-main', win );
-    var uploadButton   = $( '.weexplorer-menu-upload', win );
-    var winMenu        = $( '.wz-ui-header', win );
-    var wxpMenu        = $( '.weexplorer-menu', win );
-    var folderBar      = $( '.weexplorer-folder', win );
-    var navigationMenu = $( '.weexplorer-navigation', win );
+    var nextButton      = $( '.weexplorer-option-next', win );
+    var backButton      = $( '.weexplorer-option-back', win );
+    var views           = $( '.weexplorer-menu-views', win );
+    var downloadFiles   = $( '.weexplorer-menu-download', win );
+    var sidebar         = $( '.weexplorer-sidebar', win );
+    var sidebarElement  = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
+    var fileArea        = $( '.weexplorer-file-zone', win );
+    var filePrototype   = $( '.weexplorer-file.wz-prototype', win );
+    var folderName      = $( '.weexplorer-folder-name', win );
+    var folderMain      = $( '.weexplorer-main', win );
+    var uploadButton    = $( '.weexplorer-menu-upload', win );
+    var winMenu         = $( '.wz-ui-header', win );
+    var wxpMenu         = $( '.weexplorer-menu', win );
+    var folderBar       = $( '.weexplorer-folder', win );
+    var navigationMenu  = $( '.weexplorer-navigation', win );
+    var directoryStatus = $('.directory-status');
 
     var uploading        = $( '.weexplorer-uploading', win );
     var uploadingBar     = $( '.weexplorer-uploading-bar', uploading );
@@ -370,7 +371,7 @@
 
             if( error ){
                 alert( lang.errorOpenDirectory );
-                return false;
+                return;
             }
 
             // Update current
@@ -394,8 +395,8 @@
                 }
 
                 // Display icons
-                fileArea.children().not('.wz-prototype').remove();
-
+                fileArea.children().not('.wz-prototype').not( directoryStatus ).remove();
+                
                 if( sortType === 1 ){
                     files.sort( sortBySize );
                 }else if( sortType === 2 ){
@@ -407,6 +408,18 @@
                 }
                 
                 displayIcons( files );
+
+                if( !files.length ){
+
+                    // To Do -> La altura del directoryStatus debe sacarse dinámicamente
+                    directoryStatus
+                        .css( 'display', 'block' )
+                        .css( 'margin-top', ( ( fileArea.height() - parseInt( fileArea.css('padding-top'), 10 ) ) / 2 ) - /*directoryStatus.height()*/ 36 )
+                        .text( lang.directoryEmpty );
+
+                }else{
+                    directoryStatus.css( 'display', 'none' );
+                }
 
                 fileArea.data( 'wz-uploader-destiny', structure.id );
                 
@@ -1209,6 +1222,10 @@
 
             $( 'textarea', items ).width( fileArea.width() - width );
 
+        }
+
+        if( directoryStatus.css('display') === 'block' ){
+            directoryStatus.css( 'margin-top', ( ( fileArea.height() - parseInt( fileArea.css('padding-top'), 10 ) ) / 2 )  - directoryStatus.height() );
         }
         
     })

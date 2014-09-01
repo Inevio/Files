@@ -33,6 +33,8 @@
     "newDirectory" : "Nuevo directorio",
     "modified" : "Modif. ",
     "nameExists" : "Ya existe un archivo llamado así. Por favor elige otro nombre.",
+    "directoryLoading" : "Cargando...",
+    "directoryEmpty" : "Directorio vacío",
 
     "favourites" : "Favoritos",
     "uploading" : "Subiendo",
