@@ -1,26 +1,20 @@
 
 .wz-view{
-    
     background: #FFF;
-    
 }
 
 .wz-view-menu{
-    
     border-bottom: 1px solid #E5E5E5;
     width: 590px;
     height: 23px;
     padding: 9px 20px 7px 20px;
     
 }
-
 .wz-view-menu span{
-    
     float: left;
     margin-top: 6px;
     font-size: 15px;
-    color: #646464;
-    
+    color: #646464;    
 }
 
 .wz-view-close{
@@ -340,4 +334,12 @@ button:hover{
     text-overflow: ellipsis;
     white-space: nowrap;
     cursor: pointer;
+}
+
+.empty-list{
+    text-align: center;
+    color: #797979;
+    font-family: 'Lato';
+    font-size: 16px;
+    margin-top: 155px;
 }

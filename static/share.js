@@ -13,8 +13,8 @@
 
         initialUsers = [];
 
-        shareListUsers.children().not( '.share-chosen-title' ).remove();
-        shareChosenUsers.children().not( '.share-chosen-title' ).remove();
+        shareListUsers.children().not( '.share-chosen-title, .empty-list' ).remove();
+        shareChosenUsers.children().not( '.share-chosen-title, .empty-list' ).remove();
         state.addClass( 'default' ).find( 'figure' ).removeClass( 'no' ).addClass( 'yes' ).find( 'span' ).text( lang.shareHowYes );
 
         // Local Functions
@@ -46,81 +46,92 @@
 
         };
 
-        $.when( getFriendList(), getSharedList() )
-            .then( function( friendList, sharedList ){
+        $.when( getFriendList(), getSharedList() ).then( function( friendList, sharedList ){
 
-                owner           = sharedList[ 1 ].owner;
-                var permissions = sharedList[ 1 ].permissions;
+            owner           = sharedList[ 1 ].owner;
+            var permissions = sharedList[ 1 ].permissions;
 
-                loading = true;
+            loading = true;
 
-                for( var i in permissions ){
+            for( var i in permissions ){
 
-                    if( !permissions[i] ){
-                        $( '.share-how-' + i, state ).mousedown();
-                    }
-
-                    if( owner !== wz.system.user().id ){
-                        state.addClass( 'blocked' );
-                    }
-                    
+                if( !permissions[i] ){
+                    $( '.share-how-' + i, state ).mousedown();
                 }
 
-                loading = false;
-
-                friendList = friendList[ 1 ].sort( function( a, b ){
-                    return a.fullName.localeCompare( b.fullName );
-                });
-
-                sharedList = sharedList[ 2 ].sort( function( a, b ){
-                    return a.fullName.localeCompare( b.fullName );
-                });
-
-                var userCard = null;
-
-                var i = 0;
-                var j = 0;
-
-                for( i = 0; i < sharedList.length; i++ ){
-
-                    if( sharedList[ i ].id !== owner ){
-
-                        userCard = shareUserPrototype.clone().removeClass('wz-prototype');
-                        userCard.children( 'img' ).attr( 'src', sharedList[ i ].avatar.tiny );
-                        userCard.data( 'userId', sharedList[ i ].id );
-                        userCard.children( 'span' ).text( sharedList[ i ].fullName );
-                        shareChosenUsers.append( userCard );
-
-                        initialUsers.push( sharedList[ i ].id );
-
-                    }
-
-                    for( j = 0; j < friendList.length; j++ ){
-
-                        if( friendList[ j ] !== null && friendList[ j ].id === sharedList[ i ].id ){
-                            friendList[ j ] = null;
-                            break;
-                        }
-
-                    }
-
+                if( owner !== wz.system.user().id ){
+                    state.addClass( 'blocked' );
                 }
+                
+            }
 
-                for( i = 0; i < friendList.length; i++ ){
+            loading = false;
 
-                    if( friendList[ i ] !== null ){
-
-                        userCard = shareUserPrototype.clone().removeClass('wz-prototype');
-                        userCard.children( 'img' ).attr( 'src', friendList[ i ].avatar.tiny );
-                        userCard.data( 'userId', friendList[ i ].id );
-                        userCard.children( 'span' ).text( friendList[ i ].fullName );
-                        shareListUsers.append( userCard );
-
-                    }
-
-                }
-
+            friendList = friendList[ 1 ].sort( function( a, b ){
+                return a.fullName.localeCompare( b.fullName );
             });
+
+            sharedList = sharedList[ 2 ].sort( function( a, b ){
+                return a.fullName.localeCompare( b.fullName );
+            });
+
+            var userCard = null;
+
+            var i = 0;
+            var j = 0;
+
+            for( i = 0; i < sharedList.length; i++ ){
+
+                if( sharedList[ i ].id !== owner ){
+
+                    userCard = shareUserPrototype.clone().removeClass('wz-prototype');
+                    userCard.children( 'img' ).attr( 'src', sharedList[ i ].avatar.tiny );
+                    userCard.data( 'userId', sharedList[ i ].id );
+                    userCard.children( 'span' ).text( sharedList[ i ].fullName );
+                    shareChosenUsers.append( userCard );
+
+                    initialUsers.push( sharedList[ i ].id );
+
+                }
+
+                for( j = 0; j < friendList.length; j++ ){
+
+                    if( friendList[ j ] !== null && friendList[ j ].id === sharedList[ i ].id ){
+                        friendList[ j ] = null;
+                        break;
+                    }
+
+                }
+
+            }
+
+            shareChosenUsers.find('.empty-list').text( lang.emptyList );
+
+            if( sharedList.length ){
+                shareChosenUsers.find('.empty-list').css( 'display', 'none' );
+            }
+
+            for( i = 0; i < friendList.length; i++ ){
+
+                if( friendList[ i ] !== null ){
+
+                    userCard = shareUserPrototype.clone().removeClass('wz-prototype');
+                    userCard.children( 'img' ).attr( 'src', friendList[ i ].avatar.tiny );
+                    userCard.data( 'userId', friendList[ i ].id );
+                    userCard.children( 'span' ).text( friendList[ i ].fullName );
+                    shareListUsers.append( userCard );
+
+                }
+
+            }
+
+            shareListUsers.find('.empty-list').text( lang.emptyList );
+
+            if( friendList.length ){
+                shareListUsers.find('.empty-list').css( 'display', 'none' );
+            }
+
+        });
 
     };
 
@@ -186,9 +197,29 @@
     .on( 'mousedown', '.share-user', function(){
         
         if( $( this ).parent().hasClass('share-list-users') ){
+
+            if( !shareChosenUsers.find('.share-user').length ){
+                shareChosenUsers.find('.empty-list').css( 'display', 'none' );
+            }
+
             shareChosenUsers.append( this );
+
+            if( !shareListUsers.find('.share-user').length ){
+                shareListUsers.find('.empty-list').css( 'display', 'block' );
+            }
+
         }else{
+
+            if( !shareListUsers.find('.share-user').length ){
+                shareListUsers.find('.empty-list').css( 'display', 'none' );
+            }
+
             shareListUsers.append( this );
+
+            if( !shareChosenUsers.find('.share-user').length ){
+                shareChosenUsers.find('.empty-list').css( 'display', 'block' );
+            }
+            
         }
         
     })
@@ -298,3 +329,4 @@
     $( '.share-how-share', win ).text( lang.shareHowShare );
     $( '.share-how-send', win ).text( lang.shareHowSend );
     $( '.share-save', win ).text( lang.shareSave );
+    $( '.empty-list', win ).text( lang.loadingList );

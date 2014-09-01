@@ -188,3 +188,11 @@ button:hover{
     white-space: nowrap;
     cursor: pointer;
 }
+
+.empty-list{
+    text-align: center;
+    color: #797979;
+    font-family: 'Lato';
+    font-size: 16px;
+    margin-top: 155px;
+}

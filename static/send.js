@@ -2,57 +2,76 @@
     var win               = $( this );
     var sendListUsers     = $('.send-list-users', win);
     var sendChosenUsers   = $('.send-chosen-users', win);
-    var sendUserPrototype = $('.send-user.wz-prototype', win);
+    var sendUserPrototype = $('.send-user.wz-prototype', win).remove();
 
     win
+    .on( 'mousedown', '.send-user', function(){
         
-        .on( 'mousedown', '.send-user', function(){
+        if( $(this).parent().hasClass('send-list-users') ){
             
-            if( $(this).parent().hasClass('send-list-users') ){
-                sendChosenUsers.append($(this));
-            }else{
-                sendListUsers.append($(this));
+            if( !sendChosenUsers.find('.send-user').length ){
+                sendChosenUsers.find('.empty-list').css( 'display', 'none' );
             }
+
+            sendChosenUsers.append( this );
+
+            if( !sendListUsers.find('.send-user').length ){
+                sendListUsers.find('.empty-list').css( 'display', 'block' );
+            }
+
+        }else{
             
-        })
+            if( !sendListUsers.find('.send-user').length ){
+                sendListUsers.find('.empty-list').css( 'display', 'none' );
+            }
+
+            sendListUsers.append( this );
+
+            if( !sendChosenUsers.find('.send-user').length ){
+                sendChosenUsers.find('.empty-list').css( 'display', 'block' );
+            }
+
+        }
         
-        .on( 'mousedown', 'button', function(){
+    })
+    
+    .on( 'mousedown', 'button', function(){
+        
+        if( sendChosenUsers.children().size() ){
+
+            wz.fs( params, function( error, structure ){
+
+                var promises = [];
             
-            if( sendChosenUsers.children().size() ){
+                sendChosenUsers.children().each( function(){
 
-                wz.fs( params, function( error, structure ){
-
-                    var promises = [];
+                    var deferred  = $.Deferred();
                 
-                    sendChosenUsers.children().each( function(){
+                    promises.push( deferred.promise() );
 
-                        var deferred  = $.Deferred();
-                    
-                        promises.push( deferred.promise() );
-
-                        structure.sendTo( $(this).data( 'user-id' ), $( '.send-message', win).val(), function( error ){
-                            deferred.resolve( error );
-                        });
-
+                    structure.sendTo( $(this).data( 'user-id' ), $( '.send-message', win).val(), function( error ){
+                        deferred.resolve( error );
                     });
 
-                    $.when.apply( null, promises ).then( function(){
-
-                        wz.banner()
-                            .setTitle( lang.fileSent )
-                            .setText( structure.name + ' ' + lang.fileSentCorrectly )
-                            .setIcon( structure.icons.tiny )
-                            .render();
-                                
-                        wz.view.remove();
-
-                    });
-                
                 });
 
-            }
+                $.when.apply( null, promises ).then( function(){
 
-        });
+                    wz.banner()
+                        .setTitle( lang.fileSent )
+                        .setText( structure.name + ' ' + lang.fileSentCorrectly )
+                        .setIcon( structure.icons.tiny )
+                        .render();
+                            
+                    wz.view.remove();
+
+                });
+            
+            });
+
+        }
+
+    });
         
     wz.user.friendList( false, function( error, list ){
 
@@ -69,6 +88,12 @@
             sendListUsers.append( userCard );
 
         }
+
+        $('.empty-list').text( lang.emptyList );
+
+        if( list.length ){
+            sendListUsers.find('.empty-list').css( 'display', 'none' );
+        }
                     
     });
 
@@ -78,3 +103,4 @@
     $( '.send-how-message', win ).text( lang.sendHowMessage );
     $( '.send-how-explanation', win ).text( lang.sendHowExplanation );
     $( '.send-how-button', win ).text( lang.sendHowButton );
+    $( '.empty-list', win ).text( lang.loadingList );

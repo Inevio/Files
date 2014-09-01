@@ -113,6 +113,8 @@
     "shareHowShare" : "Share:",
     "shareHowSend" : "Send:",
     "shareSave" : "Save",
+    "emptyList" : "Empty list",
+    "loadingList" : "Loading...",
     "fileShared" : "File shared correctly",
     "fileSharedStart" : "All the changes on",
     "fileSharedEnd" : "have been saved",
