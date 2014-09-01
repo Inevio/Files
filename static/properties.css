@@ -5,16 +5,15 @@
     
 }
 
-.wz-view-menu{
+.wz-ui-header{
     
-    border-bottom: 1px solid #E5E5E5;
     width: 235px;
     height: 23px;
     padding: 9px 20px 7px 20px;
     
 }
 
-.wz-view-menu span{
+.wz-ui-header span{
     
     float: left;
     margin-top: 6px;

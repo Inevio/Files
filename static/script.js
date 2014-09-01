@@ -30,7 +30,7 @@
     var folderName     = $( '.weexplorer-folder-name', win );
     var folderMain     = $( '.weexplorer-main', win );
     var uploadButton   = $( '.weexplorer-menu-upload', win );
-    var winMenu        = $( '.wz-view-menu', win );
+    var winMenu        = $( '.wz-ui-header', win );
     var wxpMenu        = $( '.weexplorer-menu', win );
     var folderBar      = $( '.weexplorer-folder', win );
     var navigationMenu = $( '.weexplorer-navigation', win );
