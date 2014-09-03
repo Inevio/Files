@@ -410,12 +410,21 @@
                 displayIcons( files );
 
                 if( !files.length ){
+                    
+                    if( structure.alias === 'inbox' ){
+                        directoryStatus.find('.big').text( lang.inboxEmpty );
+                        directoryStatus.find('.small').text( lang.inboxEmptyExplain );
+                    }else if( structure.id === 'shared' ){
+                        directoryStatus.find('.big').text( lang.sharedEmpty );
+                        directoryStatus.find('.small').text( lang.sharedEmptyExplain );
+                    }else{
+                        directoryStatus.find('.big').text( lang.directoryEmpty );
+                        directoryStatus.find('.small').text('');
+                    }
 
-                    // To Do -> La altura del directoryStatus debe sacarse dinámicamente
                     directoryStatus
                         .css( 'display', 'block' )
-                        .css( 'margin-top', ( ( fileArea.height() - parseInt( fileArea.css('padding-top'), 10 ) ) / 2 ) - /*directoryStatus.height()*/ 36 )
-                        .text( lang.directoryEmpty );
+                        .css( 'margin-top', ( ( fileArea.height() - parseInt( fileArea.css('padding-top'), 10 ) ) / 2 ) - directoryStatus.height() );
 
                 }else{
                     directoryStatus.css( 'display', 'none' );

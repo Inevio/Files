@@ -35,6 +35,10 @@
     "nameExists" : "There is already a file with the selected name. Please choose another one.",
     "directoryLoading" : "Loading...",
     "directoryEmpty" : "Empty directory",
+    "inboxEmpty" : "Inbox empty",
+    "inboxEmptyExplain" : "",
+    "sharedEmpty" : "No shared items",
+    "sharedEmptyExplain" : "",
 
     "favourites" : "Favourites",
     "uploading" : "Uploading",

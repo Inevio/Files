@@ -1071,7 +1071,14 @@ img{
     margin-left: 8px;
 }
 
-.directory-status{
+.directory-status .big{
+    font-size: 36px;
+    color: #767776;
+    font-family: Lato;
+    font-weight: 200;
+}
+
+.directory-status .small{
     font-size: 36px;
     color: #767776;
     font-family: Lato;

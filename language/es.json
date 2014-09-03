@@ -35,6 +35,10 @@
     "nameExists" : "Ya existe un archivo llamado así. Por favor elige otro nombre.",
     "directoryLoading" : "Cargando...",
     "directoryEmpty" : "Directorio vacío",
+    "inboxEmpty" : "No has recibido ningún fichero",
+    "inboxEmptyExplain" : "",
+    "sharedEmpty" : "Sin ficheros compartidos",
+    "sharedEmptyExplain" : "",
 
     "favourites" : "Favoritos",
     "uploading" : "Subiendo",
