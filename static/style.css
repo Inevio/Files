@@ -899,7 +899,7 @@ img{
 }
 
 .weexplorer-conversion-bar{
-    width: 75%;
+    width: 0;
     height: 5px;
     margin-top: -5px;
     background: #A43737;

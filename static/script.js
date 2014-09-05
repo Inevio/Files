@@ -159,9 +159,9 @@
 
     };
 
-    var updateCurrent = function( id ){
+    var updateCurrent = function( structure ){
 
-        current = id;
+        current = structure;
 
         if( !controlNav && !pressedNav ){
 
@@ -172,7 +172,7 @@
 
             for( var i = 0 ; i < record.length ; i++ ){
 
-                if( record[ i ] === id ){
+                if( record[ i ] === current.id ){
                     pointer = i;
                 }
 
@@ -180,9 +180,9 @@
 
         }
 
-        fileArea.data( 'file-id', id );
+        fileArea.data( 'file-id', current.id );
 
-        record[ pointer ] = id;
+        record[ pointer ] = current.id;
 
         controlNav = false;
         pressedNav = false;
@@ -375,7 +375,7 @@
             }
 
             // Update current
-            updateCurrent( structure.id );
+            updateCurrent( structure );
             recordNavigation();
 
             // List Structure Files
@@ -406,29 +406,8 @@
                 }else{
                     files.sort( sortByName );
                 }
-                
+
                 displayIcons( files );
-
-                if( !files.length ){
-                    
-                    if( structure.alias === 'inbox' ){
-                        directoryStatus.find('.big').text( lang.inboxEmpty );
-                        directoryStatus.find('.small').text( lang.inboxEmptyExplain );
-                    }else if( structure.id === 'shared' ){
-                        directoryStatus.find('.big').text( lang.sharedEmpty );
-                        directoryStatus.find('.small').text( lang.sharedEmptyExplain );
-                    }else{
-                        directoryStatus.find('.big').text( lang.directoryEmpty );
-                        directoryStatus.find('.small').text('');
-                    }
-
-                    directoryStatus
-                        .css( 'display', 'block' )
-                        .css( 'margin-top', ( ( fileArea.height() - parseInt( fileArea.css('padding-top'), 10 ) ) / 2 ) - directoryStatus.height() );
-
-                }else{
-                    directoryStatus.css( 'display', 'none' );
-                }
 
                 fileArea.data( 'wz-uploader-destiny', structure.id );
                 
@@ -532,7 +511,7 @@
 
     var createDirectory = function(){
 
-        wz.fs( current, function( error, structure ){
+        wz.fs( current.id, function( error, structure ){
 
             // To Do -> Error
 
@@ -669,7 +648,7 @@
     };
     
     var displayIcons = function(list){
-        
+
         $( list ).filter( '.directory' ).each( function(){
             fileArea.append( this ).append('\n');
         });
@@ -678,11 +657,37 @@
             fileArea.append( this ).append('\n');
         });
 
+        updateFolderStatusMessage();
         centerIcons();
         
         // Nullify
         list = null;
         
+    };
+
+    var updateFolderStatusMessage = function(){
+
+        if( !fileArea.find('.weexplorer-file').not('.wz-prototype').length ){
+                    
+            if( current.alias === 'inbox' ){
+                directoryStatus.find('.big').text( lang.inboxEmpty );
+                directoryStatus.find('.small').text( lang.inboxEmptyExplain );
+            }else if( current.id === 'shared' ){
+                directoryStatus.find('.big').text( lang.sharedEmpty );
+                directoryStatus.find('.small').text( lang.sharedEmptyExplain );
+            }else{
+                directoryStatus.find('.big').text( lang.directoryEmpty );
+                directoryStatus.find('.small').text('');
+            }
+
+            directoryStatus
+                .css( 'display', 'block' )
+                .css( 'margin-top', ( ( fileArea.height() - parseInt( fileArea.css('padding-top'), 10 ) ) / 2 ) - directoryStatus.height() );
+
+        }else{
+            directoryStatus.css( 'display', 'none' );
+        }
+
     };
     
     var notifications = function(){
@@ -1005,9 +1010,9 @@
         
         if( originID !== destinyID ){
             
-            if( originID === current ){
+            if( originID === current.id ){
                 fileArea.children( '.weexplorer-file-' + structure.id ).remove();
-            }else if( destinyID === current ){
+            }else if( destinyID === current.id ){
                 displayIcons( icon( structure ) );
             }
         
@@ -1017,9 +1022,20 @@
 
     .on( 'new', function( structure ){
 
-        if( structure.parent === current ){
+        if( structure.parent === current.id ){
             displayIcons( icon( structure ) );
         }
+
+    })
+
+    .on( 'modified', function( structure ){
+
+        console.log('MODIFIED');
+        /*
+        if( structure.parent === current.id ){
+            displayIcons( icon( structure ) );
+        }
+        */
 
     })
 
@@ -1028,17 +1044,20 @@
         fileArea.children( '.weexplorer-file-' + id ).remove();
         sidebar.children( '.folder-' + id ).remove();
 
-        if( current === id ){
+        if( current.id === id ){
             openDirectory( parent );
+        }else{
+            updateFolderStatusMessage();
+            centerIcons();
         }
 
     })
     
     .on( 'rename', function( structure ){
 
-        if( structure.parent === current ){
+        if( structure.parent === current.id ){
             fileArea.children( '.weexplorer-file-' + structure.id ).children( 'textarea' ).val( structure.name );
-        }else if( structure.id === current ){
+        }else if( structure.id === current.id ){
             $( '.weexplorer-folder-name', win ).text( structure.name );
         }
 
@@ -1064,8 +1083,10 @@
 
     wz.upload
     .on( 'fsnodeEnqueue', function( list ){
+
+        console.log( 'enqueue' );
         
-        if( list[0].parent === current ){
+        if( list[0].parent === current.id ){
             
             var length = list.length;
             var files  = $();
@@ -1245,7 +1266,7 @@
         
     .on( 'mousedown', '.weexplorer-menu-download', function(){
 
-        if( current !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
+        if( current.id !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current.id !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
 
             $( '.active.file, .active.pointer-file', win ).each( function(){
 
@@ -2122,7 +2143,7 @@
             }else if( $(this).hasClass('weexplorer-sidebar-element') ){
                 dest = $(this).data('fileId');
             }else{
-                dest = current;
+                dest = current.id;
             }
             
             item.siblings('.active').add( item ).each( function(){
@@ -2257,7 +2278,7 @@
 
     fileArea.on( 'contextmenu', function(){
 
-        if( current !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
+        if( current.id !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current.id !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
             
             wz.menu()
             .addOption( lang.upload, function(){
@@ -2274,8 +2295,8 @@
 
     uploadButton.on( 'click', function(){
 
-        if( current !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
-            $(this).data( 'destiny', current );
+        if( current.id !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current.id !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
+            $(this).data( 'destiny', current.id );
         }else{
             $(this).removeData( 'destiny' );
         }
