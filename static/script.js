@@ -1031,11 +1031,22 @@
     .on( 'modified', function( structure ){
 
         console.log('MODIFIED');
-        /*
         if( structure.parent === current.id ){
-            displayIcons( icon( structure ) );
+
+            var file =  fileArea.find('.weexplorer-file-' + structure.id );
+
+            if( file.hasClass('temporal-file') && structure.type !== 3 ){
+
+                file
+                    .removeClass('temporal-file weexplorer-file-uploading')
+                    .addClass('file')
+                    .find('img')
+                        .attr( 'attr', file.find('img').attr('src').replace( '?upload', '' ) );
+
+                        
+            }
+
         }
-        */
 
     })
 
