@@ -1575,12 +1575,15 @@
                 
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortByName );
                 
-                $( '.weexplorer-file', win ).each(function(){
+                $( '.weexplorer-file', win ).not('.wz-prototype').each(function(){
                     list = list.add($(this));
                 });
                 
                 list = list.sort(sortByName);
-                displayIcons(list);
+
+                if( list.length ){
+                    displayIcons( list );
+                }
 
                 wql.changeSort(0);
                 
@@ -1588,12 +1591,15 @@
                 
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortBySize );
                 
-                $( '.weexplorer-file', win ).each(function(){
+                $( '.weexplorer-file', win ).not('.wz-prototype').each(function(){
                     list = list.add($(this));
                 });
                 
                 list = list.sort(sortBySize);
-                displayIcons(list);
+                
+                if( list.length ){
+                    displayIcons( list );
+                }
 
                 wql.changeSort(1);
                 
@@ -1601,12 +1607,15 @@
                 
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortByCreation );
                 
-                $( '.weexplorer-file', win ).each(function(){
+                $( '.weexplorer-file', win ).not('.wz-prototype').each(function(){
                     list = list.add($(this));
                 });
                 
                 list = list.sort(sortByCreationDate);
-                displayIcons(list);
+                
+                if( list.length ){
+                    displayIcons( list );
+                }
 
                 wql.changeSort(2);
                 
@@ -1614,12 +1623,15 @@
                 
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortByModif );
                 
-                $( '.weexplorer-file', win ).each(function(){
+                $( '.weexplorer-file', win ).not('.wz-prototype').each(function(){
                     list = list.add($(this));
                 });
                 
                 list = list.sort(sortByModificationDate);
-                displayIcons(list, true);
+
+                if( list.length ){
+                    displayIcons( list, true );
+                }
 
                 wql.changeSort(3);
                 
