@@ -196,7 +196,7 @@ win
 
     });
     
-})
+});
 
 wz.fs
 .on( 'linkAdded', function( link, structure ){
@@ -219,7 +219,7 @@ wz.fs
 
             $(this).remove();
 
-            if( linksTableList.find('tr').length ){
+            if( !linksTableList.find('tr').not('.wz-prototype').length ){
                 win.removeClass('show-list');
             }
 
