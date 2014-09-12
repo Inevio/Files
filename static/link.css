@@ -1,327 +1,198 @@
 
 .wz-view{
-    
-    background: #FFF;
-    
+    background: #f6f6f6;
 }
 
-.wz-ui-header{
-    
-    width: 335px;
-    height: 23px;
-    padding: 9px 10px 7px 20px;
-    
-}
-
-.wz-ui-header span{
-    
+.link-title{
     float: left;
-    margin-top: 4px;
+    margin-top: 13px;
+    margin-left: 20px;
     font-size: 15px;
     color: #646464;
-    
 }
 
-.wz-view-close{
-    
-    float: right;
-    
+.file-icon-wrapper{
+    height: 128px;
+    width: 100%;
+    position: relative;
+    margin: 30px 0 0;
 }
 
-hr{
-    width: 495px;
-    height: 0px;
+.file-icon{
+    max-height: 128px;
+    max-width: 128px;
+    vertical-align: middle;
+    margin: auto;
+    overflow: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.file-name{
+    text-align: center;
+    font-size: 16px;
+    color: #666;
+    margin: 15px 0;
+}
+
+.options-wrapper{
+    text-align: center;
+}
+
+.options{
+    display: inline-block;
+}
+
+.option{
     float: left;
-    margin: 15px;
-    border: none;
-    border-top: 1px solid #50BDFF;
-}
-
-.link{
-
-    width: 335px;
-    height: 155px;
-    padding-top: 20px;
-    padding-left: 20px;
-    
-}
-
-.link span{
-    
-    float: left;
-    font-size: 15px;
-    color: #333;
-    width: 80px;
-    
-}
-
-span.link-question{
-    width: 335px;
-}
-
-span.link-answer{
-    width: 335px;
+    clear: both;
+    text-align: left;
     font-size: 14px;
     color: #666;
-    margin-top: 5px;
+    margin-bottom: 10px;
 }
 
-.link-password{
-
-    width: 335px;   
-    float: left;
-    margin-top: 20px;
-    
+label i{
+    margin-right: 10px !important;
 }
 
-.link-password input{
+.generate-wrapper{
+    margin: 20px 0 30px;
+    text-align: center;
+    height: 30px;
+}
 
-    width: 145px;
-    float: left;
-    margin-top: -3px;
-    border-radius: 3px;
-    border: 1px solid #DDD; 
-    font-size: 14px;
+.link-password-input{
+    display: none;
+}
+
+.wz-view.show-password .link-password-input{
+    display: inline-block;
+    width: 330px;
+    margin-right: 6px;
+}
+
+.link-generate{
+    width: auto;
+    height: 30px;
+    padding: 0 30px;
+    font-family: Lato;
+    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+}
+
+.link-table-header, .link-table-list{
+    width: 100%;
+    text-align: left;
+    display: none;
+    height: 0 !important;
+    empty-cells: show;
+}
+
+.wz-view.show-list .link-table-header, .wz-view.show-list .link-table-list{
+    display: block;
+    height: auto !important;
+}
+
+.link-table-cell{
+    font-size: 12px;
+    height: 26px;
+    border: 1px solid #dcdcdc;
     color: #666;
-    padding: 3px 5px 3px 5px;
-    
-}
-
-.link-password input:focus{
-    border: 1px solid #50BDFF;
-}
-
-.link-password button{
-
-    width: 80px;
-    height: 24px;
-    float: left;
-    margin-top: -5px;
-    margin-left: 12px;
-    padding: 1px 2px 3px 2px;
-    border-radius: 2px;
-    border-top: 1px solid #50BDFF;
-    text-align: center;
-    font-size: 15px;
-    color: #FFF;
-    box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    -webkit-box-sizing: content-box;
-    cursor: pointer;
-    
-    background-image: -moz-linear-gradient(50% 0% -90deg,rgb(60,181,255) 0%,rgb(44,153,255) 100%); 
-    background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0, rgb(60,181,255)),color-stop(1, rgb(44,153,255)));
-    background-image: -webkit-linear-gradient(-90deg,rgb(60,181,255) 0%,rgb(44,153,255) 100%);
-    background-image: -o-linear-gradient(-90deg,rgb(60,181,255) 0%,rgb(44,153,255) 100%);
-    background-image: linear-gradient(0deg,rgb(44,153,255) 0%,rgb(60,181,255) 100%);
-    
-}
-
-.link-password button:hover{
-    
-    border-top: 1px solid #60CBFF;
-    
-    background-image: -moz-linear-gradient(50% 0% -90deg,rgb(77,197,255) 0%,rgb(56,175,255) 100%); 
-    background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0, rgb(77,197,255)),color-stop(1, rgb(56,175,255)));
-    background-image: -webkit-linear-gradient(-90deg,rgb(77,197,255) 0%,rgb(56,175,255) 100%);
-    background-image: -o-linear-gradient(-90deg,rgb(77,197,255) 0%,rgb(56,175,255) 100%);
-    background-image: linear-gradient(0deg,rgb(56,175,255) 0%,rgb(77,197,255) 100%);
-    
-}
-
-.link-url{
-
-    width: 335px;   
-    float: left;
-    margin-top: 20px;   
-    
-}
-
-.link-url input{
-    
-    border: 1px solid #DDDDDD;
-    border-radius: 3px 3px 3px 3px;
-    background: #E9E9E9;
-    color: #666666;
-    float: left;
-    font-size: 14px;
-    margin-top: -3px;
-    padding: 3px 5px;
-    width: 241px;
-    cursor: default;
-    
-}
-
-.link-url input.filled{
-    
-    border: 1px solid #50BDFF;
-    background: #FFF;
-    cursor: text;
-    
-}
-
-.link-preview{
-    width: 335px;
-    float: left;
-    margin-top: 15px;
-}
-
-.link-preview input{
-    float: left;
-    margin-top: 2px;
-    cursor: pointer;
-}
-
-.link-preview label{
-    font-size: 15px;
-    color: #666;
-    float: left;
-    margin-left: 8px;
-    width: 295px;
-}
-
-table{
-    float: left;
-    font-size: 14px;
-    color: #333;
-}
-
-table tr, table td{
-    border: 1px solid #aaa;
-}
-
-.previous{
-    width: 510px;
-    height: 239px;
-    float: left;
-    margin-left: 15px;
-    overflow: hidden;
-}
-
-.previous.hidden{
-    border: none;
-    height: 0px;
-}
-
-.previous-table{
-    width: 510px;
-    height: 200px;
-    float: left;
-    margin-top: 15px;
-}
-
-.previous-table .wz-scroll-bar{
-    width: 7px;
-}
-
-.previous-table .wz-scroll-slider{
-    width: 7px;
-}
-
-.previous-title{
-    float: left;
-    font-size: 17px;
-    color: #333;
-}
-
-.first-column{
-    width: 25px;
-    padding: 5px;
-}
-
-.second-column{
-    width: 25px;
-    padding: 5px;
-}
-
-.third-column{
-    width: 174px;
-    text-align: center;
-}
-
-.fourth-column{
-    width: 73px;
-    text-align: center;
-}
-
-.fifth-column{
-    width: 73px;
-    text-align: center;
-}
-
-.sixth-column{
-    width: 73px;
-    text-align: center;
-}
-
-.seventh-column{
-    width: 25px;
-    text-align: center;
     vertical-align: middle;
 }
 
-.link-lock{
-    width: 25px;
-    height: 25px;
-    display: block;
-    background: url("@static/lock.png") no-repeat;
-    background-size: 25px 25px;
+.link-table-cell:first-child{
+    border-left: none;
 }
 
-.link-unlock{
-    width: 25px;
-    height: 25px;
-    display: block;
-    background: url("@static/unlock.png") no-repeat;
-    background-size: 25px 25px;
+.link-table-cell:last-child{
+    border-right: none;
 }
 
-.link-prev{
-    width: 25px;
-    height: 25px;
-    display: block;
-    background: url("@static/prev.png") no-repeat;
-    background-size: 25px 25px;
-}
-
-.link-unprev{
-    width: 25px;
-    height: 25px;
-    display: block;
-    background: url("@static/unprev.png") no-repeat;
-    background-size: 25px 25px;
-}
-
-.link-delete{
-    width: 16px;
-    height: 16px;
-    display: inline-block;
-    margin-top: 5px;
-    background: url("@static/cross.png") no-repeat;
-    background-size: 16px 16px;
-}
-
-input.link-data{
-    width: 160px;
-    float: none;
+.link-table-header .link-table-cell{
+    height: 30px;
     font-size: 13px;
-    position: relative;
-    top: -7px;
-    color: #333;
+    background: #fff;
+    border-bottom: none;
 }
 
-tr span{
-    position: relative;
-    top: -7px;
+.link-table-list tr:last-child .link-table-cell{
+    border-bottom: none;
 }
 
-.previous-explanation{
-    position: absolute;
-    display: none;
+.link-table-cell-password, .link-table-cell-preview{
+    width: 20px;
+    border-right: none;
+    border-left: none;
+}
+
+.link-table-cell-password i, .link-table-cell-preview i{
+    background: url('@static/link_sprite.png') 0 0;
+    background-size: 50px 15px;
+    display: inline-block;
+}
+
+.link-table-cell-password{
+    text-align: center;
+}
+
+.link-table-cell-preview{
+    text-align: left;
+}
+
+.link-table-cell-password i{
+    width: 9px;
     height: 15px;
-    padding: 10px 15px;
-    background: #FFF;
-    border: 1px solid #50BDFF;
-    color: #333;
-    font-size: 15px;
+    background-position: 0 0;
+}
+
+.link-table-cell-preview i{
+    width: 16px;
+    height: 14px;
+    background-position: -18px 0;
+    margin-top: 2px;
+}
+
+.link-table-cell-password.active i{
+    background-position: -9px 0;
+}
+
+.link-table-cell-preview.active i{
+    background-position: -34px 0;
+}
+
+.link-table-cell-password{
+    width: 21px;
+}
+
+.link-table-cell-url{
+    padding-left: 10px;
+    width: 154px;
+}
+
+.link-table-cell-views, .link-table-cell-imports{
+    padding-left: 10px;
+    width: 70px;
+}
+
+.link-table-cell-downloads{
+    padding-left: 10px;
+    width: 75px;
+}
+
+.link-table-cell-delete{
+    padding-left: 10px;
+    width: 55px;
+    color: #dc513a;
+}
+
+.link-table-cell-delete span:hover{
+    text-decoration: underline;
+}
+
+.wz-dialog input{
+    text-align: center;
 }

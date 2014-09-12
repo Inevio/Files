@@ -47,12 +47,12 @@
     "linkTitle" : "Haz click en Generar para crear un enlace",
     "linkQuestion" : "¿Quieres ponerle una contraseña al enlace?",
     "linkAnswer" : "Si no quieres simplemente haz click en Generar",
-    "linkPasswordSpan" : "Clave:",
-    "linkPasswordButton" : "Generar",
-    "linkPreview" : "No generar una vista previa de mi archivo",
-    "linkUrl" : "Url:",
+    "linkGenerate" : "Generar",
+    "linkPreview" : "Generar una vista previa de mi archivo",
+    "linkPassword" : "Proteger el enlace con contraseña",
+    "inputPassword" : "Contraseña...",
     "previousTitle" : "Enlaces creados",
-    "previousUrl" : "Url",
+    "previousUrl" : "URL",
     "previousViews" : "Visto",
     "previousDownloads" : "Descargado",
     "previousImports" : "Importado",
@@ -60,6 +60,8 @@
     "passwordYes" : "Este enlace está protegido por contraseña",
     "previewNo" : "Este enlace tiene bloqueada la vista previa",
     "previewYes" : "Este enlace dispone de vista previa",
+    "newLink" : "Nuevo enlace generado",
+    "newLinkSteps" : "Cópialo y compártelo",
 
     "propertiesTitle" : "Propiedades",
     "propertiesName" : "Nombre",
@@ -135,6 +137,8 @@
     "beenAccepted" : "ha sido aceptado",
     "folderShareRefused" : "Carpeta rechazada",
     "fileShareRefused" : "Archivo rechazado",
-    "beenRefused" : "ha sido rechazado"
+    "beenRefused" : "ha sido rechazado",
+
+    "accept" : "Aceptar"
 
 }

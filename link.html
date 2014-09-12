@@ -3,65 +3,70 @@
 
     <span class="wz-dragger link-title"></span>
     
-    <figure class="wz-view-close">
-        <i></i>
-    </figure>
+    <section class="wz-view-menu-group right wz-dragger">
+
+        <figure class="wz-view-minimize">
+            <i></i>
+        </figure>
+        <figure class="wz-view-close">
+            <i></i>
+        </figure>
+
+    </section>
 
 </section>
 
-<section class="link">
+<figure class="file-icon-wrapper">
+    <img class="file-icon" />
+</figure>
 
-    <span class="link-question"></span>
-    <span class="link-answer"></span>
-    
-    <article class="link-password">
-        <span></span>
-        <input type="password" />
-        <button></button>
-    </article>
-    
-    <article class="link-url">
-        <span></span>
-        <input type="text" class="wz-contextmenu-native" readonly="readonly" /> 
-    </article>
-    
-    <article class="link-preview">
-        <input id="link-checkbox" type="checkbox" />
-        <label for="link-checkbox"></label>
-    </article>
+<p class="file-name"></p>
+
+<section class="options-wrapper">
+
+    <section class="options">
+
+        <article class="option link-preview">
+            <input class="wz-ui-input" type="checkbox" checked="checked" /><label><i></i><span></span></label>
+        </article>
+
+        <article class="option link-password">
+            <input class="wz-ui-input" type="checkbox" /><label><i></i><span></span></label>
+        </article>
+
+    </section>
 
 </section>
 
-<hr />
-
-<section class="previous hidden">
-    
-    <span class="previous-title"></span>
-    
-    <article class="previous-table wz-scroll">
-        <table>
-            <tr>
-                <th class="first-column"></th>
-                <th class="second-column"></th>
-                <th class="third-column previous-url"></th>
-                <th class="fourth-column previous-views"></th>
-                <th class="fifth-column previous-downloads"></th>
-                <th class="sixth-column previous-imports"></th>
-                <th class="seventh-column"></th>
-            </tr>
-            <tr class="wz-prototype">
-                <td class="first-column"><i></i></td>
-                <td class="second-column"><i></i></td>
-                <td class="third-column"><input type="text" readonly="readonly" class="link-data wz-contextmenu-native" /> </td>
-                <td class="fourth-column"><span class="link-views"></span></td>
-                <td class="fifth-column"><span class="link-downloads"></span></td>
-                <td class="sixth-column"><span class="link-imports"></span></td>
-                <td class="seventh-column"><i class="link-delete"></i></td>
-            </tr>
-        </table>
-    </article>
-
-    <span class="previous-explanation"></span>
-    
+<section class="generate-wrapper">
+    <input class="link-password-input wz-ui-input" />
+    <button class="link-generate wz-ui-button"></button>
 </section>
 
+<table class="link-table-header">
+
+    <tr>
+        <th class="link-table-cell link-table-cell-password">&nbsp;</th>
+        <th class="link-table-cell link-table-cell-preview">&nbsp;</th>
+        <th class="link-table-cell link-table-cell-url">&nbsp;</th>
+        <th class="link-table-cell link-table-cell-views">&nbsp;</th>
+        <th class="link-table-cell link-table-cell-downloads">&nbsp;</th>
+        <th class="link-table-cell link-table-cell-imports">&nbsp;</th>
+        <th class="link-table-cell link-table-cell-delete">&nbsp;</th>
+    </tr>
+
+</table>
+
+<table class="link-table-list">
+
+    <tr class="wz-prototype">
+        <td class="link-table-cell link-table-cell-password"><i></i></td>
+        <td class="link-table-cell link-table-cell-preview"><i></i></td>
+        <td class="link-table-cell link-table-cell-url wz-selectable"</td>
+        <td class="link-table-cell link-table-cell-views"></td>
+        <td class="link-table-cell link-table-cell-downloads"></td>
+        <td class="link-table-cell link-table-cell-imports"></td>
+        <td class="link-table-cell link-table-cell-delete"><span>Delete</span></td>
+    </tr>
+
+</table>

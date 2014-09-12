@@ -47,12 +47,12 @@
     "linkTitle" : "Click Generate to create a link",
     "linkQuestion" : "Do you want to use a password to access the file?",
     "linkAnswer" : "If you don't just click Generate",
-    "linkPasswordSpan" : "Password:",
-    "linkPasswordButton" : "Generate",
-    "linkPreview" : "Do not make a preview of my file",
-    "linkUrl" : "Url:",
+    "linkGenerate" : "Generate",
+    "linkPreview" : "Make a preview of my file",
+    "linkPassword" : "Protect the link with a password",
+    "inputPassword" : "Password...",
     "previousTitle" : "Previous links",
-    "previousUrl" : "Url",
+    "previousUrl" : "URL",
     "previousViews" : "Views",
     "previousDownloads" : "Downloads",
     "previousImports" : "Imports",
@@ -60,6 +60,8 @@
     "passwordYes" : "This link is password protected",
     "previewNo" : "This link has no preview",
     "previewYes" : "People can preview this link",
+    "newLink" : "New link generated",
+    "newLinkSteps" : "Copy and share it",
 
     "propertiesTitle" : "Properties",
     "propertiesName" : "Name",
@@ -135,6 +137,8 @@
     "beenAccepted" : "has been accepted",
     "folderShareRefused" : "Folder refused",
     "fileShareRefused" : "File refused",
-    "beenRefused" : "has been refused"
+    "beenRefused" : "has been refused",
+
+    "accept" : "Accept"
 
 }
