@@ -1662,7 +1662,11 @@
             // To Do -> Error
 
             structure.open( function( error ){
-                // To Do -> Error
+
+                if( error ){
+                    alert( lang.noApp );
+                }
+
             });
             
         });
