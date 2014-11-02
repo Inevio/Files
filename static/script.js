@@ -1653,7 +1653,7 @@
         e.stopPropagation();
     })
     
-    .on( 'dblclick', '.weexplorer-file.file', function(){
+    .on( 'dblclick', '.weexplorer-file.file:not(.received)', function(){
 
         var id = $(this).data('file-id');
 
@@ -1673,7 +1673,7 @@
         
     })
     
-    .on( 'dblclick', '.weexplorer-file.directory', function(){
+    .on( 'dblclick', '.weexplorer-file.directory:not(.received)', function(){
 
         openDirectory( $(this).data('file-id') );
         $( '.weexplorer-sidebar-element.active', win ).removeClass('active');
