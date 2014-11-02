@@ -971,7 +971,7 @@
 
     // WZ Events
     wz.fs
-    .on( 'accepted inbox refused shared sharedAccepted sharedRefused', function(){
+    .on( 'accepted inbox refused shared sharedAccepted sharedRefused sharedOut', function(){
         notifications();
     })
 
