@@ -4,14 +4,12 @@
     var shareChosenUsers   = $('.share-chosen-users', win);
     var shareUserPrototype = $('.share-user.wz-prototype', win);
     var initialUsers       = [];
-    var filePermissions    = {};
+    var initialPermissions = {};
     var state              = $( '.share-how', win );
     var owner              = 0;
     var loading            = false;
 
     var main = function(){
-
-        initialUsers = [];
 
         shareListUsers.children().not( '.share-chosen-title, .empty-list' ).remove();
         shareChosenUsers.children().not( '.share-chosen-title, .empty-list' ).remove();
@@ -36,8 +34,8 @@
 
             wz.fs( params, function( error, structure ){
                 
-                structure.sharedWith( true, function( error, list ){
-                    deferred.resolve( [ error, structure, list ] );
+                structure.sharedWith( true, function( error, list, permissions ){
+                    deferred.resolve( [ error, structure, list, permissions ] );
                 });
 
             });
@@ -48,14 +46,14 @@
 
         $.when( getFriendList(), getSharedList() ).then( function( friendList, sharedList ){
 
-            owner           = sharedList[ 1 ].owner;
-            var permissions = sharedList[ 1 ].permissions;
+            owner              = sharedList[ 1 ].owner;
+            initialPermissions = sharedList[ 3 ];
 
             loading = true;
 
-            for( var i in permissions ){
+            for( var i in initialPermissions ){
 
-                if( !permissions[i] ){
+                if( !initialPermissions[ i ] ){
                     $( '.share-how-' + i, state ).mousedown();
                 }
 
@@ -132,6 +130,20 @@
             }
 
         });
+
+    };
+
+    var comparePermissions = function( first, second ){
+
+        for( var i in first ){
+
+            if( first[ i ] !== second[ i ] ){
+                return false;
+            }
+
+        }
+
+        return true;
 
     };
 
@@ -226,7 +238,7 @@
 
     .on( 'mousedown', 'button', function(){
 
-        filePermissions = {
+        var filePermissions = {
 
             'link'     : ( $( '.share-how-link', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
             'modify'   : ( $( '.share-how-modify', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
@@ -239,10 +251,9 @@
         
         wz.fs( params, function( error, structure ){
 
-            var changed  = false;
             var promises = [];
             
-            shareChosenUsers.children().each( function(){
+            shareChosenUsers.children().not('.empty-list').each( function(){
 
                 var userId = $( this ).data('userId');
                 var index  = initialUsers.indexOf( userId );
@@ -256,8 +267,6 @@
                     structure.addShare( userId, filePermissions, function( error ){
                         deferred.resolve( error );
                     });
-
-                    changed = true;
 
                 }else{
                     initialUsers[ index ] = null;
@@ -281,7 +290,9 @@
 
             });
 
-            if( !changed && shareChosenUsers.length ){
+            if( shareChosenUsers.length && !comparePermissions( initialPermissions, filePermissions ) ){
+
+                console.log('compara');
 
                 var deferred = $.Deferred();
 
