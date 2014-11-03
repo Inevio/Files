@@ -51,6 +51,28 @@
 
     };
 
+    var _cropExtension = function(structure){
+
+        var nameNoExt = structure.name;
+
+        if ( structure.type !== 0 && structure.type !== 1 ){
+            nameNoExt = /(.+?)(\.[^\.]+$|$)/.exec(structure.name)[1];
+        }
+
+        return nameNoExt;
+    } 
+
+    var _addExtension = function(nameNoExt, structure){
+
+        var nameExt = nameNoExt;
+
+        if (structure.type !== 0 && structure.type !== 1){
+            nameExt = nameNoExt + /(.+?)(\.[^\.]+$|$)/.exec(structure.name)[2];
+        }
+
+        return nameExt;
+    }
+
     var updateCurrent = function( id ){
 
         current = id;
@@ -122,8 +144,10 @@
 
         }
         
-        // Add new properties
-        file.children('textarea').text( structure.name );
+        //Do not show extension
+        //TO-DO, allow showing extensions
+
+        file.children('textarea').text( _cropExtension(structure) );
 
         if( ( structure.type !== 0 && structure.type !== 1 && structure.type !== 5 ) || ( structure.type === 5 && structure.pointerType !== 0 && structure.pointerType !== 1 ) ){
 
@@ -331,11 +355,16 @@
 
             wz.fs( icon.data('file-id'), function( error, structure ){
 
+                console.log(structure);
+
                 if( error ){
                     alert( error );
                 }else{
 
-                    structure.rename( $( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass( 'wz-dragger' ).val(), function( error ){
+                    var nameNoExt = $( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass( 'wz-dragger' ).val();
+                    var nameExt = _addExtension(nameNoExt, structure);
+
+                    structure.rename( nameExt, function( error ){
 
                         if( error ){
 
@@ -345,7 +374,9 @@
                                 alert( error );
                             }
 
-                            $( 'textarea', icon ).val( structure.name ).text( structure.name );
+                            var nameNoExt = _cropExtension(structure);   
+
+                            $( 'textarea', icon ).val( nameNoExt ).text( nameNoExt );
 
                         }
 

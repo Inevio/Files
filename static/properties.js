@@ -25,6 +25,28 @@
 
     };
 
+    var _cropExtension = function(structure){
+
+        var nameNoExt = structure.name;
+
+        if ( structure.type !== 0 && structure.type !== 1 ){
+            nameNoExt = /(.+?)(\.[^\.]+$|$)/.exec(structure.name)[1];
+        }
+
+        return nameNoExt;
+    } 
+
+    var _addExtension = function(nameNoExt, structure){
+
+        var nameExt = nameNoExt;
+
+        if (structure.type !== 0 && structure.type !== 1){
+            nameExt = nameNoExt + /(.+?)(\.[^\.]+$|$)/.exec(structure.name)[2];
+        }
+
+        return nameExt;
+    }
+
     var permissions = function( permissions ){
 
         if( permissions.link === 1 ){
@@ -65,10 +87,11 @@
 
     };
     
-    var properties = function( structure ){
-                
-        input.val( structure.name );
-                
+    var properties = function( structure ){       
+
+        var nameNoExt = _cropExtension(structure);
+        input.val( nameNoExt );
+
         var fileType = structure.type;
         
         if( fileType === 0 && !structure.shared ){
@@ -186,7 +209,10 @@
             renaming = true;
             input.blur();
             file = structure;
-            input.val( file.name );
+
+            var nameNoExt = _cropExtension(structure);
+
+            input.val( nameNoExt );
 
         }
 
@@ -208,7 +234,9 @@
         
         if( input.val() !== file.name && !renaming ){
 
-            file.rename( input.val(), function( error ){
+            var nameExt = _addExtension(input.val(), file);
+
+            file.rename( nameExt, function( error ){
 
                 if( error ){
 
@@ -218,7 +246,9 @@
                         alert( error );
                     }
 
-                    input.val( file.name );
+                    var nameNoExt = _cropExtension(file); 
+
+                    input.val( nameNoExt );
 
                 }
 

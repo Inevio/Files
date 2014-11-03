@@ -74,6 +74,28 @@
 
     };
 
+    var _cropExtension = function(structure){
+
+        var nameNoExt = structure.name;
+
+        if ( structure.type !== 0 && structure.type !== 1 ){
+            nameNoExt = /(.+?)(\.[^\.]+$|$)/.exec(structure.name)[1];
+        }
+
+        return nameNoExt;
+    } 
+
+    var _addExtension = function(nameNoExt, structure){
+
+        var nameExt = nameNoExt;
+
+        if (structure.type !== 0 && structure.type !== 1){
+            nameExt = nameNoExt + /(.+?)(\.[^\.]+$|$)/.exec(structure.name)[2];
+        }
+
+        return nameExt;
+    }
+
     var _fit_baseHeight = function( object, newValue ){
 
         object = $( object );
@@ -249,7 +271,11 @@
         }
         
         // Add new properties
-        file.children('textarea').text( structure.name );
+
+        //Do not show extension
+        //TO-DO, allow showing extensions
+
+        file.children('textarea').text( _cropExtension(structure) );
 
         if( ( structure.type !== 0 && structure.type !== 1 && structure.type !== 5 ) || ( structure.type === 5 && structure.pointerType !== 0 && structure.pointerType !== 1 ) ){
 
@@ -280,6 +306,7 @@
 
         }
         
+
         file.find('img').attr( 'src', structure.icons.normal + ( ( structure.type === 3 ) ? '?upload' : '' ) );
         
         file.addClass( types[ structure.type ] );
@@ -446,7 +473,7 @@
         renaming = icon;
         prevName = $( 'textarea', icon).val();
 
-        var nameLength = 0;
+        /*var nameLength = 0;
 
         if( /\.tar\.gz$/ig.test( prevName ) ){
             nameLength = prevName.lastIndexOf('.tar.gz');
@@ -458,12 +485,12 @@
 
         if( nameLength <= 0 ){
             nameLength = prevName.length;
-        }
+        }*/
         
         $( 'textarea', icon)
             .removeAttr('readonly')
             .focus()
-            .selection( 0, nameLength )
+            //.selection( 0, nameLength )
             .removeClass('wz-dragger');
 
     };
@@ -477,11 +504,15 @@
 
             wz.fs( icon.data('file-id'), function( error, structure ){
 
+                console.log(structure);
+
                 if( error ){
                     alert( error );
                 }else{
 
-                    structure.rename( $( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass( 'wz-dragger' ).val(), function( error ){
+                    var nameExt = _addExtension($( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass( 'wz-dragger' ).val(), structure);
+                    
+                    structure.rename( nameExt, function( error ){
 
                         if( error ){
 
@@ -491,7 +522,9 @@
                                 alert( error );
                             }
 
-                            $( 'textarea', icon ).val( structure.name ).text( structure.name );
+                            var nameNoExt = _cropExtension(structure);
+
+                            $( 'textarea', icon ).val( nameNoExt ).text( nameNoExt );
 
                         }
 
@@ -1067,7 +1100,10 @@
     .on( 'rename', function( structure ){
 
         if( structure.parent === current.id ){
-            fileArea.children( '.weexplorer-file-' + structure.id ).children( 'textarea' ).val( structure.name );
+
+            var nameNoExt = _cropExtension(structure);
+
+            fileArea.children( '.weexplorer-file-' + structure.id ).children( 'textarea' ).val( nameNoExt );
         }else if( structure.id === current.id ){
             $( '.weexplorer-folder-name', win ).text( structure.name );
         }
