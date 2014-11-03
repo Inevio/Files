@@ -139,6 +139,7 @@
     "fileShareRefused" : "File refused",
     "beenRefused" : "has been refused",
 
-    "accept" : "Accept"
+    "accept" : "Accept",
+    "noApp" : "No associated app could be found"
 
 }

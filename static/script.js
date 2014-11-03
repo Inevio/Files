@@ -1004,7 +1004,7 @@
 
     // WZ Events
     wz.fs
-    .on( 'accepted inbox refused shared sharedAccepted sharedRefused', function(){
+    .on( 'accepted inbox refused shared sharedAccepted sharedRefused sharedOut', function(){
         notifications();
     })
 
@@ -1689,7 +1689,7 @@
         e.stopPropagation();
     })
     
-    .on( 'dblclick', '.weexplorer-file.file', function(){
+    .on( 'dblclick', '.weexplorer-file.file:not(.received)', function(){
 
         var id = $(this).data('file-id');
 
@@ -1698,14 +1698,18 @@
             // To Do -> Error
 
             structure.open( function( error ){
-                // To Do -> Error
+
+                if( error ){
+                    alert( lang.noApp );
+                }
+
             });
             
         });
         
     })
     
-    .on( 'dblclick', '.weexplorer-file.directory', function(){
+    .on( 'dblclick', '.weexplorer-file.directory:not(.received)', function(){
 
         openDirectory( $(this).data('file-id') );
         $( '.weexplorer-sidebar-element.active', win ).removeClass('active');

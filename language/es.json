@@ -139,6 +139,7 @@
     "fileShareRefused" : "Archivo rechazado",
     "beenRefused" : "ha sido rechazado",
 
-    "accept" : "Aceptar"
+    "accept" : "Aceptar",
+    "noApp" : "No se encontró una app asociada"
 
 }
