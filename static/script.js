@@ -490,7 +490,7 @@
         $( 'textarea', icon)
             .removeAttr('readonly')
             .focus()
-            //.selection( 0, nameLength )
+            .selection( 0, prevName.length )
             .removeClass('wz-dragger');
 
     };
