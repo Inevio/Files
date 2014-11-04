@@ -575,16 +575,20 @@
         confirm( lang.deleteFile + response, function( response ){
 
             if( response ){
-
-                var notEnoughPermissions = false;
         
                 $('.weexplorer-file.active', win).each(function(){
 
                     wz.fs( $(this).data( 'file-id' ), function( error, structure ){
 
                         if( error ){
-                            alert( error );
-                        }else if( structure.owner === wz.system.user().id || structure.permissions.modify === 1 ){
+                            return alert( error );
+                        }
+
+                        if(
+                            structure.owner === wz.system.user().id ||
+                            structure.permissions.modify === 1 ||
+                            structure.id === structure.shareRoot
+                        ){
 
                             structure.remove( function( error, quota ){
 
@@ -595,16 +599,12 @@
                             });
 
                         }else{
-                            notEnoughPermissions = true;
+                            alert( lang.notEnoughPermissions );
                         }
            
                     });
                                     
                 });
-
-                if( notEnoughPermissions ){
-                    alert( lang.notEnoughPermissions );
-                }
 
             }
 
@@ -1216,7 +1216,13 @@
 
     .on( 'fsnodeProgress', function( structureID, progress, queueProgress, time ){
 
-        fileArea.children( '.weexplorer-file-' + structureID ).children('article')
+        var icon = fileArea.children( '.weexplorer-file-' + structureID );
+
+        if( !icon.hasClass('weexplorer-file-uploading') ){
+            return;
+        }
+
+        icon.children('article')
             .addClass('weexplorer-progress-bar')
             .clearQueue()
             .stop()

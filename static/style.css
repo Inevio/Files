@@ -911,7 +911,7 @@ img{
     left: 123px;
     list-style: none;
     display: none;
-    z-index: 1;
+    z-index: 2;
 }
 
 .weexplorer-sort.show{
@@ -933,11 +933,9 @@ img{
 }
 
 .weexplorer-sort li:first-child{
-    
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
     box-shadow: inset 0px 1px 0px 0px #4D4D4D;
-    
 }
 
 .weexplorer-sort li{
@@ -960,8 +958,8 @@ img{
 .weexplorer-sort li:last-child{
     
     height: 30px;
-    border-bottom-right-radius: 6px;
-    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
     box-shadow: inset 0px -1px 0px 0px #4D4D4D;
     
 }
