@@ -808,7 +808,13 @@
     wz.upload
     .on( 'fsnodeProgress', function( structureId, progress ){
 
-        fileArea.children( '.weexplorer-file-' + structureId ).children('article')
+        var icon = fileArea.children( '.weexplorer-file-' + structureID );
+
+        if( !icon.hasClass('weexplorer-file-uploading') ){
+            return;
+        }
+
+        icon.children('article')
             .addClass('weexplorer-progress-bar')
             .clearQueue()
             .stop()
