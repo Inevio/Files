@@ -1,4 +1,10 @@
 
+// Constants
+var SORT_NAME         = 0;
+var SORT_SIZE         = 1;
+var SORT_CREATION     = 2;
+var SORT_MODIFICATION = 3;
+
 // Variables
     var win            = $( this );
     var record         = [];
@@ -11,6 +17,7 @@
     var stickedSidebar = false;
     var channel        = null;
     var minMargin      = 5;
+    var sortStatus     = SORT_NAME;
 
     var types = [
                     'directory wz-drop-area',
@@ -423,16 +430,6 @@
 
                 // Display icons
                 fileArea.children().not('.wz-prototype').not( directoryStatus ).remove();
-                
-                if( sortType === 1 ){
-                    files.sort( sortBySize );
-                }else if( sortType === 2 ){
-                    files.sort( sortByCreationDate );
-                }else if( sortType === 3 ){
-                    files.sort( sortByModificationDate );
-                }else{
-                    files.sort( sortByName );
-                }
 
                 displayIcons( files );
 
@@ -451,7 +448,6 @@
                 }else{
                     folderBar.removeClass( 'music photo video doc user' ).addClass( 'folder' );
                 }
-                    
 
                 // Update Folder info
                 folderName.text( structure.name );
@@ -680,7 +676,7 @@
         
     };
     
-    var displayIcons = function(list){
+    var displayIcons = function(list, noSort ){
 
         $( list ).filter( '.directory' ).each( function(){
             fileArea.append( this ).append('\n');
@@ -691,6 +687,11 @@
         });
 
         updateFolderStatusMessage();
+
+        if( !noSort ){
+            sortIcons();
+        }
+        
         centerIcons();
         
         // Nullify
@@ -1002,6 +1003,34 @@
         
     };
 
+    var sortIcons = function( sort ){
+
+        if( typeof sort === 'undefined' ){
+            sort = sortStatus;
+        }
+        
+        list = $('.weexplorer-file').not('.wz-prototype');
+
+        if( sort === SORT_NAME ){
+            list = list.sort( sortByName );
+        }else if( sort === SORT_SIZE ){
+            list = list.sort( sortBySize );
+        }else if( sort === SORT_CREATION ){
+            list = list.sort( sortByCreation );
+        }else if( sort === SORT_MODIFICATION ){
+            list = list.sort( sortByModif );
+        }
+
+        if( list.length ){
+            displayIcons( list, true );
+        }
+
+        sortStatus = sort;
+
+        wql.changeSort( sort );
+
+    };
+
     // WZ Events
     wz.fs
     .on( 'accepted inbox refused shared sharedAccepted sharedRefused sharedOut', function(){
@@ -1044,7 +1073,11 @@
         if( originID !== destinyID ){
             
             if( originID === current.id ){
+
                 fileArea.children( '.weexplorer-file-' + structure.id ).remove();
+                centerIcons();
+                updateFolderStatusMessage();
+
             }else if( destinyID === current.id ){
                 displayIcons( icon( structure ) );
             }
@@ -1101,9 +1134,9 @@
 
         if( structure.parent === current.id ){
 
-            var nameNoExt = _cropExtension(structure);
+            fileArea.children( '.weexplorer-file-' + structure.id ).children( 'textarea' ).val( _cropExtension( structure ) );
+            sortIcons();
 
-            fileArea.children( '.weexplorer-file-' + structure.id ).children( 'textarea' ).val( nameNoExt );
         }else if( structure.id === current.id ){
             $( '.weexplorer-folder-name', win ).text( structure.name );
         }
@@ -1130,10 +1163,8 @@
 
     wz.upload
     .on( 'fsnodeEnqueue', function( list ){
-
-        console.log( 'enqueue' );
         
-        if( list[0].parent === current.id ){
+        if( list[ 0 ].parent === current.id ){
             
             var length = list.length;
             var files  = $();
@@ -1610,72 +1641,26 @@
             
             $( '.weexplorer-sort li.active', win ).removeClass( 'active' );
             $( this ).addClass( 'active' );
-            
-            list = $();
-            
+
             if( $(this).hasClass( 'weexplorer-sort-name' ) ){
                 
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortByName );
-                
-                $( '.weexplorer-file', win ).not('.wz-prototype').each(function(){
-                    list = list.add($(this));
-                });
-                
-                list = list.sort(sortByName);
-
-                if( list.length ){
-                    displayIcons( list );
-                }
-
-                wql.changeSort(0);
+                sortIcons( SORT_NAME );
                 
             }else if( $(this).hasClass( 'weexplorer-sort-size' ) ){
                 
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortBySize );
-                
-                $( '.weexplorer-file', win ).not('.wz-prototype').each(function(){
-                    list = list.add($(this));
-                });
-                
-                list = list.sort(sortBySize);
-                
-                if( list.length ){
-                    displayIcons( list );
-                }
-
-                wql.changeSort(1);
+                sortIcons( SORT_SIZE );
                 
             }else if( $(this).hasClass( 'weexplorer-sort-creation' ) ){
                 
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortByCreation );
-                
-                $( '.weexplorer-file', win ).not('.wz-prototype').each(function(){
-                    list = list.add($(this));
-                });
-                
-                list = list.sort(sortByCreationDate);
-                
-                if( list.length ){
-                    displayIcons( list );
-                }
-
-                wql.changeSort(2);
+                sortIcons( SORT_CREATION );
                 
             }else{
                 
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortByModif );
-                
-                $( '.weexplorer-file', win ).not('.wz-prototype').each(function(){
-                    list = list.add($(this));
-                });
-                
-                list = list.sort(sortByModificationDate);
-
-                if( list.length ){
-                    displayIcons( list, true );
-                }
-
-                wql.changeSort(3);
+                sortIcons( SORT_MODIFICATION );
                 
             }
         
