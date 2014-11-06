@@ -1409,7 +1409,7 @@ var SORT_MODIFICATION = 3;
 
         }
 
-        win.trigger('wz-resize');
+        win.trigger('ui-view-resize');
 
     })
     
