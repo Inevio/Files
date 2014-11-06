@@ -487,52 +487,57 @@ var SORT_MODIFICATION = 3;
             .removeAttr('readonly')
             .focus()
             .selection( 0, prevName.length )
-            .removeClass('wz-dragger');
+            .removeClass('wz-dragger wz-contextmenu-native-ignore');
 
     };
 
     var finishRename = function(){
 
-        var icon = renaming;
-        renaming = $();
+        var icon     = renaming;
+        var textarea = $( 'textarea', icon );
+        renaming     = $();
 
-        if( $( 'textarea', icon ).val() !== prevName ){
+        if( textarea.val() !== prevName ){
 
             wz.fs( icon.data('file-id'), function( error, structure ){
 
-                console.log(structure);
-
                 if( error ){
-                    alert( error );
-                }else{
+                    return alert( error );
+                }
 
-                    var nameExt = _addExtension($( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass( 'wz-dragger' ).val(), structure);
-                    
-                    structure.rename( nameExt, function( error ){
+                textarea
+                    .attr( 'readonly', 'readonly' )
+                    .blur()
+                    .addClass('wz-dragger wz-contextmenu-native-ignore');
 
-                        if( error ){
+                var nameExt = _addExtension( textarea.val(), structure );
+                
+                structure.rename( nameExt, function( error ){
 
-                            if( error === 'NAME ALREADY EXISTS' ){
-                                alert( lang.nameExists );
-                            }else{
-                                alert( error );
-                            }
+                    if( error ){
 
-                            var nameNoExt = _cropExtension(structure);
-
-                            $( 'textarea', icon ).val( nameNoExt ).text( nameNoExt );
-
+                        if( error === 'NAME ALREADY EXISTS' ){
+                            alert( lang.nameExists );
+                        }else{
+                            alert( error );
                         }
 
-                    });
+                        var nameNoExt = _cropExtension(structure);
 
-                }
+                        textarea.val( nameNoExt ).text( nameNoExt ); // To Do -> Realmente hace falta el .text? No es suficiente con el .val?
+
+                    }
+
+                });
                 
             });
 
         }else{
 
-            $( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass( 'wz-dragger' );
+            textarea
+                .attr( 'readonly', 'readonly' )
+                .blur()
+                .addClass('wz-dragger wz-contextmenu-native-ignore');
 
         }
 
@@ -1794,7 +1799,7 @@ var SORT_MODIFICATION = 3;
             e.preventDefault();
             var icon = renaming;
             renaming = $();
-            $( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass('wz-dragger').val( prevName );
+            $( 'textarea', icon ).attr( 'readonly', 'readonly' ).blur().addClass('wz-dragger wz-contextmenu-native-ignore').val( prevName );
         }else{
             $( '.weexplorer-file.active' , fileArea ).removeClass('active');
         }
@@ -1885,10 +1890,16 @@ var SORT_MODIFICATION = 3;
         
     })
 
-    .on( 'contextmenu', '.weexplorer-file', function(){
+    .on( 'contextmenu', '.weexplorer-file', function(e){
 
-        var icon = $(this);
-        var menu = wz.menu();
+        var icon     = $(this);
+        var textarea = $( e.target ).closest('textarea');
+
+        if( textarea.length && !textarea.attr('readonly') ){
+            return;
+        }
+
+        var menu        = wz.menu();
         var permissions = icon.data( 'permissions' );
         
         if( icon.hasClass( 'shared-pending' ) ){
@@ -2330,9 +2341,13 @@ var SORT_MODIFICATION = 3;
 
     });
 
-    fileArea.on( 'contextmenu', function(){
+    fileArea.on( 'contextmenu', function( e ){
 
-        if( current.id !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current.id !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
+        if(
+            !$( e.target ).closest('.weexplorer-file').length &&
+            current.id !== $( '.sharedFolder', sidebar ).data( 'file-id' ) &&
+            current.id !== $( '.receivedFolder', sidebar ).data( 'file-id' )
+        ){
             
             wz.menu()
             .addOption( lang.upload, function(){
