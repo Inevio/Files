@@ -1021,9 +1021,9 @@ var SORT_MODIFICATION = 3;
         }else if( sort === SORT_SIZE ){
             list = list.sort( sortBySize );
         }else if( sort === SORT_CREATION ){
-            list = list.sort( sortByCreation );
+            list = list.sort( sortByCreationDate );
         }else if( sort === SORT_MODIFICATION ){
-            list = list.sort( sortByModif );
+            list = list.sort( sortByModificationDate );
         }
 
         if( list.length ){
