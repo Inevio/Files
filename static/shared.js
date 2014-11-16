@@ -100,7 +100,7 @@
 
                             banner
                                 .setText( structure.name + ' ' + lang.beenAccepted )
-                                .setIcon( structure.icons.tiny )
+                                .setIcon( 'https://static.inevio.com/app/1/file_accepted.png' )
                                 .render();
 
                             wz.view.remove();
@@ -131,7 +131,7 @@
 
                             banner
                                 .setText( structure.name + ' ' + lang.beenRefused )
-                                .setIcon( 'https://static.inevio.com/app/1/refuse.png' )
+                                .setIcon( 'https://static.inevio.com/app/1/file_denied.png' )
                                 .render();
 
                                 wz.view.remove();
