@@ -1,6 +1,11 @@
-    
-    var win = $( this );
-    
+
+var params = null;
+var win    = $( this );
+
+win.on( 'app-param', function( e, evtParams ){
+
+    params = evtParams;
+
     wz.fs( params, function( error, structure ){
         
         if( error ){
@@ -74,6 +79,8 @@
 
     });
 
-    $( '.received-file', win ).text( lang.receivedFile );
-    $( '.received-content-accept', win ).text( lang.contentAccept );
-    $( '.received-content-refuse', win ).text( lang.contentRefuse );
+});    
+
+$( '.received-file', win ).text( lang.receivedFile );
+$( '.received-content-accept', win ).text( lang.contentAccept );
+$( '.received-content-refuse', win ).text( lang.contentRefuse );

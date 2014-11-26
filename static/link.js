@@ -1,5 +1,6 @@
 
 // Global variables
+var params           = null;
 var win              = $( this );
 var waitingChange    = false;
 var linksTableHeader = $('.link-table-header');
@@ -105,6 +106,14 @@ var start = function(){
 
 // Events
 win
+.on( 'app-param', function( e, evtParams ){
+
+    params = evtParams;
+
+    start();
+
+})
+
 .on( 'change', '.link-password input', function(){
 
     waitingChange = true;
@@ -232,5 +241,3 @@ wz.fs
     });
     
 });
-
-start();
