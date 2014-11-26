@@ -48,12 +48,16 @@
         }
 
     };
-    
-    wz.fs( params, function( error, structure ){
+
+    win.on( 'app-param', function( e, evtParams ){
+
+        params = evtParams;
+
+        wz.fs( params, function( error, structure ){
         
-        if( error ){
-            alert( lang.error );
-        }else{
+            if( error ){
+                return alert( lang.error );
+            }
 
             wz.user( structure.pointerOwner, function( error, user ){
 
@@ -142,7 +146,7 @@
                     
                 });
                 
-        }
+        });
         
     });
 
