@@ -6,7 +6,6 @@ var SORT_CREATION     = 2;
 var SORT_MODIFICATION = 3;
 
 // Variables
-    var params         = null;
     var win            = $( this );
     var record         = [];
     var current        = null;
@@ -2378,17 +2377,11 @@ var SORT_MODIFICATION = 3;
     setSortType( wz.app.storage('sortType') );
     setViewType( wz.app.storage('viewType') );
 
-    win.on( 'app-param', function( e, evtParams ){
-
-        params = evtParams;
-
-        if( params ){
-            openDirectory( params );
-        }else{
-            openDirectory( 'root' );
-        }
-
-    });
+    if( params ){
+        openDirectory( params );
+    }else{
+        openDirectory( 'root' );
+    }
 
     /* GENERATE SIDEBAR */
 

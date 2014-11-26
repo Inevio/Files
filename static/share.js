@@ -1,5 +1,4 @@
     
-    var params             = null;
     var win                = $( this );
     var shareListUsers     = $('.share-list-users', win);
     var shareChosenUsers   = $('.share-chosen-users', win);
@@ -324,14 +323,8 @@
 
     });
 
-    win.on( 'app-param', function( e, evtParams ){
-
-        params = evtParams;
-
-        main();
-
-    });
-
+    main();
+    
     $( '.share-title', win ).text( lang.shareTitle );
     $( '.share-list-title', win ).text( lang.shareListTitle );
     $( '.share-chosen-title', win ).text( lang.shareChosenTitle );

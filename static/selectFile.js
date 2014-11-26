@@ -1,6 +1,5 @@
 
 // Variables
-    var params     = null;
     var win        = $( this );
     var record     = [];
     var current    = null;
@@ -1556,17 +1555,11 @@
     setSortType( wz.app.storage('sortType') );
     setViewType( wz.app.storage('viewType') );
 
-    win.on( 'app-param', function( e, evtParams ){
-
-        params = evtParams;
-
-        if( params ){
-            openDirectory( params.path );
-        }else{
-            openDirectory( 'root' );
-        }
-
-    });
+    if( params.path ){
+        openDirectory( params.path );
+    }else{
+        openDirectory( 'root' );
+    }
 
     /* GENERATE SIDEBAR */
 
