@@ -1,5 +1,4 @@
     
-    var params    = null;
     var win       = $( this );
     var input     = $('.properties input', win);
     var type      = $('.properties .type', win);
@@ -88,8 +87,8 @@
 
     };
     
-    var properties = function( structure ){
-        
+    var properties = function( structure ){       
+
         var nameNoExt = _cropExtension(structure);
         input.val( nameNoExt );
 
@@ -186,27 +185,20 @@
         
     };
 
-    // Win events
-    win.on( 'app-param', function( e, evtParams ){
-
-        params = evtParams;
-
-        wz.fs( params, function( error, structure ){
-                    
-            file = structure;
-            properties( structure );
-            
-        });
-
+    wz.fs( params, function( error, structure ){
+                
+        file = structure;
+        properties( structure );
+        
     });
     
     // WZ Events
     wz.fs
     .on( 'remove', function( id ){
 
-        if( id === params ){
-            wz.view.remove();
-        }
+            if( id === params ){
+                wz.view.remove();
+            }
 
     })
 

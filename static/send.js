@@ -1,5 +1,4 @@
     
-    var params            = null;
     var win               = $( this );
     var sendListUsers     = $('.send-list-users', win);
     var sendChosenUsers   = $('.send-chosen-users', win);
@@ -96,10 +95,6 @@
             sendListUsers.find('.empty-list').css( 'display', 'none' );
         }
                     
-    });
-
-    win.on( 'app-param', function( e, evtParams ){
-        params = evtParams;
     });
 
     $( '.send-title', win ).text( lang.sendTitle );
