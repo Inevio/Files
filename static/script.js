@@ -1101,7 +1101,6 @@ var SORT_MODIFICATION = 3;
 
     .on( 'modified', function( structure ){
 
-        console.log('MODIFIED');
         if( structure.parent === current.id ){
 
             var file =  fileArea.find('.weexplorer-file-' + structure.id );
@@ -1168,6 +1167,38 @@ var SORT_MODIFICATION = 3;
 
     wz.upload
     .on( 'fsnodeEnqueue', function( list ){
+
+        // Display Message
+        if( !uploading.hasClass('uploading') ){
+
+            uploading
+                .addClass('uploading')
+                .clearQueue()
+                .stop()
+                .transition({ height : '+=33' }, 500 );
+
+            fileArea
+                .clearQueue()
+                .stop()
+                .transition({ height : '-=33' }, 500 );
+                
+            sidebar
+                .clearQueue()
+                .stop()
+                .transition({ height : '-=33' }, 500 );
+
+            uploadingBar.width(0);
+
+            uploadingItem.text( 0 );
+            uploadingItems.text( list.length );
+            uploadingElapsed.text( lang.calculating );
+
+        }else{
+
+            uploadingItems.text( parseInt( uploadingItems.text(), 10 ) + list.length );
+            uploadingElapsed.text( lang.calculating );
+
+        }
         
         if( list[ 0 ].parent === current.id ){
             
@@ -1176,38 +1207,6 @@ var SORT_MODIFICATION = 3;
             
             if( !length ){
                 return false;
-            }
-    
-            // Display Message
-            if( !uploading.hasClass('uploading') ){
-    
-                uploading
-                    .addClass('uploading')
-                    .clearQueue()
-                    .stop()
-                    .transition({ height : '+=33' }, 500 );
-    
-                fileArea
-                    .clearQueue()
-                    .stop()
-                    .transition({ height : '-=33' }, 500 );
-                    
-                sidebar
-                    .clearQueue()
-                    .stop()
-                    .transition({ height : '-=33' }, 500 );
-    
-                uploadingBar.width(0);
-    
-                uploadingItem.text( 0 );
-                uploadingItems.text( list.length );
-                uploadingElapsed.text( lang.calculating );
-    
-            }else{
-    
-                uploadingItems.text( parseInt( uploadingItems.text(), 10 ) + list.length );
-                uploadingElapsed.text( lang.calculating );
-    
             }
             
             // Generate File icons
@@ -1254,9 +1253,11 @@ var SORT_MODIFICATION = 3;
 
         var icon = fileArea.children( '.weexplorer-file-' + structureID );
 
+        /*
         if( !icon.hasClass('weexplorer-file-uploading') ){
             return;
         }
+        */
 
         icon.children('article')
             .addClass('weexplorer-progress-bar')
