@@ -315,6 +315,13 @@
     "permission" : {
 
         "channel" : true,
+        
+        "config" : {
+
+            "read" : true
+            
+        },
+
         "fs"      : {
 
             "create" : true,
