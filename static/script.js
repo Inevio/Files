@@ -4,6 +4,8 @@ var SORT_NAME         = 0;
 var SORT_SIZE         = 1;
 var SORT_CREATION     = 2;
 var SORT_MODIFICATION = 3;
+var EXTENSIONS_HIDE   = 0;
+var EXTENSIONS_SHOW   = 1;
 
 // Variables
     var win            = $( this );
@@ -53,9 +55,10 @@ var SORT_MODIFICATION = 3;
     var renaming = $();
     var prevName = '';
 
-    var sortType       = wz.app.storage('sortType') || 0;
-    var viewType       = wz.app.storage('viewType') || 0;
-    var showingSidebar = wz.app.storage('sidebar')  || false;
+    var sortType          = wz.app.storage('sortType') || SORT_NAME;
+    var viewType          = wz.app.storage('viewType') || 0;
+    var showingSidebar    = wz.app.storage('sidebar') || false;
+    var displayExtensions = wz.app.storage('displayExtensions') || EXTENSIONS_HIDE;
 
     // Functions
     var _fit_baseWidth = function( object, newValue ){
@@ -85,8 +88,14 @@ var SORT_MODIFICATION = 3;
 
         var nameNoExt = structure.name;
 
-        if ( structure.type !== 0 && structure.type !== 1 ){
-            nameNoExt = /(.+?)(\.[^\.]+$|$)/.exec(structure.name)[1];
+        if(
+
+            !displayExtensions &&
+            structure.type !== 0 &&
+            structure.type !== 1
+
+        ){
+            nameNoExt = nameNoExt.split(/(.+?)(\.[^\.]+$|$)/)[ 1 ];
         }
 
         return nameNoExt;
@@ -282,7 +291,7 @@ var SORT_MODIFICATION = 3;
         //Do not show extension
         //TO-DO, allow showing extensions
 
-        file.children('textarea').text( _cropExtension(structure) );
+        file.children('textarea').text( _cropExtension( structure ) );
 
         if( ( structure.type !== 0 && structure.type !== 1 && structure.type !== 5 ) || ( structure.type === 5 && structure.pointerType !== 0 && structure.pointerType !== 1 ) ){
 
@@ -416,8 +425,7 @@ var SORT_MODIFICATION = 3;
             structure.list( function( error, list ){
 
                 if( error ){
-                    alert( lang.errorOpenDirectory );
-                    return false;
+                    return alert( lang.errorOpenDirectory );
                 }
 
                 var length = list.length;
@@ -1301,6 +1309,14 @@ var SORT_MODIFICATION = 3;
             .find('img')
                 .attr( 'src', structure.icons.normal );
             
+    });
+
+    wz.config.on( 'displayExtensionsChanged', function( display ){
+
+        wz.app.storage( 'displayExtensions', display );
+
+        displayExtensions = display;
+
     });
 
     // DOM Events

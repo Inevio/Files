@@ -1,16 +1,36 @@
 
-var win = $( this );
+var win                    = $( this );
+var getSystemConfiguration = $.Deferred();
+var getAppConfiguration    = $.Deferred();
+
+wz.config.getConfiguration( function( error, result ){
+
+    // To Do -> Error
+    getSystemConfiguration.resolve( result );
+
+});
 
 wql.getConfig( function( error, result ){
 
-    if( !error && result.length ){
+    // To Do -> Error
+    getAppConfiguration.resolve( result );
 
-        result = result[ 0 ];
+});
+
+$.when( getSystemConfiguration, getAppConfiguration ).done( function( systemConfig, appConfig ){
+
+    // Importamos la configuración del sistema
+    wz.app.storage( 'displayExtensions', systemConfig.displayExtensions );
+
+    // Importamos la configuración de la cuenta
+    if( appConfig.length ){
+
+        appConfig = appConfig[ 0 ];
 
         // Guardamos la configuración
-        wz.app.storage( 'sortType', result.sort );
-        wz.app.storage( 'viewType', result.view );
-        wz.app.storage( 'sidebar', !!result.sidebar );
+        wz.app.storage( 'sortType', appConfig.sort );
+        wz.app.storage( 'viewType', appConfig.view );
+        wz.app.storage( 'sidebar', !!appConfig.sidebar );
 
     }else{
 
@@ -21,7 +41,7 @@ wql.getConfig( function( error, result ){
         wz.app.storage( 'viewType', 0 );
         wz.app.storage( 'sidebar', true );
 
-        result = {
+        appConfig = {
 
             height : win.height(),
             width  : win.width()
@@ -44,7 +64,7 @@ wql.getConfig( function( error, result ){
     }
 
     // Redimensionamos la ventana
-    wz.fit( win, result.width - win.width(), result.height - win.height() );
+    wz.fit( win, appConfig.width - win.width(), appConfig.height - win.height() );
 
     start();
 
