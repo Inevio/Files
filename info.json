@@ -143,11 +143,11 @@
                     
                     "template" : "link.html",
 
-                    "resizable"   : false,
+                    "resizable" : false,
 
-                    "width"  : {
+                    "width" : {
 
-                        "default" : 520,
+                        "default" : 538,
                         "min"     : 0,
                         "max"     : 0
 
