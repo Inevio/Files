@@ -49,6 +49,7 @@
     "linkAnswer" : "If you don't just click Generate",
     "linkGenerate" : "Generate",
     "linkPreview" : "Make a preview of my file",
+    "linkDownload" : "Allow downloads and imports",
     "linkPassword" : "Protect the link with a password",
     "inputPassword" : "Password...",
     "previousTitle" : "Previous links",
