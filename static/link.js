@@ -34,9 +34,9 @@ var appendLink = function( info, search ){
 
     line.data( 'id', info.id );
     line.find('.link-table-cell-url').text( info.url );
-    line.find('.link-table-cell-views').text( info.visits );
-    line.find('.link-table-cell-downloads').text( info.downloads );
-    line.find('.link-table-cell-imports').text( info.imports );
+    line.find('.link-table-cell-views').text( info.visitsCounter );
+    line.find('.link-table-cell-downloads').text( info.downloadsCounter );
+    line.find('.link-table-cell-imports').text( info.importsCounter );
 
     if( info.password ){
         line.find('.link-table-cell-password').addClass('active');
@@ -93,6 +93,7 @@ var start = function(){
     // Translate UI
     $('.link-title').text( lang.linkTitle );
     $('.link-preview span').text( lang.linkPreview );
+    $('.link-download span').text( lang.linkDownload );
     $('.link-password span').text( lang.linkPassword );
     $('.link-password-input').attr( 'placeholder', lang.inputPassword );
     $('.link-generate').text( lang.linkGenerate );
@@ -148,7 +149,15 @@ win
     // Load file information
     wz.fs( params, function( error, node ){
 
-        node.addLink( $('.link-password input').attr('checked') && $('.link-password-input').val() ? $('.link-password-input').val() : null, !!$('.link-preview input').attr('checked'), function( error, link ){
+        var password  = ( $('.link-password input').attr('checked') && $('.link-password-input').val() ) ? $('.link-password-input').val() : null;
+        var preview   = !!$('.link-preview input').attr('checked');
+        var downloads = !!$('.link-download input').attr('checked');
+
+        console.log( password, preview, downloads );
+
+        node.addLink( password, preview, downloads, function( error, link ){
+
+            console.log( error, link );
 
             if( error ){
                 alert( error );
