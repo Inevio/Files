@@ -38,12 +38,16 @@ var appendLink = function( info, search ){
     line.find('.link-table-cell-downloads').text( info.downloadsCounter );
     line.find('.link-table-cell-imports').text( info.importsCounter );
 
-    if( info.password ){
-        line.find('.link-table-cell-password').addClass('active');
-    }
-
     if( info.preview ){
         line.find('.link-table-cell-preview').addClass('active');
+    }
+
+    if( info.download ){
+        line.find('.link-table-cell-download').addClass('active');
+    }
+
+    if( info.password ){
+        line.find('.link-table-cell-password').addClass('active');
     }
 
     linksTableList.append( line );
@@ -153,15 +157,10 @@ win
         var preview   = !!$('.link-preview input').attr('checked');
         var downloads = !!$('.link-download input').attr('checked');
 
-        console.log( password, preview, downloads );
-
         node.addLink( password, preview, downloads, function( error, link ){
 
-            console.log( error, link );
-
             if( error ){
-                alert( error );
-                return;
+                return alert( error );
             }
 
             if( appendLink( link, true ) ){

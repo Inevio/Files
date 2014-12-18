@@ -123,24 +123,29 @@ label i{
     border-bottom: none;
 }
 
-.link-table-cell-password, .link-table-cell-preview{
+.link-table-cell-password,
+.link-table-cell-download,
+.link-table-cell-preview{
     width: 20px;
     border-right: none;
     border-left: none;
+    text-align: right;
 }
 
-.link-table-cell-password i, .link-table-cell-preview i{
-    background: url('@static/link_sprite.png') 0 0;
-    background-size: 50px 15px;
-    display: inline-block;
+.link-table-cell-download{
+    width: 18px;
 }
 
 .link-table-cell-password{
     text-align: center;
 }
 
-.link-table-cell-preview{
-    text-align: left;
+.link-table-cell-password i,
+.link-table-cell-download i,
+.link-table-cell-preview i{
+    background: url('@static/link_sprite.png') 0 0;
+    background-size: 76px 15px;
+    display: inline-block;
 }
 
 .link-table-cell-password i{
@@ -156,12 +161,23 @@ label i{
     margin-top: 2px;
 }
 
+.link-table-cell-download i{
+    width: 13px;
+    height: 13px;
+    background-position: -50px 0;
+    margin-top: 2px;
+}
+
 .link-table-cell-password.active i{
     background-position: -9px 0;
 }
 
 .link-table-cell-preview.active i{
     background-position: -34px 0;
+}
+
+.link-table-cell-download.active i{
+    background-position: -63px 0;
 }
 
 .link-table-cell-password{
