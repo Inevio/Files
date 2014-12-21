@@ -51,6 +51,7 @@
     "linkPreview" : "Make a preview of my file",
     "linkDownload" : "Allow downloads and imports",
     "linkPassword" : "Protect the link with a password",
+    "noteDownload" : "Links without preview have enabled downloads and imports always",
     "inputPassword" : "Password...",
     "previousTitle" : "Previous links",
     "previousUrl" : "URL",

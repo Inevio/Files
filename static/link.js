@@ -101,6 +101,7 @@ var start = function(){
     $('.link-password span').text( lang.linkPassword );
     $('.link-password-input').attr( 'placeholder', lang.inputPassword );
     $('.link-generate').text( lang.linkGenerate );
+    $('.note-download').text( lang.noteDownload );
     $( '.link-table-cell-url', linksTableHeader ).text( lang.previousUrl );
     $( '.link-table-cell-views', linksTableHeader ).text( lang.previousViews );
     $( '.link-table-cell-downloads', linksTableHeader ).text( lang.previousDownloads );
@@ -125,6 +126,24 @@ win
         $('.link-password-input').blur();
 
     }
+
+})
+
+.on( 'change', '.link-preview input', function(){
+
+    if( $('.link-preview input').attr('checked') ){
+
+        win.find('.link-download').show();
+        win.find('.note-download').hide();
+
+    }else{
+
+        win.find('.link-download').hide();
+        win.find('.note-download').show();
+
+    }
+
+    checkViewSize();
 
 })
 
