@@ -51,6 +51,7 @@
     "linkPreview" : "Generar una vista previa de mi archivo",
     "linkDownload" : "Permitir descargar e importaciones",
     "linkPassword" : "Proteger el enlace con contraseña",
+    "noteDownload" : "Los enlaces sin vista previa tienen activada la descarga e importación",
     "inputPassword" : "Contraseña...",
     "previousTitle" : "Enlaces creados",
     "previousUrl" : "URL",

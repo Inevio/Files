@@ -44,15 +44,25 @@
 
 .options{
     display: inline-block;
+    min-width: 228px;
 }
 
-.option{
+.option, .note-download{
     float: left;
     clear: both;
     text-align: left;
     font-size: 14px;
     color: #666;
     margin-bottom: 10px;
+}
+
+.note-download{
+    max-width: 200px;
+    line-height: 16px;
+    font-size: 13px;
+    color: #999;
+    margin-left: 28px;
+    display: none;
 }
 
 label i{
