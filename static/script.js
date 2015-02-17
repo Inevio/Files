@@ -22,11 +22,13 @@ var EXTENSIONS_SHOW   = 1;
     var sortStatus     = SORT_NAME;
 
     var types = [
-                    'directory wz-drop-area',
-                    'special-directory wz-drop-area',
-                    'file',
-                    'temporal-file'
-                ];
+
+        'directory wz-drop-area',
+        'special-directory wz-drop-area',
+        'file',
+        'temporal-file'
+
+    ];
 
     var nextButton      = $( '.weexplorer-option-next', win );
     var backButton      = $( '.weexplorer-option-back', win );
@@ -1181,18 +1183,15 @@ var EXTENSIONS_SHOW   = 1;
 
             uploading
                 .addClass('uploading')
-                .clearQueue()
-                .stop()
+                .finish()
                 .transition({ height : '+=33' }, 500 );
 
             fileArea
-                .clearQueue()
-                .stop()
+                .finish()
                 .transition({ height : '-=33' }, 500 );
                 
             sidebar
-                .clearQueue()
-                .stop()
+                .finish()
                 .transition({ height : '-=33' }, 500 );
 
             uploadingBar.width(0);
@@ -1208,46 +1207,21 @@ var EXTENSIONS_SHOW   = 1;
 
         }
         
-        if( list[ 0 ].parent === current.id ){
-            
-            var length = list.length;
-            var files  = $();
-            
-            if( !length ){
-                return false;
-            }
-            
-            // Generate File icons
-            for( var i = 0; i < length; i++ ){
-                files = files.add( icon( list[ i ] ).addClass('weexplorer-file-uploading') );
-            }
-            
-            // Display icons
-            displayIcons( files );
-    
-            // Nullify
-            files = null;
-        
-        }
-        
     })
 
     .on( 'fsnodeQueueEnd', function(){
 
         uploading
                 .removeClass('uploading')
-                .clearQueue()
-                .stop()
+                .finish()
                 .transition({ height : '-=33' }, 500 );
 
             fileArea
-                .clearQueue()
-                .stop()
+                .finish()
                 .transition({ height : '+=33' }, 500 );
                 
             sidebar
-                .clearQueue()
-                .stop()
+                .finish()
                 .transition({ height : '+=33' }, 500 );
 
     })
@@ -2096,7 +2070,7 @@ var EXTENSIONS_SHOW   = 1;
             }, 'warning');
             
         }else if( icon.hasClass('directory') || ( icon.data( 'filePointerType' ) === 0 && !icon.hasClass('pointer-pending') ) ){
-            
+
             menu
                 .addOption( lang.openFolder, function(){
                     icon.dblclick();
@@ -2105,6 +2079,14 @@ var EXTENSIONS_SHOW   = 1;
                 .addOption( lang.openInNewWindow, function(){
                     wz.app.createView( icon.data( 'file-id' ), 'main');
                 });
+
+            if( permissions.send ){
+
+                menu.addOption( lang.sendTo, function(){
+                    wz.app.createView( icon.data( 'file-id' ), 'send');
+                });
+
+            }
 
             if( permissions.share ){
 
