@@ -690,6 +690,54 @@ var EXTENSIONS_SHOW   = 1;
         return 0;
         
     };
+
+    var appendIcon = function( icon ){
+
+        var protoIcon = fileArea.find('.weexplorer-file.wz-prototype');
+        var iconList  = fileArea.find('.weexplorer-file').not( protoIcon );
+        var sort;
+
+        if( sortStatus === SORT_NAME ){
+            sort = sortByName;
+        }else if( sortStatus === SORT_SIZE ){
+            sort = sortBySize;
+        }else if( sortStatus === SORT_CREATION ){
+            sort = sortByCreationDate;
+        }else if( sortStatus === SORT_MODIFICATION ){
+            sort = sortByModificationDate;
+        }
+
+        var index = -1;
+        var tmp;
+
+        if( iconList.length ){
+
+            for( var i = 0; i < iconList.length; i++ ){
+
+                tmp = sort( icon, iconList.eq( i ) );
+
+                if( tmp != -1 ){
+
+                    index = i;
+                    break;
+
+                }
+
+            }
+
+        }
+
+        if( index === -1 ){
+            fileArea.prepend( icon.after('\n') );
+        }else{
+            iconList.eq( index ).after( icon.after('\n') );
+        }
+
+        updateFolderStatusMessage();
+        
+        centerIcons();
+        
+    };
     
     var displayIcons = function(list, noSort ){
 
@@ -703,9 +751,11 @@ var EXTENSIONS_SHOW   = 1;
 
         updateFolderStatusMessage();
 
+        /*
         if( !noSort ){
             sortIcons();
         }
+        */
         
         centerIcons();
         
@@ -1018,13 +1068,13 @@ var EXTENSIONS_SHOW   = 1;
         
     };
 
-    var sortIcons = function( sort ){
+    var sortIcons = function( list, sort ){
 
         if( typeof sort === 'undefined' ){
             sort = sortStatus;
         }
         
-        list = $('.weexplorer-file').not('.wz-prototype');
+        //list = $('.weexplorer-file').not('.wz-prototype');
 
         if( sort === SORT_NAME ){
             list = list.sort( sortByName );
@@ -1036,13 +1086,17 @@ var EXTENSIONS_SHOW   = 1;
             list = list.sort( sortByModificationDate );
         }
 
+        /*
         if( list.length ){
             displayIcons( list, true );
         }
+        */
 
         sortStatus = sort;
 
         wql.changeSort( sort );
+
+        return list;
 
     };
 
@@ -1104,9 +1158,9 @@ var EXTENSIONS_SHOW   = 1;
     .on( 'new', function( structure ){
 
         if( structure.parent === current.id ){
-            displayIcons( icon( structure ) );
+            appendIcon( icon( structure ) );
         }
-
+        
     })
 
     .on( 'modified', function( structure ){
