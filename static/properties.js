@@ -1,10 +1,11 @@
     
     var win       = $( this );
-    var input     = $('.properties input', win);
-    var type      = $('.properties .type', win);
+    var input     = $('.file-name div', win);
+    var type      = $('.file-extension div', win);
     var size      = $('.properties .size', win);
-    var created   = $('.properties .created', win);
-    var modified  = $('.properties .modified', win);
+    var created   = $('.created-date', win);
+    var modified  = $('.modified-date', win);
+
     var owner     = $('.properties .owner', win);
     var link      = $('.properties .link', win);
     var modify    = $('.properties .modify', win);
@@ -90,7 +91,7 @@
     var properties = function( structure ){       
 
         var nameNoExt = _cropExtension(structure);
-        input.val( nameNoExt );
+        input.text( nameNoExt );
 
         var fileType = structure.type;
         
@@ -207,12 +208,12 @@
         if( structure.id === params ){
 
             renaming = true;
-            input.blur();
+            /*input.blur();*/
             file = structure;
 
             var nameNoExt = _cropExtension(structure);
 
-            input.val( nameNoExt );
+            /*input.val( nameNoExt );*/
 
         }
 
@@ -227,10 +228,10 @@
     });
 
     win.key( 'enter', function(){
-        input.blur();
+        /*input.blur();*/
     });
         
-    input.on( 'blur', function(){
+    /*input.on( 'blur', function(){
         
         if( input.val() !== file.name && !renaming ){
 
@@ -258,7 +259,7 @@
 
         renaming = false;
         
-    });
+    });*/
         
     $( '.properties-title', win ).text( lang.propertiesTitle );
     $( '.properties-name', win ).text( '· ' +  lang.propertiesName + ':' );
