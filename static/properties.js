@@ -1,10 +1,12 @@
     
     var win       = $( this );
     var input     = $('.file-name div', win);
-    var type      = $('.file-extension div', win);
+		var extension = $('.file-extension div', win);
+    var type      = $('.file-type', win);
     var size      = $('.properties .size', win);
     var created   = $('.created-date', win);
     var modified  = $('.modified-date', win);
+		var filePermission=$('.permission', win);
 
     var owner     = $('.properties .owner', win);
     var link      = $('.properties .link', win);
@@ -15,6 +17,10 @@
     var send      = $('.properties .send', win);
     var file      = {};
     var renaming  = false;
+
+		filePermission.on('click', function(){
+			$(this).toggleClass('enabled');
+		});
 
     var addZero = function( value ){
 
@@ -47,7 +53,14 @@
 
         return nameExt;
     }
+		
+		/* Return file extension */
 
+		var _getExtension = function(structure){
+        return structure.name.split('.').slice(-1)[0];
+    }
+
+		
     var permissions = function( permissions ){
 
         if( permissions.link === 1 ){
@@ -92,6 +105,8 @@
 
         var nameNoExt = _cropExtension(structure);
         input.text( nameNoExt );
+			
+				extension.text(_getExtension(structure));
 
         var fileType = structure.type;
         
