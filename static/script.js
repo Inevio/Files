@@ -1203,7 +1203,7 @@ var EXTENSIONS_SHOW   = 1;
         if( structure.parent === current.id ){
 
             fileArea.children( '.weexplorer-file-' + structure.id ).children( 'textarea' ).val( _cropExtension( structure ) );
-            sortIcons();
+            sortIcons( fileArea.find('.weexplorer-file') );
 
         }else if( structure.id === current.id ){
             $( '.weexplorer-folder-name', win ).text( structure.name );
@@ -1695,22 +1695,22 @@ var EXTENSIONS_SHOW   = 1;
             if( $(this).hasClass( 'weexplorer-sort-name' ) ){
                 
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortByName );
-                sortIcons( SORT_NAME );
+                sortIcons( fileArea.find('.weexplorer-file'), SORT_NAME );
                 
             }else if( $(this).hasClass( 'weexplorer-sort-size' ) ){
                 
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortBySize );
-                sortIcons( SORT_SIZE );
+                sortIcons( fileArea.find('.weexplorer-file'), SORT_SIZE );
                 
             }else if( $(this).hasClass( 'weexplorer-sort-creation' ) ){
                 
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortByCreation );
-                sortIcons( SORT_CREATION );
+                sortIcons( fileArea.find('.weexplorer-file'), SORT_CREATION );
                 
             }else{
                 
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortByModif );
-                sortIcons( SORT_MODIFICATION );
+                sortIcons( fileArea.find('.weexplorer-file'), SORT_MODIFICATION );
                 
             }
         
