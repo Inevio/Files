@@ -7,7 +7,10 @@
     var created   = $('.created-date', win);
     var modified  = $('.modified-date', win);
 		var filePermission=$('.permission', win);
-
+		var propertiesButton = 	$('.properties-button',win);
+		var historicButton = 		$('.historic-button',win);
+		var propertiesTab = $('.properties-tab',win);
+		var propertiesWindow = $('.properties', win);
     var owner     = $('.properties .owner', win);
     var link      = $('.properties .link', win);
     var modify    = $('.properties .modify', win);
@@ -17,6 +20,27 @@
     var send      = $('.properties .send', win);
     var file      = {};
     var renaming  = false;
+
+
+		propertiesButton.on('click', function(){
+			if(!this.classList.contains('active')){
+				historicButton.toggleClass('active');
+				propertiesButton.toggleClass('active');
+				propertiesTab.toggleClass('hide');
+				propertiesWindow.toggleClass('historic');
+				win.height(660);
+			}
+		});
+
+		historicButton.on('click', function(){
+			if(!this.classList.contains('active')){
+				propertiesButton.toggleClass('active');
+				historicButton.toggleClass('active');
+				propertiesTab.toggleClass('hide');
+				propertiesWindow.toggleClass('historic');
+				win.height(385);
+			}
+		});
 
 		filePermission.on('click', function(){
 			$(this).toggleClass('enabled');
@@ -106,7 +130,7 @@
         var nameNoExt = _cropExtension(structure);
         input.text( nameNoExt );
 			
-				extension.text(_getExtension(structure));
+				var extensionText = 'Directorio';
 
         var fileType = structure.type;
         
@@ -116,18 +140,24 @@
             type.text( lang.specialDirectory );
         }else if( fileType === 2 && !structure.shared ){
             type.text( lang.file );
+						extensionText = _getExtension(structure);
         }else if( fileType === 3 ){
             type.text( lang.temporalFile );
+						extensionText = _getExtension(structure);
         }else if( fileType === 4 ){
             type.text( lang.receivedFile );
+						extensionText = _getExtension(structure);
         }else if( ( fileType === 2 && structure.shared ) || ( fileType === 5 && structure.pointerType === 2 ) ){
             type.text( lang.sharedFile );
+						extensionText = _getExtension(structure);
         }else if( ( fileType === 0 && structure.shared ) || ( fileType === 5 && structure.pointerType === 0 ) ){
             type.text( lang.sharedFolder );
         }else{
             type.text( lang.unknown );
         }
         
+				extension.text(extensionText);
+			
         var createdDate  = new Date( structure.created );
         var modifiedDate = new Date( structure.modified );
 

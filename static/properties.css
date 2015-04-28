@@ -28,7 +28,7 @@
 .wz-ui-header span{
     
     float: left;
-    margin-top: 6px;
+    margin-top: 5px;
     font-size: 15px;
     color: #646464;
     
@@ -61,7 +61,13 @@
 
 .properties{
   width: 320px;
-  height: 630px;
+  height: 620px;
+  /*padding: 0px 10px 0px 10px;*/ 
+}
+
+.properties.historic{
+  width: 320px;
+  height: 345px;
   /*padding: 0px 10px 0px 10px;*/ 
 }
 
@@ -219,10 +225,41 @@
 }
 
 .users-box{
-	margin: 15px 15px 15px 0px;
-	height: 120px;
+	margin: 10px 15px 15px 0px;
+	height: 125px;
 	background-color: white;
 	border: 1px solid #dcdcdc;
+	padding: 0px 10px 0px 10px;
+}
+
+.user-info{
+	float: left;
+	width: 155px;
+}
+
+.change-permission{
+	float:right;
+	text-align: right;
+	width: 115px;
+	font-size: 12px;
+	margin-top: 5px;
+}
+
+.user{
+	margin-top:10px;
+	height: 24px;
+}
+
+.username{
+	float: left;
+  margin: 5px 0px 0px 7px;	
+}
+
+.user i{
+	width: 24px;
+	height: 24px;
+	background-image: url("@static/yolo.jpg");
+	float: left;
 }
 
 .more-info{
@@ -231,102 +268,52 @@
 	background-color: #f6f6f6;
 }
 
-/*.properties article:first-child{
-    
-    margin-bottom: 5px;
-    
+.info-extended{
+	height: 80px;
+	margin: 10px 0px 0px 10px;
 }
 
-.properties span{
-    
-    width: 160px;
-    float: left;
-    font-size: 15px;
-    color: #666;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;    
-    
+.more-info div{
+	font-size: 11px;
 }
 
-.properties span:first-child{
-    
-    width: 80px;
-    color: #333;
-    
+.info-extended .title{
+	float:left;
+	margin-right: 10px;
 }
 
-.properties input{
-
-    width: 145px;
-    margin-top: -3px;
-    border-radius: 3px;
-    border: 1px solid #DDD; 
-    font-size: 14px;
-    color: #666;
-    padding: 3px 5px 3px 5px;
-    
+.history-log{
+	height: 285px;
+	background-color: white;
 }
 
-.properties input:focus{
-    border: 1px solid #50BDFF;
+.properties-tab.hide{
+	display: none;
 }
 
-article.properties-attr{
-    margin-bottom: 4px;
+.action{
+	width: 140px;
+	float: left;
 }
 
-article.properties-attr article{
-    
-    width: 100px;
-    float: left;
-    margin-top: 15px;
-    
+.change{
+	height: 20px;
 }
 
-article.properties-attr article:nth-child(2){
-
-    clear: left;    
-    
+.change i{
+	float:left;
 }
 
-article.properties-attr article:nth-child(even){
-    
-    margin-left: 20px;
-    margin-right: 15px;
-    
+.action-time{
+	float:right;
 }
 
-.properties-attr span{
-    
-    width: 70px;
-    height: 16px;
-    float: left;
-    position: relative;
-    left: 0px;
-    
+.change .user-action-avatar{
+	width: 10px;
+	height: 10px;
+	float:right;
+	background-image: url("@static/yolo.jpg");
+	background-repeat: no-repeat;
 }
 
-.properties-attr figure{
-    
-    width: 16px;
-    height: 16px;
-    float: left;
-    margin-right: 8px;
-    display: block;
-    
-}
-
-.properties-attr figure.yes{
-    
-    background: url("@@static/tick.png") no-repeat;
-    background-size: 16px 16px;
-    
-}
-
-.properties-attr figure.no{
-
-    background: url("@@static/cross.png") no-repeat;
-    background-size: 16px 16px;
-    
-}*/
+/* 	height: 385px; */
