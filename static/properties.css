@@ -1,6 +1,7 @@
 *{
   font-family: Lato !important;
 	font-size: 13px;
+	color: #5a5d66;
 }
 
 .wz-view-minimize, .wz-view-maximize, .wz-view-close{
@@ -28,16 +29,21 @@
 .wz-ui-header span{
     
     float: left;
-    margin-top: 5px;
-    font-size: 15px;
-    color: #646464;
+    margin: 6px 0px 0px 105px;
+    font-size: 13px;
+    color: #666;
     
+}
+
+.grey{
+	color: #949494;
 }
 
 .properties-selector{
 	height: 29px;
 	border-bottom: 1px solid #dcdcdc;
 	background-color: #ececec;
+	display: none;
 }
 
 .properties-button,.historic-button{
@@ -61,7 +67,7 @@
 
 .properties{
   width: 320px;
-  height: 620px;
+  height: 470px;
   /*padding: 0px 10px 0px 10px;*/ 
 }
 
@@ -86,7 +92,7 @@
 .file-name{
 	float:left;
 	width: 259px;
-	padding: 8px 0px 7px 10px;
+	padding: 9px 0px 7px 10px;
 	border-right: 1px solid #dcdcdc;
 }
 
@@ -243,6 +249,7 @@
 	width: 115px;
 	font-size: 12px;
 	margin-top: 5px;
+	color: #949494;
 }
 
 .user{
@@ -263,6 +270,7 @@
 }
 
 .more-info{
+	display: none;
 	height: 110px;
 	padding: 10px 0px 0px 10px;
 	background-color: #f6f6f6;

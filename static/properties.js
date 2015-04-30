@@ -18,6 +18,7 @@
     var download  = $('.properties .download', win);
     var share     = $('.properties .share', win);
     var send      = $('.properties .send', win);
+		var user4			= $('.user4 .user',win);
     var file      = {};
     var renaming  = false;
 
@@ -28,7 +29,7 @@
 				propertiesButton.toggleClass('active');
 				propertiesTab.toggleClass('hide');
 				propertiesWindow.toggleClass('historic');
-				win.height(660);
+				win.height(510);
 			}
 		});
 
@@ -156,7 +157,7 @@
             type.text( lang.unknown );
         }
         
-				extension.text(extensionText);
+				extension.text('.' + extensionText);
 			
         var createdDate  = new Date( structure.created );
         var modifiedDate = new Date( structure.modified );
@@ -222,7 +223,7 @@
         }else{
 
             wz.user( structure.owner, function( error, user ){
-                owner.text( user.fullName );
+              owner.text( user.fullName );
             });
 
         }
@@ -237,6 +238,12 @@
         properties( structure );
         
     });
+
+		/*wz.fs(42, function( error, fsnode ){
+    	fsnode.sharedWith( function( error, owner, permissions, users ){
+
+    	});
+		});*/
     
     // WZ Events
     wz.fs
