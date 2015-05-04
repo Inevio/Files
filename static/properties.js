@@ -11,6 +11,7 @@
 		var historicButton = 		$('.historic-button',win);
 		var propertiesTab = $('.properties-tab',win);
 		var propertiesWindow = $('.properties', win);
+		var thumbnail = $('.preview i',win);
     var owner     = $('.properties .owner', win);
     var link      = $('.properties .link', win);
     var modify    = $('.properties .modify', win);
@@ -131,6 +132,9 @@
         var nameNoExt = _cropExtension(structure);
         input.text( nameNoExt );
 			
+				if(structure.thumbnails.normal!=null){
+					thumbnail.css('background-image','url("'+structure.thumbnails.normal+'")')
+				}
 				var extensionText = 'Directorio';
 
         var fileType = structure.type;
@@ -141,23 +145,23 @@
             type.text( lang.specialDirectory );
         }else if( fileType === 2 && !structure.shared ){
             type.text( lang.file );
-						extensionText = _getExtension(structure);
+						extensionText ='.' + _getExtension(structure);
         }else if( fileType === 3 ){
             type.text( lang.temporalFile );
-						extensionText = _getExtension(structure);
+						extensionText ='.' + _getExtension(structure);
         }else if( fileType === 4 ){
             type.text( lang.receivedFile );
-						extensionText = _getExtension(structure);
+						extensionText ='.' + _getExtension(structure);
         }else if( ( fileType === 2 && structure.shared ) || ( fileType === 5 && structure.pointerType === 2 ) ){
             type.text( lang.sharedFile );
-						extensionText = _getExtension(structure);
+						extensionText ='.' +  _getExtension(structure);
         }else if( ( fileType === 0 && structure.shared ) || ( fileType === 5 && structure.pointerType === 0 ) ){
             type.text( lang.sharedFolder );
         }else{
             type.text( lang.unknown );
         }
         
-				extension.text('.' + extensionText);
+				extension.text( extensionText);
 			
         var createdDate  = new Date( structure.created );
         var modifiedDate = new Date( structure.modified );
@@ -239,11 +243,33 @@
         
     });
 
-		/*wz.fs(42, function( error, fsnode ){
-    	fsnode.sharedWith( function( error, owner, permissions, users ){
-
+		
+		wz.fs(params, function( error, structure ){
+			//console.log(arguments);
+    	structure.sharedWith( true, function( error, owner, permissions, users ){
+				//console.log(arguments);
+				var userx ='.user1';
+				$(userx).toggleClass('active');
+				var userxNameField = $(userx + ' .username',win);
+				var userxAvatarField = $(userx + ' i',win);
+				userxNameField.text=wz.system.user().fullName;
+				userxAvatarField.css("background-image",'url("'+wz.system.user().avatar.small+'")');
+				if(owner.length!=0){
+					var userxNameField;
+					var userxAvatarField;
+					for (i = 1; i < owner.length; i++) { 
+						var userx ='.user'+ (i+1);
+						//console.log(owner[i]);
+						$(userx).toggleClass('active');
+						userxNameField= $(userx + ' .username',win);
+						userxAvatarField = $(userx + ' i',win);
+						userxNameField.text(owner[i].fullName);
+						//console.log('url("'+owner[i].avatar.small+'")');
+						userxAvatarField.css("background-image",'url("'+owner[i].avatar.small+'")');
+					}
+				}
     	});
-		});*/
+		});
     
     // WZ Events
     wz.fs
