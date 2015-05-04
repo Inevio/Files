@@ -124,6 +124,7 @@
 	height: 60px;
 	float:left;
 	margin-right: 10px;
+	background-size: cover;
 }
 
 .preview-text{
@@ -252,9 +253,19 @@
 	color: #949494;
 }
 
+.change-permission:hover{
+	color: #7ebe30;
+	text-decoration: underline;
+}
+
 .user{
 	margin-top:10px;
 	height: 24px;
+	display: none;
+}
+
+.user.active{
+	display: block;
 }
 
 .username{
@@ -267,6 +278,7 @@
 	height: 24px;
 	background-image: url("@static/yolo.jpg");
 	float: left;
+	background-size: cover;
 }
 
 .more-info{
