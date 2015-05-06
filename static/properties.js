@@ -246,28 +246,56 @@
 		
 		wz.fs(params, function( error, structure ){
 			//console.log(arguments);
+			//console.log(structure);
+			structure.getPath( function( error, list ){
+				
+				console.log( list[0] );
+				
+			});
+			
     	structure.sharedWith( true, function( error, owner, permissions, users ){
+				
 				//console.log(arguments);
-				var userx ='.user1';
-				$(userx).toggleClass('active');
-				var userxNameField = $(userx + ' .username',win);
-				var userxAvatarField = $(userx + ' i',win);
-				userxNameField.text=wz.system.user().fullName;
-				userxAvatarField.css("background-image",'url("'+wz.system.user().avatar.small+'")');
-				if(owner.length!=0){
+				if( owner.length != 0 ){
+					
 					var userxNameField;
 					var userxAvatarField;
-					for (i = 1; i < owner.length; i++) { 
-						var userx ='.user'+ (i+1);
+					var permissionText; 
+					
+					for ( var i = 0; i < owner.length; i++ ) { 
+						
 						//console.log(owner[i]);
-						$(userx).toggleClass('active');
-						userxNameField= $(userx + ' .username',win);
+						var userx ='.user'+ (i+1);
+						if( owner[i].id == structure.owner ){
+							
+							permissionText = $(userx + ' .change-permission',win);
+							permissionText.text ( 'Owner' );
+							
+						}
+						
+						$( userx ).toggleClass( 'active' );
+						userxNameField = $(userx + ' .username',win);
 						userxAvatarField = $(userx + ' i',win);
-						userxNameField.text(owner[i].fullName);
+						userxNameField.text( owner[i].fullName );
 						//console.log('url("'+owner[i].avatar.small+'")');
-						userxAvatarField.css("background-image",'url("'+owner[i].avatar.small+'")');
+						userxAvatarField.css( "background-image",'url("'+owner[i].avatar.small+'")' );
+						
 					}
+					
 				}
+				else{
+					
+					var userx ='.user1';
+					$(userx).toggleClass( 'active' );
+					var userxNameField = $( userx + ' .username',win );
+					var userxAvatarField = $( userx + ' i',win );
+					userxNameField.text = wz.system.user().fullName;
+					userxAvatarField.css( "background-image",'url("'+wz.system.user().avatar.small+'")' );
+					permissionText = $( userx + ' .change-permission',win );
+					permissionText.text ( 'Owner' );
+					
+				}
+				
     	});
 		});
     
@@ -290,9 +318,7 @@
             file = structure;
 
             var nameNoExt = _cropExtension(structure);
-
             /*input.val( nameNoExt );*/
-
         }
 
     })

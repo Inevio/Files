@@ -276,7 +276,6 @@
 .user i{
 	width: 24px;
 	height: 24px;
-	background-image: url("@static/yolo.jpg");
 	float: left;
 	background-size: cover;
 }
