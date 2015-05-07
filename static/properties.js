@@ -1,47 +1,89 @@
     
-    var win       = $( this );
-    var input     = $('.file-name div', win);
-		var extension = $('.file-extension div', win);
-    var type      = $('.file-type', win);
-    var size      = $('.properties .size', win);
-    var created   = $('.created-date', win);
-    var modified  = $('.modified-date', win);
-		var filePermission=$('.permission', win);
-		var propertiesButton = 	$('.properties-button',win);
-		var historicButton = 		$('.historic-button',win);
-		var propertiesTab = $('.properties-tab',win);
-		var propertiesWindow = $('.properties', win);
-		var thumbnail = $('.preview i',win);
-    var owner     = $('.properties .owner', win);
-    var link      = $('.properties .link', win);
-    var modify    = $('.properties .modify', win);
-    var copy      = $('.properties .copy', win);
-    var download  = $('.properties .download', win);
-    var share     = $('.properties .share', win);
-    var send      = $('.properties .send', win);
-		var user4			= $('.user4 .user',win);
-    var file      = {};
-    var renaming  = false;
+    var win       						= $( this );
+    var input     						= $('.file-name div', win);
+		var extension 						= $('.file-extension div', win);
+    var type      						= $('.file-type', win);
+    var size      						= $('.properties .size', win);
+    var created   						= $('.created-date', win);
+    var modified  						= $('.modified-date', win);
+		var filePermission				= $('.permission', win);
+		var propertiesButton 			= $('.properties-button',win);
+		var historicButton 				=	$('.historic-button',win);
+		var propertiesTab 				= $('.properties-tab',win);
+		var propertiesWindow 			= $('.properties', win);
+		var expandFilePerm				= $('.file-permissions .permissions-header', win);
+		var filePerm							= $('.file-permissions', win);
+		var usersPerm							= $('.users-permissions', win);
+		var expandUsersPerm				= $('.users-permissions .users-header', win);
+		var thumbnail 						= $('.preview i',win);
+    var owner     						= $('.properties .owner', win);
+    var link      						= $('.properties .link', win);
+    var modify    						= $('.properties .modify', win);
+    var copy      						= $('.properties .copy', win);
+    var download  						= $('.properties .download', win);
+    var share     						= $('.properties .share', win);
+    var send      						= $('.properties .send', win);
+		var user4									= $('.user4 .user',win);
+    var file      						= {};
+    var renaming  						= false;
 
 
-		propertiesButton.on('click', function(){
-			if(!this.classList.contains('active')){
-				historicButton.toggleClass('active');
-				propertiesButton.toggleClass('active');
-				propertiesTab.toggleClass('hide');
-				propertiesWindow.toggleClass('historic');
-				win.height(510);
+
+		expandFilePerm.on( 'click', function(){
+			
+			if( !filePerm.hasClass('extended') ){
+				
+				win.height(win.height()+55);
+				
+			}else{
+				
+				win.height(win.height()-55);
+				
 			}
+			filePerm.toggleClass( 'extended' );
 		});
 
-		historicButton.on('click', function(){
-			if(!this.classList.contains('active')){
-				propertiesButton.toggleClass('active');
-				historicButton.toggleClass('active');
-				propertiesTab.toggleClass('hide');
-				propertiesWindow.toggleClass('historic');
-				win.height(385);
+		expandUsersPerm.on( 'click', function(){
+			
+			if( !usersPerm.hasClass('extended') ){
+				
+				win.height(win.height()+146);
+				
+			}else{
+				
+				win.height(win.height()-146);
+				
 			}
+			usersPerm.toggleClass( 'extended' );
+		});
+
+
+		propertiesButton.on( 'click', function(){
+			
+			if( !this.hasClass('active') ){
+				
+				historicButton.toggleClass( 'active' );
+				propertiesButton.toggleClass( 'active' );
+				propertiesTab.toggleClass( 'hide' );
+				propertiesWindow.toggleClass( 'historic' );
+				win.height(510);
+				
+			}
+			
+		});
+
+		historicButton.on( 'click', function(){
+			
+			if( !this.hasClass('active') ){
+				
+				propertiesButton.toggleClass( 'active' );
+				historicButton.toggleClass( 'active' );
+				propertiesTab.toggleClass( 'hide' );
+				propertiesWindow.toggleClass( 'historic' );
+				win.height( 385 );
+				
+			}
+			
 		});
 
 		filePermission.on('click', function(){
@@ -132,9 +174,6 @@
         var nameNoExt = _cropExtension(structure);
         input.text( nameNoExt );
 			
-				if(structure.thumbnails.normal!=null){
-					thumbnail.css('background-image','url("'+structure.thumbnails.normal+'")')
-				}
 				var extensionText = 'Directorio';
 
         var fileType = structure.type;
@@ -161,7 +200,22 @@
             type.text( lang.unknown );
         }
         
-				extension.text( extensionText);
+				extension.text( extensionText );
+			
+				if( structure.thumbnails.normal!=null ){
+					
+					thumbnail.css('background-image','url("'+structure.thumbnails.normal+'")');
+					
+				}else{
+					
+					if ( (extensionText == '.texts') || (extensionText == '.docx') || (extensionText == '.doc') || (extensionText == '.txt') || (extensionText == '.odt') ){
+						thumbnail.css( 'background-image','url("https://download.inevio.com/962242/icon/normal")' );
+					}
+					else if ( extensionText == 'Directorio' ){
+						thumbnail.css( 'background-image' , 'url("https://download.inevio.com/962249/icon/normal")' );
+						$('.file-extension').css( 'width' , '74px');
+					}
+				}
 			
         var createdDate  = new Date( structure.created );
         var modifiedDate = new Date( structure.modified );
@@ -247,11 +301,13 @@
 		wz.fs(params, function( error, structure ){
 			//console.log(arguments);
 			//console.log(structure);
-			structure.getPath( function( error, list ){
+			/*structure.getPath( function( error, list ){
 				
 				console.log( list[0] );
 				
-			});
+			});*/
+			//console.log(win.height());
+			
 			
     	structure.sharedWith( true, function( error, owner, permissions, users ){
 				
@@ -266,6 +322,7 @@
 						
 						//console.log(owner[i]);
 						var userx ='.user'+ (i+1);
+						
 						if( owner[i].id == structure.owner ){
 							
 							permissionText = $(userx + ' .change-permission',win);
@@ -280,20 +337,24 @@
 						//console.log('url("'+owner[i].avatar.small+'")');
 						userxAvatarField.css( "background-image",'url("'+owner[i].avatar.small+'")' );
 						
+						if( owner[i].id == wz.system.user().id ){
+							userxNameField.text( userxNameField.text() + ' (Me)' );
+						}
+						
 					}
 					
-				}
-				else{
+				}else{
 					
 					var userx ='.user1';
 					$(userx).toggleClass( 'active' );
 					var userxNameField = $( userx + ' .username',win );
 					var userxAvatarField = $( userx + ' i',win );
-					userxNameField.text = wz.system.user().fullName;
+					userxNameField.text( wz.system.user().fullName );
 					userxAvatarField.css( "background-image",'url("'+wz.system.user().avatar.small+'")' );
 					permissionText = $( userx + ' .change-permission',win );
 					permissionText.text ( 'Owner' );
-					
+					userxNameField.text( userxNameField.text() + ' (Me)' );
+
 				}
 				
     	});
@@ -335,35 +396,6 @@
         /*input.blur();*/
     });
         
-    /*input.on( 'blur', function(){
-        
-        if( input.val() !== file.name && !renaming ){
-
-            var nameExt = _addExtension(input.val(), file);
-
-            file.rename( nameExt, function( error ){
-
-                if( error ){
-
-                    if( error === 'NAME ALREADY EXISTS' ){
-                        alert( lang.nameExists );
-                    }else{
-                        alert( error );
-                    }
-
-                    var nameNoExt = _cropExtension(file); 
-
-                    input.val( nameNoExt );
-
-                }
-
-            });
-
-        }
-
-        renaming = false;
-        
-    });*/
         
     $( '.properties-title', win ).text( lang.propertiesTitle );
     $( '.properties-name', win ).text( '· ' +  lang.propertiesName + ':' );
