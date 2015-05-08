@@ -6,6 +6,7 @@
     var size      						= $('.properties .size', win);
     var created   						= $('.created-date', win);
     var modified  						= $('.modified-date', win);
+		var duration							= $('.duration-text',win);
 		var filePermission				= $('.permission', win);
 		var propertiesButton 			= $('.properties-button',win);
 		var historicButton 				=	$('.historic-button',win);
@@ -15,6 +16,7 @@
 		var filePerm							= $('.file-permissions', win);
 		var usersPerm							= $('.users-permissions', win);
 		var expandUsersPerm				= $('.users-permissions .users-header', win);
+		var userPrototype					= $('.user.wz-prototype',win);
 		var thumbnail 						= $('.preview i',win);
     var owner     						= $('.properties .owner', win);
     var link      						= $('.properties .link', win);
@@ -202,18 +204,13 @@
         
 				extension.text( extensionText );
 			
-				if( structure.thumbnails.normal!=null ){
-					
-					thumbnail.css('background-image','url("'+structure.thumbnails.normal+'")');
-					
-				}else{
-					
-					if ( (extensionText == '.texts') || (extensionText == '.docx') || (extensionText == '.doc') || (extensionText == '.txt') || (extensionText == '.odt') ){
-						thumbnail.css( 'background-image','url("https://download.inevio.com/962242/icon/normal")' );
-					}
-					else if ( extensionText == 'Directorio' ){
-						thumbnail.css( 'background-image' , 'url("https://download.inevio.com/962249/icon/normal")' );
-						$('.file-extension').css( 'width' , '74px');
+				thumbnail.css( 'background-image','url("'+structure.icons.normal+'")' );
+			
+				if ( structure.metadata){
+					if ( structure.metadata.media ){
+						if ( structure.metadata.media.duration ){
+							duration.text( structure.metadata.media.duration.raw );
+						}
 					}
 				}
 			
@@ -307,8 +304,7 @@
 				
 			});*/
 			//console.log(win.height());
-			
-			
+
     	structure.sharedWith( true, function( error, owner, permissions, users ){
 				
 				//console.log(arguments);
@@ -320,6 +316,18 @@
 					
 					for ( var i = 0; i < owner.length; i++ ) { 
 						
+						var user = userPrototype.clone().removeClass('wz-prototype').addClass('user'+(i+1));
+						
+						if( i==0 ){
+						
+							user.insertAfter(userPrototype);
+							
+						}else{
+							
+							user.insertAfter( $('.user' + (i)) );
+							
+						}
+						
 						//console.log(owner[i]);
 						var userx ='.user'+ (i+1);
 						
@@ -327,10 +335,10 @@
 							
 							permissionText = $(userx + ' .change-permission',win);
 							permissionText.text ( 'Owner' );
+							$( userx ).toggleClass( 'owner' );
 							
 						}
-						
-						$( userx ).toggleClass( 'active' );
+
 						userxNameField = $(userx + ' .username',win);
 						userxAvatarField = $(userx + ' i',win);
 						userxNameField.text( owner[i].fullName );
@@ -338,15 +346,20 @@
 						userxAvatarField.css( "background-image",'url("'+owner[i].avatar.small+'")' );
 						
 						if( owner[i].id == wz.system.user().id ){
+						
 							userxNameField.text( userxNameField.text() + ' (Me)' );
+							
 						}
 						
 					}
 					
 				}else{
 					
+					var user = userPrototype.clone().removeClass('wz-prototype').addClass('user1').insertAfter(userPrototype);
+					
 					var userx ='.user1';
-					$(userx).toggleClass( 'active' );
+					//$(userx).toggleClass( 'active' );
+					$( userx ).toggleClass( 'owner' );
 					var userxNameField = $( userx + ' .username',win );
 					var userxAvatarField = $( userx + ' i',win );
 					userxNameField.text( wz.system.user().fullName );
