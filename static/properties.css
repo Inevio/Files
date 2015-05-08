@@ -120,12 +120,11 @@
 
 .file-extension{
 	
-	float:right;
-	width: 49px;
-	text-align: center;
-	padding-top: 10px;
-	padding-bottom: 9px;
-	border-left: 1px solid #dcdcdc;
+	float: right;
+  /* width: 49px; */
+  text-align: center;
+	padding: 10px 10px 9px 10px;
+  border-left: 1px solid #dcdcdc;
 	
 }
 
@@ -382,20 +381,24 @@
 	
 	margin-top:10px;
 	height: 24px;
-	display: none;
+	display: block;
 	
 }
 
-.user.active{
+.user.owner .username{
 	
-	display: block;
+	width: 180px;
 	
 }
 
 .username{
 	
 	float: left;
-  margin: 5px 0px 0px 7px;	
+  margin: 5px 0px 0px 7px;
+	width: 130px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 	
 }
 
