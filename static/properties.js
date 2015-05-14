@@ -36,6 +36,7 @@
 	var user4									= $('.user4 .user',win);
   var file      						= {};
   var renaming  						= false;
+	var moreInfoExpandable		= true;
 
 		expandFilePerm.on( 'click', function(){
 
@@ -64,20 +65,24 @@
 			}
 			usersPerm.toggleClass( 'extended' );
 		});
-
+	
 		expandMoreInfo.on( 'click', function(){
+			if(moreInfoExpandable){
+				
+				if( !moreInfo.hasClass( 'extended' ) ){
 
-			if( !moreInfo.hasClass( 'extended' ) ){
+					win.height(win.height()+76);
 
-				win.height(win.height()+146);
+				}else{
 
-			}else{
+					win.height(win.height()-76);
 
-				win.height(win.height()-146);
+				}
+				moreInfo.toggleClass( 'extended' );
 
 			}
-			moreInfo.toggleClass( 'extended' );
 		});
+		
 
 
 		propertiesButton.on( 'click', function(){
@@ -307,27 +312,91 @@
 
     };
 
-    wz.fs( params, function( error, structure ){
 
-        file = structure;
-        properties( structure );
-
-    });
+		var createMoreInfo = function (i, contentName, text, alternativeReturn){
+			
+			if( contentName ){
+						
+				var moreInfoSection = infoPrototype.clone().removeClass('wz-prototype').addClass('info'+(i));
+						
+				if( i===0 ){
+					moreInfoSection.insertAfter( infoPrototype );
+				}else{
+					moreInfoSection.insertAfter( $('.info' +(i-1)) );
+				}		
+						
+				var moreInfoTitle = $('.info'+(i) + ' .title',win);
+				var moreInfoContent = $('.info'+(i) + ' .content',win);						
+						
+				moreInfoTitle.text( text );
+				
+				if(alternativeReturn === undefined){
+					moreInfoContent.text ( contentName );
+				}else{
+					moreInfoContent.text ( alternativeReturn );
+				}
+				i++;
+					
+			}
+			return i;
+		}
 
 
 		wz.fs(params, function( error, structure ){
+			
 			//console.log(arguments);
-		console.log(structure);
+			//console.log(structure);
 
+			file = structure;
+      properties( structure );
+			
 			if( structure.metadata ){
+				
+				var i = 0;	
 
 				if( structure.metadata.exif ){
+					
+					i = createMoreInfo( i,structure.metadata.exif.imageSize,'Image Size:' );
+					i = createMoreInfo( i,structure.metadata.exif.profileDescription,'Color profile:' );
+					i = createMoreInfo( i,structure.metadata.exif.yResolution,'Resolution:', structure.metadata.exif.yResolution+' ppi' );
+					i = createMoreInfo( i,structure.metadata.exif.fileType,'File Type:' );													
+					
+				}else if( structure.metadata.id3 ){
+				
+					i = createMoreInfo( i,structure.metadata.id3.title,'Title:' );		
+				
+					if( structure.metadata.id3.artist ){
+						i = createMoreInfo( i,structure.metadata.id3.artist[0],'Artist:' );
+					}
+					
+					i = createMoreInfo( i,structure.metadata.id3.album,'Album:' );
+					
+					if( structure.metadata.media ){
+						
+						if( structure.metadata.media.audio ){
+							i = createMoreInfo( i,structure.metadata.media.audio.codec,'Codec:' );	
+						}
+						
+					}
+						
 
-					//var user = userPrototype.clone().removeClass('wz-prototype').addClass('user'+(i+1));
-					//console.log ( structure.metadata.exif.imageSize );
-
+				}else if( structure.metadata.media ){
+					
+					if( structure.metadata.media.video ){
+					
+						i = createMoreInfo( i,structure.metadata.media.video.resolution,'Resolution: ', structure.metadata.media.video.resolution.w + 								'x' + structure.metadata.media.video.resolution.h );
+						i = createMoreInfo( i,structure.metadata.media.video.aspectString,'Aspect Ratio:' );
+						i = createMoreInfo( i,structure.metadata.media.video.fps,'fps:' );
+						i = createMoreInfo( i,structure.metadata.media.video.codec,'codec:' );
+						
+					}
+				}else{
+					moreInfoExpandable = false;	
 				}
-
+				
+			}
+			else{
+				moreInfoExpandable = false;
 			}
 
 			structure.getPath( function( error, list ){

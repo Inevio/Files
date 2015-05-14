@@ -445,16 +445,35 @@
 	
 }
 
+.extended .info-extended{
+
+	display: block;
+	
+}
+
 .info-extended{
 	
-	height: 80px;
-	margin: 10px 0px 0px 10px;
+	display:none;
+	height: 75px;
+	margin: 15px 0px 0px 10px;
 	
+}
+
+.info .content{
+
+	color: #5a5d66;
+	
+}
+
+.info{
+
+	margin-bottom: 5px;
+
 }
 
 .extended.more-info{
 	
-	height: 170px;
+	height: 100px;
 	
 }
 
@@ -473,7 +492,7 @@
 .info-extended .title{
 	
 	float:left;
-	margin-right: 10px;
+	margin-right: 5px;
 	
 }
 
