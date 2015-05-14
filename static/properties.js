@@ -392,11 +392,17 @@
 					}
 				}else{
 					moreInfoExpandable = false;	
+					moreInfo.css ('display', 'none' );
+					win.height( win.height()-40 );
 				}
 				
 			}
 			else{
+				
 				moreInfoExpandable = false;
+				moreInfo.css ('display', 'none' );
+				win.height( win.height()-40 );
+				
 			}
 
 			structure.getPath( function( error, list ){
