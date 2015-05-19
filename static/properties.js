@@ -344,7 +344,6 @@
 
 		wz.fs(params, function( error, structure ){
 			
-			//console.log(arguments);
 			//console.log(structure);
 
 			file = structure;
@@ -356,6 +355,7 @@
 
 				if( structure.metadata.exif ){
 					
+					type.text( 'Imagen' );
 					i = createMoreInfo( i,structure.metadata.exif.imageSize,'Image Size:' );
 					i = createMoreInfo( i,structure.metadata.exif.profileDescription,'Color profile:' );
 					i = createMoreInfo( i,structure.metadata.exif.yResolution,'Resolution:', structure.metadata.exif.yResolution+' ppi' );
@@ -363,6 +363,7 @@
 					
 				}else if( structure.metadata.id3 ){
 				
+					type.text( 'Audio' );
 					i = createMoreInfo( i,structure.metadata.id3.title,'Title:' );		
 				
 					if( structure.metadata.id3.artist ){
@@ -371,25 +372,19 @@
 					
 					i = createMoreInfo( i,structure.metadata.id3.album,'Album:' );
 					
-					if( structure.metadata.media ){
-						
-						if( structure.metadata.media.audio ){
-							i = createMoreInfo( i,structure.metadata.media.audio.codec,'Codec:' );	
-						}
-						
+					if( structure.metadata.media && structure.metadata.media.audio ){
+    			  i = createMoreInfo( i,structure.metadata.media.audio.codec,'Codec:' );							
 					}
 						
 
-				}else if( structure.metadata.media ){
+				}else if( structure.metadata.media && structure.metadata.media.video ){
 					
-					if( structure.metadata.media.video ){
-					
+						type.text( 'Video' );
 						i = createMoreInfo( i,structure.metadata.media.video.resolution,'Resolution: ', structure.metadata.media.video.resolution.w + 								'x' + structure.metadata.media.video.resolution.h );
 						i = createMoreInfo( i,structure.metadata.media.video.aspectString,'Aspect Ratio:' );
 						i = createMoreInfo( i,structure.metadata.media.video.fps,'fps:' );
 						i = createMoreInfo( i,structure.metadata.media.video.codec,'codec:' );
 						
-					}
 				}else{
 					moreInfoExpandable = false;	
 					moreInfo.css ('display', 'none' );
@@ -433,7 +428,6 @@
 
     	structure.sharedWith( true, function( error, owner, permissions, users ){
 
-				//console.log(arguments);
 				if( owner.length != 0 ){
 
 					var userxNameField;
@@ -526,9 +520,9 @@
 
     });
 
-    win.key( 'enter', function(){
-        /*input.blur();*/
-    });
+   /* win.key( 'enter', function(){
+        input.blur();
+    });*/
 
 
   $( '.properties-title', win ).text( lang.propertiesTitle );
