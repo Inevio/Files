@@ -355,35 +355,35 @@
 
 				if( structure.metadata.exif ){
 					
-					type.text( 'Imagen' );
-					i = createMoreInfo( i,structure.metadata.exif.imageSize,'Image Size:' );
-					i = createMoreInfo( i,structure.metadata.exif.profileDescription,'Color profile:' );
-					i = createMoreInfo( i,structure.metadata.exif.yResolution,'Resolution:', structure.metadata.exif.yResolution+' ppi' );
-					i = createMoreInfo( i,structure.metadata.exif.fileType,'File Type:' );													
+					type.text( lang.imageType );
+					i = createMoreInfo( i,structure.metadata.exif.imageSize,lang.imageSize );
+					i = createMoreInfo( i,structure.metadata.exif.profileDescription,lang.colorProfile );
+					i = createMoreInfo( i,structure.metadata.exif.yResolution,lang.resolutionPpi, structure.metadata.exif.yResolution+' ppi' );
+					i = createMoreInfo( i,structure.metadata.exif.fileType, lang.fileTypeTitle );													
 					
 				}else if( structure.metadata.id3 ){
 				
-					type.text( 'Audio' );
-					i = createMoreInfo( i,structure.metadata.id3.title,'Title:' );		
+					type.text( lang.audioType );
+					i = createMoreInfo( i,structure.metadata.id3.title,lang.title );		
 				
 					if( structure.metadata.id3.artist ){
-						i = createMoreInfo( i,structure.metadata.id3.artist[0],'Artist:' );
+						i = createMoreInfo( i,structure.metadata.id3.artist[0],lang.artist );
 					}
 					
-					i = createMoreInfo( i,structure.metadata.id3.album,'Album:' );
+					i = createMoreInfo( i,structure.metadata.id3.album,lang.album );
 					
 					if( structure.metadata.media && structure.metadata.media.audio ){
-    			  i = createMoreInfo( i,structure.metadata.media.audio.codec,'Codec:' );							
+    			  i = createMoreInfo( i,structure.metadata.media.audio.codec,lang.codec );							
 					}
 						
 
 				}else if( structure.metadata.media && structure.metadata.media.video ){
 					
-						type.text( 'Video' );
-						i = createMoreInfo( i,structure.metadata.media.video.resolution,'Resolution: ', structure.metadata.media.video.resolution.w + 								'x' + structure.metadata.media.video.resolution.h );
-						i = createMoreInfo( i,structure.metadata.media.video.aspectString,'Aspect Ratio:' );
-						i = createMoreInfo( i,structure.metadata.media.video.fps,'fps:' );
-						i = createMoreInfo( i,structure.metadata.media.video.codec,'codec:' );
+						type.text( lang.videoType );
+						i = createMoreInfo( i,structure.metadata.media.video.resolution,lang.resolutionPpi, structure.metadata.media.video.resolution.w + 								'x' + structure.metadata.media.video.resolution.h );
+						i = createMoreInfo( i,structure.metadata.media.video.aspectString,lang.aspectRatio );
+						i = createMoreInfo( i,structure.metadata.media.video.fps,'FPS:' );
+						i = createMoreInfo( i,structure.metadata.media.video.codec,lang.codec );
 						
 				}else{
 					moreInfoExpandable = false;	
@@ -453,7 +453,7 @@
 						if( owner[i].id == structure.owner ){
 
 							permissionText = $(userx + ' .change-permission',win);
-							permissionText.text ( 'Owner' );
+							permissionText.text ( lang.propertiesOwner );
 							$( userx ).toggleClass( 'owner' );
 
 						}
@@ -464,7 +464,7 @@
 						userxAvatarField.css( "background-image",'url("'+owner[i].avatar.small+'")' );
 
 						if( owner[i].id == wz.system.user().id ){
-							userxNameField.text( userxNameField.text() + ' (Me)' );
+							userxNameField.text( userxNameField.text() + ' ' + lang.propertiesFileOwner );
 						}
 
 					}
@@ -480,8 +480,8 @@
 					userxNameField.text( wz.system.user().fullName );
 					userxAvatarField.css( "background-image",'url("'+wz.system.user().avatar.small+'")' );
 					permissionText = $( userx + ' .change-permission',win );
-					permissionText.text ( 'Owner' );
-					userxNameField.text( userxNameField.text() + ' (Me)' );
+					permissionText.text ( lang.propertiesOwner );
+					userxNameField.text( userxNameField.text() + ' ' + lang.propertiesFileOwner );
 
 				}
 
@@ -524,14 +524,24 @@
         input.blur();
     });*/
 
+	$( '.file-type-title',win ).text ( lang.fileTypeTitle );
+	$( '.duration-title',win ).text ( lang.durationTitle );
+	$( '.location-title',win ).text ( lang.locationTitle );
+	$( '.created-title',win ).text ( lang.createdTitle );
+	$( '.modified-title',win ).text ( lang.modifiedTitle );
+	$( '.permissions-title',win ).text ( lang.permissionsTitle );
+
+	$( '.permission-link-title',win ).text ( lang.permissionLinkTitle );
+	$( '.permission-download-title',win ).text ( lang.permissionDownloadTitle );
+	$( '.permission-modify-title',win ).text ( lang.permissionModifyTitle );
+	$( '.permission-share-title',win ).text ( lang.permissionShareTitle );
+	$( '.permission-copy-title',win ).text ( lang.permissionCopyTitle );
+	$( '.permission-send-title',win ).text ( lang.permissionSendTitle );
+
+	$( '.users-section-title',win ).text ( lang.usersSectionTitle );
+	$( '.moreinfo-section-title',win ).text ( lang.moreinfoSectionTitle );
 
   $( '.properties-title', win ).text( lang.propertiesTitle );
-  $( '.properties-name', win ).text( '· ' +  lang.propertiesName + ':' );
-  $( '.properties-type', win ).text( '· ' +  lang.propertiesType + ':' );
-  $( '.properties-size', win ).text( '· ' +  lang.propertiesSize + ':' );
-  $( '.properties-created', win ).text( '· ' +  lang.propertiesCreated + ':' );
-  $( '.properties-modified', win ).text( '· ' +  lang.propertiesModified + ':' );
-  $( '.properties-owner', win ).text( '· ' +  lang.propertiesOwner + ':' );
   $( '.attr', win ).text( '· ' +  lang.attr + ':' );
   $( '.attr-link', win ).text( lang.attrLink );
   $( '.attr-modify', win ).text( lang.attrModify );
