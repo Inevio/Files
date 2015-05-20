@@ -395,12 +395,12 @@
 	
 }
 
-.change-permission:hover{
+/*.change-permission:hover{
 	
 	color: #7ebe30;
 	text-decoration: underline;
 	
-}
+}*/
 
 .user{
 	
@@ -542,4 +542,8 @@
 	background-image: url("@static/yolo.jpg");
 	background-repeat: no-repeat;
 	
+}
+
+.users-section-title,.moreinfo-section-title{
+ font-size:11px;	
 }
