@@ -142,6 +142,33 @@
     "beenRefused" : "ha sido rechazado",
 
     "accept" : "Aceptar",
-    "noApp" : "No se encontró una app asociada"
+    "noApp" : "No se encontró una app asociada",
+
+    "fileTypeTitle" : "Tipo:",
+    "durationTitle" : "Duración:",
+    "locationTitle" : "Ruta:",
+    "createdTitle" : "Creado:",
+    "modifiedTitle" : "Modificado:",
+    "permissionsTitle" : "Permisos:",
+    "permissionLinkTitle" : "Enlazar",
+    "permissionDownloadTitle" : "Descargar",
+    "permissionModifyTitle" : "Modificar",
+    "permissionShareTitle" : "Compartir",
+    "permissionCopyTitle" : "Copiar",
+    "permissionSendTitle" : "Enviar",
+    "usersSectionTitle" : "Usuarios:",
+    "moreinfoSectionTitle" : "Más información:",
+    "imageType" : "Imagen",
+    "audioType" : "Audio",
+    "videoType" : "Vídeo",
+    "imageSize" : "Tamaño de imagen:",
+    "colorProfile" : "Perfil de color:",
+    "resolutionPpi" : "Resolución:",
+    "title" : "Título:",
+    "artist" : "Artista:",
+    "album" : "Álbum:",
+    "codec" : "Códec:",
+    "aspectRatio" : "Relación de aspecto:",
+    "propertiesFileOwner" : "(Yo)"
 
 }

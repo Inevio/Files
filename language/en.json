@@ -142,6 +142,33 @@
     "beenRefused" : "has been refused",
 
     "accept" : "Accept",
-    "noApp" : "No associated app could be found"
+    "noApp" : "No associated app could be found",
+
+    "fileTypeTitle" : "File type:",
+    "durationTitle" : "Duration:",
+    "locationTitle" : "Location:",
+    "createdTitle" : "Created:",
+    "modifiedTitle" : "Modified:",
+    "permissionsTitle" : "Permissions:",
+    "permissionLinkTitle" : "Link",
+    "permissionDownloadTitle" : "Download",
+    "permissionModifyTitle" : "Modify",
+    "permissionShareTitle" : "Share",
+    "permissionCopyTitle" : "Copy",
+    "permissionSendTitle" : "Send",
+    "usersSectionTitle" : "Users:",
+    "moreinfoSectionTitle" : "More info:",
+    "imageType" : "Image",
+    "audioType" : "Audio",
+    "videoType" : "Video",
+    "imageSize" : "Image size:",
+    "colorProfile" : "Color profile:",
+    "resolutionPpi" : "Resolution:",
+    "title" : "Title:",
+    "artist" : "Artist:",
+    "album" : "Album:",
+    "codec" : "Codec:",
+    "aspectRatio" : "Aspect ratio:",
+    "propertiesFileOwner" : "(Me)"
 
 }
