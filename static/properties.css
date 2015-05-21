@@ -1,13 +1,13 @@
 *{
-	
+
   font-family: Lato !important;
 	font-size: 13px;
 	color: #5a5d66;
-	
+
 }
 
 .wz-view-minimize, .wz-view-maximize, .wz-view-close{
-  float: left;  
+  float: left;
 }
 
 .window-buttons{
@@ -15,454 +15,456 @@
 }
 
 .wz-view{
-    
+
     background: #FFF;
-    
+
 }
 
 .wz-ui-header{
-    
+
 	width: 288px;
   height: 18px;
   padding: 3px 12px 8px 20px;
-    
+
 }
 
 .wz-ui-header span{
-    
+
     float: left;
     margin: 6px 0px 0px 105px;
     font-size: 13px;
     color: #666;
-    
+
 }
 
 .grey{
-	
+
 	color: #949494;
-	
+
 }
 
 .properties-selector{
-	
+
 	height: 29px;
 	border-bottom: 1px solid #dcdcdc;
 	background-color: #ececec;
 	display: none;
-	
+
 }
 
 .properties-button,.historic-button{
-	
+
 	float:left;
 	width: 160px;
 	padding-top: 10px;
-	
+
 }
 
 .properties-button div,.historic-button div{
-	
+
   /*display: inline-block;*/
   text-align: center;
   width: 160px;
   font-size: 13px;
 	height: 19px;
-	
+
 }
 
 .properties-button.active,.historic-button.active{
-	
+
 	background-color: white;
 	border-bottom: 2px solid #7ebe30;
-	
+
 }
 
 .properties{
-	
+
   width: 320px;
   /*height: 470px;*/
-  /*padding: 0px 10px 0px 10px;*/ 
-	
+  /*padding: 0px 10px 0px 10px;*/
+
 }
 
 .properties.historic{
-	
+
   width: 320px;
   height: 345px;
-  /*padding: 0px 10px 0px 10px;*/ 
-	
+  /*padding: 0px 10px 0px 10px;*/
+
 }
 
 .properties article{
-	
+
   width: 245px;
   margin-bottom: 10px;
-  float: left; 
-	
+  float: left;
+
 }
 
 .basic-properties{
-	
+
 	height: 29px;
 	background-color: #f6f6f6;
 	border-bottom: 1px solid #dcdcdc;
-	
+
 }
 
 .file-name{
-	
+
 	float:left;
 	/*width: 260px;*/
 	padding: 9px 0px 7px 10px;
-	
-	
+
+
 }
 
 .file-extension{
-	
+
 	float: right;
   /* width: 49px; */
   text-align: center;
 	padding: 10px 10px 9px 10px;
   border-left: 1px solid #dcdcdc;
-	
+
 }
 
 .file-extension div{
-	
+
 	font-size: 11px;
-	
+
 }
 
 .preview-size{
-	
+
 	height: 79px;
 	border-bottom:1px solid #dcdcdc;
-	
+
 }
 
 .preview{
-	
+
 	float:left;
 	width:180px;
 	padding:10px 0px 0px 10px;
-	
+
 }
 
 .preview i{
-	
+
 	width: 60px;
 	height: 60px;
 	float:left;
 	margin-right: 12px;
 	background-size: cover;
 	border-radius: 3px;
-	
+
 }
 
 .preview-text{
-	
+
 	font-size: 11px;
 	margin: 2px 0px 2px 0px;
-	
+
 }
 
-.duration{	
-	
+.duration{
+
 	display: none;
-	
+
 }
 
 .duration .active{
-	
+
 	display: block;
-	
+
 }
 
 .size{
-	
+
 	width:129px;
 	border-left: 1px solid #dcdcdc;
 	float:right;
 	text-align: center;
 	padding: 30px 0px 28px 0px;
   font-size: 23px;
-	
+
 }
 
 .file-location{
-	
+
 	height:  44px;
   border-bottom: 1px solid #dcdcdc;
   padding: 10px 0px 0px 10px;
 	background-color: #f6f6f6;
-	
+
 }
 
 .file-location div, .created-modified div, .file-permissions div{
-	
+
 	font-size: 11px;
-	
+
 }
 
 .level, .level-name, .level .extend{
-  
+
 	float:left;
-	
+
 }
 
 .level .extend{
-	
-  margin: 1px 5px 0px 5px;	
-	
+
+  margin: 1px 5px 0px 5px;
+
 }
 
 
 .location{
-	
-  padding-top: 5px;	
-	
+
+  padding-top: 5px;
+
 }
 
 .created-modified{
-	
+
 	height: 44px;
   border-bottom: 1px solid #dcdcdc;
-	
+
 }
 
 .created{
-	
+
 	width:149px;
 	border-right: 1px solid #dcdcdc;
 	padding: 7px 0px 8px 10px;
 	float: left;
-	
+
 }
 
 .modified{
-	
+
 	padding: 7px 0px 8px 10px;
 	width: 150px;
 	float: left;
-	
+
 }
 
 .created-date, .modified-date{
-	
+
 	padding-top: 9px;
-	
+
 }
 
 .file-permissions{
-	
+
 	background-color: #f6f6f6;
   height: 24px;
   border-bottom: 1px solid #dcdcdc;
   padding: 15px 0px 0px 10px;
-	
+
 }
 
 .extend{
-	
+
 	width: 9px;
 	height: 9px;
 	float: left;
 	margin-right: 5px;
 	margin-top: 1px;
-	background-image: url("@static/notExpanded.png");
-	
+	background-image: url("@static/not_expanded.png");
+
 }
 
 .extended .extend{
-	
+
 	background-image: url("@static/expanded.png");
-	
+
 }
 
 .extended.file-permissions{
 
 	height: 79px;
-	
+
 }
 
 .extended .permissions{
-	
+
 	display: block;
-	
+
 }
 
 .permissions{
-	
+
 	display: none;
   height: 40px;
   margin: 15px 0px 15px 10px;
-	
+
 }
 
 
 .permission i{
-	
+
 	height: 16px;
 	width:  16px;
 	float: left;
 	background-image: url("@static/nope.png");
-	
+	background-size: 16px 16px;
+
 }
 
 .permissions div{
-	
+
 	margin: 3px 0px 0px 6px;
   float: left;
-	
+
 }
 
 .file-permissions .permission.yes i{
-	
+
 	background-image: url("@static/yes.png");
-	
+	background-size: 16px 16px;
+
 }
 
 .column1, .column2, .column3{
-	
+
   width: 85px;
   height: 40px;
   float: left;
-	
+
 }
 
 .column1, .column2{
-	
+
 	padding-right: 22px;
-	
+
 }
 
 .permission{
-	
+
 	width:90px;
 	height: 20px;
 	margin-bottom: 4px;
-	
+
 }
 
 .users-permissions{
-	
+
 	background-color: #f6f6f6;
 	height: 24px;
   border-bottom: 1px solid #dcdcdc;
   padding: 15px 0px 0px 10px;
-	
+
 }
 
 .extended .users-box{
-	
+
 	display: block;
-	
+
 }
 
 .extended.users-permissions{
 
 	height: 170px;
-	
+
 }
 
 .users-box {
-	
+
 	display: none;
 	margin: 15px 15px 15px 0px;
 	height: 125px;
 	background-color: white;
 	border: 1px solid #dcdcdc;
 	padding: 0px 10px 0px 10px;
-	
+
 }
 
 .user-info{
-	
+
 	float: left;
 	/*width: 155px;*/
-	
+
 }
 
 .change-permission{
-	
+
 	float:right;
 	text-align: right;
 	/*width: 115px;*/
 	font-size: 12px;
 	margin-top: 5px;
 	color: #949494;
-	
+
 }
 
 /*.change-permission:hover{
-	
+
 	color: #7ebe30;
 	text-decoration: underline;
-	
+
 }*/
 
 .user{
-	
+
 	margin-top:10px;
 	height: 24px;
 	display: block;
-	
+
 }
 
 .user.owner .username{
-	
+
 	width: 180px;
-	
+
 }
 
 .username{
-	
+
 	float: left;
   margin: 5px 0px 0px 7px;
 	width: 130px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-	
+
 }
 
 .user i{
-	
+
 	width: 24px;
 	height: 24px;
 	float: left;
 	background-size: cover;
-	
+
 }
 
 .more-info{
-	
+
   background-color: #f6f6f6;
   height: 24px;
   border-bottom: 1px solid #dcdcdc;
   padding: 15px 0px 0px 10px;
-	
+
 }
 
 .extended .info-extended{
 
 	display: block;
-	
+
 }
 
 .info-extended{
-	
+
 	display:none;
 	height: 75px;
 	margin: 15px 0px 0px 10px;
-	
+
 }
 
 .info .content{
 
 	color: #5a5d66;
-	
+
 }
 
 .info{
@@ -472,78 +474,78 @@
 }
 
 .extended.more-info{
-	
+
 	height: 100px;
-	
+
 }
 
 .extended .info-extended{
-  
+
 	display: block;
-	
+
 }
 
 .more-info div{
-	
+
 	font-size: 11px;
-	
+
 }
 
 .info-extended .title{
-	
+
 	float:left;
 	margin-right: 5px;
-	
+
 }
 
 .history-log{
-	
+
 	height: 285px;
 	background-color: white;
-	
+
 }
 
 .properties-tab.hide{
-	
+
 	display: none;
-	
+
 }
 
 .action{
-	
+
 	width: 140px;
 	float: left;
-	
+
 }
 
 .change{
-	
+
 	height: 20px;
-	
+
 }
 
 .change i{
-	
+
 	float:left;
-	
+
 }
 
 .action-time{
-	
+
 	float:right;
-	
+
 }
 
 .change .user-action-avatar{
-	
+
 	width: 10px;
 	height: 10px;
 	float:right;
 	background-image: url("@static/yolo.jpg");
 	background-repeat: no-repeat;
-	
+
 }
 
 .users-section-title,.moreinfo-section-title{
- font-size:11px;	
+ font-size:11px;
 }

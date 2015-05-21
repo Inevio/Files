@@ -65,10 +65,10 @@
 			}
 			usersPerm.toggleClass( 'extended' );
 		});
-	
+
 		expandMoreInfo.on( 'click', function(){
 			if(moreInfoExpandable){
-				
+
 				if( !moreInfo.hasClass( 'extended' ) ){
 
 					win.height(win.height()+76);
@@ -82,7 +82,7 @@
 
 			}
 		});
-		
+
 
 
 		propertiesButton.on( 'click', function(){
@@ -201,8 +201,7 @@
         var nameNoExt = _cropExtension(structure);
         input.text( nameNoExt );
 
-				var extensionText = 'Directorio';
-
+		var extensionText = lang.directory;
         var fileType = structure.type;
 
         if( fileType === 0 && !structure.shared ){
@@ -314,90 +313,90 @@
 
 
 		var createMoreInfo = function (i, contentName, text, alternativeReturn){
-			
+
 			if( contentName ){
-						
+
 				var moreInfoSection = infoPrototype.clone().removeClass('wz-prototype').addClass('info'+(i));
-						
+
 				if( i===0 ){
 					moreInfoSection.insertAfter( infoPrototype );
 				}else{
 					moreInfoSection.insertAfter( $('.info' +(i-1)) );
-				}		
-						
+				}
+
 				var moreInfoTitle = $('.info'+(i) + ' .title',win);
-				var moreInfoContent = $('.info'+(i) + ' .content',win);						
-						
+				var moreInfoContent = $('.info'+(i) + ' .content',win);
+
 				moreInfoTitle.text( text );
-				
+
 				if(alternativeReturn === undefined){
 					moreInfoContent.text ( contentName );
 				}else{
 					moreInfoContent.text ( alternativeReturn );
 				}
 				i++;
-					
+
 			}
 			return i;
 		}
 
 
 		wz.fs(params, function( error, structure ){
-			
+
 			//console.log(structure);
 
 			file = structure;
       properties( structure );
-			
+
 			if( structure.metadata ){
-				
-				var i = 0;	
+
+				var i = 0;
 
 				if( structure.metadata.exif ){
-					
+
 					type.text( lang.imageType );
 					i = createMoreInfo( i,structure.metadata.exif.imageSize,lang.imageSize );
 					i = createMoreInfo( i,structure.metadata.exif.profileDescription,lang.colorProfile );
 					i = createMoreInfo( i,structure.metadata.exif.yResolution,lang.resolutionPpi, structure.metadata.exif.yResolution+' ppi' );
-					i = createMoreInfo( i,structure.metadata.exif.fileType, lang.fileTypeTitle );													
-					
+					i = createMoreInfo( i,structure.metadata.exif.fileType, lang.fileTypeTitle );
+
 				}else if( structure.metadata.id3 ){
-				
+
 					type.text( lang.audioType );
-					i = createMoreInfo( i,structure.metadata.id3.title,lang.title );		
-				
+					i = createMoreInfo( i,structure.metadata.id3.title,lang.title );
+
 					if( structure.metadata.id3.artist ){
 						i = createMoreInfo( i,structure.metadata.id3.artist[0],lang.artist );
 					}
-					
+
 					i = createMoreInfo( i,structure.metadata.id3.album,lang.album );
-					
+
 					if( structure.metadata.media && structure.metadata.media.audio ){
-    			  i = createMoreInfo( i,structure.metadata.media.audio.codec,lang.codec );							
+    			  i = createMoreInfo( i,structure.metadata.media.audio.codec,lang.codec );
 					}
-						
+
 
 				}else if( structure.metadata.media && structure.metadata.media.video ){
-					
+
 						type.text( lang.videoType );
 						i = createMoreInfo( i,structure.metadata.media.video.resolution,lang.resolutionPpi, structure.metadata.media.video.resolution.w + 								'x' + structure.metadata.media.video.resolution.h );
 						i = createMoreInfo( i,structure.metadata.media.video.aspectString,lang.aspectRatio );
 						i = createMoreInfo( i,structure.metadata.media.video.fps,'FPS:' );
 						i = createMoreInfo( i,structure.metadata.media.video.codec,lang.codec );
-						
+
 				}else{
-					moreInfoExpandable = false;	
+					moreInfoExpandable = false;
 					moreInfo.css ('display', 'none' );
 					win.height( win.height()-40 );
 				}
-				
+
 			}
 			else{
-				
+
 				moreInfoExpandable = false;
 				moreInfo.css ('display', 'none' );
 				win.height( win.height()-40 );
-				
+
 			}
 
 			structure.getPath( function( error, list ){
