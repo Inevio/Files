@@ -277,19 +277,25 @@
 
 .extend{
 
-	width: 9px;
-	height: 9px;
+	width: 4px;
+	height: 7px;
 	float: left;
 	margin-right: 5px;
+    margin-left: 2px;
 	margin-top: 1px;
-	background-image: url("@static/notExpanded.png");
+	background-image: url("@static/dropdown_arrow_left.png");
+    background-size: 4px 7px;
 
 }
 
 .extended .extend{
-
-	background-image: url("@static/expanded.png");
-
+    width: 7px;
+    height: 4px;
+    margin-right: 4px;
+    margin-left: 0px;
+    margin-top: 3px;
+	background-image: url("@static/dropdown_arrow.png");
+    background-size: 7px 4px;
 }
 
 .extended.file-permissions{
