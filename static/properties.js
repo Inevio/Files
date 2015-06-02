@@ -71,11 +71,11 @@
 
 				if( !moreInfo.hasClass( 'extended' ) ){
 
-					win.height(win.height()+76);
+					win.height(win.height()+90);
 
 				}else{
 
-					win.height(win.height()-76);
+					win.height(win.height()-90);
 
 				}
 				moreInfo.toggleClass( 'extended' );
@@ -201,7 +201,8 @@
         var nameNoExt = _cropExtension(structure);
         input.text( nameNoExt );
 
-		var extensionText = lang.directory;
+				var extensionText = lang.directory;
+
         var fileType = structure.type;
 
         if( fileType === 0 && !structure.shared ){
@@ -226,7 +227,7 @@
             type.text( lang.unknown );
         }
 
-				extension.text( extensionText );
+				extension.text( extensionText.toUpperCase() );
 
 				thumbnail.css( 'background-image','url("'+structure.icons.normal+'")' );
 
