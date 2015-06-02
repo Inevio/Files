@@ -2,7 +2,7 @@
 
   font-family: Lato !important;
 	font-size: 13px;
-	color: #5a5d66;
+	color: #464646;
 
 }
 
@@ -25,6 +25,11 @@
 	width: 288px;
   height: 18px;
   padding: 3px 12px 8px 20px;
+	box-shadow: none;
+  background-image: -webkit-linear-gradient(bottom, #e1e1e1, #ffffff);
+  background-image: -moz-linear-gradient(bottom, #e1e1e1, #ffffff);
+  background-image: -o-linear-gradient(bottom, #e1e1e1, #ffffff);
+  background-image: linear-gradient(to top, #e1e1e1, #ffffff);
 
 }
 
@@ -46,7 +51,7 @@
 .properties-selector{
 
 	height: 29px;
-	border-bottom: 1px solid #dcdcdc;
+	border-bottom: 1px solid #cbcbcb;
 	background-color: #ececec;
 	display: none;
 
@@ -103,9 +108,9 @@
 
 .basic-properties{
 
-	height: 29px;
+	height: 30px;
 	background-color: #f6f6f6;
-	border-bottom: 1px solid #dcdcdc;
+	border-bottom: 1px solid #cbcbcb;
 
 }
 
@@ -124,7 +129,7 @@
   /* width: 49px; */
   text-align: center;
 	padding: 10px 10px 9px 10px;
-  border-left: 1px solid #dcdcdc;
+  border-left: 1px solid #cbcbcb;
 
 }
 
@@ -137,7 +142,7 @@
 .preview-size{
 
 	height: 79px;
-	border-bottom:1px solid #dcdcdc;
+	border-bottom:1px solid #cbcbcb;
 
 }
 
@@ -181,11 +186,11 @@
 
 .size{
 
-	width:129px;
-	border-left: 1px solid #dcdcdc;
-	float:right;
-	text-align: center;
-	padding: 30px 0px 28px 0px;
+	width: 129px;
+  border-left: 1px solid #cbcbcb;
+  float: right;
+  text-align: center;
+  padding: 29px 0px 28px 0px;
   font-size: 23px;
 
 }
@@ -193,7 +198,7 @@
 .file-location{
 
 	height:  44px;
-  border-bottom: 1px solid #dcdcdc;
+  border-bottom: 1px solid #cbcbcb;
   padding: 10px 0px 0px 10px;
 	background-color: #f6f6f6;
 
@@ -226,23 +231,23 @@
 
 .created-modified{
 
-	height: 44px;
-  border-bottom: 1px solid #dcdcdc;
+	height: 50px;
+  border-bottom: 1px solid #cbcbcb;
 
 }
 
 .created{
 
-	width:149px;
-	border-right: 1px solid #dcdcdc;
-	padding: 7px 0px 8px 10px;
-	float: left;
+	width: 149px;
+  border-right: 1px solid #cbcbcb;
+  padding: 10px 0px 8px 10px;
+  float: left;
 
 }
 
 .modified{
 
-	padding: 7px 0px 8px 10px;
+	padding: 10px 0px 8px 10px;
 	width: 150px;
 	float: left;
 
@@ -250,16 +255,23 @@
 
 .created-date, .modified-date{
 
-	padding-top: 9px;
+	padding-top: 10px;
 
 }
 
 .file-permissions{
 
 	background-color: #f6f6f6;
-  height: 24px;
-  border-bottom: 1px solid #dcdcdc;
-  padding: 15px 0px 0px 10px;
+  height: 39px;
+  border-bottom: 1px solid #cbcbcb;
+  padding: 0px 0px 0px 10px;
+
+}
+
+.permissions-header{
+
+	padding-top: 15px;
+	padding-bottom: 15px;
 
 }
 
@@ -270,7 +282,7 @@
 	float: left;
 	margin-right: 5px;
 	margin-top: 1px;
-	background-image: url("@static/not_expanded.png");
+	background-image: url("@static/notExpanded.png");
 
 }
 
@@ -282,7 +294,7 @@
 
 .extended.file-permissions{
 
-	height: 79px;
+	height: 94px;
 
 }
 
@@ -296,7 +308,7 @@
 
 	display: none;
   height: 40px;
-  margin: 15px 0px 15px 10px;
+  margin: 0px 0px 15px 10px;
 
 }
 
@@ -307,7 +319,6 @@
 	width:  16px;
 	float: left;
 	background-image: url("@static/nope.png");
-	background-size: 16px 16px;
 
 }
 
@@ -321,7 +332,6 @@
 .file-permissions .permission.yes i{
 
 	background-image: url("@static/yes.png");
-	background-size: 16px 16px;
 
 }
 
@@ -342,17 +352,17 @@
 .permission{
 
 	width:90px;
-	height: 20px;
-	margin-bottom: 4px;
+	height: 15px;
+  margin-bottom: 10px;
 
 }
 
 .users-permissions{
 
 	background-color: #f6f6f6;
-	height: 24px;
-  border-bottom: 1px solid #dcdcdc;
-  padding: 15px 0px 0px 10px;
+	height: 39px;
+  border-bottom: 1px solid #cbcbcb;
+  padding: 0px 0px 0px 10px;
 
 }
 
@@ -362,20 +372,28 @@
 
 }
 
+.users-header{
+
+	padding-top: 15px;
+	padding-bottom: 15px;
+
+}
+
 .extended.users-permissions{
 
-	height: 170px;
+	height: 185px;
 
 }
 
 .users-box {
 
 	display: none;
-	margin: 15px 15px 15px 0px;
+	margin: 0px 10px 15px 0px;
 	height: 125px;
 	background-color: white;
-	border: 1px solid #dcdcdc;
+	border: 1px solid #cbcbcb;
 	padding: 0px 10px 0px 10px;
+	border-radius: 2px;
 
 }
 
@@ -441,9 +459,9 @@
 .more-info{
 
   background-color: #f6f6f6;
-  height: 24px;
-  border-bottom: 1px solid #dcdcdc;
-  padding: 15px 0px 0px 10px;
+  height: 39px;
+  border-bottom: 1px solid #cbcbcb;
+  padding: 0px 0px 15px 10px;
 
 }
 
@@ -453,11 +471,18 @@
 
 }
 
+.more-info-header{
+
+	padding-top: 15px;
+	padding-bottom: 15px;
+
+}
+
 .info-extended{
 
 	display:none;
 	height: 75px;
-	margin: 15px 0px 0px 10px;
+	margin: 0px 0px 0px 10px;
 
 }
 
@@ -469,13 +494,13 @@
 
 .info{
 
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 
 }
 
 .extended.more-info{
 
-	height: 100px;
+	height: 115px;
 
 }
 
