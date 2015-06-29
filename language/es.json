@@ -169,6 +169,11 @@
     "album" : "Álbum:",
     "codec" : "Códec:",
     "aspectRatio" : "Relación de aspecto:",
-    "propertiesFileOwner" : "(Yo)"
+    "propertiesFileOwner" : "(Yo)",
+
+    "saving" : "Guardando...",
+    "accept" : "Aceptar",
+    "cancel" : "Cancelar",
+    "replace" : "¿Desea reemplazar el fichero?"
 
 }

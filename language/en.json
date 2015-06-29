@@ -169,6 +169,11 @@
     "album" : "Album:",
     "codec" : "Codec:",
     "aspectRatio" : "Aspect ratio:",
-    "propertiesFileOwner" : "(Me)"
+    "propertiesFileOwner" : "(Me)",
+
+    "saving"  : "Saving...",
+    "accept"  : "Accept",
+    "cancel"  : "Cancel",
+    "replace" : "Do you want to replace the file?"
 
 }

@@ -61,7 +61,7 @@
         }
 
         return nameNoExt;
-    } 
+    }
 
     var _addExtension = function(nameNoExt, structure){
 
@@ -124,27 +124,27 @@
 
         // Clone prototype
         var file = filePrototype.clone().removeClass('wz-prototype');
-        
+
         var modifiedToday = false;
         var userDate      = new Date();
         var userDateInfo  = userDate.getDate() + '' + userDate.getMonth() + '' + userDate.getFullYear();
         var modifiedDate  = new Date( structure.modified );
 
         if( userDateInfo !== ( modifiedDate.getDate() + '' + modifiedDate.getMonth() + '' + modifiedDate.getFullYear() ) ){
-            
+
             var modifiedDay   = modifiedDate.format('d');
             var modifiedMonth = modifiedDate.format('m');
-                
+
         }else{
-            
+
             modifiedToday = true;
-            
+
             var modifiedHour   = modifiedDate.format('H');
             var modifiedMinute = modifiedDate.format('i');
             var modifiedSecond = modifiedDate.format('s');
 
         }
-        
+
         //Do not show extension
         //TO-DO, allow showing extensions
 
@@ -157,7 +157,7 @@
             }else{
                 file.children('.weexplorer-file-size').text( wz.tool.bytesToUnit( structure.size, 2 ) );
             }
-            
+
             if( modifiedToday ){
                 file.children('.weexplorer-file-date-modification').text( lang.modified + modifiedHour + ':' + modifiedMinute + ':' + modifiedSecond  );
             }else{
@@ -170,11 +170,11 @@
             file.children('.weexplorer-file-date-modification').text( '--' );
 
         }
-        
+
         file.find('img').attr( 'src', structure.icons.normal + ( ( structure.type === 3 ) ? '?upload' : '' ) );
-        
+
         file.addClass( types[ structure.type ] );
-        
+
         if( structure.type === 3 ){
             file.addClass( 'weexplorer-file-uploading' );
         }
@@ -213,7 +213,7 @@
                 .data( 'wz-uploader-destiny', structure.id );
 
         }
-        
+
         /*
         if( structure.type === 5 ){
 
@@ -228,7 +228,7 @@
         */
 
         if( structure.id === structure.shareRoot ){
-            
+
             file.addClass( 'shared' );
 
             if( structure.status !== 1 ){
@@ -257,7 +257,7 @@
         }else{
             $('.weexplorer-sidebar-element.active', win).removeClass('active');
         }
-        
+
         // Get Structure Info
         wz.fs( id, function( error, structure ){
 
@@ -298,11 +298,11 @@
                 }else{
                     files.sort( sortByName );
                 }
-                
+
                 displayIcons( files );
 
                 fileArea.data( 'wz-uploader-destiny', structure.id );
-                
+
                 if( structure.id === wz.system.user().rootPath ){
                     folderBar.removeClass( 'folder music photo video doc' ).addClass( 'user' );
                 }else if( structure.name === 'Documents' || structure.name === 'Documentos' ){
@@ -316,14 +316,14 @@
                 }else{
                     folderBar.removeClass( 'music photo video doc user' ).addClass( 'folder' );
                 }
-                    
+
 
                 // Update Folder info
                 folderName.text( structure.name );
-                
-                // When a new window opens we activate the first file as last-active 
+
+                // When a new window opens we activate the first file as last-active
                 files.first().addClass('last-active hidden');
-        
+
                 // Nullify
                 files = null;
 
@@ -339,7 +339,7 @@
 
         renaming = icon;
         prevName = $( 'textarea', icon).val();
-        
+
         $( 'textarea', icon)
             .removeAttr('readonly')
             .focus()
@@ -376,7 +376,7 @@
                                 alert( error );
                             }
 
-                            var nameNoExt = _cropExtension(structure);   
+                            var nameNoExt = _cropExtension(structure);
 
                             $( 'textarea', icon ).val( nameNoExt ).text( nameNoExt );
 
@@ -385,7 +385,7 @@
                     });
 
                 }
-                
+
             });
 
         }else{
@@ -410,18 +410,18 @@
 
                 }, 100);
 
-                //To Do -> Error  
+                //To Do -> Error
 
             });
 
         });
 
     };
-    
+
     var deleteAllActive = function(){
-        
+
         var response = lang.deleteFile2;
-        
+
         if( $('.weexplorer-file.active', win).size() > 1){
             response = lang.the + $('.weexplorer-file.active', win).size() + lang.deleteFile3;
         }
@@ -431,7 +431,7 @@
             if( response ){
 
                 var notEnoughPermissions = false;
-        
+
                 $('.weexplorer-file.active', win).each(function(){
 
                     wz.fs( $(this).data( 'file-id' ), function( error, structure ){
@@ -451,9 +451,9 @@
                         }else{
                             notEnoughPermissions = true;
                         }
-           
+
                     });
-                                    
+
                 });
 
                 if( notEnoughPermissions ){
@@ -463,79 +463,79 @@
             }
 
         });
-        
+
     };
-    
+
     var sortByName = function(a,b){
-        
+
         a = $( a );
         b = $( b );
 
         if( a.children('textarea').val().toLowerCase() < b.children('textarea').val().toLowerCase() ){
             return -1;
         }
-        
+
         if( a.children('textarea').val().toLowerCase() > b.children('textarea').val().toLowerCase() ){
             return 1;
         }
-        
+
         return 0;
-        
+
     };
-    
+
     var sortBySize = function(a,b){
 
         a = $( a );
         b = $( b );
-        
+
         if( a.data( 'file-size' ) < b.data( 'file-size' ) ){
             return -1;
         }
-        
+
         if( a.data( 'file-size' ) > b.data( 'file-size' ) ){
             return 1;
         }
-        
+
         return 0;
-        
+
     };
-    
+
     var sortByCreationDate = function(a,b){
 
         a = $( a );
         b = $( b );
-        
+
         if( a.data( 'file-creation' ) < b.data( 'file-creation' ) ){
             return -1;
         }
-        
+
         if( a.data( 'file-creation' ) > b.data( 'file-creation' ) ){
             return 1;
         }
-        
+
         return 0;
-        
+
     };
-    
+
     var sortByModificationDate = function(a,b){
 
         a = $( a );
         b = $( b );
-        
+
         if( a.data( 'file-modification' ) < b.data( 'file-modification' ) ){
             return -1;
         }
-        
+
         if( a.data( 'file-modification' ) > b.data( 'file-modification' ) ){
             return 1;
         }
-        
+
         return 0;
-        
+
     };
-    
+
     var displayIcons = function(list){
-        
+
         $( list ).filter( '.directory' ).each( function(){
             fileArea.append( this ).append('\n');
         });
@@ -545,47 +545,47 @@
         });
 
         centerIcons();
-        
+
         // Nullify
         list = null;
-        
+
     };
-    
+
     var notifications = function(){
 
         wz.fs( 'inbox', function( error, structure ){
-            
+
             structure.list( function( error, list ){
-                
+
                 if( list.length ){
                     $( '.receivedFolder', sidebar ).addClass( 'notification' ).find( '.weexplorer-sidebar-notification' ).text( list.length );
                 }else{
                     $( '.receivedFolder', sidebar ).removeClass( 'notification' );
                 }
-                
+
             });
-            
+
         });
-        
+
     };
 
     /*
     var sharedNotifications = function(){
 
         wz.fs( 'shared', function( error, structure ){
-            
+
             structure.list( function( error, list ){
-                
+
                 if( list.length ){
                     $( '.sharedFolder', sidebar ).addClass( 'notification' ).find( '.weexplorer-sidebar-notification' ).text( list.length );
                 }else{
                     $( '.sharedFolder', sidebar ).removeClass( 'notification' );
                 }
-                
+
             });
-            
+
         });
-        
+
     };
     */
 
@@ -601,6 +601,7 @@
 
     var translateUi = function(){
 
+        $( '.wz-ui-header', win ).text( lang.saving );
         $( '.weexplorer-menu-sort span', win ).text( lang.sortByName );
         $( '.weexplorer-sidebar-title-name', sidebar ).text( lang.favourites );
         $( '.item-now-before', win ).text( lang.uploading );
@@ -610,6 +611,8 @@
         $( '.weexplorer-sort-size', win ).find( 'span' ).text( lang.sortBySize );
         $( '.weexplorer-sort-creation', win ).find( 'span' ).text( lang.sortByCreation );
         $( '.weexplorer-sort-modification', win ).find( 'span' ).text( lang.sortByModif );
+        acceptButton.text( lang.accept );
+        cancelButton.text( lang.cancel );
 
     };
 
@@ -666,7 +669,7 @@
         $( '.weexplorer-false-file', fileArea ).remove();
 
         if( viewType ){
-            
+
             $( '.weexplorer-file', fileArea ).css({
 
                 'margin-left'  : 0,
@@ -692,7 +695,7 @@
         if( addIcons === iconsRow ){
             addIcons = 0;
         }
-        
+
         for( var i = 0 ; i < addIcons ; i++ ){
             fileArea.append( '<div class="weexplorer-false-file"></div>' );
         }
@@ -706,7 +709,7 @@
 
         $( '.weexplorer-file', fileArea ).css({ 'margin-left': iconMargin, 'margin-right': iconMargin });
         $( '.weexplorer-false-file', fileArea ).css({ 'margin-left': iconMargin, 'margin-right': iconMargin });
-        
+
     };
 
     // WZ Events
@@ -740,24 +743,24 @@
     })
 
     .on( 'conversionStart', function( structure ){
-        
+
         $( '.weexplorer-file-' + structure + ' article', fileArea )
             .addClass('weexplorer-conversion-bar');
-        
+
     })
 
     .on( 'move', function( structure, destinyID, originID ){
-        
+
         if( originID !== destinyID ){
-            
+
             if( originID === current ){
                 fileArea.children( '.weexplorer-file-' + structure.id ).remove();
             }else if( destinyID === current ){
                 displayIcons( icon( structure ) );
             }
-        
+
         }
-        
+
     })
 
     .on( 'new', function( structure ){
@@ -769,7 +772,7 @@
     })
 
     .on( 'remove', function( id, quota, parent ){
-        
+
         fileArea.children( '.weexplorer-file-' + id ).remove();
         sidebar.children( '.folder-' + id ).remove();
 
@@ -778,7 +781,7 @@
         }
 
     })
-    
+
     .on( 'rename', function( structure ){
 
         if( structure.parent === current ){
@@ -836,7 +839,7 @@
             .addClass('file')
             .find('img')
                 .attr( 'src', structure.icons.normal );
-            
+
     });
 
     // DOM Events
@@ -879,34 +882,34 @@
             $( 'textarea', items ).width( fileArea.width() - width );
 
         }
-        
+
     })
-    
+
     .on( 'ui-view-blur', function(){
         $( '.weexplorer-sort', win ).removeClass( 'show' );
     })
-    
+
     .on( 'click', '.weexplorer-option-next', function(){
         if( nextButton.hasClass('active') && !navigationMenu.hasClass( 'show' ) ){
-            recordNext();       
+            recordNext();
         }
     })
-    
+
     .on( 'click', '.weexplorer-option-back', function(){
         if( backButton.hasClass('active') && !navigationMenu.hasClass( 'show' ) ){
-            recordBack();       
+            recordBack();
         }
     })
 
     .on( 'click', function(){
         validFileComprobation();
     })
-    
+
     .on( 'mousedown', '.weexplorer-menu-views', function(){
 
         if( views.hasClass('grid') ){
 
-            views.removeClass('grid').addClass('list');     
+            views.removeClass('grid').addClass('list');
             fileArea.removeClass('grid').addClass('list');
 
             viewType = 1;
@@ -929,21 +932,21 @@
         win.trigger('wz-resize');
 
     })
-    
+
     .on( 'click', '.weexplorer-file.active', function(e){
 
         if( renaming.size() ){
             finishRename();
         }
-        
+
         navigationMenu.removeClass( 'show' );
 
         if( !e.shiftKey && !e.ctrlKey && !e.metaKey ){
             $(this).addClass('last-active').siblings('.active').removeClass('active last-active hidden');
         }
-        
+
     })
-    
+
     .on( 'mousedown', function(){
         $( '.weexplorer-sort', win ).removeClass( 'show' );
     })
@@ -951,53 +954,53 @@
     .on( 'click', 'textarea:not([readonly])', function( e ){
         e.stopPropagation();
     })
-    
+
     .on( 'mousedown', '.weexplorer-file:not(.active)', function( e ){
-        
+
         if(e.ctrlKey || e.metaKey){
-            
+
             $( this ).addClass('active');
             $( '.weexplorer-file.last-active', fileArea ).removeClass('last-active hidden');
             $( this ).addClass('last-active');
-            
+
         }else if(e.shiftKey){
-            
+
             var icons = $( '.weexplorer-file', win );
             var beginRow = icons.index( this );
             var finalRow = icons.index( icons.filter( '.last-active' ) );
             var row      = null;
-            
+
             if( beginRow < finalRow ){
                 row = icons.slice( beginRow, finalRow + 1 ).addClass( 'active' );
             }else{
                 row = icons.slice( finalRow, beginRow + 1 ).addClass( 'active' );
             }
-            
+
             icons.not( row ).removeClass( 'active' );
-            
+
         }else{
-            
+
             $( this ).addClass('active').siblings('.active').removeClass('active');
             $( '.weexplorer-file.last-active', fileArea ).removeClass('last-active hidden');
             $( this ).addClass('last-active');
-            
+
         }
-        
+
         navigationMenu.removeClass( 'show' );
         $( '.weexplorer-sort', win ).removeClass( 'show' );
         e.stopPropagation();
-        
+
     })
-    
+
     .on( 'mousedown', '.weexplorer-file.active', function( e ){
-        
+
         $( '.weexplorer-sort', win ).removeClass( 'show' );
         e.stopPropagation();
-        
+
         if(e.ctrlKey || e.metaKey){
             $( this ).removeClass('active');
         }else if(e.shiftKey){
-            
+
             var icons = $( '.weexplorer-file', win );
             var begin = icons.index(this);
             var end   = icons.index(icons.filter( '.last-active' ));
@@ -1008,34 +1011,34 @@
             }else{
                 row = icons.slice( end, begin + 1 ).addClass('active');
             }
-            
+
             icons.not( row ).removeClass('active');
-            
+
         }
-    
+
     })
-    
+
     .on( 'mousedown', '.weexplorer-file-zone', function(){
-        
+
         if( renaming.size() ){
             finishRename();
         }
-        
+
         $( '.weexplorer-file.active' , fileArea ).removeClass('active');
-        
+
     })
-    
+
     .on( 'mousedown', 'textarea', function(e){
-        
+
         if( $(this).attr('readonly') ){
             e.preventDefault();
             /*if( $(this).parent().hasClass('active') ){
                 beginRename( $(this).parent() );
             }*/
         }
-        
+
     })
-    
+
     .on( 'mousedown', '.weexplorer-file', function(){
         if( $(this).children('textarea').attr('readonly') ){
             if( renaming.size() ){
@@ -1043,7 +1046,7 @@
             }
         }
     })
-    
+
     .on( 'mousedown', '.weexplorer-sidebar-element', function(){
 
         if( !$(this).hasClass('active') ){
@@ -1051,85 +1054,85 @@
         }
 
     })
-    
+
     .on( 'mousedown', '.weexplorer-menu-sort', function( e ){
 
         navigationMenu.removeClass( 'show' );
-        
+
         if( !$( '.weexplorer-sort', win ).hasClass( 'show' ) ){
             $( '.weexplorer-sort', win ).addClass( 'show' );
             e.stopPropagation();
         }
-        
+
     })
-    
+
     .on( 'mousedown', '.weexplorer-sort li', function(){
-        
+
         if( !$(this).hasClass( 'active' ) ){
-            
+
             $( '.weexplorer-sort li.active', win ).removeClass( 'active' );
             $( this ).addClass( 'active' );
-            
+
             list = $();
-            
+
             if( $(this).hasClass( 'weexplorer-sort-name' ) ){
-                
+
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortByName );
-                
+
                 $( '.weexplorer-file', win ).each(function(){
                     list = list.add($(this));
                 });
-                
+
                 list = list.sort(sortByName);
                 displayIcons(list);
 
                 wql.changeSort(0);
-                
+
             }else if( $(this).hasClass( 'weexplorer-sort-size' ) ){
-                
+
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortBySize );
-                
+
                 $( '.weexplorer-file', win ).each(function(){
                     list = list.add($(this));
                 });
-                
+
                 list = list.sort(sortBySize);
                 displayIcons(list);
 
                 wql.changeSort(1);
-                
+
             }else if( $(this).hasClass( 'weexplorer-sort-creation' ) ){
-                
+
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortByCreation );
-                
+
                 $( '.weexplorer-file', win ).each(function(){
                     list = list.add($(this));
                 });
-                
+
                 list = list.sort(sortByCreationDate);
                 displayIcons(list);
 
                 wql.changeSort(2);
-                
+
             }else{
-                
+
                 $( '.weexplorer-menu-sort span', win ).text( lang.sortByModif );
-                
+
                 $( '.weexplorer-file', win ).each(function(){
                     list = list.add($(this));
                 });
-                
+
                 list = list.sort(sortByModificationDate);
                 displayIcons(list, true);
 
                 wql.changeSort(3);
-                
+
             }
-        
+
         }
-  
+
     })
-    
+
     .on( 'dblclick', '.weexplorer-file.received', function(){
         wz.app.createView( $(this).data( 'file-id' ), 'received');
     })
@@ -1137,27 +1140,27 @@
     .on( 'dblclick', '.weexplorer-file.pointer-pending', function(){
         wz.app.createView( $(this).data( 'file-id' ), 'shared');
     })
-    
+
     .on( 'dblclick', 'textarea:not([readonly])', function( e ){
         e.stopPropagation();
     })
-    
+
     /*
     .on( 'dblclick', '.weexplorer-file.file', function(){
 
         var files = $('.weexplorer-file.active', $(this).parent() );
         var list  = [];
-        
+
         files.map( function(){
             list.push( $(this).data('file-id') );
         });
-        
+
         params.callback( null, list );
         wz.app.removeView( win );
-        
+
     })
     */
-    
+
     .on( 'dblclick', '.weexplorer-file.directory', function(){
 
         openDirectory( $(this).data('file-id') );
@@ -1166,7 +1169,7 @@
     })
 
     .on( 'dblclick', '.weexplorer-file.pointer:not( .pointer-pending )', function(){
-        
+
         var pointer     = $( this ).data('file-pointer');
         var pointerType = $( this ).data('file-pointerType');
 
@@ -1180,7 +1183,7 @@
         if( pointerType === 2 ){
 
             wz.fs( pointer, function( error, structure ){
-                
+
                 if( structure.status === 1 ){
 
                     structure.associatedApp( function( error, app ){
@@ -1197,26 +1200,26 @@
                 }else{
                     alert( 'Estructura no aceptada' );
                 }
-                
+
             });
-            
+
         }
-        
+
     })
-    
+
     .key( 'enter', function(e){
-        
+
         if( $(e.target).is('textarea') ){
             e.preventDefault();
             finishRename();
         }else{
             $( '.weexplorer-file.active' , fileArea ).first().dblclick();
         }
-        
+
     })
-    
+
     .key( 'backspace', function(e){
-        
+
         if( $(e.target).is('textarea') ){
             e.stopPropagation();
         }else{
@@ -1229,11 +1232,11 @@
         }
 
         acceptButton.addClass('disabled');
-  
+
     })
-    
+
     .key( 'delete', function(e){
-        
+
         if( $(e.target).is('textarea') ){
             e.stopPropagation();
         }else{
@@ -1243,11 +1246,11 @@
         }
 
         acceptButton.addClass('disabled');
-        
+
     })
-    
+
     .key( 'esc', function(e){
-        
+
         if( $(e.target).is('textarea') ){
             e.preventDefault();
             var icon = renaming;
@@ -1258,21 +1261,21 @@
         }
 
         validFileComprobation();
-        
+
     })
-    
+
     .key( 'ctrl + enter', function(){
-        
+
         if( $( '.weexplorer-file.active.last-active', fileArea ).hasClass('directory') ){
             wz.app.createView( $( '.weexplorer-file.active.last-active', fileArea ).data( 'file-id' ), 'main');
         }
-            
+
     })
-    
+
     .key( 'f2', function(){
         beginRename( $( '.weexplorer-file.active.last-active', fileArea ) );
     })
-    
+
     .key( 'left', function(e){
 
         if( $(e.target).is('textarea') ){
@@ -1282,9 +1285,9 @@
         }
 
         validFileComprobation();
-        
+
     })
-    
+
     .key( 'right', function(e){
 
         if( $(e.target).is('textarea') ){
@@ -1294,9 +1297,9 @@
         }
 
         validFileComprobation();
-        
+
     })
-    
+
     .key( 'up', function(e){
 
         if( $(e.target).is('textarea') ){
@@ -1305,18 +1308,18 @@
 
             var leftStart = $( '.weexplorer-file.last-active', fileArea ).position().left;
             var object = $( '.weexplorer-file.last-active', fileArea ).prev();
-        
+
             while( object.size() && leftStart !== object.position().left ){
                 object = object.prev();
             }
-        
+
             object.mousedown().mouseup();
         }
 
         validFileComprobation();
-          
+
     })
-    
+
     .key( 'down', function(e){
 
         if( $(e.target).is('textarea') ){
@@ -1325,7 +1328,7 @@
 
             var leftStart = $( '.weexplorer-file.last-active', fileArea ).position().left;
             var object = $( '.weexplorer-file.last-active', fileArea ).next();
-            
+
             while( object.size() && leftStart !== object.position().left ){
 
                 if( !object.next().size() ){
@@ -1335,16 +1338,16 @@
                 object = object.next();
 
             }
-            
+
             object.mousedown().mouseup();
         }
 
         validFileComprobation();
-        
+
     })
 
     .on( 'wz-dragstart', '.weexplorer-file', function( e, drag ){
-                
+
         if( $( '.weexplorer-file.active', win ).size() <= 1 ){
 
             drag.ghost(
@@ -1391,18 +1394,18 @@
         }
 
     })
-    
+
     .on( 'wz-drop', '.wz-drop-area', function( e, item ){
-        
+
         if( !$( this ).hasClass( 'active' ) &&
             ( item.data( 'file-id' ) !== $( this ).data( 'file-id' ) ) &&
             ( item.parent().data( 'file-id' ) !== $( this ).data( 'file-id' ) ) &&
             ( item.data( 'file-id' ) !== $( this ).parent().data( 'file-id' ) ) &&
             ( !( item.hasClass( 'shared' ) && $( this ).hasClass( 'shared' ) ) )
             ){
-            
+
             e.stopPropagation();
-            
+
             var dest = 0;
 
             if( $(this).hasClass('directory') || $(this).hasClass('pointer-directory') ){
@@ -1412,9 +1415,9 @@
             }else{
                 dest = current;
             }
-            
+
             item.siblings('.active').add( item ).each( function(){
-                            
+
                 wz.fs( $(this).data('file-id'), function( error, structure ){
 
                     if( error ){
@@ -1429,7 +1432,7 @@
                         }
 
                     });
-                    
+
                 });
 
             });
@@ -1493,7 +1496,7 @@
             navigationMenu.addClass( 'show' );
             e.stopPropagation();
         }
-        
+
     })
 
     .on( 'wz-hold', '.weexplorer-option-next.active', function( e ){
@@ -1559,11 +1562,11 @@
         nameInput.val( inputValue );
 
         fileArea.find('.weexplorer-file').not('.wz-prototype').not('.directory').each( function(){
-            
+
             if( $(this).data('file-name') === inputValue ){
-                
+
                 exists = true;
-                
+
                 return false;
 
             }
@@ -1571,19 +1574,19 @@
         });
 
         if( !exists ){
-            
+
             params.callback( null, current, inputValue );
             return wz.app.removeView( win );
 
         }
 
-        confirm( 'REPLACE', function( accepted ){
+        confirm( lang.replace, function( accepted ){
 
             if( accepted ){
 
                 params.callback( null, current, inputValue, true );
                 wz.app.removeView( win );
-                
+
             }
 
         });
@@ -1591,10 +1594,12 @@
     });
 
     cancelButton.on( 'click', function(){
-        
+
+        console.log('cancel');
+
         params.callback('USER ABORT');
         wz.app.removeView( win );
-        
+
     });
 
     /* START APP */
@@ -1648,7 +1653,7 @@
             }else if( element.id === 'shared' ){
                 controlFolder.addClass( 'sharedFolder' );
             }
-            
+
             if( element.alias === 'documents' ){
                 controlFolder.removeClass( 'folder' ).addClass( 'doc' );
             }else if( element.alias === 'music' ){
@@ -1670,7 +1675,7 @@
 
         // Ya tenemos la carpeta del usuario, cumplimos la promesa
         rootPath.resolve( structure );
-    
+
         structure.list( true, function( error, list ){
 
             // Vamos a filtrar la lista para quedarnos solo con las carpetas especiales, es decir, de tipo 1
@@ -1686,14 +1691,14 @@
     });
 
     wz.fs( 'inbox', function( error, structure ){
-        
+
         // Ya tenemos la carpeta de recibidos, cumplimos la promesa
         inboxPath.resolve( structure );
 
     });
 
     wz.fs( 'shared', function( error, structure ){
-        
+
         // Ya tenemos la carpetas de compartidos, cumplimos la promesa
         sharedPath.resolve( structure );
 
