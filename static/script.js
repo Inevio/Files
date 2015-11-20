@@ -10,7 +10,7 @@ var EXTENSIONS_SHOW   = 1;
 // Variables
     var win            = $( this );
     var record         = [];
-    var current        = null;
+    var current        = {};
     var pointer        = -1;
     var controlNav     = false;
     var pressedNav     = false;
@@ -751,7 +751,7 @@ var EXTENSIONS_SHOW   = 1;
 
         updateFolderStatusMessage();
 
-        
+
         if( !noSort ){
             sortIcons();
         }
@@ -1074,7 +1074,9 @@ var EXTENSIONS_SHOW   = 1;
             sort = sortStatus;
         }
 
-        //list = $('.weexplorer-file').not('.wz-prototype');
+        if( typeof list === 'undefined' ){
+          list = $('.weexplorer-file').not('.wz-prototype');
+        }
 
         if( sort === SORT_NAME ){
             list = list.sort( sortByName );
@@ -1086,11 +1088,9 @@ var EXTENSIONS_SHOW   = 1;
             list = list.sort( sortByModificationDate );
         }
 
-        /*
         if( list.length ){
             displayIcons( list, true );
         }
-        */
 
         sortStatus = sort;
 
