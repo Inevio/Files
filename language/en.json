@@ -16,6 +16,7 @@
     "sortByCreation" : "Sort by Creation",
     "sortByModif" : "Sort by Modif",
     "openFile" : "Open file",
+    "openFileLocal" : "Open in local",
     "createLink" : "Create link",
     "sendTo" : "Send to...",
     "shareWith" : "Share with...",

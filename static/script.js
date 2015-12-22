@@ -2075,6 +2075,14 @@ var EXTENSIONS_SHOW   = 1;
                 icon.dblclick();
             });
 
+            menu.addOption( lang.openFileLocal, function(){
+
+              wz.fs( icon.data('file-id'), function( error, object ){
+                object.openLocal();
+              });
+
+            });
+
             if( permissions.link ){
 
                 menu.addOption( lang.createLink, function(){
