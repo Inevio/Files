@@ -1738,7 +1738,7 @@ var EXTENSIONS_SHOW   = 1;
 
             // To Do -> Error
 
-            structure.open( function( error ){
+            structure.open( fileArea.find('.file').map( function(){ return $(this).data('file-id') }).get(), function( error ){
 
                 if( error ){
                     alert( lang.noApp );
