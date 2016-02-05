@@ -2439,7 +2439,7 @@ var EXTENSIONS_SHOW   = 1;
     setViewType( wz.app.storage('viewType') );
 
     if( params ){
-        openDirectory( params );
+        openDirectory( typeof params === 'object' ? parseInt( params.data ) || 0 : params );
     }else{
         openDirectory( 'root' );
     }
