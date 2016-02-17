@@ -13,7 +13,7 @@ var appendLink = function( info, search ){
         var stop = false;
 
         linksTableList.find('tr').each( function(){
-            
+
             stop = $(this).data('id') === info.id;
 
             if( stop ){
@@ -65,7 +65,7 @@ var checkViewSize = function(){
     });
 
     if( height !== win.height() ){
-        wz.view.setSize( win.width(), height );
+        api.view.setSize( win.width(), height );
     }
 
 };
@@ -73,7 +73,7 @@ var checkViewSize = function(){
 var start = function(){
 
     // Load file information
-    wz.fs( params, function( error, node ){
+    api.fs( params, function( error, node ){
 
         node.getLinks( function( error, links ){
 
@@ -116,7 +116,7 @@ win
     waitingChange = true;
 
     if( $(this).attr('checked') ){
-        
+
         win.addClass('show-password');
         $('.link-password-input').focus();
 
@@ -170,7 +170,7 @@ win
 .on( 'click', '.link-generate', function(){
 
     // Load file information
-    wz.fs( params, function( error, node ){
+    api.fs( params, function( error, node ){
 
         var password  = ( $('.link-password input').attr('checked') && $('.link-password-input').val() ) ? $('.link-password-input').val() : null;
         var preview   = !!$('.link-preview input').attr('checked');
@@ -186,7 +186,7 @@ win
                 checkViewSize();
             }
 
-            var dialog = wz.dialog();
+            var dialog = api.dialog();
 
             dialog.setTitle( lang.newLink );
             dialog.setText( lang.newLinkSteps );
@@ -213,7 +213,7 @@ win
 
     var id = $(this).closest('tr').data('id');
 
-    wz.fs( params, function( error, node ){
+    api.fs( params, function( error, node ){
 
         if( error ){
             return;
@@ -222,12 +222,12 @@ win
         node.removeLink( id );
 
     });
-    
+
 });
 
-wz.fs
+api.fs
 .on( 'linkAdded', function( link, structure ){
-                                                    
+
     if( params !== structure.id ){
         return;
     }
@@ -237,11 +237,11 @@ wz.fs
     }
 
 })
-    
+
 .on( 'linkRemoved', function( hash ){
-                
+
     linksTableList.find('tr').each( function(){
-        
+
         if( $(this).data('id') === hash ){
 
             $(this).remove();
@@ -255,9 +255,9 @@ wz.fs
             return false;
 
         }
-        
+
     });
-    
+
 });
 
 start();

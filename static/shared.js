@@ -1,4 +1,4 @@
-    
+
     var win      = $( this );
     var link     = $('.link', win);
     var modify   = $('.modify', win);
@@ -16,31 +16,31 @@
         }else{
             link.addClass('no');
         }
-        
+
         if( permissions.modify === 1 ){
             modify.addClass('yes');
         }else{
             modify.addClass('no');
         }
-        
+
         if( permissions.copy === 1 ){
             copy.addClass('yes');
         }else{
             copy.addClass('no');
         }
-        
+
         if( permissions.download === 1 ){
             download.addClass('yes');
         }else{
             download.addClass('no');
         }
-        
+
         if( permissions.share === 1 ){
             share.addClass('yes');
         }else{
             share.addClass('no');
         }
-        
+
         if( permissions.send === 1 ){
             send.addClass('yes');
         }else{
@@ -48,14 +48,14 @@
         }
 
     };
-    
-    wz.fs( params, function( error, structure ){
-        
+
+    api.fs( params, function( error, structure ){
+
         if( error ){
             alert( lang.error );
         }else{
 
-            wz.user( structure.pointerOwner, function( error, user ){
+            api.user( structure.pointerOwner, function( error, user ){
 
                 if( structure.pointerType === 0 ){
 
@@ -66,31 +66,31 @@
 
                     $( '.received-file', win ).text( lang.sharedFileTitle );
                     $( '.received-content-info.who', win ).text( lang.fileSharedBy + ' ' + user.fullName );
-                    
+
                 }else{
                     $( '.received-content-info.who', win ).text( lang.sharedBy + ' ' + user.fullName );
                 }
-             
+
             });
-                        
+
             $( '.received-content-name', win ).text( structure.name );
-            $( '.received-content-size', win ).text( wz.tool.bytesToUnit( structure.size, 2 ) );
+            $( '.received-content-size', win ).text( api.tool.bytesToUnit( structure.size, 2 ) );
 
             permissions( structure );
-            
+
             win
                 .on( 'mousedown', '.received-content-accept', function(){
 
                     structure.acceptShare( function( error ){
 
                         if( error ){
-                            
+
                             // To Do -> Nice error content
-                            alert( error, wz.view.remove );
+                            alert( error, api.view.remove );
 
                         }else{
 
-                            var banner = wz.banner();
+                            var banner = api.banner();
 
                             if( structure.pointerType === 0 ){
                                 banner.setTitle( lang.folderShareAccepted );
@@ -103,25 +103,25 @@
                                 .setIcon( 'https://static.inevio.com/app/1/file_accepted.png' )
                                 .render();
 
-                            wz.view.remove();
+                            api.view.remove();
 
                         }
 
                     });
 
                 })
-            
+
                 .on( 'mousedown', '.received-content-refuse', function(){
 
                     structure.refuseShare( function( error ){
 
                         if( error ){
                             alert( error, function(){
-                                wz.view.remove();
+                                api.view.remove();
                             }, win.data().win );
                         }else{
 
-                            var banner = wz.banner();
+                            var banner = api.banner();
 
                             if( structure.pointerType === 0 ){
                                 banner.setTitle( lang.folderShareRefused );
@@ -134,16 +134,16 @@
                                 .setIcon( 'https://static.inevio.com/app/1/file_denied.png' )
                                 .render();
 
-                                wz.view.remove();
+                                api.view.remove();
 
                         }
 
                     });
-                    
+
                 });
-                
+
         }
-        
+
     });
 
     $( '.attr', win ).text( lang.attr + ':' );

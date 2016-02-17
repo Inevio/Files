@@ -1,4 +1,4 @@
-    
+
     var win                = $( this );
     var shareListUsers     = $('.share-list-users', win);
     var shareChosenUsers   = $('.share-chosen-users', win);
@@ -19,8 +19,8 @@
         var getFriendList = function(){
 
             var deferred = $.Deferred();
-            
-            wz.user.friendList( false, function( error, list ){
+
+            api.user.friendList( false, function( error, list ){
                 deferred.resolve( [ error, list ] );
             });
 
@@ -32,8 +32,8 @@
 
             var deferred = $.Deferred();
 
-            wz.fs( params, function( error, structure ){
-                
+            api.fs( params, function( error, structure ){
+
                 structure.sharedWith( true, function( error, list, permissions ){
                     deferred.resolve( [ error, structure, list, permissions ] );
                 });
@@ -57,10 +57,10 @@
                     $( '.share-how-' + i, state ).mousedown();
                 }
 
-                if( owner !== wz.system.user().id ){
+                if( owner !== api.system.user().id ){
                     state.addClass( 'blocked' );
                 }
-                
+
             }
 
             loading = false;
@@ -148,18 +148,18 @@
     };
 
     // WZ Events
-    wz.fs.on( 'sharedChanged', main );
+    api.fs.on( 'sharedChanged', main );
 
     // DOM Events
     win
     .on( 'mousedown', '.share-how article', function(){
 
-        if( owner === wz.system.user().id || loading ){
+        if( owner === api.system.user().id || loading ){
 
             var button = $(this).find( 'figure' );
 
             if( button.hasClass( 'default' ) ){
-                
+
                 if( button.hasClass('yes') ){
 
                     state.removeClass( 'default' );
@@ -203,11 +203,11 @@
             }
 
         }
-        
+
     })
-    
+
     .on( 'mousedown', '.share-user', function(){
-        
+
         if( $( this ).parent().hasClass('share-list-users') ){
 
             if( !shareChosenUsers.find('.share-user').length ){
@@ -231,9 +231,9 @@
             if( !shareChosenUsers.find('.share-user').length ){
                 shareChosenUsers.find('.empty-list').css( 'display', 'block' );
             }
-            
+
         }
-        
+
     })
 
     .on( 'mousedown', 'button', function(){
@@ -248,11 +248,11 @@
             'send'     : ( $( '.share-how-send', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0
 
         };
-        
-        wz.fs( params, function( error, structure ){
+
+        api.fs( params, function( error, structure ){
 
             var promises = [];
-            
+
             shareChosenUsers.children().not('.empty-list').each( function(){
 
                 var userId = $( this ).data('userId');
@@ -261,7 +261,7 @@
                 if( index === -1 ){
 
                     var deferred  = $.Deferred();
-                    
+
                     promises.push( deferred.promise() );
 
                     structure.addShare( userId, filePermissions, function( error ){
@@ -271,7 +271,7 @@
                 }else{
                     initialUsers[ index ] = null;
                 }
-                
+
             });
 
             initialUsers.map( function( userId ){
@@ -285,7 +285,7 @@
                     structure.removeShare( userId, function( error ){
                         deferred.resolve( error );
                     });
-                   
+
                 }
 
             });
@@ -309,22 +309,22 @@
 
                     // To Do -> Hacer cosas con las respuestas de las promesas
 
-                    wz.banner()
+                    api.banner()
                         .setTitle( lang.fileShared )
                         .setText( lang.fileSharedStart + ' ' + structure.name + ' ' + lang.fileSharedEnd )
                         .setIcon( structure.icons.tiny )
                         .render();
 
-                    wz.view.remove();
+                    api.view.remove();
 
                 });
-            
+
         });
 
     });
 
     main();
-    
+
     $( '.share-title', win ).text( lang.shareTitle );
     $( '.share-list-title', win ).text( lang.shareListTitle );
     $( '.share-chosen-title', win ).text( lang.shareChosenTitle );

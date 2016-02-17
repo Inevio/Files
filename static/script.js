@@ -57,10 +57,10 @@ var EXTENSIONS_SHOW   = 1;
     var renaming = $();
     var prevName = '';
 
-    var sortType          = wz.app.storage('sortType') || SORT_NAME;
-    var viewType          = wz.app.storage('viewType') || 0;
-    var showingSidebar    = wz.app.storage('sidebar') || false;
-    var displayExtensions = wz.app.storage('displayExtensions') || EXTENSIONS_HIDE;
+    var sortType          = api.app.storage('sortType') || SORT_NAME;
+    var viewType          = api.app.storage('viewType') || 0;
+    var showingSidebar    = api.app.storage('sidebar') || false;
+    var displayExtensions = api.app.storage('displayExtensions') || EXTENSIONS_HIDE;
 
     // Functions
     var _fit_baseWidth = function( object, newValue ){
@@ -300,7 +300,7 @@ var EXTENSIONS_SHOW   = 1;
             if( structure.size === null ){
                 file.children('.weexplorer-file-size').text( '--' );
             }else{
-                file.children('.weexplorer-file-size').text( wz.tool.bytesToUnit( structure.size, 2 ) );
+                file.children('.weexplorer-file-size').text( api.tool.bytesToUnit( structure.size, 2 ) );
             }
 
             if( modifiedToday ){
@@ -412,7 +412,7 @@ var EXTENSIONS_SHOW   = 1;
         }
 
         // Get Structure Info
-        wz.fs( id, function( error, structure ){
+        api.fs( id, function( error, structure ){
 
             if( error ){
                 alert( lang.errorOpenDirectory );
@@ -445,7 +445,7 @@ var EXTENSIONS_SHOW   = 1;
 
                 fileArea.data( 'wz-uploader-destiny', structure.id );
 
-                if( structure.id === wz.system.user().rootPath ){
+                if( structure.id === api.system.user().rootPath ){
                     folderBar.removeClass( 'folder music photo video doc' ).addClass( 'user' );
                 }else if( structure.name === 'Documents' || structure.name === 'Documentos' ){
                     folderBar.removeClass( 'folder music photo video user' ).addClass( 'doc' );
@@ -509,7 +509,7 @@ var EXTENSIONS_SHOW   = 1;
 
         if( textarea.val() !== prevName ){
 
-            wz.fs( icon.data('file-id'), function( error, structure ){
+            api.fs( icon.data('file-id'), function( error, structure ){
 
                 if( error ){
                     return alert( error );
@@ -555,7 +555,7 @@ var EXTENSIONS_SHOW   = 1;
 
     var createDirectory = function(){
 
-        wz.fs( current.id, function( error, structure ){
+        api.fs( current.id, function( error, structure ){
 
             // To Do -> Error
 
@@ -589,14 +589,14 @@ var EXTENSIONS_SHOW   = 1;
 
                 $('.weexplorer-file.active', win).each(function(){
 
-                    wz.fs( $(this).data( 'file-id' ), function( error, structure ){
+                    api.fs( $(this).data( 'file-id' ), function( error, structure ){
 
                         if( error ){
                             return alert( error );
                         }
 
                         if(
-                            structure.owner === wz.system.user().id ||
+                            structure.owner === api.system.user().id ||
                             structure.permissions.modify === 1 ||
                             structure.id === structure.shareRoot
                         ){
@@ -791,7 +791,7 @@ var EXTENSIONS_SHOW   = 1;
 
     var notifications = function(){
 
-        wz.fs( 'inbox', function( error, structure ){
+        api.fs( 'inbox', function( error, structure ){
 
             structure.list( function( error, list ){
 
@@ -810,7 +810,7 @@ var EXTENSIONS_SHOW   = 1;
     /*
     var sharedNotifications = function(){
 
-        wz.fs( 'shared', function( error, structure ){
+        api.fs( 'shared', function( error, structure ){
 
             structure.list( function( error, list ){
 
@@ -897,7 +897,7 @@ var EXTENSIONS_SHOW   = 1;
         var length = list.length;
 
         while( length-- ){
-            list[ length ].data( 'wz-fit-base-outerWidth', wz.tool.outerFullWidth( list[ length ], true ) );
+            list[ length ].data( 'wz-fit-base-outerWidth', api.tool.outerFullWidth( list[ length ], true ) );
         }
 
     };
@@ -953,7 +953,7 @@ var EXTENSIONS_SHOW   = 1;
 
                 if( channel === null ){
 
-                    wz.channel( function( error, chn ){
+                    api.channel( function( error, chn ){
 
                         channel = chn;
                         channel.send( { action : 'addToTaskbar', id : id, name : name } );
@@ -999,7 +999,7 @@ var EXTENSIONS_SHOW   = 1;
 
                 if( channel === null ){
 
-                    wz.channel( function( error, chn ){
+                    api.channel( function( error, chn ){
 
                         channel = chn;
                         channel.send( { action : 'removeFromTaskbar', id : id } );
@@ -1101,7 +1101,7 @@ var EXTENSIONS_SHOW   = 1;
     };
 
     // WZ Events
-    wz.fs
+    api.fs
     .on( 'accepted inbox refused shared sharedAccepted sharedRefused sharedOut', function(){
         notifications();
     })
@@ -1229,7 +1229,7 @@ var EXTENSIONS_SHOW   = 1;
         $( '.weexplorer-file-' + structure.id ).find('img').attr( 'src', structure.icons.normal + '?' + Date.now() );
     });
 
-    wz.upload
+    api.upload
     .on( 'fsnodeEnqueue', function( list ){
 
         // Display Message
@@ -1339,9 +1339,9 @@ var EXTENSIONS_SHOW   = 1;
 
     });
 
-    wz.config.on( 'displayExtensionsChanged', function( display ){
+    api.config.on( 'displayExtensionsChanged', function( display ){
 
-        wz.app.storage( 'displayExtensions', display );
+        api.app.storage( 'displayExtensions', display );
 
         displayExtensions = display;
 
@@ -1404,7 +1404,7 @@ var EXTENSIONS_SHOW   = 1;
 
             $( '.active.file, .active.pointer-file', win ).each( function(){
 
-                wz.fs($(this).data('file-id'), function(e,st){
+                api.fs($(this).data('file-id'), function(e,st){
                     st.download();
                 });
 
@@ -1719,11 +1719,11 @@ var EXTENSIONS_SHOW   = 1;
     })
 
     .on( 'dblclick', '.weexplorer-file.received', function(){
-        wz.app.createView( $(this).data( 'file-id' ), 'received');
+        api.app.createView( $(this).data( 'file-id' ), 'received');
     })
 
     .on( 'dblclick', '.weexplorer-file.pointer-pending', function(){
-        wz.app.createView( $(this).data( 'file-id' ), 'shared');
+        api.app.createView( $(this).data( 'file-id' ), 'shared');
     })
 
     .on( 'dblclick', 'textarea:not([readonly])', function( e ){
@@ -1734,7 +1734,7 @@ var EXTENSIONS_SHOW   = 1;
 
         var id = $(this).data('file-id');
 
-        wz.fs( id, function( error, structure ){
+        api.fs( id, function( error, structure ){
 
             // To Do -> Error
 
@@ -1771,7 +1771,7 @@ var EXTENSIONS_SHOW   = 1;
 
         if( pointerType === 2 ){
 
-            wz.fs( pointer, function( error, structure ){
+            api.fs( pointer, function( error, structure ){
 
                 if( structure.status === 1 ){
 
@@ -1779,7 +1779,7 @@ var EXTENSIONS_SHOW   = 1;
 
                         if( app ){
                             alert('ABRIR OTRAS APPS NO ESTÁ IMPLEMENTADO');
-                            // To Do -> wz.app.createView( app, [ pointer ] );
+                            // To Do -> api.app.createView( app, [ pointer ] );
                         }else{
                             alert( error );
                         }
@@ -1856,7 +1856,7 @@ var EXTENSIONS_SHOW   = 1;
     .key( 'ctrl + enter', function(){
 
         if( $( '.weexplorer-file.active.last-active', fileArea ).hasClass('directory') ){
-            wz.app.createView( $( '.weexplorer-file.active.last-active', fileArea ).data( 'file-id' ), 'main');
+            api.app.createView( $( '.weexplorer-file.active.last-active', fileArea ).data( 'file-id' ), 'main');
         }
 
     })
@@ -1944,7 +1944,7 @@ var EXTENSIONS_SHOW   = 1;
             return;
         }
 
-        var menu        = wz.menu();
+        var menu        = api.menu();
         var permissions = icon.data( 'permissions' );
 
         if( icon.hasClass( 'shared-pending' ) ){
@@ -1952,7 +1952,7 @@ var EXTENSIONS_SHOW   = 1;
             menu
             .addOption( lang.acceptFile, function(){
 
-                wz.fs( icon.data( 'file-id' ), function( error, structure ){
+                api.fs( icon.data( 'file-id' ), function( error, structure ){
 
                     structure.accept( function( error ){
 
@@ -1961,7 +1961,7 @@ var EXTENSIONS_SHOW   = 1;
                             return;
                         }
 
-                        var banner = wz.banner();
+                        var banner = api.banner();
 
                         if( structure.pointerType === 0 ){
                             banner.setTitle( lang.folderShareAccepted );
@@ -1981,12 +1981,12 @@ var EXTENSIONS_SHOW   = 1;
             })
 
             .addOption( lang.properties, function(){
-                wz.app.createView( icon.data( 'file-id' ), 'properties' );
+                api.app.createView( icon.data( 'file-id' ), 'properties' );
             })
 
             .addOption( lang.refuseFile, function(){
 
-                wz.fs( icon.data( 'file-id' ), function( error, structure ){
+                api.fs( icon.data( 'file-id' ), function( error, structure ){
 
                     structure.refuse( function( error ){
 
@@ -1995,7 +1995,7 @@ var EXTENSIONS_SHOW   = 1;
                             return;
                         }
 
-                        var banner = wz.banner();
+                        var banner = api.banner();
 
                         if( structure.pointerType === 0 ){
                             banner.setTitle( lang.folderShareRefused );
@@ -2019,7 +2019,7 @@ var EXTENSIONS_SHOW   = 1;
             menu
                 .addOption( lang.acceptFile, function(){
 
-                    wz.fs( icon.data( 'file-id' ), function( error, structure ){
+                    api.fs( icon.data( 'file-id' ), function( error, structure ){
 
                         structure.accept( function( error ){
 
@@ -2027,7 +2027,7 @@ var EXTENSIONS_SHOW   = 1;
                                 alert( error );
                             }else{
 
-                                wz.banner()
+                                api.banner()
                                     .setTitle( lang.fileShareAccepted )
                                     .setText( structure.name + ' ' + lang.beenAccepted )
                                     .setIcon( 'https://static.inevio.com/app/1/file_accepted.png' )
@@ -2042,12 +2042,12 @@ var EXTENSIONS_SHOW   = 1;
                 })
 
                 .addOption( lang.properties, function(){
-                    wz.app.createView( icon.data( 'file-id' ), 'properties' );
+                    api.app.createView( icon.data( 'file-id' ), 'properties' );
                 })
 
                 .addOption( lang.refuseFile, function(){
 
-                    wz.fs( icon.data( 'file-id' ), function( error, structure ){
+                    api.fs( icon.data( 'file-id' ), function( error, structure ){
 
                         structure.refuse( function( error ){
 
@@ -2055,7 +2055,7 @@ var EXTENSIONS_SHOW   = 1;
                                 alert( error );
                             }else{
 
-                                wz.banner()
+                                api.banner()
                                     .setTitle( lang.fileShareRefused )
                                     .setText( structure.name + ' ' + lang.beenRefused )
                                     .setIcon( 'https://static.inevio.com/app/1/file_denied.png' )
@@ -2077,7 +2077,7 @@ var EXTENSIONS_SHOW   = 1;
 
             menu.addOption( lang.openFileLocal, function(){
 
-              wz.fs( icon.data('file-id'), function( error, object ){
+              api.fs( icon.data('file-id'), function( error, object ){
                 object.openLocal();
               });
 
@@ -2086,7 +2086,7 @@ var EXTENSIONS_SHOW   = 1;
             if( permissions.link ){
 
                 menu.addOption( lang.createLink, function(){
-                    wz.app.createView( icon.data( 'file-id' ), 'link');
+                    api.app.createView( icon.data( 'file-id' ), 'link');
                 });
 
             }
@@ -2094,7 +2094,7 @@ var EXTENSIONS_SHOW   = 1;
             if( permissions.send ){
 
                 menu.addOption( lang.sendTo, function(){
-                    wz.app.createView( icon.data( 'file-id' ), 'send');
+                    api.app.createView( icon.data( 'file-id' ), 'send');
                 });
 
             }
@@ -2102,7 +2102,7 @@ var EXTENSIONS_SHOW   = 1;
             if( permissions.share ){
 
                 menu.addOption( lang.shareWith, function(){
-                    wz.app.createView( icon.data( 'file-id' ), 'share');
+                    api.app.createView( icon.data( 'file-id' ), 'share');
                 });
 
             }
@@ -2116,7 +2116,7 @@ var EXTENSIONS_SHOW   = 1;
             }
 
             menu.addOption( lang.properties, function(){
-                wz.app.createView( icon.data( 'file-id' ), 'properties' );
+                api.app.createView( icon.data( 'file-id' ), 'properties' );
             });
 
             if( permissions.modify ){
@@ -2139,13 +2139,13 @@ var EXTENSIONS_SHOW   = 1;
                 })
 
                 .addOption( lang.openInNewWindow, function(){
-                    wz.app.createView( icon.data( 'file-id' ), 'main');
+                    api.app.createView( icon.data( 'file-id' ), 'main');
                 });
 
             if( permissions.send ){
 
                 menu.addOption( lang.sendTo, function(){
-                    wz.app.createView( icon.data( 'file-id' ), 'send');
+                    api.app.createView( icon.data( 'file-id' ), 'send');
                 });
 
             }
@@ -2153,7 +2153,7 @@ var EXTENSIONS_SHOW   = 1;
             if( permissions.share ){
 
                 menu.addOption( lang.shareWith, function(){
-                    wz.app.createView( icon.data( 'file-id' ), 'share');
+                    api.app.createView( icon.data( 'file-id' ), 'share');
                 });
 
             }
@@ -2179,7 +2179,7 @@ var EXTENSIONS_SHOW   = 1;
             }
 
             menu.addOption( lang.properties, function(){
-                wz.app.createView( icon.data( 'file-id' ), 'properties' );
+                api.app.createView( icon.data( 'file-id' ), 'properties' );
             });
 
             if( permissions.modify ){
@@ -2274,7 +2274,7 @@ var EXTENSIONS_SHOW   = 1;
 
             item.siblings('.active').add( item ).each( function(){
 
-                wz.fs( $(this).data('file-id'), function( error, structure ){
+                api.fs( $(this).data('file-id'), function( error, structure ){
 
                     if( error ){
                         alert( error );
@@ -2335,7 +2335,7 @@ var EXTENSIONS_SHOW   = 1;
 
         for( var i = pointer - 1 ; i >= 0 ; i-- ){
 
-            wz.fs( record[i], function( error, structure ){
+            api.fs( record[i], function( error, structure ){
 
                 var element = navigationMenu.find( '.wz-prototype' ).clone().removeClass();
 
@@ -2361,7 +2361,7 @@ var EXTENSIONS_SHOW   = 1;
 
         for( var i = pointer + 1 ; i < record.length ; i++ ){
 
-            wz.fs( record[i], function( error, structure ){
+            api.fs( record[i], function( error, structure ){
 
                 var element = navigationMenu.find( '.wz-prototype' ).clone().removeClass();
 
@@ -2410,7 +2410,7 @@ var EXTENSIONS_SHOW   = 1;
             current.id !== $( '.receivedFolder', sidebar ).data( 'file-id' )
         ){
 
-            wz.menu()
+            api.menu()
             .addOption( lang.upload, function(){
                 uploadButton.click();
             })
@@ -2435,8 +2435,8 @@ var EXTENSIONS_SHOW   = 1;
 
     /* START APP */
     translateUi();
-    setSortType( wz.app.storage('sortType') );
-    setViewType( wz.app.storage('viewType') );
+    setSortType( api.app.storage('sortType') );
+    setViewType( api.app.storage('viewType') );
 
     if( params ){
         openDirectory( typeof params === 'object' ? parseInt( params.data ) || 0 : params );
@@ -2502,7 +2502,7 @@ var EXTENSIONS_SHOW   = 1;
     } );
 
     // Ahora que ya tenemos definido que va a pasar ejecutamos las peticiones para cumplir las promesas
-    wz.fs( 'root', function( error, structure ){
+    api.fs( 'root', function( error, structure ){
 
         // Ya tenemos la carpeta del usuario, cumplimos la promesa
         rootPath.resolve( structure );
@@ -2521,14 +2521,14 @@ var EXTENSIONS_SHOW   = 1;
 
     });
 
-    wz.fs( 'inbox', function( error, structure ){
+    api.fs( 'inbox', function( error, structure ){
 
         // Ya tenemos la carpeta de recibidos, cumplimos la promesa
         inboxPath.resolve( structure );
 
     });
 
-    wz.fs( 'shared', function( error, structure ){
+    api.fs( 'shared', function( error, structure ){
 
         // Ya tenemos la carpetas de compartidos, cumplimos la promesa
         sharedPath.resolve( structure );
@@ -2554,7 +2554,7 @@ var EXTENSIONS_SHOW   = 1;
             // Añadimos la promesa al array
             folders.push( promise );
 
-            wz.fs( item.folder, function( error, structure ){
+            api.fs( item.folder, function( error, structure ){
 
                 if( error ){
                     promise.resolve( null );
