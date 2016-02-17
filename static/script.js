@@ -23,9 +23,8 @@ var EXTENSIONS_SHOW   = 1;
 
     var types = [
 
-        'special-directory wz-drop-area',
-        'special-directory wz-drop-area',
         'directory wz-drop-area',
+        'special-directory wz-drop-area',
         'file',
         'temporal-file'
 
@@ -95,8 +94,7 @@ var EXTENSIONS_SHOW   = 1;
 
             !displayExtensions &&
             structure.type !== 0 &&
-            structure.type !== 1 &&
-            structure.type !== 2
+            structure.type !== 1
 
         ){
             nameNoExt = nameNoExt.split(/(.+?)(\.[^\.]+$|$)/)[ 1 ];
@@ -109,7 +107,7 @@ var EXTENSIONS_SHOW   = 1;
 
         var nameExt = nameNoExt;
 
-        if (structure.type !== 0 && structure.type !== 1 && structure.type !== 2){
+        if (structure.type !== 0 && structure.type !== 1){
             nameExt = nameNoExt + /(.+?)(\.[^\.]+$|$)/.exec(structure.name)[2];
         }
 
@@ -297,7 +295,7 @@ var EXTENSIONS_SHOW   = 1;
 
         file.children('textarea').text( _cropExtension( structure ) );
 
-        if( ( structure.type !== 0 && structure.type !== 1 && structure.type === 2 && structure.type !== 5 ) || ( structure.type === 5 && structure.pointerType !== 0 && structure.pointerType !== 1 ) ){
+        if( ( structure.type !== 0 && structure.type !== 1 && structure.type !== 5 ) || ( structure.type === 5 && structure.pointerType !== 0 && structure.pointerType !== 1 ) ){
 
             if( structure.size === null ){
                 file.children('.weexplorer-file-size').text( '--' );
@@ -345,11 +343,9 @@ var EXTENSIONS_SHOW   = 1;
 
         }
 
-        /*
         if( !structure.status ){
             file.addClass('received');
         }
-        */
 
         file.addClass( 'weexplorer-file-' + structure.id );
 
@@ -363,7 +359,7 @@ var EXTENSIONS_SHOW   = 1;
 
         } );
 
-        if( structure.type === 2 ){
+        if( structure.type === 0 ){
 
             file
                 .addClass('wz-uploader-drag')
