@@ -247,7 +247,7 @@
             if( structure.size === null ){
                 size.text( '--' );
             }else{
-                size.text( wz.tool.bytesToUnit( structure.size, 2 ) );
+                size.text( api.tool.bytesToUnit( structure.size, 2 ) );
             }
 
             // To Do -> Usar la función format
@@ -296,13 +296,13 @@
 
         if( fileType === 5 ){
 
-            wz.user( structure.pointerOwner, function( error, user ){
+            api.user( structure.pointerOwner, function( error, user ){
                 owner.text( user.fullName );
             });
 
         }else{
 
-            wz.user( structure.owner, function( error, user ){
+            api.user( structure.owner, function( error, user ){
               owner.text( user.fullName );
             });
 
@@ -342,7 +342,7 @@
 		}
 
 
-		wz.fs(params, function( error, structure ){
+		api.fs(params, function( error, structure ){
 
 			//console.log(structure);
 
@@ -463,7 +463,7 @@
 						userxNameField.text( owner[i].fullName );
 						userxAvatarField.css( "background-image",'url("'+owner[i].avatar.small+'")' );
 
-						if( owner[i].id == wz.system.user().id ){
+						if( owner[i].id == api.system.user().id ){
 							userxNameField.text( userxNameField.text() + ' ' + lang.propertiesFileOwner );
 						}
 
@@ -477,8 +477,8 @@
 					$( userx ).toggleClass( 'owner' );
 					var userxNameField = $( userx + ' .username',win );
 					var userxAvatarField = $( userx + ' i',win );
-					userxNameField.text( wz.system.user().fullName );
-					userxAvatarField.css( "background-image",'url("'+wz.system.user().avatar.small+'")' );
+					userxNameField.text( api.system.user().fullName );
+					userxAvatarField.css( "background-image",'url("'+api.system.user().avatar.small+'")' );
 					permissionText = $( userx + ' .change-permission',win );
 					permissionText.text ( lang.propertiesOwner );
 					userxNameField.text( userxNameField.text() + ' ' + lang.propertiesFileOwner );
@@ -489,11 +489,11 @@
 		});
 
     // WZ Events
-    wz.fs
+    api.fs
     .on( 'remove', function( id ){
 
             if( id === params ){
-                wz.view.remove();
+                api.view.remove();
             }
 
     })
