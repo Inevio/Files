@@ -32,8 +32,8 @@
     var renaming = $();
     var prevName = '';
 
-    var sortType = wz.app.storage('sortType') || 0;
-    var viewType = wz.app.storage('viewType') || 0;
+    var sortType = api.app.storage('sortType') || 0;
+    var viewType = api.app.storage('viewType') || 0;
 
     // Functions
     var recordNavigation = function(){
@@ -155,7 +155,7 @@
             if( structure.size === null ){
                 file.children('.weexplorer-file-size').text( '--' );
             }else{
-                file.children('.weexplorer-file-size').text( wz.tool.bytesToUnit( structure.size, 2 ) );
+                file.children('.weexplorer-file-size').text( api.tool.bytesToUnit( structure.size, 2 ) );
             }
 
             if( modifiedToday ){
@@ -259,7 +259,7 @@
         }
 
         // Get Structure Info
-        wz.fs( id, function( error, structure ){
+        api.fs( id, function( error, structure ){
 
             if( error ){
                 alert( lang.errorOpenDirectory );
@@ -303,7 +303,7 @@
 
                 fileArea.data( 'wz-uploader-destiny', structure.id );
 
-                if( structure.id === wz.system.user().rootPath ){
+                if( structure.id === api.system.user().rootPath ){
                     folderBar.removeClass( 'folder music photo video doc' ).addClass( 'user' );
                 }else if( structure.name === 'Documents' || structure.name === 'Documentos' ){
                     folderBar.removeClass( 'folder music photo video user' ).addClass( 'doc' );
@@ -355,7 +355,7 @@
 
         if( $( 'textarea', icon ).val() !== prevName ){
 
-            wz.fs( icon.data('file-id'), function( error, structure ){
+            api.fs( icon.data('file-id'), function( error, structure ){
 
                 console.log(structure);
 
@@ -398,7 +398,7 @@
 
     var createDirectory = function(){
 
-        wz.fs( current, function( error, structure ){
+        api.fs( current, function( error, structure ){
 
             // To Do -> Error
 
@@ -434,11 +434,11 @@
 
                 $('.weexplorer-file.active', win).each(function(){
 
-                    wz.fs( $(this).data( 'file-id' ), function( error, structure ){
+                    api.fs( $(this).data( 'file-id' ), function( error, structure ){
 
                         if( error ){
                             alert( error );
-                        }else if( structure.owner === wz.system.user().id || structure.permissions.modify === 1 ){
+                        }else if( structure.owner === api.system.user().id || structure.permissions.modify === 1 ){
 
                             structure.remove( function( error, quota ){
 
@@ -553,7 +553,7 @@
 
     var notifications = function(){
 
-        wz.fs( 'inbox', function( error, structure ){
+        api.fs( 'inbox', function( error, structure ){
 
             structure.list( function( error, list ){
 
@@ -572,7 +572,7 @@
     /*
     var sharedNotifications = function(){
 
-        wz.fs( 'shared', function( error, structure ){
+        api.fs( 'shared', function( error, structure ){
 
             structure.list( function( error, list ){
 
@@ -713,7 +713,7 @@
     };
 
     // WZ Events
-    wz.fs
+    api.fs
     .on( 'accepted inbox refused shared sharedAccepted sharedRefused', function(){
         notifications();
     })
@@ -810,7 +810,7 @@
         $( '.weexplorer-file-' + structure.id ).find('img').attr( 'src', structure.icons.normal + '?' + Date.now() );
     });
 
-    wz.upload
+    api.upload
     .on( 'fsnodeProgress', function( structureId, progress ){
 
         var icon = fileArea.children( '.weexplorer-file-' + structureID );
@@ -1134,11 +1134,11 @@
     })
 
     .on( 'dblclick', '.weexplorer-file.received', function(){
-        wz.app.createView( $(this).data( 'file-id' ), 'received');
+        api.app.createView( $(this).data( 'file-id' ), 'received');
     })
 
     .on( 'dblclick', '.weexplorer-file.pointer-pending', function(){
-        wz.app.createView( $(this).data( 'file-id' ), 'shared');
+        api.app.createView( $(this).data( 'file-id' ), 'shared');
     })
 
     .on( 'dblclick', 'textarea:not([readonly])', function( e ){
@@ -1156,7 +1156,7 @@
         });
 
         params.callback( null, list );
-        wz.app.removeView( win );
+        api.app.removeView( win );
 
     })
     */
@@ -1182,7 +1182,7 @@
 
         if( pointerType === 2 ){
 
-            wz.fs( pointer, function( error, structure ){
+            api.fs( pointer, function( error, structure ){
 
                 if( structure.status === 1 ){
 
@@ -1190,7 +1190,7 @@
 
                         if( app ){
                             alert('ABRIR OTRAS APPS NO ESTÁ IMPLEMENTADO');
-                            // To Do -> wz.app.createView( app, [ pointer ] );
+                            // To Do -> api.app.createView( app, [ pointer ] );
                         }else{
                             alert( error );
                         }
@@ -1267,7 +1267,7 @@
     .key( 'ctrl + enter', function(){
 
         if( $( '.weexplorer-file.active.last-active', fileArea ).hasClass('directory') ){
-            wz.app.createView( $( '.weexplorer-file.active.last-active', fileArea ).data( 'file-id' ), 'main');
+            api.app.createView( $( '.weexplorer-file.active.last-active', fileArea ).data( 'file-id' ), 'main');
         }
 
     })
@@ -1418,7 +1418,7 @@
 
             item.siblings('.active').add( item ).each( function(){
 
-                wz.fs( $(this).data('file-id'), function( error, structure ){
+                api.fs( $(this).data('file-id'), function( error, structure ){
 
                     if( error ){
                         alert( error );
@@ -1479,7 +1479,7 @@
 
         for( var i = pointer - 1 ; i >= 0 ; i-- ){
 
-            wz.fs( record[i], function( error, structure ){
+            api.fs( record[i], function( error, structure ){
 
                 var element = navigationMenu.find( '.wz-prototype' ).clone().removeClass();
 
@@ -1505,7 +1505,7 @@
 
         for( var i = pointer + 1 ; i < record.length ; i++ ){
 
-            wz.fs( record[i], function( error, structure ){
+            api.fs( record[i], function( error, structure ){
 
                 var element = navigationMenu.find( '.wz-prototype' ).clone().removeClass();
 
@@ -1576,7 +1576,7 @@
         if( !exists ){
 
             params.callback( null, current, inputValue );
-            return wz.app.removeView( win );
+            return api.app.removeView( win );
 
         }
 
@@ -1585,7 +1585,7 @@
             if( accepted ){
 
                 params.callback( null, current, inputValue, true );
-                wz.app.removeView( win );
+                api.app.removeView( win );
 
             }
 
@@ -1598,14 +1598,14 @@
         console.log('cancel');
 
         params.callback('USER ABORT');
-        wz.app.removeView( win );
+        api.app.removeView( win );
 
     });
 
     /* START APP */
     translateUi();
-    setSortType( wz.app.storage('sortType') );
-    setViewType( wz.app.storage('viewType') );
+    setSortType( api.app.storage('sortType') );
+    setViewType( api.app.storage('viewType') );
 
     if( params.path ){
         openDirectory( params.path );
@@ -1671,7 +1671,7 @@
     } );
 
     // Ahora que ya tenemos definido que va a pasar ejecutamos las peticiones para cumplir las promesas
-    wz.fs( 'root', function( error, structure ){
+    api.fs( 'root', function( error, structure ){
 
         // Ya tenemos la carpeta del usuario, cumplimos la promesa
         rootPath.resolve( structure );
@@ -1690,14 +1690,14 @@
 
     });
 
-    wz.fs( 'inbox', function( error, structure ){
+    api.fs( 'inbox', function( error, structure ){
 
         // Ya tenemos la carpeta de recibidos, cumplimos la promesa
         inboxPath.resolve( structure );
 
     });
 
-    wz.fs( 'shared', function( error, structure ){
+    api.fs( 'shared', function( error, structure ){
 
         // Ya tenemos la carpetas de compartidos, cumplimos la promesa
         sharedPath.resolve( structure );
@@ -1723,7 +1723,7 @@
             // Añadimos la promesa al array
             folders.push( promise );
 
-            wz.fs( item.folder, function( error, structure ){
+            api.fs( item.folder, function( error, structure ){
 
                 if( error ){
                     promise.resolve( null );

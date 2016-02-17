@@ -3,7 +3,7 @@ var win                    = $( this );
 var getSystemConfiguration = $.Deferred();
 var getAppConfiguration    = $.Deferred();
 
-wz.config.getConfiguration( function( error, result ){
+api.config.getConfiguration( function( error, result ){
 
     // To Do -> Error
     getSystemConfiguration.resolve( result );
@@ -20,7 +20,7 @@ wql.getConfig( function( error, result ){
 $.when( getSystemConfiguration, getAppConfiguration ).done( function( systemConfig, appConfig ){
 
     // Importamos la configuración del sistema
-    wz.app.storage( 'displayExtensions', systemConfig.displayExtensions );
+    api.app.storage( 'displayExtensions', systemConfig.displayExtensions );
 
     // Importamos la configuración de la cuenta
     if( appConfig.length ){
@@ -28,18 +28,18 @@ $.when( getSystemConfiguration, getAppConfiguration ).done( function( systemConf
         appConfig = appConfig[ 0 ];
 
         // Guardamos la configuración
-        wz.app.storage( 'sortType', appConfig.sort );
-        wz.app.storage( 'viewType', appConfig.view );
-        wz.app.storage( 'sidebar', !!appConfig.sidebar );
+        api.app.storage( 'sortType', appConfig.sort );
+        api.app.storage( 'viewType', appConfig.view );
+        api.app.storage( 'sidebar', !!appConfig.sidebar );
 
     }else{
 
         wql.insertConfig();
 
         // Guardamos la configuración
-        wz.app.storage( 'sortType', 0 );
-        wz.app.storage( 'viewType', 0 );
-        wz.app.storage( 'sidebar', true );
+        api.app.storage( 'sortType', 0 );
+        api.app.storage( 'viewType', 0 );
+        api.app.storage( 'sidebar', true );
 
         appConfig = {
 
@@ -51,7 +51,7 @@ $.when( getSystemConfiguration, getAppConfiguration ).done( function( systemConf
     }
 
     // Añadimos el sidebar si está activado
-    if( wz.app.storage('sidebar') ){
+    if( api.app.storage('sidebar') ){
 
         win.addClass('sidebar');
 
@@ -64,7 +64,7 @@ $.when( getSystemConfiguration, getAppConfiguration ).done( function( systemConf
     }
 
     // Redimensionamos la ventana
-    wz.fit( win, appConfig.width - win.width(), appConfig.height - win.height() );
+    api.fit( win, appConfig.width - win.width(), appConfig.height - win.height() );
 
     start();
 
