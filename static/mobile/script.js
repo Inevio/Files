@@ -17,7 +17,7 @@
 
         // Insert data
         file.find('.weexplorer-element-name').text( data.name );
-        file.find('.weexplorer-element-data').text( wz.tool.bytesToUnit( data.size ) );
+        file.find('.weexplorer-element-data').text( api.tool.bytesToUnit( data.size ) );
         file.find('.weexplorer-element-icon').attr('src',data.icons.small);
         file.data( 'id', data.id );
 
@@ -48,8 +48,8 @@
     };
 
     var openDirectory = function( id, jump, clear ){
-        
-        wz.fs( id, function( error, structure ){
+
+        api.fs( id, function( error, structure ){
 
             if( !jump ){
 
@@ -69,7 +69,7 @@
                     .removeClass('active')
                     .filter('.folder-' + structure.id )
                         .addClass('active');
-            
+
             structure.list( function( error, list ){
 
                 // To Do -> Error
@@ -107,7 +107,7 @@
     $( '#weexplorer-content' )
     .on( 'tap', '.weexplorer-element', function(){
 
-        wz.fs( $(this).data('id'), function( error, structure ){
+        api.fs( $(this).data('id'), function( error, structure ){
 
             if( error ){
                 return false; // To Do -> Error
@@ -134,14 +134,14 @@
 
         console.log( $(this).parent().data() );
 
-        wz.fs( $(this).parent().data('id'), function( error, structure ){
+        api.fs( $(this).parent().data('id'), function( error, structure ){
             console.log( structure );
         });
 
     });
 
     itemBack.on( 'tap', function(){
-        
+
         record.shift();
         openDirectory( record[ 0 ].id, true );
 
@@ -204,15 +204,15 @@
                 .find( 'span' )
                     .text( element.name );
 
-            if( element.id === wz.system.user().rootPath ){
+            if( element.id === api.system.user().rootPath ){
                 controlFolder.removeClass( 'folder' ).addClass( 'userFolder user' );
-            }else if( element.id === wz.system.user().inboxPath ){
+            }else if( element.id === api.system.user().inboxPath ){
                 controlFolder.addClass( 'receivedFolder' );
                 //notifications();
             }else if( element.id === 'shared' ){
                 controlFolder.addClass( 'sharedFolder' );
             }
-            
+
             if( element.name === 'Documents' || element.name === 'Documentos' ){
                 controlFolder.removeClass( 'folder' ).addClass( 'doc' );
             }else if( element.name === 'Music' || element.name === 'Música' ){
@@ -226,17 +226,17 @@
             sidebar.append( controlFolder );
 
         });
-    
+
         sidebar.find( '.folder-' + record[ 0 ].id ).addClass('active');
 
     } );
 
     // Ahora que ya tenemos definido que va a pasar ejecutamos las peticiones para cumplir las promesas
-    wz.fs( 'root', function( error, structure ){
+    api.fs( 'root', function( error, structure ){
 
         // Ya tenemos la carpeta del usuario, cumplimos la promesa
         rootPath.resolve( structure );
-    
+
         structure.list( true, function( error, list ){
 
             // Vamos a filtrar la lista para quedarnos solo con las carpetas ocultas, es decir, de tipo 7
@@ -251,15 +251,15 @@
 
     });
 
-    wz.fs( 'inbox', function( error, structure ){
-        
+    api.fs( 'inbox', function( error, structure ){
+
         // Ya tenemos la carpeta de recibidos, cumplimos la promesa
         inboxPath.resolve( structure );
 
     });
 
-    wz.fs( 'shared', function( error, structure ){
-        
+    api.fs( 'shared', function( error, structure ){
+
         // Ya tenemos la carpetas de compartidos, cumplimos la promesa
         sharedPath.resolve( structure );
 
@@ -284,7 +284,7 @@
             // Añadimos la promesa al array
             folders.push( promise );
 
-            wz.fs( item.folder, function( error, structure ){
+            api.fs( item.folder, function( error, structure ){
 
                 if( error ){
                     promise.resolve( null );
