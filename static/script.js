@@ -1178,6 +1178,15 @@ var EXTENSIONS_SHOW   = 1;
                         .attr( 'attr', file.find('img').attr('src').replace( '?upload', '' ) );
 
 
+            }else if( file.hasClass('file') && structure.type === 3 ){
+
+                file
+                    .addClass('temporal-file weexplorer-file-uploading')
+                    .removeClass('file')
+                    .find('img')
+                        .attr( 'attr', file.find('img').attr('src').replace( '?upload', '' ) );
+
+
             }
 
         }
