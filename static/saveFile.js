@@ -1595,10 +1595,8 @@
 
     cancelButton.on( 'click', function(){
 
-        console.log('cancel');
-
-        params.callback('USER ABORT');
         api.app.removeView( win );
+        params.callback('USER ABORT');
 
     });
 
