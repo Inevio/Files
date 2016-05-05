@@ -355,7 +355,8 @@ var EXTENSIONS_SHOW   = 1;
             'file-size'         : structure.size,
             'file-creation'     : structure.modified,
             'file-modification' : structure.created,
-            'permissions'       : structure.permissions
+            'permissions'       : structure.permissions,
+            'fsnode'            : structure
 
         } );
 
@@ -1165,15 +1166,18 @@ var EXTENSIONS_SHOW   = 1;
 
     .on( 'modified', function( structure ){
 
+        console.log( structure.mime );
+
         if( structure.parent === current.id ){
 
-            var file =  fileArea.find('.weexplorer-file-' + structure.id );
+            var file = fileArea.find('.weexplorer-file-' + structure.id );
 
             if( file.hasClass('temporal-file') && structure.type !== 3 ){
 
                 file
                     .removeClass('temporal-file weexplorer-file-uploading')
                     .addClass('file')
+                    .data( 'fsnode', structure )
                     .find('img')
                         .attr( 'attr', file.find('img').attr('src').replace( '?upload', '' ) );
 
@@ -1183,11 +1187,16 @@ var EXTENSIONS_SHOW   = 1;
                 file
                     .addClass('temporal-file weexplorer-file-uploading')
                     .removeClass('file')
+                    .data( 'fsnode', structure )
                     .find('img')
                         .attr( 'attr', file.find('img').attr('src').replace( '?upload', '' ) );
 
 
+            }else{
+                file.data( 'fsnode', structure )
             }
+
+            console.log( file.data('fsnode').mime );
 
         }
 
@@ -1741,19 +1750,11 @@ var EXTENSIONS_SHOW   = 1;
 
     .on( 'dblclick', '.weexplorer-file.file:not(.received)', function(){
 
-        var id = $(this).data('file-id');
+        $(this).data('fsnode').open( fileArea.find('.file').map( function(){ return $(this).data('file-id') }).get(), function( error ){
 
-        api.fs( id, function( error, structure ){
-
-            // To Do -> Error
-
-            structure.open( fileArea.find('.file').map( function(){ return $(this).data('file-id') }).get(), function( error ){
-
-                if( error ){
-                    alert( lang.noApp );
-                }
-
-            });
+            if( error ){
+                alert( lang.noApp );
+            }
 
         });
 
