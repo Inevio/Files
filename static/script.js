@@ -325,7 +325,8 @@ var EXTENSIONS_SHOW   = 1;
         }
 
 
-        file.find('img').attr( 'src', structure.icons.normal + ( ( structure.type === 3 ) ? '?upload' : '' ) );
+        file.find('img.icon-big').attr( 'src', structure.icons.normal + ( ( structure.type === 3 ) ? '?upload' : '' ) );
+        file.find('img.icon-small').attr( 'src', structure.icons.tiny + ( ( structure.type === 3 ) ? '?upload' : '' ) );
 
         file.addClass( types[ structure.type ] );
 
@@ -830,13 +831,12 @@ var EXTENSIONS_SHOW   = 1;
 
     var downloadComprobation = function(){
 
-        if( $( '.weexplorer-file.active' ).not( '.directory' ).size() ){
+        if( $( '.weexplorer-file.active' ).not( '.temporal-file' ).size() ){
 
-            $( '.weexplorer-file.active' ).not( '.directory' ).each( function(){
+            $( '.weexplorer-file.active' ).not( '.temporal-file' ).each( function(){
 
                 if( $( this ).data( 'permissions' ).download ){
                     downloadFiles.addClass( 'active' );
-                    return false;
                 }else{
                     downloadFiles.removeClass( 'active' );
                 }
@@ -1420,7 +1420,7 @@ var EXTENSIONS_SHOW   = 1;
 
         if( current.id !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current.id !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
 
-            $( '.active.file, .active.pointer-file', win ).each( function(){
+            $( '.weexplorer-file.active', win ).not('.temporal-file').each( function(){
 
                 api.fs($(this).data('file-id'), function(e,st){
                     st.download();
@@ -2168,6 +2168,14 @@ var EXTENSIONS_SHOW   = 1;
 
             }
 
+            if( permissions.download ){
+
+                menu.addOption( lang.download, function(){
+                    downloadFiles.mousedown();
+                });
+
+            }
+            
             if( isInSidebar( icon.data('file-id') ) ){
 
                 menu.addOption( lang.removeFromSidebar, function(){
