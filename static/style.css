@@ -295,9 +295,7 @@ textarea[readonly]{
 }
 
 img{
-
     vertical-align: middle;
-
 }
 
 .weexplorer-file-zone{
@@ -431,6 +429,10 @@ img{
     vertical-align: middle;
 }
 
+.list img.icon-big{
+  display: none;
+}
+
 .grid .last-active figure{
 
     border: solid 1px rgba(127,191,235,0.5);
@@ -480,6 +482,10 @@ img{
     max-width: 128px;
     max-height: 128px;
     vertical-align: middle;
+}
+
+.grid img.icon-small{
+  display: none;
 }
 
 .list .weexplorer-file.last-active{
