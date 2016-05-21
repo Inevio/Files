@@ -3,6 +3,10 @@
     padding: 10px 29px 6px 28px;
 }
 
+.wz-view.sidebar{
+    width: 686px; /*!important*/
+}
+
 textarea{
     overflow: hidden;
     border: 1px solid #50BDFF;
@@ -29,7 +33,7 @@ textarea[readonly]{
 
     background: url('@static/arrows.png') -24px 0;
     background-size: 48px 15px;
-        
+
 }
 
 .weexplorer-option-back:hover{
@@ -37,14 +41,14 @@ textarea[readonly]{
 }
 
 .weexplorer-option-back.active i{
-    
+
     background: url('@static/arrows.png') 0 0;
     background-size: 48px 15px;
-    
+
 }
 
 .weexplorer-option-back.active:hover{
-    border: 1px solid #999;    
+    border: 1px solid #999;
 }
 
 .weexplorer-option-next{
@@ -57,9 +61,9 @@ textarea[readonly]{
     height: 14px;
     float: left;
 
-    background: url('@static/arrows.png') -36px 0; 
+    background: url('@static/arrows.png') -36px 0;
     background-size: 48px 15px;
-        
+
 }
 
 .weexplorer-option-next:hover{
@@ -67,65 +71,53 @@ textarea[readonly]{
 }
 
 .weexplorer-option-next.active i{
-    
-    background: url('@static/arrows.png') -12px 0; 
+
+    background: url('@static/arrows.png') -12px 0;
     background-size: 48px 15px;
-    
+
 }
 
 .weexplorer-option-next.active:hover{
-    border: 1px solid #999;    
+    border: 1px solid #999;
 }
 
 .wz-ui-header{
     width: 692px;
-    height: 30px;
-    float: left;
-    box-shadow: none;
-}
-
-.weexplorer-secondary-header{
-    width: 692px;
     z-index: 2;
-    background: #f0f0f0;
-    border-bottom: 1px solid #cacaca;
-    float: left;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1), inset 0 1px rgba(255,255,255,0.1);
-    position: relative;
 }
 
 .weexplorer-menu{
-    
-    width: 569px;
+
+    width: 429px;
     float: left;
     padding: 7px 19px 4px;
-    
+
 }
 
 .weexplorer-menu-views i{
-    
+
     width: 22px;
     height: 15px;
     float: left;
-    
+
 }
 
 .weexplorer-menu-views.grid i{
 
     background: url('@static/sprite.png') 0 0;
-    background-size: 115px 16px; 
-    
+    background-size: 115px 16px;
+
 }
 
 .weexplorer-menu-views.list i{
 
     background: url('@static/sprite.png') -93px 0;
-    background-size: 115px 16px; 
-    
+    background-size: 115px 16px;
+
 }
 
 .weexplorer-menu-display{
-    
+
     width: 7px;
     height: 5px;
     float: left;
@@ -133,148 +125,202 @@ textarea[readonly]{
     margin-top: 6px;
 
     background: url('@static/sprite.png') -80px -11px;
-    background-size: 115px 16px; 
-    
+    background-size: 115px 16px;
+
 }
 
 .weexplorer-menu-sort span{
-    
+
     max-width: 107px;
     height: 14px;
     overflow: hidden;
     font-size: 12px;
     color: #818181;
-    
+
     float: left;
-    
+
+}
+
+.weexplorer-menu-download:hover{
+    border: 1px solid transparent;
+}
+
+.weexplorer-menu-download.active:hover{
+    border: 1px solid #999;
+}
+
+.weexplorer-menu-download i{
+
+    width: 22px;
+    height: 16px;
+    float: left;
+
+    background: url('@static/download_inactive.png') no-repeat;
+    background-size: 22px 16px;
+
+}
+
+.weexplorer-menu-download.active i{
+
+    background: url('@static/sprite.png') -22px 0;
+    background-size: 115px 16px;
+
+}
+
+.weexplorer-menu-upload i{
+
+    width: 22px;
+    height: 16px;
+    float: left;
+
+    background: url('@static/sprite.png') -44px 0;
+    background-size: 115px 16px;
+
+}
+
+.weexplorer-menu-toggle i{
+
+    width: 15px;
+    height: 15px;
+    float: right;
+
+    background: url('@static/sidebar_toggle.png') -15px 0;
+    background-size: 30px 15px;
+
+}
+
+.wz-view.sidebar .weexplorer-menu-toggle i{
+
+    width: 15px;
+    height: 15px;
+    float: right;
+
+    background: url('@static/sidebar_toggle.png') 0 0;
+    background-size: 30px 15px;
+
 }
 
 .weexplorer-main{
-
-    width: 552px;
-    height: 479px;
+    width: 692px;
+    height: 550px;
     float: left;
-
 }
 
 .weexplorer-folder{
-    
-    width: 552px;
+
+    width: 692px;
     height: 50px;
     position: absolute;
     padding-top: 20px;
     text-align: center;
     z-index: 1;
-    
-    background-image: -moz-linear-gradient(50% 0% -90deg,rgba(255,255,255,1) 65%,rgba(255,255,255,0) 100%); 
+
+    background-image: -moz-linear-gradient(50% 0% -90deg,rgba(255,255,255,1) 65%,rgba(255,255,255,0) 100%);
     background-image: -webkit-linear-gradient(-90deg,rgba(255,255,255,1) 65%,rgba(255,255,255,0) 100%);
     background-image: -o-linear-gradient(-90deg,rgba(255,255,255,1) 65%,rgba(255,255,255,0) 100%);
     background-image: linear-gradient(0deg,rgba(255,255,255,0) 0%,rgba(255,255,255,1) 35%);
-    
+
 }
 
 .weexplorer-folder-icon{
-    
+
     width: 13px;
     height: 13px;
     margin-top: 1px;
     background: url('@static/sidebar.png');
     background-size: 87px 39px;
     display: none;
-    
+
 }
 
 .weexplorer-folder.user .weexplorer-folder-icon{
-    
+
     background-position: -13px 0;
     display: inline-block;
-    
+
 }
 
 .weexplorer-folder.folder .weexplorer-folder-icon{
-    
+
     background-position: -26px 0;
     display: inline-block;
-    
+
 }
 
 .weexplorer-folder.music .weexplorer-folder-icon{
-    
+
     width: 8px;
     margin-left: 3px;
     margin-right: 2px;
     background-position: -39px 0;
     display: inline-block;
-    
+
 }
 
 .weexplorer-folder.photo .weexplorer-folder-icon{
-    
+
     background-position: -74px 0;
     display: inline-block;
-    
+
 }
 
 .weexplorer-folder.video .weexplorer-folder-icon{
-    
+
     width: 16px;
     margin-left: -2px;
     margin-right: -1px;
     background-position: -47px 0;
     display: inline-block;
-    
+
 }
 
 .weexplorer-folder.doc .weexplorer-folder-icon{
-    
+
     width: 11px;
     margin-left: 1px;
     margin-right: 1px;
     background-position: -63px 0;
     display: inline-block;
-    
+
 }
 
 .weexplorer-folder-name{
-    
+
     font-size: 14px;
     color: #545454;
     display: inline-block;
     margin-left: 6px;
     vertical-align: top;
-    
+
 }
 
 img{
-    
     vertical-align: middle;
-    
 }
 
 .weexplorer-file-zone{
-    
-    width: 528px;
-    height: 419px;
+
+    width: 668px;
+    height: 490px;
     float: left;
     padding: 60px 12px 0;
     text-align: center;
-    
+
 }
 
-
 .grid .weexplorer-file{
-    
+
     width: 150px;
     height: 185px;
     position: relative;
     margin: 0 0 15px;
     display: inline-block;
     vertical-align: top;
-    
+
 }
 
 .grid .weexplorer-false-file{
-    
+
     width: 150px;
     height: 185px;
     position: relative;
@@ -284,30 +330,30 @@ img{
 }
 
 .grid figure{
-    
+
     width: 148px;
     height: 148px;
     border: solid 1px transparent;
     line-height: 150px;
     text-align: center;
-    
+
 }
 
 .grid textarea{
-    
+
     font-size: 14px;
     color: #585858;
     width: 100%;
     height: 30px;
     margin-top: 5px;
     text-align: center;
-    
+
 }
 
 .grid span{
-    
+
     display: none;
-    
+
 }
 
 .weexplorer-file-zone.list{
@@ -315,7 +361,7 @@ img{
 }
 
 .list .weexplorer-file{
-    
+
     width: 100%;
     height: 32px;
     position: relative;
@@ -323,11 +369,11 @@ img{
     float: left;
     box-sizing: border-box;
     margin-bottom: 1px;
-    
+
 }
 
 .list figure{
-    
+
     width: 25px;
     height: 25px;
     float: left;
@@ -335,11 +381,11 @@ img{
     margin-top: 2px;
     line-height: 25px;
     text-align: center;
-    
+
 }
 
 .list textarea{
-    
+
     font-size: 14px;
     color: #585858;
     width: 205px;
@@ -347,7 +393,7 @@ img{
     float: left;
     margin-top: 7px;
     margin-left: 15px;
-    
+
 }
 
 .list textarea[readonly]{
@@ -359,14 +405,14 @@ img{
 }
 
 .list .weexplorer-file-date-modification, .list .weexplorer-file-size{
-    
+
     font-size: 12px;
     color: #ABABAB;
     float: right;
     margin-right: 15px;
     margin-top: 10px;
     text-align: right;
-    
+
 }
 
 .list .weexplorer-file-date-modification{
@@ -383,17 +429,21 @@ img{
     vertical-align: middle;
 }
 
+.list img.icon-big{
+  display: none;
+}
+
 .grid .last-active figure{
 
     border: solid 1px rgba(127,191,235,0.5);
     border-radius: 3px;
-    
+
 }
 
 .grid .last-active.hidden figure{
 
     border: solid 1px transparent;
-    
+
 }
 
 .grid .last-active figure:hover{
@@ -401,7 +451,7 @@ img{
     background: #eefaff;
     border: solid 1px #7fbfeb;
     border-radius: 3px;
-    
+
 }
 
 .grid .active figure{
@@ -409,15 +459,15 @@ img{
     background: #ceecff;
     border: solid 1px #7fbfeb;
     border-radius: 3px;
-    
+
 }
 
 .grid figure:hover{
-    
+
     background: #eefaff;
     border: solid 1px #7fbfeb;
     border-radius: 3px;
-    
+
 }
 
 .grid .active figure:hover{
@@ -425,7 +475,7 @@ img{
     background: #ceecff;
     border: solid 1px #7fbfeb;
     border-radius: 3px;
-    
+
 }
 
 .grid img{
@@ -434,17 +484,21 @@ img{
     vertical-align: middle;
 }
 
+.grid img.icon-small{
+  display: none;
+}
+
 .list .weexplorer-file.last-active{
 
     border: solid 1px rgba(127,191,235,0.5);
     border-radius: 3px;
-    
+
 }
 
 .list .weexplorer-file.last-active.hidden{
 
     border: solid 1px transparent;
-    
+
 }
 
 .list .weexplorer-file.last-active:hover{
@@ -452,7 +506,7 @@ img{
     background: #eefaff;
     border: solid 1px #7fbfeb;
     border-radius: 3px;
-    
+
 }
 
 .list .weexplorer-file:hover{
@@ -460,7 +514,7 @@ img{
     background: #eefaff;
     border: solid 1px #7fbfeb;
     border-radius: 3px;
-    
+
 }
 
 .list .weexplorer-file.active:hover{
@@ -468,7 +522,7 @@ img{
     background: #ceecff;
     border: solid 1px #7fbfeb;
     border-radius: 3px;
-    
+
 }
 
 .list .weexplorer-file.active{
@@ -476,7 +530,7 @@ img{
     background: #ceecff;
     border: solid 1px #7fbfeb;
     border-radius: 3px;
-    
+
 }
 
 .grid .weexplorer-file-shared{
@@ -535,18 +589,24 @@ img{
 }
 
 .weexplorer-sidebar{
-    
+
     width: 139px;
-    height: 479px;
+    height: 550px;
     float: right;
-    
-    background: #EBEBEB;
-    border-left: solid 1px #D8D8D8;
-    
+
+    background: #f6f8f8;
+    border-left: solid 1px #ccd3d5;
+
+    display: none;
+
+}
+
+.wz-view.sidebar .weexplorer-sidebar{
+    display: block;
 }
 
 .weexplorer-sidebar-title{
-        
+
     width: 115px;
     float: left;
     padding: 20px 12px;
@@ -554,23 +614,23 @@ img{
 }
 
 .weexplorer-sidebar-icon{
-    
+
     width: 13px;
     height: 13px;
     float: left;
     background: url('@static/sidebar.png');
     background-size: 87px 39px;
-    
+
 }
 
 .weexplorer-sidebar-icon .title{
-    
+
     background-position: 0 0;
-    
+
 }
 
 .weexplorer-sidebar-title-name{
-    
+
     width: 86px;
     height: 15px;
     float: left;
@@ -580,31 +640,31 @@ img{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    
+
 }
 
 .weexplorer-sidebar-element{
-    
+
     width: 113px;
     float: left;
     height: 13px;
     padding: 10px 12px;
     border: 1px solid transparent;
-    
+
 }
 
 .weexplorer-sidebar-element-over{
-    
+
     border: 1px solid #7FBFEB;
     background: #CEECFF;
-    
+
 }
 
 .weexplorer-sidebar-element-name{
-    
+
     font-size: 12px;
     color: #505050;
-    
+
     width: 92px;
     height: 15px;
     float: left;
@@ -613,23 +673,23 @@ img{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    
+
 }
 
 .weexplorer-sidebar-element:hover .weexplorer-sidebar-element-name{
-    
+
     color: #000;
-    
+
 }
 
 .weexplorer-sidebar-element.active .weexplorer-sidebar-element-name{
-    
+
     color: #108EE5;
-    
+
 }
 
 .weexplorer-sidebar-notification{
-    
+
     display: none;
     float: right;
     color: #FFF;
@@ -645,176 +705,162 @@ img{
 .weexplorer-sidebar-element.notification .weexplorer-sidebar-notification{
 
     display: block;
-    
+
 }
 
 .weexplorer-sidebar-element.notification .weexplorer-sidebar-element-name{
-    
+
     width: 63px;
-    
+
 }
 
 .weexplorer-file-uploading figure{
-    
+
     opacity: 0.5;
-    
-}   
+
+}
 
 .weexplorer-file-uploading textarea{
-    
+
     opacity: 0.5;
-    
+
 }
 
 .weexplorer-directory-over{
-    
+
     background: #ceecff;
     border-radius: 3px;
-    
+
 }
 
 .weexplorer-sidebar-element.user .weexplorer-sidebar-icon{
-    
+
     background-position: -13px 0;
-    
+
 }
 
 .weexplorer-sidebar-element.user:hover .weexplorer-sidebar-icon{
-    
+
     background-position: -13px -13px;
-    
+
 }
 
 .weexplorer-sidebar-element.user.active .weexplorer-sidebar-icon{
-    
+
     background-position: -13px -26px;
-    
+
 }
 
 .weexplorer-sidebar-element.folder .weexplorer-sidebar-icon{
-    
+
     background-position: -26px 0;
-    
+
 }
 
 .weexplorer-sidebar-element.folder:hover .weexplorer-sidebar-icon{
-    
+
     background-position: -26px -13px;
-    
+
 }
 
 .weexplorer-sidebar-element.folder.active .weexplorer-sidebar-icon{
-    
+
     background-position: -26px -26px;
-    
+
 }
 
 .weexplorer-sidebar-element.music .weexplorer-sidebar-icon{
-    
+
     width: 8px;
     margin-left: 3px;
     margin-right: 2px;
     background-position: -39px 0;
-    
+
 }
 
 .weexplorer-sidebar-element.music:hover .weexplorer-sidebar-icon{
-    
+
     background-position: -39px -13px;
-    
+
 }
 
 .weexplorer-sidebar-element.music.active .weexplorer-sidebar-icon{
-    
+
     background-position: -39px -26px;
-    
+
 }
 
 .weexplorer-sidebar-element.photo .weexplorer-sidebar-icon{
-    
+
     background-position: -74px 0;
-    
+
 }
 
 .weexplorer-sidebar-element.photo:hover .weexplorer-sidebar-icon{
-    
+
     background-position: -74px -13px;
-    
+
 }
 
 .weexplorer-sidebar-element.photo.active .weexplorer-sidebar-icon{
-    
+
     background-position: -74px -26px;
-    
+
 }
 
 .weexplorer-sidebar-element.video .weexplorer-sidebar-icon{
-    
+
     width: 16px;
     margin: 1px -1px 0 -2px;
     background-position: -47px 0;
-    
+
 }
 
 .weexplorer-sidebar-element.video:hover .weexplorer-sidebar-icon{
 
     background-position: -47px -13px;
-    
+
 }
 
 .weexplorer-sidebar-element.video.active .weexplorer-sidebar-icon{
 
     background-position: -47px -26px;
-    
+
 }
 
 .weexplorer-sidebar-element.doc .weexplorer-sidebar-icon{
-    
+
     width: 11px;
     margin-left: 1px;
     margin-right: 1px;
     background-position: -63px 0;
-    
+
 }
 
 .weexplorer-sidebar-element.doc:hover .weexplorer-sidebar-icon{
 
     background-position: -63px -13px;
-    
+
 }
 
 .weexplorer-sidebar-element.doc.active .weexplorer-sidebar-icon{
 
     background-position: -63px -26px;
-    
+
 }
 
-.weexplorer-tools{
-    width: 692px;
-    height: 38px;
-    border-top: 1px solid #cacaca;
-    background: #f5f5f5;
-    float: left;
-    text-align: right;
+.weexplorer-uploading{
+    width: 100%;
+    height: 0px;
+    background-image: -moz-linear-gradient(50% 0% -90deg,rgb(78,78,78) 0%,rgb(50,50,50) 100%);
+    background-image: -webkit-linear-gradient(-90deg,rgb(78,78,78) 0%,rgb(50,50,50) 100%);
+    background-image: -o-linear-gradient(-90deg,rgb(78,78,78) 0%,rgb(50,50,50) 100%);
+    background-image: linear-gradient(0deg,rgb(50,50,50) 0%,rgb(78,78,78) 100%);
+    position: absolute;
+    bottom: 0px;
+    overflow: hidden;
 }
 
-.accept, .cancel{
-    display: inline-block;
-    width: auto;
-    height: auto;
-    font-size: 14px;
-    padding: 6px 15px 4px;
-    height: 14px;
-    margin-top: 6px;
-}
-
-.accept{
-    margin-right: 25px;
-    margin-left: 15px;
-    padding: 6px 20px 4px;
-}
-
-/*
 .weexplorer-uploading-bar{
     width: 0%;
     height: 5px;
@@ -850,7 +896,6 @@ img{
 .uploaded-percent{
     margin-left: 8px;
 }
-*/
 
 .weexplorer-progress-bar{
     width: 0;
@@ -860,7 +905,7 @@ img{
 }
 
 .weexplorer-conversion-bar{
-    width: 75%;
+    width: 0;
     height: 5px;
     margin-top: -5px;
     background: #A43737;
@@ -872,7 +917,7 @@ img{
     left: 123px;
     list-style: none;
     display: none;
-    z-index: 1;
+    z-index: 2;
 }
 
 .weexplorer-sort.show{
@@ -880,7 +925,7 @@ img{
 }
 
 .weexplorer-sort:before{
-    
+
     position: relative;
     top: 2px;
     left: 75px;
@@ -890,22 +935,20 @@ img{
     background: url('@static/sort.png') no-repeat;
     background-size: 15px 6px;
     content: '';
-    
+
 }
 
 .weexplorer-sort li:first-child{
-    
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
     box-shadow: inset 0px 1px 0px 0px #4D4D4D;
-    
 }
 
 .weexplorer-sort li{
-    
-    overflow: hidden; 
+
+    overflow: hidden;
     -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box; 
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
     padding: 10px 15px 0px 10px;
     width: 100%;
@@ -915,16 +958,16 @@ img{
     text-overflow: ellipsis;
     font-size: 15px;
     line-height: 10px;
-    
+
 }
 
 .weexplorer-sort li:last-child{
-    
+
     height: 30px;
-    border-bottom-right-radius: 6px;
-    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
     box-shadow: inset 0px -1px 0px 0px #4D4D4D;
-    
+
 }
 
 .weexplorer-sort li:hover{
@@ -972,7 +1015,7 @@ img{
 }
 
 .weexplorer-navigation:before{
-    
+
     position: relative;
     top: 2px;
     left: 14px;
@@ -982,26 +1025,26 @@ img{
     background: url('@static/sort.png') no-repeat;
     background-size: 15px 6px;
     content: '';
-    
+
 }
 
-.weexplorer-navigation.next:before{   
+.weexplorer-navigation.next:before{
     left: 40px;
 }
 
 .weexplorer-navigation li:nth-child(2){
-    
+
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     box-shadow: inset 0px 1px 0px 0px #4D4D4D;
-    
+
 }
 
 .weexplorer-navigation li{
-    
-    overflow: hidden; 
+
+    overflow: hidden;
     -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box; 
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
     padding: 10px 15px 0px 10px;
     width: 100%;
@@ -1011,16 +1054,16 @@ img{
     text-overflow: ellipsis;
     font-size: 15px;
     line-height: 10px;
-    
+
 }
 
 .weexplorer-navigation li:last-child{
-    
+
     height: 30px;
     border-bottom-right-radius: 6px;
     border-bottom-left-radius: 6px;
     box-shadow: inset 0px -1px 0px 0px #4D4D4D;
-    
+
 }
 
 .weexplorer-navigation li:hover{
@@ -1030,4 +1073,18 @@ img{
 .weexplorer-navigation span{
     float: left;
     margin-left: 8px;
+}
+
+.directory-status .big{
+    font-size: 36px;
+    color: #767776;
+    font-family: Lato;
+    font-weight: 200;
+}
+
+.directory-status .small{
+    font-size: 36px;
+    color: #767776;
+    font-family: Lato;
+    font-weight: 200;
 }

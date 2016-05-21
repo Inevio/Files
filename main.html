@@ -1,143 +1,276 @@
 
-<section class="wz-ui-header wz-dragger wz-fit-x">
-
-    <section class="wz-view-menu-group weexplorer-navigate wz-dragger">
-        <figure class="wz-view-option weexplorer-option-back">
-            <i></i>
-        </figure>
-        <figure class="wz-view-option weexplorer-option-next">
-            <i></i>
-        </figure>
-    </section>
-
-    <section class="weexplorer-menu wz-dragger wz-fit-x">
-
-        <figure class="wz-view-option weexplorer-menu-views grid">
-            <i></i>
-            <!--<i class="weexplorer-menu-display"></i>-->
-        </figure>
-
-        <figure class="wz-view-option weexplorer-menu-sort">
-            <span></span>
-            <i class="weexplorer-menu-display"></i>
-        </figure>
-
-        <figure class="wz-view-option weexplorer-menu-download">
-            <i></i>
-            <!--<i class="weexplorer-menu-display"></i>-->
-        </figure>
-
-        <figure class="wz-view-option weexplorer-menu-upload wz-uploader-start">
-            <i></i>
-        </figure>
-
-        <figure class="wz-view-option right weexplorer-menu-toggle">
-            <i></i>
-        </figure>
-
-    </section>
-
-    <section class="wz-view-menu-group right wz-dragger">
-        <figure class="wz-view-minimize">
-            <i></i>
-        </figure>
-        <figure class="wz-view-maximize">
-            <i></i>
-        </figure>
-        <figure class="wz-view-close">
-            <i></i>
-        </figure>
-    </section>
-
+<section class="ui-header wz-dragger">
+  <section class="ui-header-brand wz-dragger">
+    <span class="wz-dragger">###FILES###</span>
+  </section>
+  <section class="ui-input-search">
+    <figure class="search-icon">
+      <i></i>
+    </figure>
+    <input placeholder="Search input">
+    <figure class="delete-content">
+      <i></i>
+    </figure>
+  </section>
+  <section class="ui-header-buttons wz-dragger">
+    <figure class="ui-minimize"><i></i></figure>
+    <figure class="ui-maximize window"><i></i></figure>
+    <figure class="ui-close"><i></i></figure>
+  </section>
 </section>
 
-<section class="weexplorer-main wz-fit">
-
-    <section class="weexplorer-folder wz-fit-y-ignore wz-fit-x">
-        <i class="weexplorer-folder-icon"></i>
-        <span class="weexplorer-folder-name"></span>
-    </section>
-
-    <section class="weexplorer-file-zone grid wz-drop-area wz-scroll wz-fit wz-dragarea wz-uploader-drag">
-
-        <article class="directory-status">
-            <p class="big"></p>
-            <p class="small"></p>
-        </article>
-
-        <article class="weexplorer-file wz-draggable wz-dragger wz-droppable wz-prototype">
-            <figure class="wz-dragger">
-                <img class="wz-dragger icon-big" src="" />
-                <img class="wz-dragger icon-small" src="" />
-            </figure>
-            <!-- Si le añades al article la clase weexplorer-progress-bar aparecerá la barra de subiendo -->
-            <!-- Si le añades al article la clase weexplorer-conversion-bar aparecerá la barra de convirtiendo -->
-            <article></article>
-            <textarea class="wz-dragger wz-contextmenu-native-ignore" readonly="readonly"></textarea>
-            <span class="weexplorer-file-date-creation wz-dragger"></span>
-            <span class="weexplorer-file-date-modification wz-dragger"></span>
-            <span class="weexplorer-file-size wz-dragger"></span>
-            <figure class="weexplorer-file-shared">
-                <i></i>
-            </figure>
-        </article>
-
-    </section>
-
+<section class="ui-navbar">
+  <section class="ui-navgroup">
+    <article class="ui-navgroup-title">
+      <span class="ui-navgroup-title-txt">###FAVORITOS###</span>
+    </article>
+    <article class="ui-navgroup-element wz-prototype">
+      <figure class="ui-navgroup-element-icon"><i></i></figure>
+      <span class="ui-navgroup-element-txt"></span>
+    </article>
+    <article class="ui-navgroup-element">
+      <figure class="ui-navgroup-element-icon"><i></i></figure>
+      <span class="ui-navgroup-element-txt">###NAME###</span>
+    </article>
+  </section>
 </section>
 
-<section class="weexplorer-sidebar wz-fit-y">
+<section class="ui-content">
 
-    <article class="weexplorer-sidebar-title">
-        <i class="weexplorer-sidebar-icon title"></i>
-        <span class="weexplorer-sidebar-title-name"></span>
+  <section class="folder-tools">
+
+    <article class="folder-controls">
+      <figure class="button back"></figure>
+      <figure class="button forward"></figure>
     </article>
 
-    <article class="weexplorer-sidebar-element folder wz-prototype">
-        <i class="weexplorer-sidebar-icon"></i>
-        <span class="weexplorer-sidebar-element-name"></span>
-        <i class="weexplorer-sidebar-notification"></i>
+    <article class="folder-breadcrumbs">
+      <span class="entry">###FOLDER###</span>
+      <span class="entry">###FOLDER###</span>
     </article>
 
-</section>
-
-<section class="weexplorer-uploading wz-fit-ignore">
-    <article class="weexplorer-uploading-bar"></article>
-    <article class="weexplorer-uploading-info">
-        <figure></figure>
-        <p>
-            <span class="item-now-before"></span>
-            <span class="item-now"></span>
-            <span class="total-items-before"></span>
-            <span class="total-items"></span>
-            <span class="elapsed-time-before"></span>
-            <span class="elapsed-time"></span>
-            <span class="uploaded-percent"></span>
-        </p>
+    <article class="folder-utils">
+      <figure class="button upload"></figure>
+      <figure class="button download"></figure>
+      <figure class="button create-folder"></figure>
+      <figure class="button delete"></figure>
     </article>
+
+  </section>
+
+  <div class="item-area">
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">HOLA MUNDO</p>
+    </article>
+
+    <article class="item active">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Fichero 1</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Nombre muy largo de fichero</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Node.js</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Nombre muy largo de fichero</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Node.js</p>
+    </article>
+
+    <!--
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Fichero 1</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Fichero 1</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Nombre muy largo de fichero</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Node.js</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">HOLA MUNDO</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Fichero 1</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Nombre muy largo de fichero</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Node.js</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Nombre muy largo de fichero</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Node.js</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Fichero 1</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Fichero 1</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Nombre muy largo de fichero</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Node.js</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">HOLA MUNDO</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Fichero 1</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Nombre muy largo de fichero</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Node.js</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Nombre muy largo de fichero</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Node.js</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Fichero 1</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Fichero 1</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Nombre muy largo de fichero</p>
+    </article>
+
+    <article class="item">
+      <figure class="icon">
+        <img src="https://download.inevio.com/408746/icon/normal"/>
+      </figure>
+      <p class="name">Node.js</p>
+    </article>
+    -->
+  </div>
+
 </section>
-
-<menu class="weexplorer-sort wz-fit-ignore">
-    <li class="weexplorer-sort-name active">
-        <i></i>
-        <span></span>
-    </li>
-    <li class="weexplorer-sort-size">
-        <i></i>
-        <span></span>
-    </li>
-    <li class="weexplorer-sort-creation">
-        <i></i>
-        <span></span>
-    </li>
-    <li class="weexplorer-sort-modification">
-        <i></i>
-        <span></span>
-    </li>
-</menu>
-
-<menu class="weexplorer-navigation wz-fit-ignore">
-    <li class="wz-prototype">
-        <span></span>
-    </li>
-</menu>
