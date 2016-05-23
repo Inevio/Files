@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use strict';
 
 var ICON_WIDTH = 106;
