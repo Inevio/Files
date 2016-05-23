@@ -91,16 +91,16 @@
     background-color: #fff;
     border: solid 1px #e5e9ea;
 
-    &:hover{
+    &.enabled{
+      border-color: #ccd3d5;
+    }
+
+    &.enabled:hover{
       background-image: -webkit-linear-gradient(bottom, #fafafa, #fff);
       background-image: -moz-linear-gradient(bottom, #fafafa, #fff);
       background-image: -o-linear-gradient(bottom, #fafafa, #fff);
       background-image: -ms-linear-gradient(bottom, #fafafa, #fff);
       background-image: linear-gradient(to top, #fafafa, #fff);
-    }
-
-    &.enabled{
-      border-color: #ccd3d5;
     }
 
     i{
@@ -121,7 +121,7 @@
       margin: 6px 0 0 8px;
     }
 
-    &.disabled i{
+    &.enabled i{
       background-position: 0 0;
     }
 
@@ -134,7 +134,7 @@
       margin: 6px 0 0 10px;
     }
 
-    &.disabled i{
+    &.enabled i{
       background-position: -16px 0;
     }
 
