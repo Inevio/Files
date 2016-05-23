@@ -260,11 +260,11 @@ var getFolderItems = function( id ){
 
   var end = $.Deferred();
 
-  api.fs( id, function( error, structure ){
+  api.fs( id, function( error, fsnode ){
 
-    structure.list( function( error, list ){
+    fsnode.list( function( error, list ){
       // To Do -> Error
-      end.resolve( list );
+      end.resolve( fsnode, list );
     });
 
   });
@@ -405,13 +405,15 @@ var getSidebarItems = function(){
   var first  = $.Deferred();
   var second = $.Deferred();
 
-  api.fs( 'root', function( error, structure ){
+  api.fs( 'root', function( error, fsnode ){
 
-    structure.list( true, function( error, list ){
+    fsnode.list( true, function( error, list ){
 
       list = list.filter( function( item ){
           return item.type === 1;
       });
+
+      list.unshift( fsnode );
 
       first.resolve( list );
 
@@ -507,7 +509,10 @@ var openFile = function( fsnode ){
 
 var openFolder = function( id, isBack, isForward ){
 
-  getFolderItems( id ).then( function( list ){
+  getFolderItems( id ).then( function( fsnode, list ){
+
+    visualSidebarItemArea.find('.active').removeClass('active');
+    visualSidebarItemArea.find( '.item-' + fsnode.id ).addClass('active');
 
     if( !isBack && !isForward && currentOpened ){
       addToHistoryBackward( currentOpened );
@@ -518,7 +523,7 @@ var openFolder = function( id, isBack, isForward ){
       addToHistoryBackward( currentOpened );
     }
 
-    currentOpened = id;
+    currentOpened = fsnode.id;
 
     clearList();
     appendItemToList( list );

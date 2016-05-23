@@ -27,10 +27,28 @@
     background-position: -300px 0;
   }
 
+  &.active i{
+    background-position: -317px 0;
+  }
+
+  &.root i{
+    background-position: -174px 0;
+    height: 16px;
+    width: 16px;
+  }
+
+  &.root.active i{
+    background-position: -191px 0;
+  }
+
   &.images i{
     background-position: -238px 0;
     height: 13px;
     margin: 2px 0 0;
+  }
+
+  &.images.active i{
+    background-position: -255px 0;
   }
 
   &.music i{
@@ -40,9 +58,17 @@
     margin: 0 2px 0 1px;
   }
 
+  &.music.active i{
+    background-position: -286px 0;
+  }
+
   &.sync i{
     background-position: -334px 0;
     height: 16px;
+  }
+
+  &.sync.active i{
+    background-position: -351px 0;
   }
 
   &.videos i{
@@ -50,6 +76,10 @@
     height: 13px;
     width: 14px;
     margin: 2px 1px 0 1px;
+  }
+
+  &.videos.active i{
+    background-position: -223px 0;
   }
 
 }
