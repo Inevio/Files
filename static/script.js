@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 'use strict';
 
 var ICON_WIDTH = 106;
@@ -8,13 +7,19 @@ var ICON_RADIUS = 3;
 var ICON_GAP_MIN = 10;
 var ROWS_GAP = 20;
 
-var currentList   = [];
-var currentRows   = [];
-var currentHover  = null;
-var currentActive = [];
-var currentScroll = 0;
-var pixelRatio    = 1;
+var currentOpened    = null;
+var currentList      = [];
+var currentRows      = [];
+var currentHover     = null;
+var currentActive    = [];
+var currentScroll    = 0;
+var currentMaxScroll = 0;
+var historyBackward  = [];
+var historyForward   = [];
+var pixelRatio       = 1;
 
+var visualHistoryBack          = $('.folder-controls .back');
+var visualHistoryForward       = $('.folder-controls .forward');
 var visualSidebarItemArea      = $('.ui-navgroup');
 var visualSidebarItemPrototype = $('.ui-navgroup-element.wz-prototype');
 var visualItemArea             = $('.item-area');
@@ -43,6 +48,24 @@ var Icon = function( fsnode ){
 
 };
 
+var addToHistoryBackward = function( item ){
+
+  historyBackward.push( item );
+  visualHistoryBack.addClass('enabled');
+
+  console.log(historyBackward,historyForward);
+
+};
+
+var addToHistoryForward = function( item ){
+
+  historyForward.unshift( item );
+  visualHistoryForward.addClass('enabled');
+
+  console.log(historyBackward,historyForward);
+
+};
+
 var appendItemToList = function( items ){
 
   if( items instanceof Array ){
@@ -56,6 +79,9 @@ var appendItemToList = function( items ){
   }
 
   currentList = currentList.concat( items );
+  currentList = currentList.sort( function( a, b ){
+    return a.fsnode.type > b.fsnode.type ? 1 : -1;
+  });
 
   updateRows();
 
@@ -99,6 +125,14 @@ var clearCanvas = function(){
 
 };
 
+var clearHistoryForward = function(){
+
+  historyForward = [];
+
+  visualHistoryForward.removeClass('enabled');
+
+};
+
 var clearList = function(){
 
   currentList   = [];
@@ -116,7 +150,7 @@ var drawIcons = function(){
 
   var grid = calculateGrid();
   var x = grid.gap;
-  var y = 10;
+  var y = 10 + currentScroll;
   var iconsInRow = 0;
   var currentRow = 0;
 
@@ -290,7 +324,7 @@ var getIconWithMouserOver = function( event ){
 
   // Get row
   var row     = null;
-  var rowsPos = 10;
+  var rowsPos = 10 + currentScroll;
 
   for( var i = 0; i < currentRows.length; i++ ){
 
@@ -431,9 +465,60 @@ var getSidebarItems = function(){
 
 };
 
-var openFolder = function( id ){
+var historyGoBack = function(){
+
+  if( !historyBackward.length ){
+    return;
+  }
+
+  openFolder( historyBackward.pop(), true );
+
+  if( !historyBackward.length ){
+    visualHistoryBack.removeClass('enabled');
+  }
+
+};
+
+var historyGoForward = function(){
+
+  if( !historyForward.length ){
+    return;
+  }
+
+  openFolder( historyForward.shift(), false, true );
+
+  if( !historyForward.length ){
+    visualHistoryForward.removeClass('enabled');
+  }
+
+};
+
+var openFile = function( fsnode ){
+
+  fsnode.open( /*fileArea.find('.file').map( function(){ return $(this).data('file-id') }).get(),*/ function( error ){
+
+    if( error ){
+      alert( lang.noApp );
+    }
+
+  });
+
+};
+
+var openFolder = function( id, isBack, isForward ){
 
   getFolderItems( id ).then( function( list ){
+
+    if( !isBack && !isForward && currentOpened ){
+      addToHistoryBackward( currentOpened );
+      clearHistoryForward();
+    }else if( isBack ){
+      addToHistoryForward( currentOpened );
+    }else if( isForward ){
+      addToHistoryBackward( currentOpened );
+    }
+
+    currentOpened = id;
 
     clearList();
     appendItemToList( list );
@@ -446,11 +531,16 @@ var openFolder = function( id ){
 
 var updateRows = function(){
 
-  var grid = calculateGrid();
-  currentRows = [];
+  var grid         = calculateGrid();
+  currentMaxScroll = 0;
+  currentRows      = [];
 
   for( var i = 0; i < currentList.length; i += grid.iconsInRow ){
-    currentRows.push( getMaxIconHeight( currentList.slice( i, i + grid.iconsInRow ) ) );
+
+    var max = getMaxIconHeight( currentList.slice( i, i + grid.iconsInRow ) );
+    currentMaxScroll += max + ROWS_GAP;
+    currentRows.push( max );
+
   }
 
 };
@@ -480,8 +570,18 @@ $(this)
 
 visualItemArea
 .on( 'mousewheel', function( e, delta, x, y ){
+
   currentScroll += y;
-  console.log( currentScroll, parseInt( y ) );
+
+  if( currentScroll > 0 ){
+    currentScroll = 0;
+  }else if( -1 * currentMaxScroll + ctx.height > currentScroll ){
+    currentScroll = -1 * currentMaxScroll + ctx.height;
+  }
+
+  clearCanvas();
+  drawIcons();
+
 })
 
 .on( 'mouseout', function( e ){
@@ -498,7 +598,7 @@ visualItemArea
 
 })
 
-.on( 'mousemove', function( e ){
+.on( 'mousemove mousewheel', function( e ){
 
   if( !currentList.length ){
     return;
@@ -569,10 +669,20 @@ visualItemArea
     return;
   }
 
-  console.log( itemClicked );
+  if( itemClicked.fsnode.type <= 1 ){
+    openFolder( itemClicked.fsnode.id );
+  }else if( itemClicked.fsnode.type === 2 ){
+    openFile( itemClicked.fsnode );
+  }
 
-  openFolder( itemClicked.fsnode.id );
+});
 
+visualHistoryBack.on( 'click', function(){
+  historyGoBack();
+});
+
+visualHistoryForward.on( 'click', function(){
+  historyGoForward();
 });
 
 getSidebarItems().then( function( list ){
