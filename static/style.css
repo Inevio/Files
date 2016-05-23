@@ -12,6 +12,48 @@
   padding: 1px 0;
 }
 
+.ui-navgroup-element{
+
+  .ui-navgroup-element-icon{
+    width: 16px;
+    padding: 4px 8px 7px 18px;
+  }
+
+  i{
+    width: 16px;
+    height: 15px;
+    background: url('@static/img/sprite.png') no-repeat;
+    background-size: 385px 18px;
+    background-position: -300px 0;
+  }
+
+  &.images i{
+    background-position: -238px 0;
+    height: 13px;
+    margin: 2px 0 0;
+  }
+
+  &.music i{
+    background-position: -272px 0;
+    height: 16px;
+    width: 13px;
+    margin: 0 2px 0 1px;
+  }
+
+  &.sync i{
+    background-position: -334px 0;
+    height: 16px;
+  }
+
+  &.videos i{
+    background-position: -208px 0;
+    height: 13px;
+    width: 14px;
+    margin: 2px 1px 0 1px;
+  }
+
+}
+
 .ui-content{
   float: left;
   height: ~'calc(100% - 41px)';
@@ -47,7 +89,7 @@
     height: 24px;
     border-radius: 3px;
     background-color: #fff;
-    border: solid 1px #ccd3d5;
+    border: solid 1px #e5e9ea;
 
     &:hover{
       background-image: -webkit-linear-gradient(bottom, #fafafa, #fff);
@@ -57,14 +99,45 @@
       background-image: linear-gradient(to top, #fafafa, #fff);
     }
 
-    &.disabled{
-      border-color: #e5e9ea;
+    &.enabled{
+      border-color: #ccd3d5;
+    }
+
+    i{
+      background: url('@static/img/sprite.png') no-repeat;
+      background-size: 385px 18px;
+      width: 7px;
+      height: 12px;
+      display: block;
     }
 
   }
 
   .back{
     margin-right: 2px;
+
+    i{
+      background-position: -8px 0;
+      margin: 6px 0 0 8px;
+    }
+
+    &.disabled i{
+      background-position: 0 0;
+    }
+
+  }
+
+  .forward{
+
+    i{
+      background-position: -24px 0;
+      margin: 6px 0 0 10px;
+    }
+
+    &.disabled i{
+      background-position: -16px 0;
+    }
+
   }
 
 }
@@ -72,27 +145,26 @@
 .folder-breadcrumbs{
   float: left;
   width: ~'calc(100% - 204px)';
-  background: #0f0;
   margin-top: 4px;
 
   .entry{
     font-family: Lato;
     font-size: 13px;
     color: #889399;
-    background: #ff0;
   }
 
   .entry + .entry{
-    background: #f00;
     margin-left: 20px;
 
     &:before{
       content : '';
       width: 4px;
-      height: 10px;
-      background: #00f;
+      height: 8px;
+      background: url('@static/img/sprite.png') no-repeat;
+      background-size: 385px 18px;
+      background-position: -66px 0;
       position: absolute;
-      margin: 3px 0 0 -14px;
+      margin: 4px 0 0 -14px;
     }
 
   }
@@ -105,33 +177,59 @@
   width: 120px;
 
   .button{
-    background: #f00;
     float: left;
     width: 22px;
     height: 18px;
     margin: 4px;
   }
 
-  .upload{
-    background: url('@static/img/upload_normal.png') center center no-repeat;
-    background-size: 26px 20px;
+  .button i{
+    background: url('@static/img/sprite.png') no-repeat;
+    background-size: 385px 18px;
+    display: block;
   }
 
-  .download{
-    background: url('@static/img/download_normal.png') center center no-repeat;
-    background-size: 26px 20px;
+  .upload i{
+    background-position: -76px 0;
+    width: 21px;
+    height: 15px;
+    margin-top: 2px;
   }
 
-  .create-folder{
-
+  .upload:hover i{
+    background-position: -76px 0;
   }
 
-  .delete{
+  .download i{
+    background-position: -98px 0;
+    width: 21px;
+    height: 15px;
+    margin-top: 2px;
+  }
 
+  .create-folder i{
+    background-position: -120px 0;
+    width: 19px;
+    height: 16px;
+    margin: 1px 0 0 1px;
+  }
+
+  .delete i{
+    background-position: -140px 0;
+    width: 15px;
+    height: 18px;
+    margin: 1px 0 0 3px;
   }
 
 }
 
+.item-area{
+  height: ~'calc(100% - 44px)';
+  box-sizing: border-box;
+  /*padding: 0 9px;*/
+  width: 100%;
+}
+/*
 .item-area{
   display: flex;
   flex-wrap: wrap;
@@ -188,3 +286,4 @@
   }
 
 }
+*/
