@@ -92,7 +92,7 @@ var appendVisualSidebarItem = function( item ){
   // To Do -> Check if exists
   var visualItem = visualSidebarItemPrototype.clone();
 
-  visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) );
+  visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) ).attr( 'data-id', item.id );
   visualItem.find('.ui-navgroup-element-txt').text( item.name );
 
   visualSidebarItemArea.append( visualItem );
@@ -568,6 +568,19 @@ $(this)
 
 });
 
+visualSidebarItemArea
+.on( 'click', '.ui-navgroup-element', function(){
+  openFolder( $(this).attr('data-id') );
+});
+
+visualHistoryBack.on( 'click', function(){
+  historyGoBack();
+});
+
+visualHistoryForward.on( 'click', function(){
+  historyGoForward();
+});
+
 visualItemArea
 .on( 'mousewheel', function( e, delta, x, y ){
 
@@ -655,6 +668,17 @@ visualItemArea
   clearCanvas();
   drawIcons();
 
+  if( e.button !== 2 ){
+    return;
+  }
+
+  // Context menu
+  var menu = api.menu();
+
+  menu.addOption( lang.acceptFile, function(){});
+
+  menu.render();
+
 })
 
 .on( 'dblclick', function( e ){
@@ -675,14 +699,6 @@ visualItemArea
     openFile( itemClicked.fsnode );
   }
 
-});
-
-visualHistoryBack.on( 'click', function(){
-  historyGoBack();
-});
-
-visualHistoryForward.on( 'click', function(){
-  historyGoForward();
 });
 
 getSidebarItems().then( function( list ){
