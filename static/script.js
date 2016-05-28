@@ -520,7 +520,39 @@ var getSidebarItems = function(){
 };
 
 var hideRenameTextarea = function(){
+
   visualRenameTextarea.removeClass('active');
+
+  var name = visualRenameTextarea.val()
+  var icon = visualRenameTextarea.data('icon');
+
+  visualRenameTextarea.removeData('icon').val('');
+
+  if( !icon || !name.trim() || icon.fsnode.name === name ){
+    return;
+  }
+
+  var oldName = icon.fsnode.name;
+  icon.fsnode.name = name;
+  icon.lines = getIconLines( name );
+
+  clearCanvas();
+  drawIcons();
+
+  icon.fsnode.rename( name, function( error ){
+
+    if( error ){
+
+      icon.fsnode.name = oldName;
+      icon.lines = getIconLines( oldName );
+
+      clearCanvas();
+      drawIcons();
+
+    }
+
+  });
+
 };
 
 var historyGoBack = function(){
@@ -595,12 +627,12 @@ var showRenameTextarea = function( icon ){
   var areaPosition = visualItemArea.position();
   var iconPosition = getIconPosition( icon );
 
-  visualRenameTextarea.css({
+  visualRenameTextarea.val( icon.fsnode.name ).css({
 
     top : areaPosition.top + iconPosition.y + ICON_IMAGE_HEIGHT_AREA,
-    left : areaPosition.left + iconPosition.x
+    left : areaPosition.left + iconPosition.x,
 
-  });
+  }).data( 'icon', icon ).addClass('active').focus().select();
 
 };
 
@@ -982,6 +1014,16 @@ visualItemArea
   }else if( itemClicked.fsnode.type === 2 ){
     openFile( itemClicked.fsnode );
   }
+
+});
+
+visualRenameTextarea.on( 'blur', function(){
+
+  if( !visualRenameTextarea.hasClass('active') ){
+    return;
+  }
+
+  hideRenameTextarea();
 
 });
 
