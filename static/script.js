@@ -3,9 +3,13 @@
 var ICON_WIDTH = 106;
 var ICON_TEXT_WIDTH = 106 - 6;
 var ICON_IMAGE_HEIGHT_AREA = 80;
-var ICON_RADIUS = 3;
+var ICON_RADIUS = 6;
 var ICON_GAP_MIN = 10;
 var ROWS_GAP = 20;
+var TYPE_ROOT = 0;
+var TYPE_FOLDER_SPECIAL = 1;
+var TYPE_FOLDER = 2;
+var TYPE_FILE = 3;
 
 var currentOpened    = null;
 var currentList      = [];
@@ -23,6 +27,7 @@ var visualHistoryForward       = $('.folder-controls .forward');
 var visualSidebarItemArea      = $('.ui-navgroup');
 var visualSidebarItemPrototype = $('.ui-navgroup-element.wz-prototype');
 var visualItemArea             = $('.item-area');
+var visualRenameTextarea       = $('.rename');
 var ctx                        = visualItemArea[ 0 ].getContext('2d');
 
 var Icon = function( fsnode ){
@@ -53,16 +58,12 @@ var addToHistoryBackward = function( item ){
   historyBackward.push( item );
   visualHistoryBack.addClass('enabled');
 
-  console.log(historyBackward,historyForward);
-
 };
 
 var addToHistoryForward = function( item ){
 
   historyForward.unshift( item );
   visualHistoryForward.addClass('enabled');
-
-  console.log(historyBackward,historyForward);
 
 };
 
@@ -142,6 +143,31 @@ var clearList = function(){
 
 };
 
+var contextmenuAcceptFile = function( fsnode ){
+
+  fsnode.accept( function( error ){
+
+    if( error ){
+      return alert( error );
+    }
+
+    var banner = api.banner();
+
+    if( fsnode.pointerType === 0 ){
+      banner.setTitle( lang.folderShareAccepted );
+    }else{
+      banner.setTitle( lang.fileShareAccepted );
+    }
+
+    banner
+    .setText( fsnode.name + ' ' + lang.beenAccepted )
+    .setIcon( 'https://static.inevio.com/app/1/file_accepted.png' )
+    .render();
+
+  });
+
+};
+
 var drawIcons = function(){
 
   if( !currentList ){
@@ -170,7 +196,7 @@ var drawIcons = function(){
     if( icon.hover || icon.active ){
 
       ctx.strokeStyle = '#ccd3d5';
-      ctx.fillStyle = '#f3f4f5';
+      ctx.fillStyle = '#f7f8fa';
       drawRoundRect( ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true );
 
     }
@@ -217,6 +243,19 @@ var drawIcons = function(){
 
   });
 
+  /*
+  ctx.beginPath();
+  ctx.strokeStyle = '#60b25e';
+  ctx.lineWidth = 4;
+  ctx.moveTo( 2, 2 );
+  ctx.lineTo( ctx.width - 2, 2 );
+  ctx.lineTo( ctx.width - 2, ctx.height - 2 );
+  ctx.lineTo( 2, ctx.height - 2 );
+  ctx.lineTo( 2, 2 );
+  ctx.stroke();
+  ctx.closePath();
+  */
+
 };
 
 var drawRoundRect = function( ctx, x, y, width, height, radius, fill, stroke ){
@@ -237,16 +276,17 @@ var drawRoundRect = function( ctx, x, y, width, height, radius, fill, stroke ){
   }
 
   ctx.beginPath();
-  ctx.moveTo(x + radius.tl, y);
-  ctx.lineTo(x + width - radius.tr, y);
-  ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
-  ctx.lineTo(x + width, y + height - radius.br);
-  ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
-  ctx.lineTo(x + radius.bl, y + height);
-  ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
-  ctx.lineTo(x, y + radius.tl);
-  ctx.quadraticCurveTo(x, y, x + radius.tl, y);
+  ctx.moveTo(x + radius.tl, y + 0.5);
+  ctx.lineTo( x + width - radius.tr, y + 0.5 ); // Top
+  ctx.quadraticCurveTo(x + width, y + 0.5, x + width + 0.5, y + radius.tr);
+  ctx.lineTo(x + width + 0.5, y + height - radius.br); // Left
+  ctx.quadraticCurveTo(x + width + 0.5, y + height, x + width - radius.br, y + height + 0.5);
+  ctx.lineTo(x + radius.bl, y + height + 0.5 ); // Bottom
+  ctx.quadraticCurveTo(x, y + height + 0.5, x + 0.5, y + height - radius.bl);
+  ctx.lineTo(x + 0.5, y + radius.tl);
+  ctx.quadraticCurveTo( x + 0.5 , y, x + radius.tl, y + 0.5);
   ctx.closePath();
+
   if (fill) {
     ctx.fill();
   }
@@ -263,6 +303,7 @@ var getFolderItems = function( id ){
   api.fs( id, function( error, fsnode ){
 
     fsnode.list( function( error, list ){
+      list.forEach( item => console.log( 'getFolderItems', item.name, item.type ) );
       // To Do -> Error
       end.resolve( fsnode, list );
     });
@@ -316,6 +357,36 @@ var getIconLines = function( text ){
 
 };
 
+var getIconPosition = function( icon ){
+
+  for( var i = 0; i < currentList.length; i++ ){
+
+    if( icon === currentList[ i ] ){
+      break;
+    }
+
+  }
+
+  var index = i;
+  var grid  = calculateGrid();
+  var row   = parseInt( i / grid.iconsInRow );
+  var col   = parseInt( i % grid.iconsInRow );
+  var posX  = col * ( grid.gap + ICON_WIDTH ) + grid.gap;
+  var posY  = 10;
+
+  for( var i = 0; i < row; i++ ){
+    posY += currentRows[ i ] + ROWS_GAP;
+  }
+
+  return {
+
+    x : posX,
+    y : posY
+
+  };
+
+};
+
 var getIconWithMouserOver = function( event ){
 
   var offset = visualItemArea.offset();
@@ -326,7 +397,7 @@ var getIconWithMouserOver = function( event ){
   var row     = null;
   var rowsPos = 10 + currentScroll;
 
-  for( var i = 0; i < currentRows.length; i++ ){
+  for( var i = 0; i <= currentRows.length; i++ ){
 
     if( rowsPos > posY ){
       row = i - 1;
@@ -342,7 +413,7 @@ var getIconWithMouserOver = function( event ){
 
   }
 
-  if( row === -1 ){
+  if( row === -1 || isNaN( rowsPos ) ){
     return;
   }
 
@@ -408,7 +479,7 @@ var getSidebarItems = function(){
   api.fs( 'root', function( error, fsnode ){
 
     fsnode.list( true, function( error, list ){
-
+      list.forEach( item => console.log( 'getSidebarItems', item.name, item.type ) );
       list = list.filter( function( item ){
           return item.type === 1;
       });
@@ -464,6 +535,42 @@ var getSidebarItems = function(){
   });
 
   return end;
+
+};
+
+var hideRenameTextarea = function(){
+
+  visualRenameTextarea.removeClass('active');
+
+  var name = visualRenameTextarea.val()
+  var icon = visualRenameTextarea.data('icon');
+
+  visualRenameTextarea.removeData('icon').val('');
+
+  if( !icon || !name.trim() || icon.fsnode.name === name ){
+    return;
+  }
+
+  var oldName = icon.fsnode.name;
+  icon.fsnode.name = name;
+  icon.lines = getIconLines( name );
+
+  clearCanvas();
+  drawIcons();
+
+  icon.fsnode.rename( name, function( error ){
+
+    if( error ){
+
+      icon.fsnode.name = oldName;
+      icon.lines = getIconLines( oldName );
+
+      clearCanvas();
+      drawIcons();
+
+    }
+
+  });
 
 };
 
@@ -534,6 +641,20 @@ var openFolder = function( id, isBack, isForward ){
 
 };
 
+var showRenameTextarea = function( icon ){
+
+  var areaPosition = visualItemArea.position();
+  var iconPosition = getIconPosition( icon );
+
+  visualRenameTextarea.val( icon.fsnode.name ).css({
+
+    top : areaPosition.top + iconPosition.y + ICON_IMAGE_HEIGHT_AREA,
+    left : areaPosition.left + iconPosition.x,
+
+  }).data( 'icon', icon ).addClass('active').focus().select();
+
+};
+
 var updateRows = function(){
 
   var grid         = calculateGrid();
@@ -563,6 +684,16 @@ var updateCanvasSize = function(){
 
 };
 
+// API Events
+api.fs.on( 'new', function( fsnode ){
+
+  if( fsnode.parent === currentOpened ){
+    appendItemToList( fsnode );
+  }
+
+});
+
+// DOM Events
 $(this)
 .on( 'ui-view-resize ui-view-maximize ui-view-unmaximize', function(){
 
@@ -570,6 +701,14 @@ $(this)
   clearCanvas();
   updateRows();
   drawIcons();
+
+})
+
+.key( 'esc', function(e){
+
+  if( $(e.target).is('textarea') ){
+    hideRenameTextarea();
+  }
 
 });
 
@@ -673,14 +812,226 @@ visualItemArea
   clearCanvas();
   drawIcons();
 
-  if( e.button !== 2 ){
-    return;
-  }
+})
+
+.on( 'contextmenu', function( e ){
+
+  var itemClicked = getIconWithMouserOver( e );
 
   // Context menu
   var menu = api.menu();
 
-  menu.addOption( lang.acceptFile, function(){});
+  if( !itemClicked ){
+
+    api.menu()
+    .addOption( lang.upload, function(){
+        uploadButton.click();
+    })
+    .addOption( lang.newDirectory, function(){
+        createDirectory();
+    })
+    .render();
+
+  /*}else if( icon.hasClass( 'shared-pending' ) ){
+
+    menu.addOption( lang.acceptFile, contextmenuAcceptFile.bind( null, itemClicked.fsnode ) )
+
+    .addOption( lang.properties, function(){
+      api.app.createView( icon.data( 'file-id' ), 'properties' );
+    })
+
+    .addOption( lang.refuseFile, function(){
+
+      api.fs( icon.data( 'file-id' ), function( error, structure ){
+
+        structure.refuse( function( error ){
+
+          if( error ){
+            alert( error );
+            return;
+          }
+
+          var banner = api.banner();
+
+          if( structure.pointerType === 0 ){
+            banner.setTitle( lang.folderShareRefused );
+          }else{
+            banner.setTitle( lang.fileShareRefused );
+          }
+
+          banner
+          .setText( structure.name + ' ' + lang.beenRefused )
+          .setIcon( 'https://static.inevio.com/app/1/file_denied.png' )
+          .render();
+
+        });
+
+      });
+
+    }, 'warning');
+
+  }else if( icon.hasClass('received') ){
+
+    menu
+    .addOption( lang.acceptFile, function(){
+
+      api.fs( icon.data( 'file-id' ), function( error, structure ){
+
+        structure.accept( function( error ){
+
+          if( error ){
+            alert( error );
+          }else{
+
+            api.banner()
+            .setTitle( lang.fileShareAccepted )
+            .setText( structure.name + ' ' + lang.beenAccepted )
+            .setIcon( 'https://static.inevio.com/app/1/file_accepted.png' )
+            .render();
+
+          }
+
+        });
+
+      });
+
+    })
+
+    .addOption( lang.properties, function(){
+      api.app.createView( icon.data( 'file-id' ), 'properties' );
+    })
+
+    .addOption( lang.refuseFile, function(){
+
+      api.fs( icon.data( 'file-id' ), function( error, structure ){
+
+        structure.refuse( function( error ){
+
+          if( error ){
+            alert( error );
+          }else{
+
+            api.banner()
+            .setTitle( lang.fileShareRefused )
+            .setText( structure.name + ' ' + lang.beenRefused )
+            .setIcon( 'https://static.inevio.com/app/1/file_denied.png' )
+            .render();
+
+          }
+
+        });
+
+      });
+
+    }, 'warning');
+
+  // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
+  */
+  }else if( itemClicked.fsnode.type === TYPE_FILE ){
+
+    menu.addOption( lang.openFile, openFile.bind( null, itemClicked.fsnode.id ) )
+    menu.addOption( lang.openFileLocal, itemClicked.fsnode.openLocal );
+
+    if( itemClicked.fsnode.permissions.modify ){
+      menu.addOption( lang.rename, showRenameTextarea.bind( null, itemClicked ) );
+    }
+
+    if( itemClicked.fsnode.permissions.link ){
+      menu.addOption( lang.createLink, api.app.createView.bind( null, itemClicked.fsnode.id, 'link') );
+    }
+
+    if( itemClicked.fsnode.permissions.send ){
+      menu.addOption( lang.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
+    }
+
+    if( itemClicked.fsnode.permissions.share ){
+      menu.addOption( lang.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share'));
+    }
+
+    /*
+    if( itemClicked.fsnode.permissions.download ){
+
+      menu.addOption( lang.download, function(){
+        downloadFiles.mousedown();
+      });
+
+    }
+    */
+
+    if( [ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ].indexOf( itemClicked.fsnode.mime ) !== -1 ){
+
+      menu.addOption( 'Establecer como fondo', function(){
+        api.config.setFSNodeAsWallpaper( icon.data( 'file-id' ) );
+      });
+
+    }
+
+    menu.addOption( lang.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') );
+
+    /*
+    menu.addOption( lang.remove, function(){
+      deleteAllActive();
+    }, 'warning');
+    */
+
+  // To Do -> Check all the rules -> else if( icon.hasClass('directory') || ( icon.data( 'filePointerType' ) === 0 && !icon.hasClass('pointer-pending') ) ){
+  }else if( itemClicked.fsnode.type === TYPE_FOLDER ){
+
+    menu
+    .addOption( lang.openFolder, openFolder.bind( null, itemClicked.fsnode.id ) )
+    .addOption( lang.openInNewWindow, api.app.createView.bind( null, itemClicked.fsnode.id, 'main') );
+
+    if( itemClicked.fsnode.permissions.send ){
+      menu.addOption( lang.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
+    }
+
+    if( itemClicked.fsnode.permissions.share ){
+      menu.addOption( lang.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share'));
+    }
+
+    if( itemClicked.fsnode.permissions.modify ){
+      menu.addOption( lang.rename, showRenameTextarea.bind( null, itemClicked ) );
+    }
+
+    /*if( itemClicked.fsnode.permissions.download ){
+
+      menu.addOption( lang.download, function(){
+        downloadFiles.mousedown();
+      });
+
+    }
+
+    if( isInSidebar( icon.data('file-id') ) ){
+
+      menu.addOption( lang.removeFromSidebar, function(){
+        removeFromSidebar( icon.data( 'file-id' ) );
+      });
+
+    }else{
+
+      menu.addOption( lang.addToSidebar, function(){
+
+        if( icon.data('filePointer') ){
+          addToSidebar( icon.data( 'filePointer' ), icon.find('textarea').val() );
+        }else{
+          addToSidebar( icon.data( 'file-id' ), icon.find('textarea').val() );
+        }
+
+      });
+
+    }*/
+
+    menu.addOption( lang.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') );
+
+    /*
+    menu.addOption( lang.remove, function(){
+      deleteAllActive();
+    }, 'warning');
+    */
+
+  }/*else if( icon.hasClass( 'pointer-pending' ) ){
+    // To Do
+  }*/
 
   menu.render();
 
@@ -704,12 +1055,43 @@ visualItemArea
     openFile( itemClicked.fsnode );
   }
 
+})
+
+.on( 'wz-dropenter', function( e, item ){
+  //console.log( e, item );
+})
+
+.on( 'wz-dropover', function( e, item ){
+  //console.log( e, item );
+})
+
+.on( 'wz-dropleave', function( e, item ){
+  //console.log( e, item );
+})
+
+.on( 'wz-drop', function( e, item ){
+  $(this).data( 'wz-uploader-destiny', currentOpened );
+});
+
+visualRenameTextarea.on( 'blur', function(){
+
+  if( !visualRenameTextarea.hasClass('active') ){
+    return;
+  }
+
+  hideRenameTextarea();
+
 });
 
 getSidebarItems().then( function( list ){
   list.forEach( appendVisualSidebarItem );
 });
 
-openFolder('root');
 updateCanvasSize();
 clearCanvas();
+
+if( params ){
+  openFolder( typeof params === 'object' ? parseInt( params.data ) || 0 : params );
+}else{
+  openFolder('root');
+}
