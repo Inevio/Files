@@ -821,7 +821,6 @@ visualItemArea
   // Context menu
   var menu = api.menu();
 
-<<<<<<< HEAD
   if( !itemClicked ){
 
     api.menu()
@@ -834,9 +833,6 @@ visualItemArea
     .render();
 
   /*}else if( icon.hasClass( 'shared-pending' ) ){
-=======
-  /*if( icon.hasClass( 'shared-pending' ) ){
->>>>>>> origin/new-ui
 
     menu.addOption( lang.acceptFile, contextmenuAcceptFile.bind( null, itemClicked.fsnode ) )
 
@@ -931,11 +927,7 @@ visualItemArea
 
   // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
   */
-<<<<<<< HEAD
   }else if( itemClicked.fsnode.type === TYPE_FILE ){
-=======
-  if( itemClicked.fsnode.type === 2 ){
->>>>>>> origin/new-ui
 
     menu.addOption( lang.openFile, openFile.bind( null, itemClicked.fsnode.id ) )
     menu.addOption( lang.openFileLocal, itemClicked.fsnode.openLocal );
@@ -983,12 +975,8 @@ visualItemArea
     */
 
   // To Do -> Check all the rules -> else if( icon.hasClass('directory') || ( icon.data( 'filePointerType' ) === 0 && !icon.hasClass('pointer-pending') ) ){
-<<<<<<< HEAD
   }else if( itemClicked.fsnode.type === TYPE_FOLDER ){
-=======
-  }else if( itemClicked.fsnode.type === 0 ){
->>>>>>> origin/new-ui
-
+    
     menu
     .addOption( lang.openFolder, openFolder.bind( null, itemClicked.fsnode.id ) )
     .addOption( lang.openInNewWindow, api.app.createView.bind( null, itemClicked.fsnode.id, 'main') );
