@@ -265,7 +265,7 @@
   width: 100%;
   background-color: #f7f8fa;
   border-top: 1px solid #ccd3d5;
-  bottom: 60px;
+  /*bottom: 60px;*/
   position: relative;
   padding: 12px 21px;
   box-sizing: border-box;

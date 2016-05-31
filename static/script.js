@@ -11,6 +11,7 @@ var TYPE_FOLDER_SPECIAL = 1;
 var TYPE_FOLDER = 2;
 var TYPE_FILE = 3;
 
+var requestedFrame   = false;
 var currentOpened    = null;
 var currentList      = [];
 var currentRows      = [];
@@ -18,6 +19,7 @@ var currentHover     = null;
 var currentActive    = [];
 var currentScroll    = 0;
 var currentMaxScroll = 0;
+var currentSort      = null;
 var historyBackward  = [];
 var historyForward   = [];
 var pixelRatio       = 1;
@@ -28,6 +30,7 @@ var visualSidebarItemArea      = $('.ui-navgroup');
 var visualSidebarItemPrototype = $('.ui-navgroup-element.wz-prototype');
 var visualItemArea             = $('.item-area');
 var visualRenameTextarea       = $('.rename');
+var visualProgressBar          = $('.uploading-area .progress .current');
 var ctx                        = visualItemArea[ 0 ].getContext('2d');
 
 var Icon = function( fsnode ){
@@ -80,11 +83,10 @@ var appendItemToList = function( items ){
   }
 
   currentList = currentList.concat( items );
-  currentList = currentList.sort( function( a, b ){
-    return a.fsnode.type > b.fsnode.type ? 1 : -1;
-  });
+  currentList = currentList.sort( currentSort );
 
   updateRows();
+  requestDraw();
 
 };
 
@@ -170,10 +172,18 @@ var contextmenuAcceptFile = function( fsnode ){
 
 var deleteAllActive = function(){
 
-  currentActive.forEach( function( item ){
+  confirm( 'Title', function( doIt ){
 
-    item.fsnode.remove( function( error ){
-      console.log( error );
+    if( !doIt ){
+      return;
+    }
+
+    currentActive.forEach( function( item ){
+
+      item.fsnode.remove( function( error ){
+        console.log( error );
+      });
+
     });
 
   });
@@ -244,11 +254,7 @@ var drawIcons = function(){
     if( icon.bigIcon.naturalWidth ){
       ctx.drawImage( icon.bigIcon, imgX + ( ICON_WIDTH - icon.bigIcon.width ) / 2, imgY + ( ICON_IMAGE_HEIGHT_AREA - icon.bigIcon.height ) / 2 );
     }else{
-
-      $( icon.bigIcon ).on( 'load', function(){
-        ctx.drawImage( icon.bigIcon, imgX + ( ICON_WIDTH - icon.bigIcon.width ) / 2, imgY + ( ICON_IMAGE_HEIGHT_AREA - icon.bigIcon.height ) / 2 );
-      });
-
+      $( icon.bigIcon ).on( 'load', requestDraw );
     }
 
     x += ICON_WIDTH + grid.gap;
@@ -315,7 +321,6 @@ var getFolderItems = function( id ){
   api.fs( id, function( error, fsnode ){
 
     fsnode.list( function( error, list ){
-      list.forEach( item => console.log( 'getFolderItems', item.name, item.type ) );
       // To Do -> Error
       end.resolve( fsnode, list );
     });
@@ -492,10 +497,8 @@ var getSidebarItems = function(){
 
     fsnode.list( true, function( error, list ){
 
-      list.forEach( item => console.log( 'getSidebarItems', item.name, item.type ) );
-
       list = list.filter( function( item ){
-          return item.type === 1;
+        return item.type === 1;
       });
 
       list.unshift( fsnode );
@@ -569,8 +572,7 @@ var hideRenameTextarea = function(){
   icon.fsnode.name = name;
   icon.lines = getIconLines( name );
 
-  clearCanvas();
-  drawIcons();
+  requestDraw();
 
   icon.fsnode.rename( name, function( error ){
 
@@ -579,8 +581,7 @@ var hideRenameTextarea = function(){
       icon.fsnode.name = oldName;
       icon.lines = getIconLines( oldName );
 
-      clearCanvas();
-      drawIcons();
+      requestDraw();
 
     }
 
@@ -648,12 +649,49 @@ var openFolder = function( id, isBack, isForward ){
 
     clearList();
     appendItemToList( list );
-    clearCanvas();
-    drawIcons();
+    requestDraw();
 
   });
 
 };
+
+var removeItemFromList = function( fsnodeId ){
+
+  currentList = currentList.filter( function( icon ){
+    return icon.fsnode.id !== fsnodeId;
+  });
+
+  currentActive = currentActive.filter( function( icon ){
+    return icon.fsnode.id !== fsnodeId;
+  });
+
+  if( currentHover && currentHover.fsnode.id === fsnodeId ){
+    currentHover = null;
+  }
+
+  updateRows();
+  requestDraw();
+
+};
+
+var requestDraw = function(){
+
+  if( requestedFrame ){
+    return;
+  }
+
+  requestedFrame = true;
+
+  requestAnimationFrame( function(){
+
+    clearCanvas();
+    drawIcons();
+
+    requestedFrame = false;
+
+  });
+
+}
 
 var showRenameTextarea = function( icon ){
 
@@ -666,6 +704,58 @@ var showRenameTextarea = function( icon ){
     left : areaPosition.left + iconPosition.x,
 
   }).data( 'icon', icon ).addClass('active').focus().select();
+
+};
+
+var sortByName = function( a, b ){
+
+  if( a.fsnode.type === b.fsnode.type ){
+
+    a = a.fsnode.name.toLowerCase();
+    b = b.fsnode.name.toLowerCase();
+
+    var re = /(^([+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?)?$|^0x[0-9a-f]+$|\d+)/gi,
+      sre = /(^[ ]*|[ ]*$)/g,
+      dre = /(^([\w ]+,?[\w ]+)?[\w ]+,?[\w ]+\d+:\d+(:\d+)?[\w ]?|^\d{1,4}[\/\-]\d{1,4}[\/\-]\d{1,4}|^\w+, \w+ \d+, \d{4})/,
+      hre = /^0x[0-9a-f]+$/i,
+      ore = /^0/,
+      i = function(s) { return sortByName.insensitive && ('' + s).toLowerCase() || '' + s; },
+      // convert all to strings strip whitespace
+      x = i(a).replace(sre, '') || '',
+      y = i(b).replace(sre, '') || '',
+      // chunk/tokenize
+      xN = x.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
+      yN = y.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
+      // numeric, hex or date detection
+      xD = parseInt(x.match(hre), 16) || (xN.length !== 1 && x.match(dre) && Date.parse(x)),
+      yD = parseInt(y.match(hre), 16) || xD && y.match(dre) && Date.parse(y) || null,
+      oFxNcL, oFyNcL;
+    // first try and sort Hex codes or Dates
+    if (yD) {
+      if ( xD < yD ) { return -1; }
+      else if ( xD > yD ) { return 1; }
+    }
+    // natural sorting through split numeric strings and default strings
+    for(var cLoc=0, numS=Math.max(xN.length, yN.length); cLoc < numS; cLoc++) {
+      // find floats not starting with '0', string or 0 if not defined (Clint Priest)
+      oFxNcL = !(xN[cLoc] || '').match(ore) && parseFloat(xN[cLoc]) || xN[cLoc] || 0;
+      oFyNcL = !(yN[cLoc] || '').match(ore) && parseFloat(yN[cLoc]) || yN[cLoc] || 0;
+      // handle numeric vs string comparison - number < string - (Kyle Adams)
+      if (isNaN(oFxNcL) !== isNaN(oFyNcL)) { return (isNaN(oFxNcL)) ? 1 : -1; }
+      // rely on string comparison if different types - i.e. '02' < 2 != '02' < '2'
+      else if (typeof oFxNcL !== typeof oFyNcL) {
+        oFxNcL += '';
+        oFyNcL += '';
+      }
+      if (oFxNcL < oFyNcL) { return -1; }
+      if (oFxNcL > oFyNcL) { return 1; }
+    }
+
+    return 0;
+
+  }
+
+  return a.fsnode.type > b.fsnode.type ? 1 : -1;
 
 };
 
@@ -699,12 +789,27 @@ var updateCanvasSize = function(){
 };
 
 // API Events
-api.fs.on( 'new', function( fsnode ){
+api.fs
+.on( 'new', function( fsnode ){
 
   if( fsnode.parent === currentOpened ){
     appendItemToList( fsnode );
   }
 
+})
+
+.on( 'remove', function( fsnodeId, quota, parent ){
+
+  if( parent !== currentOpened ){
+    return;
+  }
+
+  removeItemFromList( fsnodeId );
+
+});
+
+api.upload.on( 'fsnodeProgress', function( fsnodeId, progress, queueProgress, time ){
+  visualProgressBar.width( parseInt( queueProgress * 100 ) + '%' );
 });
 
 // DOM Events
@@ -712,9 +817,8 @@ $(this)
 .on( 'ui-view-resize ui-view-maximize ui-view-unmaximize', function(){
 
   updateCanvasSize();
-  clearCanvas();
   updateRows();
-  drawIcons();
+  requestDraw();
 
 })
 
@@ -762,8 +866,7 @@ visualItemArea
     currentScroll = -1 * currentMaxScroll + ctx.height;
   }
 
-  clearCanvas();
-  drawIcons();
+  requestDraw();
 
 })
 
@@ -776,8 +879,7 @@ visualItemArea
   currentHover.hover = false;
   currentHover       = null;
 
-  clearCanvas();
-  drawIcons();
+  requestDraw();
 
 })
 
@@ -795,24 +897,21 @@ visualItemArea
     currentHover       = itemOver;
     currentHover.hover = true;
 
-    clearCanvas();
-    drawIcons();
+    requestDraw();
 
   }else if( itemOver && !currentHover ){
 
     currentHover       = itemOver;
     currentHover.hover = true;
 
-    clearCanvas();
-    drawIcons();
+    requestDraw();
 
   }else if( !itemOver && currentHover ){
 
     currentHover.hover = false;
     currentHover       = null;
 
-    clearCanvas();
-    drawIcons();
+    requestDraw();
 
   }
 
@@ -835,8 +934,7 @@ visualItemArea
 
   }
 
-  clearCanvas();
-  drawIcons();
+  requestDraw();
 
 })
 
@@ -992,13 +1090,9 @@ visualItemArea
 
     }
 
-    menu.addOption( lang.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') );
-
-    /*
-    menu.addOption( lang.remove, function(){
-      deleteAllActive();
-    }, 'warning');
-    */
+    menu
+    .addOption( lang.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') )
+    .addOption( lang.remove, deleteAllActive, 'warning' );
 
   // To Do -> Check all the rules -> else if( icon.hasClass('directory') || ( icon.data( 'filePointerType' ) === 0 && !icon.hasClass('pointer-pending') ) ){
   }else if( itemClicked.fsnode.type === TYPE_FOLDER ){
@@ -1047,13 +1141,9 @@ visualItemArea
 
     }*/
 
-    menu.addOption( lang.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') );
-
-    /*
-    menu.addOption( lang.remove, function(){
-      deleteAllActive();
-    }, 'warning');
-    */
+    menu
+    .addOption( lang.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') )
+    .addOption( lang.remove, deleteAllActive, 'warning' );
 
   }/*else if( icon.hasClass( 'pointer-pending' ) ){
     // To Do
@@ -1122,6 +1212,9 @@ visualRenameTextarea.on( 'blur', function(){
 getSidebarItems().then( function( list ){
   list.forEach( appendVisualSidebarItem );
 });
+
+// Start the app
+currentSort = sortByName;
 
 updateCanvasSize();
 clearCanvas();
