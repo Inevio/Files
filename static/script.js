@@ -168,6 +168,18 @@ var contextmenuAcceptFile = function( fsnode ){
 
 };
 
+var deleteAllActive = function(){
+
+  currentActive.forEach( function( item ){
+
+    item.fsnode.remove( function( error ){
+      console.log( error );
+    });
+
+  });
+
+};
+
 var drawIcons = function(){
 
   if( !currentList ){
@@ -479,7 +491,9 @@ var getSidebarItems = function(){
   api.fs( 'root', function( error, fsnode ){
 
     fsnode.list( true, function( error, list ){
+
       list.forEach( item => console.log( 'getSidebarItems', item.name, item.type ) );
+
       list = list.filter( function( item ){
           return item.type === 1;
       });
@@ -708,6 +722,18 @@ $(this)
 
   if( $(e.target).is('textarea') ){
     hideRenameTextarea();
+  }else{
+    console.log('TO DO');
+  }
+
+})
+
+.key( 'delete', function(e){
+
+  if( $(e.target).is('textarea') ){
+    e.stopPropagation();
+  }else{
+    deleteAllActive();
   }
 
 });
@@ -730,7 +756,7 @@ visualItemArea
 
   currentScroll += y;
 
-  if( currentScroll > 0 ){
+  if( currentScroll > 0 || currentMaxScroll < ctx.height ){
     currentScroll = 0;
   }else if( -1 * currentMaxScroll + ctx.height > currentScroll ){
     currentScroll = -1 * currentMaxScroll + ctx.height;
@@ -976,7 +1002,7 @@ visualItemArea
 
   // To Do -> Check all the rules -> else if( icon.hasClass('directory') || ( icon.data( 'filePointerType' ) === 0 && !icon.hasClass('pointer-pending') ) ){
   }else if( itemClicked.fsnode.type === TYPE_FOLDER ){
-    
+
     menu
     .addOption( lang.openFolder, openFolder.bind( null, itemClicked.fsnode.id ) )
     .addOption( lang.openInNewWindow, api.app.createView.bind( null, itemClicked.fsnode.id, 'main') );
@@ -1049,9 +1075,9 @@ visualItemArea
     return;
   }
 
-  if( itemClicked.fsnode.type <= 1 ){
+  if( itemClicked.fsnode.type === TYPE_ROOT || itemClicked.fsnode.type === TYPE_FOLDER_SPECIAL || itemClicked.fsnode.type === TYPE_FOLDER ){
     openFolder( itemClicked.fsnode.id );
-  }else if( itemClicked.fsnode.type === 2 ){
+  }else if( itemClicked.fsnode.type === TYPE_FILE ){
     openFile( itemClicked.fsnode );
   }
 
