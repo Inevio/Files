@@ -32,6 +32,7 @@ var visualItemArea             = $('.item-area');
 var visualRenameTextarea       = $('.rename');
 var visualProgressBar          = $('.uploading-area .progress .current');
 var visualCreateFolderButton   = $('.folder-utils .create-folder');
+var visualDeleteButton         = $('.folder-utils .delete');
 var visualDownloadButton       = $('.folder-utils .download');
 var visualUploadButton         = $('.folder-utils .upload');
 var ctx                        = visualItemArea[ 0 ].getContext('2d');
@@ -920,6 +921,7 @@ visualSidebarItemArea
 visualHistoryBack.on( 'click', historyGoBack );
 visualHistoryForward.on( 'click', historyGoForward );
 visualCreateFolderButton.on( 'click', createFolder );
+visualDeleteButton.on( 'click', deleteAllActive );
 visualDownloadButton.on( 'click', downloadAllActive );
 
 visualUploadButton.on( 'click', function(){
