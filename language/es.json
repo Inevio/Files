@@ -31,7 +31,7 @@
     "acceptFile" : "Aceptar",
     "refuseFile" : "Rechazar",
     "upload" : "Subir archivo",
-    "newDirectory" : "Nuevo directorio",
+    "newFolder" : "Nueva carpeta",
     "modified" : "Modif. ",
     "nameExists" : "Ya existe un archivo llamado así. Por favor elige otro nombre.",
     "directoryLoading" : "Cargando...",

@@ -31,7 +31,7 @@
     "acceptFile" : "Accept",
     "refuseFile" : "Refuse",
     "upload" : "Upload file",
-    "newDirectory" : "New directory",
+    "newFolder" : "New folder",
     "modified" : "Modified ",
     "nameExists" : "There is already a file with the selected name. Please choose another one.",
     "directoryLoading" : "Loading...",
