@@ -31,6 +31,7 @@ var visualSidebarItemPrototype = $('.ui-navgroup-element.wz-prototype');
 var visualItemArea             = $('.item-area');
 var visualRenameTextarea       = $('.rename');
 var visualProgressBar          = $('.uploading-area .progress .current');
+var visualDownloadButton       = $('.folder-utils .download');
 var ctx                        = visualItemArea[ 0 ].getContext('2d');
 
 var Icon = function( fsnode ){
@@ -196,6 +197,14 @@ var deleteAllActive = function(){
 
     });
 
+  });
+
+};
+
+var downloadAllActive = function(){
+
+  currentActive.forEach( function( item ){
+    item.fsnode.download();
   });
 
 };
@@ -866,6 +875,10 @@ visualHistoryForward.on( 'click', function(){
   historyGoForward();
 });
 
+visualDownloadButton.on( 'click', function(){
+  downloadAllActive();
+});
+
 visualItemArea
 .on( 'mousewheel', function( e, delta, x, y ){
 
@@ -1078,15 +1091,9 @@ visualItemArea
       menu.addOption( lang.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share'));
     }
 
-    /*
     if( itemClicked.fsnode.permissions.download ){
-
-      menu.addOption( lang.download, function(){
-        downloadFiles.mousedown();
-      });
-
+      menu.addOption( lang.download, downloadAllActive );
     }
-    */
 
     if( [ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ].indexOf( itemClicked.fsnode.mime ) !== -1 ){
 
@@ -1117,6 +1124,10 @@ visualItemArea
 
     if( itemClicked.fsnode.permissions.modify ){
       menu.addOption( lang.rename, showRenameTextarea.bind( null, itemClicked ) );
+    }
+
+    if( itemClicked.fsnode.permissions.download ){
+      menu.addOption( lang.download, downloadAllActive );
     }
 
     /*if( itemClicked.fsnode.permissions.download ){
