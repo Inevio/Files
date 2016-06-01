@@ -917,17 +917,10 @@ visualSidebarItemArea
   openFolder( $(this).attr('data-id') );
 });
 
-visualHistoryBack.on( 'click', function(){
-  historyGoBack();
-});
-
-visualHistoryForward.on( 'click', function(){
-  historyGoForward();
-});
-
-visualDownloadButton.on( 'click', function(){
-  downloadAllActive();
-});
+visualHistoryBack.on( 'click', historyGoBack );
+visualHistoryForward.on( 'click', historyGoForward );
+visualCreateFolderButton.on( 'click', createFolder );
+visualDownloadButton.on( 'click', downloadAllActive );
 
 visualUploadButton.on( 'click', function(){
 
