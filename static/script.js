@@ -32,6 +32,7 @@ var visualItemArea             = $('.item-area');
 var visualRenameTextarea       = $('.rename');
 var visualProgressBar          = $('.uploading-area .progress .current');
 var visualDownloadButton       = $('.folder-utils .download');
+var visualUploadButton         = $('.folder-utils .upload');
 var ctx                        = visualItemArea[ 0 ].getContext('2d');
 
 var Icon = function( fsnode ){
@@ -614,7 +615,7 @@ var historyGoBack = function(){
     return;
   }
 
-  openFolder( historyBackward.pop(), true );
+  openFolder( historyBackward.pop().id, true );
 
   if( !historyBackward.length ){
     visualHistoryBack.removeClass('enabled');
@@ -628,7 +629,7 @@ var historyGoForward = function(){
     return;
   }
 
-  openFolder( historyForward.shift(), false, true );
+  openFolder( historyForward.shift().id, false, true );
 
   if( !historyForward.length ){
     visualHistoryForward.removeClass('enabled');
@@ -664,7 +665,7 @@ var openFolder = function( id, isBack, isForward ){
       addToHistoryBackward( currentOpened );
     }
 
-    currentOpened = fsnode.id;
+    currentOpened = fsnode;
 
     clearList();
     appendItemToList( list );
@@ -812,7 +813,7 @@ var updateCanvasSize = function(){
 api.fs
 .on( 'new', function( fsnode ){
 
-  if( fsnode.parent === currentOpened ){
+  if( fsnode.parent === currentOpened.id ){
     appendItemToList( fsnode );
   }
 
@@ -820,7 +821,7 @@ api.fs
 
 .on( 'remove', function( fsnodeId, quota, parent ){
 
-  if( parent !== currentOpened ){
+  if( parent !== currentOpened.id ){
     return;
   }
 
@@ -877,6 +878,20 @@ visualHistoryForward.on( 'click', function(){
 
 visualDownloadButton.on( 'click', function(){
   downloadAllActive();
+});
+
+visualUploadButton.on( 'click', function(){
+
+  $(this).data( 'destiny', currentOpened.id );
+
+  /*
+  if( current.id !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current.id !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
+    $(this).data( 'destiny', current.id );
+  }else{
+    $(this).removeData( 'destiny' );
+  }
+  */
+
 });
 
 visualItemArea
@@ -1203,7 +1218,7 @@ visualItemArea
 })
 
 .on( 'wz-drop', function( e, item ){
-  $(this).data( 'wz-uploader-destiny', currentOpened );
+  $(this).data( 'wz-uploader-destiny', currentOpened.id );
 });
 
 visualRenameTextarea.on( 'blur', function(){
