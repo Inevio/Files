@@ -121,6 +121,16 @@ var calculateGrid = function(){
 
 };
 
+var checkScrollLimits = function(){
+
+  if( currentScroll > 0 || currentMaxScroll < ctx.height ){
+    currentScroll = 0;
+  }else if( -1 * currentMaxScroll + ctx.height > currentScroll ){
+    currentScroll = -1 * currentMaxScroll + ctx.height;
+  }
+
+};
+
 var clearCanvas = function(){
 
   visualItemArea.attr( 'width', visualItemArea.width() );
@@ -670,6 +680,7 @@ var removeItemFromList = function( fsnodeId ){
   }
 
   updateRows();
+  checkScrollLimits();
   requestDraw();
 
 };
@@ -860,12 +871,7 @@ visualItemArea
 
   currentScroll += y;
 
-  if( currentScroll > 0 || currentMaxScroll < ctx.height ){
-    currentScroll = 0;
-  }else if( -1 * currentMaxScroll + ctx.height > currentScroll ){
-    currentScroll = -1 * currentMaxScroll + ctx.height;
-  }
-
+  checkScrollLimits();
   requestDraw();
 
 })
