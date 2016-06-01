@@ -999,16 +999,17 @@ visualItemArea
 
   var itemClicked = getIconWithMouserOver( e );
 
-  if( itemClicked ){
-
-    currentActive.forEach( function( item ){ item.active = false; });
-    currentActive      = [ itemClicked ];
-    itemClicked.active = true;
-
-  }else{
+  if( !e.metaKey && !e.ctrlKey ){
 
     currentActive.forEach( function( item ){ item.active = false; });
     currentActive = [];
+
+  }
+
+  if( itemClicked ){
+
+    currentActive.push( itemClicked );
+    itemClicked.active = true;
 
   }
 
