@@ -19,6 +19,7 @@ var currentHover     = null;
 var currentActive    = [];
 var currentScroll    = 0;
 var currentMaxScroll = 0;
+var currentLastPureClicked = null;
 var currentSort      = null;
 var historyBackward  = [];
 var historyForward   = [];
@@ -57,6 +58,14 @@ var Icon = function( fsnode ){
   this.bigIconHeight = ICON_IMAGE_HEIGHT_AREA + this.bigIconTextHeight;
 
   return this;
+
+};
+
+var addToCollection = function( collection, item ){
+
+  if( collection.indexOf( item ) === -1 ){
+    collection.push( item );
+  }
 
 };
 
@@ -716,12 +725,25 @@ var openFolder = function( id, isBack, isForward ){
     }
 
     currentOpened = fsnode;
+    currentLastPureClicked = null;
 
     clearList();
     appendItemToList( list );
     requestDraw();
 
   });
+
+};
+
+var removeFromCollection = function( collection, item ){
+
+  if( collection.indexOf( item ) !== -1 ){
+
+    var tail = collection.splice( 0, collection.indexOf( item ) );
+    collection.shift();
+    collection.unshift.apply( collection, tail );
+
+  }
 
 };
 
@@ -827,6 +849,20 @@ var sortByName = function( a, b ){
   }
 
   return a.fsnode.type > b.fsnode.type ? 1 : -1;
+
+};
+
+var toggleInCollection = function( collection, item ){
+
+  if( collection.indexOf( item ) === -1 ){
+    collection.push( item );
+    return true;
+  }else{
+    var tail = collection.splice( 0, collection.indexOf( item ) );
+    collection.shift();
+    collection.unshift.apply( collection, tail );
+    return false;
+  }
 
 };
 
@@ -999,17 +1035,26 @@ visualItemArea
 
   var itemClicked = getIconWithMouserOver( e );
 
-  if( !e.metaKey && !e.ctrlKey ){
+  if( !itemClicked ){
 
     currentActive.forEach( function( item ){ item.active = false; });
     currentActive = [];
 
-  }
+  }else if( !e.metaKey && !e.ctrlKey && !e.shiftKey ){
 
-  if( itemClicked ){
+    currentActive.forEach( function( item ){ item.active = false; });
+    currentActive = [];
 
-    currentActive.push( itemClicked );
+    addToCollection( currentActive, itemClicked );
     itemClicked.active = true;
+    currentLastPureClicked = itemClicked;
+
+  }else if( ( e.metaKey || e.ctrlKey ) && !e.shiftKey ){
+
+    itemClicked.active = toggleInCollection( currentActive, itemClicked );
+    currentLastPureClicked = itemClicked;
+
+  }else{
 
   }
 
