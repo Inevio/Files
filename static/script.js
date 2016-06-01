@@ -31,6 +31,7 @@ var visualSidebarItemPrototype = $('.ui-navgroup-element.wz-prototype');
 var visualItemArea             = $('.item-area');
 var visualRenameTextarea       = $('.rename');
 var visualProgressBar          = $('.uploading-area .progress .current');
+var visualCreateFolderButton   = $('.folder-utils .create-folder');
 var visualDownloadButton       = $('.folder-utils .download');
 var visualUploadButton         = $('.folder-utils .upload');
 var ctx                        = visualItemArea[ 0 ].getContext('2d');
@@ -177,6 +178,22 @@ var contextmenuAcceptFile = function( fsnode ){
     .setText( fsnode.name + ' ' + lang.beenAccepted )
     .setIcon( 'https://static.inevio.com/app/1/file_accepted.png' )
     .render();
+
+  });
+
+};
+
+var createFolder = function(){
+
+  currentOpened.createDirectory( getAvailableNewFolderName(), function( error, newDirectory ){
+
+    console.log( error );
+
+    /*
+    setTimeout( function(){
+      beginRename( $( '.weexplorer-file-' + newDirectory.id, fileArea ) );
+    }, 100);
+    */
 
   });
 
@@ -331,6 +348,38 @@ var drawRoundRect = function( ctx, x, y, width, height, radius, fill, stroke ){
   if (stroke) {
     ctx.stroke();
   }
+
+};
+
+var getAvailableNewFolderName = function(){
+
+  var found     = false;
+  var finished  = false;
+  var name      = lang.newFolder;
+  var iteration = 1;
+
+  while( !finished ){
+
+    found = false;
+
+    for( var i = 0; i < currentList.length; i++ ){
+
+      if( currentList[ i ].fsnode.name === name ){
+        found = true;
+        break;
+      }
+
+    }
+
+    if( !found ){
+      finished = true;
+    }else{
+      name = lang.newFolder + ' ' + iteration++;
+    }
+
+  }
+
+  return name;
 
 };
 
@@ -982,12 +1031,8 @@ visualItemArea
   if( !itemClicked ){
 
     api.menu()
-    .addOption( lang.upload, function(){
-        uploadButton.click();
-    })
-    .addOption( lang.newDirectory, function(){
-        createDirectory();
-    })
+    .addOption( lang.upload, visualUploadButton.click )
+    .addOption( lang.newFolder, createFolder )
     .render();
 
   /*}else if( icon.hasClass( 'shared-pending' ) ){
