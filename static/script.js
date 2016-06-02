@@ -1210,7 +1210,7 @@ visualItemArea
     menu.addOption( lang.openFile, openFile.bind( null, itemClicked.fsnode.id ) )
     menu.addOption( lang.openFileLocal, itemClicked.fsnode.openLocal );
 
-    if( itemClicked.fsnode.permissions.modify ){
+    if( itemClicked.fsnode.permissions.write ){
       menu.addOption( lang.rename, showRenameTextarea.bind( null, itemClicked ) );
     }
 
@@ -1223,7 +1223,7 @@ visualItemArea
     }
 
     if( itemClicked.fsnode.permissions.share ){
-      menu.addOption( lang.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share'));
+      menu.addOption( lang.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share') );
     }
 
     if( itemClicked.fsnode.permissions.download ){
@@ -1257,7 +1257,8 @@ visualItemArea
       menu.addOption( lang.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share'));
     }
 
-    if( itemClicked.fsnode.permissions.modify ){
+    console.log( lang.rename, itemClicked.fsnode.permissions );
+    if( itemClicked.fsnode.permissions.write ){
       menu.addOption( lang.rename, showRenameTextarea.bind( null, itemClicked ) );
     }
 
