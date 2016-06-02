@@ -20,6 +20,7 @@ var currentActive    = [];
 var currentScroll    = 0;
 var currentMaxScroll = 0;
 var currentLastPureClicked = null;
+var currentLastDirtyClicked = null;
 var currentSort      = null;
 var historyBackward  = [];
 var historyForward   = [];
@@ -947,6 +948,19 @@ $(this)
     deleteAllActive();
   }
 
+})
+
+.key( 'shift', null, null, null, function( e ){
+
+  if( $(e.target).is('textarea') ){
+    e.stopPropagation();
+  }else if( currentLastDirtyClicked ){
+
+    currentLastPureClicked = currentLastDirtyClicked;
+    currentLastDirtyClicked = null;
+
+  }
+
 });
 
 visualSidebarItemArea
@@ -1035,12 +1049,12 @@ visualItemArea
 
   var itemClicked = getIconWithMouserOver( e );
 
-  if( !itemClicked ){
+  if( !itemClicked && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.shiftKey ){
 
     currentActive.forEach( function( item ){ item.active = false; });
     currentActive = [];
 
-  }else if( !e.metaKey && !e.ctrlKey && !e.shiftKey ){
+  }else if( itemClicked && !e.metaKey && !e.ctrlKey && !e.shiftKey ){
 
     currentActive.forEach( function( item ){ item.active = false; });
     currentActive = [];
@@ -1049,12 +1063,32 @@ visualItemArea
     itemClicked.active = true;
     currentLastPureClicked = itemClicked;
 
-  }else if( ( e.metaKey || e.ctrlKey ) && !e.shiftKey ){
+  }else if( itemClicked && ( e.metaKey || e.ctrlKey ) && ( !e.shiftKey || ( e.shiftKey && ! currentLastPureClicked ) ) ){
 
     itemClicked.active = toggleInCollection( currentActive, itemClicked );
     currentLastPureClicked = itemClicked;
 
-  }else{
+  }else if( itemClicked && e.shiftKey ){
+
+    var positions = [ currentList.indexOf( currentLastPureClicked ), currentList.indexOf( currentLastDirtyClicked || currentLastPureClicked ) ].sort( function( a, b ){ return a - b; });
+
+    currentList.slice( positions[ 0 ], positions[ 1 ] + 1 ).forEach( function( item ){
+
+      removeFromCollection( currentActive, item );
+      item.active = false;
+
+    });
+
+    positions = [ currentList.indexOf( currentLastPureClicked ), currentList.indexOf( itemClicked ) ].sort( function( a, b ){ return a - b; });
+
+    currentList.slice( positions[ 0 ], positions[ 1 ] + 1 ).forEach( function( item ){
+
+      addToCollection( currentActive, item );
+      item.active = true;
+
+    });
+
+    currentLastDirtyClicked = itemClicked;
 
   }
 
