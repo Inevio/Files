@@ -7,7 +7,7 @@
 
   <section class="ui-header-buttons wz-dragger">
     <figure class="ui-minimize"><i></i></figure>
-    <figure class="ui-maximize"><i></i></figure>
+    <figure class="ui-maximize inactive"><i></i></figure>
     <figure class="ui-close"><i></i></figure>
   </section>
 
@@ -21,31 +21,57 @@
 <section class="generate-link">
 
   <p class="title">###LINK TO THE FILE###</p>
-  <output class="link">###URL###</output>
-  <p class="info"><i></i><span>###DESCRIPTION###</span></p>
+  <input class="link" placeholder="###URL###" readonly="readonly" />
+  <p class="info"><i></i><span class="public">###PUBLIC DESCRIPTION###</span><span class="private">###PRIVATE DESCRIPTION###</span></p>
 
   <section class="options">
 
-    <article class="option">
+    <article class="option password">
       <figcaption>Password</figcaption>
       <figure class="ui-checkbox"><i></i></figure>
     </article>
 
-    <article class="option">
+    <article class="option preview">
       <figcaption>Preview</figcaption>
-      <figure class="ui-checkbox"><i></i></figure>
+      <figure class="ui-checkbox active"><i></i></figure>
     </article>
 
-    <article class="option">
+    <article class="option download">
       <figcaption>Download and import</figcaption>
-      <figure class="ui-checkbox"><i></i></figure>
+      <figure class="ui-checkbox active"><i></i></figure>
     </article>
 
   </section>
 
-  <section class="button-bar">
-    <figure class="show-links"><i></i><span>###ACTIVE LINKS###</span></figure>
-    <figure class="create-link">###CREATE LINK###</figure>
-  </section>
+  <input type="password" class="password-input" placeholder="###PASSWORD###" />
 
 </section>
+
+<section class="button-bar">
+  <figure class="show-links"><i></i><span>###ACTIVE LINKS###</span></figure>
+  <figure class="create-link">###CREATE LINK###</figure>
+</section>
+
+<table class="links">
+
+  <tr>
+    <th>PERMISSIONS</th>
+    <th>URL</th>
+    <th>VISITS</th>
+    <th>DOWNLOADS</th>
+    <th>IMPORTED</th>
+  </tr>
+
+  <tr class="wz-prototype">
+    <td>
+      <i class="icon password"></i>
+      <i class="icon preview"></i>
+      <i class="icon download"></i>
+    </td>
+    <td class="wz-selectable"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+
+</table>
