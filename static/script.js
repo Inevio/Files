@@ -145,23 +145,6 @@ var checkScrollLimits = function(){
 
 };
 
-var chunkify = function( t ){
-
-  var tz = [], x = 0, y = -1, n = 0, i, j;
-
-  while (i = (j = t.charAt(x++)).charCodeAt(0)) {
-    var m = (i == 46 || (i >=48 && i <= 57));
-    if (m !== n) {
-      tz[++y] = '';
-      n = m;
-    }
-    tz[y] += j;
-  }
-
-  return tz;
-
-};
-
 var clearCanvas = function(){
 
   visualItemArea.attr( 'width', visualItemArea.width() );
@@ -822,20 +805,23 @@ var sortByName = function( a, b ){
 
   if( a.fsnode.type === b.fsnode.type ){
 
-    var aa = chunkify( a.fsnode.name.toLowerCase() );
-    var bb = chunkify( b.fsnode.name.toLowerCase() );
-
-    for (x = 0; aa[x] && bb[x]; x++) {
-      if (aa[x] !== bb[x]) {
-        var c = Number(aa[x]), d = Number(bb[x]);
-        if (c == aa[x] && d == bb[x]) {
-          return c - d;
-        } else return (aa[x] > bb[x]) ? 1 : -1;
-      }
+    var a1, b1, i= 0, n, L,
+    rx=/(\.\d+)|(\d+(\.\d+)?)|([^\d.]+)|(\.\D+)|(\.$)/g;
+    if( a.fsnode.name === b.fsnode.name ) return 0;
+    a= a.fsnode.name.toLowerCase().match(rx);
+    b= b.fsnode.name.toLowerCase().match(rx);
+    L= a.length;
+    while(i<L){
+        if(!b[i]) return 1;
+        a1= a[i],
+        b1= b[i++];
+        if(a1!== b1){
+            n= a1-b1;
+            if(!isNaN(n)) return n;
+            return a1>b1? 1:-1;
+        }
     }
-    return aa.length - bb.length;
-
-    return 0;
+    return b[i]? -1:0;
 
   }
 
