@@ -635,7 +635,7 @@ var getSidebarItems = function(){
 
 };
 
-var hideRenameTextarea = function(){
+var hideRenameTextarea = function( cancel ){
 
   visualRenameTextarea.removeClass('active');
 
@@ -644,7 +644,7 @@ var hideRenameTextarea = function(){
 
   visualRenameTextarea.removeData('icon').val('');
 
-  if( !icon || !name.trim() || icon.fsnode.name === name ){
+  if( cancel || !icon || !name.trim() || icon.fsnode.name === name ){
     return;
   }
 
@@ -955,7 +955,19 @@ $(this)
 
 })
 
-.key( 'esc', function(e){
+.key( 'delete', function(e){
+
+  if( $(e.target).is('textarea') ){
+    e.stopPropagation();
+  }else{
+    deleteAllActive();
+  }
+
+})
+
+.key( 'enter', function(e){
+
+  e.preventDefault();
 
   if( $(e.target).is('textarea') ){
     hideRenameTextarea();
@@ -965,12 +977,12 @@ $(this)
 
 })
 
-.key( 'delete', function(e){
+.key( 'esc', function(e){
 
   if( $(e.target).is('textarea') ){
-    e.stopPropagation();
+    hideRenameTextarea( true );
   }else{
-    deleteAllActive();
+    console.log('TO DO');
   }
 
 })
