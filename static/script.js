@@ -295,7 +295,7 @@ var drawIcons = function(){
     if( !icon.bigIcon ){
 
       icon.bigIcon = new Image ();
-      icon.bigIcon.src = icon.fsnode.icons.small;
+      icon.bigIcon.src = icon.fsnode.icons.small + ( icon.fsnode.type === TYPE_FILE ? '?time=' + Date.now() : '' );
 
     }
 
@@ -648,9 +648,10 @@ var hideRenameTextarea = function(){
     return;
   }
 
-  var oldName = icon.fsnode.name;
+  var oldName      = icon.fsnode.name;
   icon.fsnode.name = name;
-  icon.lines = getIconLines( name );
+  icon.lines       = getIconLines( name );
+  currentList      = currentList.sort( currentSort );
 
   requestDraw();
 
@@ -659,7 +660,8 @@ var hideRenameTextarea = function(){
     if( error ){
 
       icon.fsnode.name = oldName;
-      icon.lines = getIconLines( oldName );
+      icon.lines       = getIconLines( oldName );
+      currentList      = currentList.sort( currentSort );
 
       requestDraw();
 
@@ -699,7 +701,7 @@ var historyGoForward = function(){
 
 var openFile = function( fsnode ){
 
-  fsnode.open( /*fileArea.find('.file').map( function(){ return $(this).data('file-id') }).get(),*/ function( error ){
+  fsnode.open( currentList.filter(function( item ){ return item.fsnode.type === TYPE_FILE; }).map( function( item ){ return item.fsnode.id; }), function( error ){
 
     if( error ){
       alert( lang.noApp );
@@ -712,6 +714,10 @@ var openFile = function( fsnode ){
 var openFolder = function( id, isBack, isForward ){
 
   getFolderItems( id ).then( function( fsnode, list ){
+
+    fsnode.getPath( function(){
+      console.log( arguments );
+    });
 
     visualSidebarItemArea.find('.active').removeClass('active');
     visualSidebarItemArea.find( '.item-' + fsnode.id ).addClass('active');
@@ -879,6 +885,49 @@ api.fs
   if( fsnode.parent === currentOpened.id ){
     appendItemToList( fsnode );
   }
+
+})
+
+.on( 'modified', function( fsnode ){
+
+  if( fsnode.parent !== currentOpened.id ){
+    return;
+  }
+
+  for( var i = 0; i < currentList.length; i++ ){
+
+    if( currentList[ i ].fsnode.id === fsnode.id ){
+
+      currentList[ i ].fsnode  = fsnode;
+      currentList[ i ].bigIcon = null;
+      break;
+
+    }
+
+  }
+
+  requestDraw();
+
+})
+
+.on( 'thumbnail', function( fsnode ){
+
+  if( fsnode.parent !== currentOpened.id ){
+    return;
+  }
+
+  for( var i = 0; i < currentList.length; i++ ){
+
+    if( currentList[ i ].fsnode.id === fsnode.id ){
+
+      currentList[ i ].bigIcon = null;
+      break;
+
+    }
+
+  }
+
+  requestDraw();
 
 })
 
@@ -1233,7 +1282,6 @@ visualItemArea
       menu.addOption( lang.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share'));
     }
 
-    console.log( lang.rename, itemClicked.fsnode.permissions );
     if( itemClicked.fsnode.permissions.write ){
       menu.addOption( lang.rename, showRenameTextarea.bind( null, itemClicked ) );
     }
