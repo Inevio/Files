@@ -24,7 +24,6 @@ var currentLastDirtyClicked = null;
 var currentSort      = null;
 var historyBackward  = [];
 var historyForward   = [];
-var pixelRatio       = 1;
 
 var visualHistoryBack          = $('.folder-controls .back');
 var visualHistoryForward       = $('.folder-controls .forward');
@@ -38,6 +37,12 @@ var visualDeleteButton         = $('.folder-utils .delete');
 var visualDownloadButton       = $('.folder-utils .download');
 var visualUploadButton         = $('.folder-utils .upload');
 var ctx                        = visualItemArea[ 0 ].getContext('2d');
+var backingStoreRatio   = ctx.webkitBackingStorePixelRatio ||
+                          ctx.mozBackingStorePixelRatio ||
+                          ctx.msBackingStorePixelRatio ||
+                          ctx.oBackingStorePixelRatio ||
+                          ctx.backingStorePixelRatio || 1;
+var pixelRatio          = api.tool.devicePixelRatio() / backingStoreRatio;
 
 var Icon = function( fsnode ){
 
@@ -867,8 +872,12 @@ var updateRows = function(){
 
 var updateCanvasSize = function(){
 
-  ctx.width  = visualItemArea.width() * pixelRatio;
-  ctx.height = visualItemArea.height() * pixelRatio;
+  ctx.width  = visualItemArea.width() * ratio;
+  ctx.height = visualItemArea.height() * ratio;
+
+  if( pixelRatio > 1 ){
+    ctx.scale( pixelRatio, pixelRatio );
+  }
 
   /*
   if( pixelRatio > 1 ){
