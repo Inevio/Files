@@ -716,7 +716,7 @@ var openFolder = function( id, isBack, isForward ){
   getFolderItems( id ).then( function( fsnode, list ){
 
     fsnode.getPath( function(){
-      console.log( arguments );
+      //console.log( arguments );
     });
 
     visualSidebarItemArea.find('.active').removeClass('active');
