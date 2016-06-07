@@ -152,8 +152,12 @@ var checkScrollLimits = function(){
 
 var clearCanvas = function(){
 
-  visualItemArea.attr( 'width', visualItemArea.width() );
-  visualItemArea.attr( 'height', visualItemArea.height() );
+  visualItemArea.attr('width', visualItemArea.width() * pixelRatio );
+  visualItemArea.attr('height', visualItemArea.height() * pixelRatio );
+
+  if( pixelRatio > 1 ){
+    ctx.scale( pixelRatio, pixelRatio );
+  }
 
 };
 
@@ -245,7 +249,7 @@ var downloadAllActive = function(){
 
 var drawIcons = function(){
 
-  if( !currentList ){
+  if( !currentList.length ){
     return;
   }
 
@@ -305,7 +309,11 @@ var drawIcons = function(){
     }
 
     if( icon.bigIcon.naturalWidth ){
-      ctx.drawImage( icon.bigIcon, imgX + ( ICON_WIDTH - icon.bigIcon.width ) / 2, imgY + ( ICON_IMAGE_HEIGHT_AREA - icon.bigIcon.height ) / 2 );
+
+      var normalized = normalizeBigIconSize( icon.bigIcon );
+
+      ctx.drawImage( icon.bigIcon, imgX + ( ICON_WIDTH -  normalized.width ) / 2, imgY + ( ICON_IMAGE_HEIGHT_AREA - normalized.height ) / 2, normalized.width, normalized.height );
+
     }else{
       $( icon.bigIcon ).on( 'load', requestDraw );
     }
@@ -704,6 +712,28 @@ var historyGoForward = function(){
 
 };
 
+var normalizeBigIconSize = function( image ){
+
+  if( image.naturalWidth > 64 || image.naturalHeight > 64 ){
+
+    return {
+
+      height : parseInt( image.naturalHeight / 2 ),
+      width : parseInt( image.naturalWidth / 2 )
+
+    };
+
+  }
+
+  return {
+
+    height : image.naturalHeight,
+    width : image.naturalWidth
+
+  };
+
+};
+
 var openFile = function( fsnode ){
 
   fsnode.open( currentList.filter(function( item ){ return item.fsnode.type === TYPE_FILE; }).map( function( item ){ return item.fsnode.id; }), function( error ){
@@ -872,18 +902,8 @@ var updateRows = function(){
 
 var updateCanvasSize = function(){
 
-  ctx.width  = visualItemArea.width() * ratio;
-  ctx.height = visualItemArea.height() * ratio;
-
-  if( pixelRatio > 1 ){
-    ctx.scale( pixelRatio, pixelRatio );
-  }
-
-  /*
-  if( pixelRatio > 1 ){
-    ctx.scale( pixelRatio, pixelRatio );
-  }
-  */
+  ctx.width  = visualItemArea.width();
+  ctx.height = visualItemArea.height();
 
 };
 
