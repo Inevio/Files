@@ -276,17 +276,22 @@
 
 .item-area{
   height: ~'calc(100% - 44px)';
-  box-sizing: border-box;
-  /*padding: 0 9px;*/
   width: 100%;
+  float: left;
 }
 
 .uploading-area{
+  -webkit-transition: bottom 0.25s ease;
+  -moz-transition: bottom 0.25s ease;
+  -ms-transition: bottom 0.25s ease;
+  -o-transition: bottom 0.25s ease;
+  transition: bottom 0.25s ease;
+  float: left;
   height: 57px;
   width: 100%;
+  bottom: 0;
   background-color: #f7f8fa;
   border-top: 1px solid #ccd3d5;
-  /*bottom: 60px;*/
   position: relative;
   padding: 12px 21px;
   box-sizing: border-box;
@@ -328,14 +333,26 @@
     background-color: #d5dadd;
 
     .current{
+      -webkit-transition: width 0.15s ease;
+      -moz-transition: width 0.15s ease;
+      -ms-transition: width 0.15s ease;
+      -o-transition: width 0.15s ease;
+      transition: width 0.15s ease;
       width: 60%;
       height: 5px;
       border-radius: 3px;
       background-color: #60b25e;
+      /* Prevent visual artifacts */
+      min-width: 0;
+      max-width: 100%;
     }
 
   }
 
+}
+
+.wz-view.uploading .uploading-area{
+  bottom: 57px;
 }
 
 .rename{
