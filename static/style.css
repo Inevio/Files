@@ -304,7 +304,12 @@
       display: inline-block;
       width: 18px;
       height: 18px;
-      background: #f00;
+      -webkit-transition: background 0.25s ease;
+      -moz-transition: background 0.25s ease;
+      -ms-transition: background 0.25s ease;
+      -o-transition: background 0.25s ease;
+      transition: background 0.25s ease;
+      background: transparent;
       margin-right: 6px;
     }
 
@@ -338,7 +343,7 @@
       -ms-transition: width 0.15s ease;
       -o-transition: width 0.15s ease;
       transition: width 0.15s ease;
-      width: 60%;
+      width: 0%;
       height: 5px;
       border-radius: 3px;
       background-color: #60b25e;
@@ -353,6 +358,11 @@
 
 .wz-view.uploading .uploading-area{
   bottom: 57px;
+}
+
+.wz-view.uploading .uploading-area .status i{
+  background: url(@static/img/uploading.gif);
+  background-size: 18px 18px;
 }
 
 .rename{
