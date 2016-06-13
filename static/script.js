@@ -25,6 +25,7 @@ var currentSort      = null;
 var historyBackward  = [];
 var historyForward   = [];
 
+var win                        = $(this);
 var visualHistoryBack          = $('.folder-controls .back');
 var visualHistoryForward       = $('.folder-controls .forward');
 var visualSidebarItemArea      = $('.ui-navgroup');
@@ -413,7 +414,10 @@ var getFolderItems = function( id ){
 
   api.fs( id, function( error, fsnode ){
 
+    console.log( error );
+
     fsnode.list( function( error, list ){
+      console.log( error );
       // To Do -> Error
       end.resolve( fsnode, list );
     });
@@ -588,7 +592,11 @@ var getSidebarItems = function(){
 
   api.fs( 'root', function( error, fsnode ){
 
+    console.log( error );
+
     fsnode.list( true, function( error, list ){
+
+      console.log( error );
 
       list = list.filter( function( item ){
         return item.type === 1;
@@ -911,6 +919,8 @@ var updateCanvasSize = function(){
 api.fs
 .on( 'new', function( fsnode ){
 
+  console.log('NEW',fsnode)
+
   if( fsnode.parent === currentOpened.id ){
     appendItemToList( fsnode );
   }
@@ -962,6 +972,8 @@ api.fs
 
 .on( 'remove', function( fsnodeId, quota, parent ){
 
+  console.log('REMOVE', fsnodeId, parent, currentOpened.id );
+
   if( parent !== currentOpened.id ){
     return;
   }
@@ -970,8 +982,29 @@ api.fs
 
 });
 
-api.upload.on( 'fsnodeProgress', function( fsnodeId, progress, queueProgress, time ){
-  visualProgressBar.width( parseInt( queueProgress * 100 ) + '%' );
+api.upload
+.on( 'fsnodeEnqueue', function(){
+
+  if( win.hasClass('uploading') ){
+    return;
+  }
+
+  win.addClass('uploading');
+
+})
+
+.on( 'fsnodeProgress', function( fsnodeId, progress, queueProgress, time ){
+  visualProgressBar.width( parseFloat( queueProgress * 100 ).toFixed( 4 ) + '%' );
+})
+
+.on( 'fsnodeQueueEnd', function(){
+
+  if( !win.hasClass('uploading') ){
+    return;
+  }
+
+  win.removeClass('uploading');
+
 });
 
 // DOM Events
