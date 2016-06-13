@@ -24,6 +24,7 @@ var currentLastDirtyClicked = null;
 var currentSort      = null;
 var historyBackward  = [];
 var historyForward   = [];
+var dropActive       = false;
 
 var win                        = $(this);
 var visualHistoryBack          = $('.folder-controls .back');
@@ -273,24 +274,59 @@ var drawIcons = function(){
 
     }
 
-    if( icon.hover || icon.active ){
+    if( dropActive ){
 
-      ctx.strokeStyle = '#ccd3d5';
-      ctx.fillStyle = '#f7f8fa';
-      drawRoundRect( ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true );
+      if( icon.fsnode.type !== TYPE_FILE ){
+
+        if( icon === dropActive ){
+
+          ctx.strokeStyle = '#60b25e';
+          ctx.fillStyle = '#60b25e';
+          drawRoundRect( ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true );
+
+        }else{
+
+          ctx.strokeStyle = '#ccd3d5';
+          ctx.fillStyle = '#eff7ef';
+          drawRoundRect( ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true );
+
+        }
+
+      }
+
+    }else{
+
+      if( icon.hover || icon.active ){
+
+        ctx.strokeStyle = '#ccd3d5';
+        ctx.fillStyle = '#f7f8fa';
+        drawRoundRect( ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true );
+
+      }
+
+      if( icon.active ){
+
+        ctx.strokeStyle = '#60b25e';
+        ctx.fillStyle = '#60b25e';
+        drawRoundRect( ctx, x, y + ICON_IMAGE_HEIGHT_AREA, ICON_WIDTH, icon.bigIconTextHeight, { bl : ICON_RADIUS, br : ICON_RADIUS }, true, false );
+
+      }
 
     }
 
-    if( icon.active ){
+    if( dropActive ){
 
-      ctx.strokeStyle = '#60b25e';
-      ctx.fillStyle = '#60b25e';
-      drawRoundRect( ctx, x, y + ICON_IMAGE_HEIGHT_AREA, ICON_WIDTH, icon.bigIconTextHeight, { bl : ICON_RADIUS, br : ICON_RADIUS }, true, false );
+      if( icon.fsnode.type !== TYPE_FILE && icon === dropActive ){
+        ctx.fillStyle = '#ffffff';
+      }else{
+        ctx.fillStyle = '#545f65';
+      }
 
+    }else{
+      ctx.fillStyle = icon.active ? '#ffffff' : '#545f65';
     }
 
     ctx.font = '13px Lato';
-    ctx.fillStyle = icon.active ? '#ffffff' : '#545f65';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
     ctx.fillText( icon.lines[ 0 ], x + ICON_WIDTH / 2, 4 + y + ICON_IMAGE_HEIGHT_AREA);
@@ -319,22 +355,26 @@ var drawIcons = function(){
       $( icon.bigIcon ).on( 'load', requestDraw );
     }
 
+    if( dropActive && icon.fsnode.type === TYPE_FILE ){
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+      ctx.fillRect( x, y, ICON_WIDTH + 1, icon.bigIconHeight + 1 );
+
+    }
+
     x += ICON_WIDTH + grid.gap;
 
   });
 
-  /*
-  ctx.beginPath();
-  ctx.strokeStyle = '#60b25e';
-  ctx.lineWidth = 4;
-  ctx.moveTo( 2, 2 );
-  ctx.lineTo( ctx.width - 2, 2 );
-  ctx.lineTo( ctx.width - 2, ctx.height - 2 );
-  ctx.lineTo( 2, ctx.height - 2 );
-  ctx.lineTo( 2, 2 );
-  ctx.stroke();
-  ctx.closePath();
-  */
+  if( dropActive ){
+
+    ctx.fillStyle = '#60b25e';
+    ctx.fillRect( 0, 0, ctx.width, 4 );
+    ctx.fillRect( 0, 0, 4, ctx.height );
+    ctx.fillRect( 0, ctx.height - 4, ctx.width, 4 );
+    ctx.fillRect( ctx.width - 4, 0, 4, ctx.height );
+
+  }
 
 };
 
@@ -990,10 +1030,12 @@ api.upload
   }
 
   win.addClass('uploading');
+  console.log( arguments );
 
 })
 
 .on( 'fsnodeProgress', function( fsnodeId, progress, queueProgress, time ){
+  console.log( arguments );
   visualProgressBar.width( parseFloat( queueProgress * 100 ).toFixed( 4 ) + '%' );
 })
 
@@ -1004,6 +1046,7 @@ api.upload
   }
 
   win.removeClass('uploading');
+  console.log( arguments );
 
 });
 
@@ -1425,19 +1468,47 @@ visualItemArea
 })
 
 .on( 'wz-dropenter', function( e, item ){
-  //console.log( e, item );
+
+  var itemOver = getIconWithMouserOver( e );
+
+  dropActive = itemOver || true;
+
+  requestDraw();
+
 })
 
 .on( 'wz-dropover', function( e, item ){
-  //console.log( e, item );
+
+  var itemOver = getIconWithMouserOver( e );
+
+  if( dropActive !== itemOver ){
+
+    dropActive = itemOver || true;
+
+    requestDraw();
+
+  }
+
 })
 
 .on( 'wz-dropleave', function( e, item ){
-  //console.log( e, item );
+
+  console.log( 'dropleave' );
+
+  dropActive = false;
+
+  requestDraw();
+
 })
 
 .on( 'wz-drop', function( e, item ){
+
   $(this).data( 'wz-uploader-destiny', currentOpened.id );
+
+  dropActive = false;
+
+  requestDraw();
+
 });
 
 visualRenameTextarea.on( 'blur', function(){
