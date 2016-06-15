@@ -33,6 +33,8 @@ var visualSidebarItemArea      = $('.ui-navgroup');
 var visualSidebarItemPrototype = $('.ui-navgroup-element.wz-prototype');
 var visualItemArea             = $('.item-area');
 var visualRenameTextarea       = $('.rename');
+var visualProgressStatusNumber = $('.uploading-area .status-number');
+var visualProgressStatusTime   = $('.uploading-area .status-time');
 var visualProgressBar          = $('.uploading-area .progress .current');
 var visualCreateFolderButton   = $('.folder-utils .create-folder');
 var visualDeleteButton         = $('.folder-utils .delete');
@@ -962,6 +964,7 @@ api.fs
   console.log('NEW',fsnode)
 
   if( fsnode.parent === currentOpened.id ){
+    console.log('new');
     appendItemToList( fsnode );
   }
 
@@ -1035,8 +1038,15 @@ api.upload
 })
 
 .on( 'fsnodeProgress', function( fsnodeId, progress, queueProgress, time ){
-  console.log( arguments );
+
   visualProgressBar.width( parseFloat( queueProgress * 100 ).toFixed( 4 ) + '%' );
+
+  if( time ){
+    visualProgressStatusTime.text( time + ' - ' + parseFloat( ( queueProgress * 100 ).toFixed( 1 ) ) + '%' );
+  }else{
+    visualProgressStatusTime.text( 'Calculando' + ' - ' + parseFloat( ( queueProgress * 100 ).toFixed( 1 ) ) + '%' );
+  }
+
 })
 
 .on( 'fsnodeQueueEnd', function(){
