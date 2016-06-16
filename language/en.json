@@ -175,6 +175,16 @@
     "saving"  : "Saving...",
     "accept"  : "Accept",
     "cancel"  : "Cancel",
-    "replace" : "Do you want to replace the file?"
+    "replace" : "Do you want to replace the file?",
+
+    "uploadingNumberFile"      : "Uploading %d file - ",
+    "uploadingNumberFiles"     : "Uploading %d files - ",
+    "uploadingTimeSecond"      : "%d second left - %d%",
+    "uploadingTimeSeconds"     : "%d seconds left - %d%",
+    "uploadingTimeMinute"      : "%d minute left - %d%",
+    "uploadingTimeMinutes"     : "%d minutes left - %d%",
+    "uploadingTimeHour"        : "%d hour left - %d%",
+    "uploadingTimeHours"       : "%d hours left - %d%",
+    "uploadingTimeCalculating" : "Calculating... - %d%"
 
 }
