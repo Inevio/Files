@@ -1505,9 +1505,9 @@ visualItemArea
 
 })
 
-.on( 'wz-dropover', function( e, item ){
+.on( 'wz-dropover wz-dropmove', function( e, item ){
 
-  console.log('wz-dropover')
+  console.log('wz-dropover',e)
 
   var itemOver = getIconWithMouserOver( e );
 
@@ -1560,8 +1560,8 @@ visualItemArea
       'box-shadow'    : '1px 2px 5px rgba(0,0,0,.25)',
       'display'       : 'inline-block',
       'opacity'       : '.95',
-      //'left'          : drag.origin.clientX - position.left - 9 - 16,
-      //'top'           : drag.origin.clientY - position.top - 10 - 16
+      'left'          : drag.origin.clientX - position.left - 9 - 16,
+      'top'           : drag.origin.clientY - position.top - 10 - 16
 
   }).append(
 
