@@ -25,6 +25,7 @@ var currentSort      = null;
 var historyBackward  = [];
 var historyForward   = [];
 var dropActive       = false;
+var dropIgnore       = [];
 
 var win                        = $(this);
 var visualHistoryBack          = $('.folder-controls .back');
@@ -144,6 +145,16 @@ var calculateGrid = function(){
 
 };
 
+var checkDraggableArea = function(){
+
+  if( currentActive.length ){
+    visualItemArea.addClass('wz-draggable wz-dragger');
+  }else{
+    visualItemArea.removeClass('wz-draggable wz-dragger');
+  }
+
+};
+
 var checkScrollLimits = function(){
 
   if( currentScroll > 0 || currentMaxScroll < ctx.height ){
@@ -179,6 +190,8 @@ var clearList = function(){
   currentRows   = [];
   currentHover  = null;
   currentActive = [];
+
+  checkDraggableArea();
 
 };
 
@@ -276,7 +289,7 @@ var drawIcons = function(){
 
     }
 
-    if( dropActive ){
+    if( dropActive && dropIgnore.indexOf( icon ) === -1 ){
 
       if( icon.fsnode.type !== TYPE_FILE ){
 
@@ -318,7 +331,7 @@ var drawIcons = function(){
 
     if( dropActive ){
 
-      if( icon.fsnode.type !== TYPE_FILE && icon === dropActive ){
+      if( ( icon.fsnode.type !== TYPE_FILE && icon === dropActive ) || dropIgnore.indexOf( icon ) !== -1 ){
         ctx.fillStyle = '#ffffff';
       }else{
         ctx.fillStyle = '#545f65';
@@ -357,7 +370,7 @@ var drawIcons = function(){
       $( icon.bigIcon ).on( 'load', requestDraw );
     }
 
-    if( dropActive && icon.fsnode.type === TYPE_FILE ){
+    if( ( dropActive && icon.fsnode.type === TYPE_FILE ) || dropIgnore.indexOf( icon ) !== -1 ){
 
       ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
       ctx.fillRect( x, y, ICON_WIDTH + 1, icon.bigIconHeight + 1 );
@@ -368,7 +381,7 @@ var drawIcons = function(){
 
   });
 
-  if( dropActive ){
+  if( dropActive === true || dropIgnore.indexOf( dropActive ) !== -1 ){
 
     ctx.fillStyle = '#60b25e';
     ctx.fillRect( 0, 0, ctx.width, 4 );
@@ -853,6 +866,7 @@ var removeItemFromList = function( fsnodeId ){
     currentHover = null;
   }
 
+  checkDraggableArea();
   updateRows();
   checkScrollLimits();
   requestDraw();
@@ -1231,10 +1245,14 @@ visualItemArea
     itemClicked.active = true;
     currentLastPureClicked = itemClicked;
 
+    checkDraggableArea();
+
   }else if( itemClicked && ( e.metaKey || e.ctrlKey ) && ( !e.shiftKey || ( e.shiftKey && ! currentLastPureClicked ) ) ){
 
     itemClicked.active = toggleInCollection( currentActive, itemClicked );
     currentLastPureClicked = itemClicked;
+
+    checkDraggableArea();
 
   }else if( itemClicked && e.shiftKey ){
 
@@ -1244,6 +1262,8 @@ visualItemArea
 
       removeFromCollection( currentActive, item );
       item.active = false;
+
+      checkDraggableArea();
 
     });
 
@@ -1505,11 +1525,10 @@ visualItemArea
 
 })
 
-.on( 'wz-dropover wz-dropmove', function( e, item ){
-
-  console.log('wz-dropover',e)
+.on( 'wz-dropover wz-dropmove', function( e, item, list ){
 
   var itemOver = getIconWithMouserOver( e );
+  dropIgnore = list;
 
   if( dropActive !== itemOver ){
 
@@ -1526,6 +1545,7 @@ visualItemArea
   console.log( 'dropleave' );
 
   dropActive = false;
+  dropIgnore = [];
 
   requestDraw();
 
@@ -1590,6 +1610,8 @@ visualItemArea
   );
 
   drag.ghost( ghost );
+
+  drag.data( currentActive );
 
 });
 
