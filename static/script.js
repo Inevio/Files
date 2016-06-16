@@ -1026,14 +1026,24 @@ api.fs
 });
 
 api.upload
-.on( 'fsnodeEnqueue', function(){
+.on( 'fsnodeEnqueue', function( list ){
 
   if( win.hasClass('uploading') ){
-    return;
-  }
 
-  win.addClass('uploading');
-  console.log( arguments );
+    console.log( visualProgressStatusNumber.text() );
+    console.log( visualProgressStatusNumber.text().match(/\d+/) );
+
+    var files = parseInt( visualProgressStatusNumber.text().match(/\d+/)[ 0 ] ) + list.length;
+
+    visualProgressStatusNumber.text( ( files === 1 ? lang.uploadingNumberFile : lang.uploadingNumberFiles ).replace( '%d', files ) );
+
+  }else{
+
+    win.addClass('uploading');
+
+    visualProgressStatusNumber.text( ( list.length === 1 ? lang.uploadingNumberFile : lang.uploadingNumberFiles ).replace( '%d', list.length ) );
+
+  }
 
 })
 
@@ -1041,10 +1051,16 @@ api.upload
 
   visualProgressBar.width( parseFloat( queueProgress * 100 ).toFixed( 4 ) + '%' );
 
-  if( time ){
-    visualProgressStatusTime.text( time + ' - ' + parseFloat( ( queueProgress * 100 ).toFixed( 1 ) ) + '%' );
+  var percentage = parseFloat( ( queueProgress * 100 ).toFixed( 1 ) );
+
+  if( !time ){
+    visualProgressStatusTime.text( lang.uploadingTimeCalculating.replace( '%d', percentage ) );
+  }else if( time < 60 ){
+    visualProgressStatusTime.text( ( parseInt( time ) === 1 ? lang.uploadingTimeSecond : lang.uploadingTimeSeconds ).replace( '%d', parseInt( time ) ).replace( '%d', percentage ) );
+  }else if( time < 3600 ){
+    visualProgressStatusTime.text( ( parseInt( time / 60 ) === 1 ? lang.uploadingTimeMinute : lang.uploadingTimeMinutes ).replace( '%d', parseInt( time / 60 ) ).replace( '%d', percentage ) );
   }else{
-    visualProgressStatusTime.text( 'Calculando' + ' - ' + parseFloat( ( queueProgress * 100 ).toFixed( 1 ) ) + '%' );
+    visualProgressStatusTime.text( ( parseInt( time / 3600 ) === 1 ? lang.uploadingTimeHour : lang.uploadingTimeHours ).replace( '%d', parseInt( time / 3600 ) ).replace( '%d', percentage ) );
   }
 
 })
@@ -1479,6 +1495,8 @@ visualItemArea
 
 .on( 'wz-dropenter', function( e, item ){
 
+  console.log('wz-dropenter');
+
   var itemOver = getIconWithMouserOver( e );
 
   dropActive = itemOver || true;
@@ -1488,6 +1506,8 @@ visualItemArea
 })
 
 .on( 'wz-dropover', function( e, item ){
+
+  console.log('wz-dropover')
 
   var itemOver = getIconWithMouserOver( e );
 
@@ -1513,11 +1533,63 @@ visualItemArea
 
 .on( 'wz-drop', function( e, item ){
 
+  console.log('wz-drop');
+
   $(this).data( 'wz-uploader-destiny', currentOpened.id );
 
   dropActive = false;
 
   requestDraw();
+
+})
+
+.on( 'wz-dragstart', function( e, drag ){
+
+  var position = $(this).offset();
+  var ghost = $('<div></div>');
+
+  ghost.css({
+
+      'min-width'     : '110px',
+      'padding'       : '10px 9px 9px',
+      'height'        : '16px',
+      'line-height'   : '16px',
+      'background'    : '#60b25e',
+      'border-radius' : '3px',
+      'text-align'    : 'left',
+      'box-shadow'    : '1px 2px 5px rgba(0,0,0,.25)',
+      'display'       : 'inline-block',
+      'opacity'       : '.95',
+      //'left'          : drag.origin.clientX - position.left - 9 - 16,
+      //'top'           : drag.origin.clientY - position.top - 10 - 16
+
+  }).append(
+
+    $('<i></i>').css({
+
+      'display'      : 'inline-block',
+      'width'        : '16px',
+      'height'       : '16px',
+      'background'   : '#f00',
+      'margin-right' : '10px'
+
+    })
+
+  ).append(
+
+    $('<span></span>').text('###ICON NAME###').css({
+
+      'display'         : 'inline-block',
+      'font-family'     : 'Lato',
+      'font-size'       : '13px',
+      'color'           : '#fff',
+      'vertical-align' : 'text-top'
+
+    })
+
+  );
+
+  drag.ghost( ghost );
 
 });
 

@@ -175,6 +175,16 @@
     "saving" : "Guardando...",
     "accept" : "Aceptar",
     "cancel" : "Cancelar",
-    "replace" : "¿Desea reemplazar el fichero?"
+    "replace" : "¿Desea reemplazar el fichero?",
+
+    "uploadingNumberFile"      : "Subiendo %d archivo - ",
+    "uploadingNumberFiles"     : "Subiendo %d archivos - ",
+    "uploadingTimeSecond"      : "Quedan %d segundo - %d%",
+    "uploadingTimeSeconds"     : "Quedan %d segundos - %d%",
+    "uploadingTimeMinute"      : "Quedan %d minuto - %d%",
+    "uploadingTimeMinutes"     : "Quedan %d minutos - %d%",
+    "uploadingTimeHour"        : "Quedan %d hora - %d%",
+    "uploadingTimeHours"       : "Quedan %d horas - %d%",
+    "uploadingTimeCalculating" : "Calculando... - %d%"
 
 }
