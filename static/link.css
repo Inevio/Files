@@ -37,6 +37,20 @@
 
 }
 
+.ui-header{
+  height: 34px;
+
+  .ui-header-brand{
+    padding: 10px 0 9px 16px;
+  }
+
+  .ui-minimize, .ui-maximize, .ui-close{
+    margin-top: 5px;
+    margin-bottom: 3px;
+  }
+
+}
+
 .file-info{
   float: left;
   width: 100%;
@@ -77,7 +91,7 @@
   width: 100%;
 
   .title{
-    margin: 28px 0 0 35px;
+    margin: 32px 0 0 35px;
     font-family: Lato;
     font-size: 15px;
     font-weight: bold;
@@ -180,7 +194,7 @@
 
 .button-bar{
   float: left;
-  padding: 28px 35px 18px;
+  padding: 28px 35px 20px;
   display: inline-block;
   width: 100%;
   box-sizing: border-box;
