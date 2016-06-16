@@ -224,8 +224,6 @@ var createFolder = function(){
 
   currentOpened.createDirectory( getAvailableNewFolderName(), function( error, newDirectory ){
 
-    console.log( error );
-
     /*
     setTimeout( function(){
       beginRename( $( '.weexplorer-file-' + newDirectory.id, fileArea ) );
@@ -247,7 +245,7 @@ var deleteAllActive = function(){
     currentActive.forEach( function( item ){
 
       item.fsnode.remove( function( error ){
-        console.log( error );
+        //console.log( error );
       });
 
     });
@@ -469,10 +467,7 @@ var getFolderItems = function( id ){
 
   api.fs( id, function( error, fsnode ){
 
-    console.log( error );
-
     fsnode.list( function( error, list ){
-      console.log( error );
       // To Do -> Error
       end.resolve( fsnode, list );
     });
@@ -647,11 +642,7 @@ var getSidebarItems = function(){
 
   api.fs( 'root', function( error, fsnode ){
 
-    console.log( error );
-
     fsnode.list( true, function( error, list ){
-
-      console.log( error );
 
       list = list.filter( function( item ){
         return item.type === 1;
@@ -975,10 +966,7 @@ var updateCanvasSize = function(){
 api.fs
 .on( 'new', function( fsnode ){
 
-  console.log('NEW',fsnode)
-
   if( fsnode.parent === currentOpened.id ){
-    console.log('new');
     appendItemToList( fsnode );
   }
 
@@ -1029,8 +1017,6 @@ api.fs
 
 .on( 'remove', function( fsnodeId, quota, parent ){
 
-  console.log('REMOVE', fsnodeId, parent, currentOpened.id );
-
   if( parent !== currentOpened.id ){
     return;
   }
@@ -1043,9 +1029,6 @@ api.upload
 .on( 'fsnodeEnqueue', function( list ){
 
   if( win.hasClass('uploading') ){
-
-    console.log( visualProgressStatusNumber.text() );
-    console.log( visualProgressStatusNumber.text().match(/\d+/) );
 
     var files = parseInt( visualProgressStatusNumber.text().match(/\d+/)[ 0 ] ) + list.length;
 
@@ -1086,7 +1069,6 @@ api.upload
   }
 
   win.removeClass('uploading');
-  console.log( arguments );
 
 });
 
@@ -1236,7 +1218,7 @@ visualItemArea
     currentActive.forEach( function( item ){ item.active = false; });
     currentActive = [];
 
-  }else if( itemClicked && !e.metaKey && !e.ctrlKey && !e.shiftKey ){
+  }else if( itemClicked && !e.metaKey && !e.ctrlKey && !e.shiftKey && currentActive.indexOf( itemClicked ) === -1 ){
 
     currentActive.forEach( function( item ){ item.active = false; });
     currentActive = [];
@@ -1245,14 +1227,10 @@ visualItemArea
     itemClicked.active = true;
     currentLastPureClicked = itemClicked;
 
-    checkDraggableArea();
-
   }else if( itemClicked && ( e.metaKey || e.ctrlKey ) && ( !e.shiftKey || ( e.shiftKey && ! currentLastPureClicked ) ) ){
 
     itemClicked.active = toggleInCollection( currentActive, itemClicked );
     currentLastPureClicked = itemClicked;
-
-    checkDraggableArea();
 
   }else if( itemClicked && e.shiftKey ){
 
@@ -1262,8 +1240,6 @@ visualItemArea
 
       removeFromCollection( currentActive, item );
       item.active = false;
-
-      checkDraggableArea();
 
     });
 
@@ -1280,6 +1256,7 @@ visualItemArea
 
   }
 
+  checkDraggableArea();
   requestDraw();
 
 })
@@ -1515,8 +1492,6 @@ visualItemArea
 
 .on( 'wz-dropenter', function( e, item ){
 
-  console.log('wz-dropenter');
-
   var itemOver = getIconWithMouserOver( e );
 
   dropActive = itemOver || true;
@@ -1528,7 +1503,7 @@ visualItemArea
 .on( 'wz-dropover wz-dropmove', function( e, item, list ){
 
   var itemOver = getIconWithMouserOver( e );
-  dropIgnore = list;
+  dropIgnore = list || [];
 
   if( dropActive !== itemOver ){
 
@@ -1542,8 +1517,6 @@ visualItemArea
 
 .on( 'wz-dropleave', function( e, item ){
 
-  console.log( 'dropleave' );
-
   dropActive = false;
   dropIgnore = [];
 
@@ -1551,11 +1524,29 @@ visualItemArea
 
 })
 
-.on( 'wz-drop', function( e, item ){
+.on( 'wz-drop', function( e, item, list ){
 
-  console.log('wz-drop');
+  var itemOver = getIconWithMouserOver( e );
 
-  $(this).data( 'wz-uploader-destiny', currentOpened.id );
+  if( item === 'fileNative' ){
+    $(this).data( 'wz-uploader-destiny', itemOver ? itemOver.fsnode.id : currentOpened.id );
+  }else{
+
+    var destiny = itemOver ? itemOver.fsnode.id : currentOpened.id;
+
+    list.filter( function( item ){
+      return item.fsnode.parent !== destiny;
+    }).forEach( function( item ){
+
+      console.log('move',item.fsnode);
+
+      item.fsnode.move( destiny, null, function(){
+        console.log( arguments );
+      });
+
+    });
+
+  }
 
   dropActive = false;
 
@@ -1570,48 +1561,96 @@ visualItemArea
 
   ghost.css({
 
-      'min-width'     : '110px',
+      'min-width'     : currentActive.length > 1 ? '16px' : '110px',
+      'width'         : currentActive.length > 1 ? '16px' : 'auto',
       'padding'       : '10px 9px 9px',
       'height'        : '16px',
       'line-height'   : '16px',
       'background'    : '#60b25e',
       'border-radius' : '3px',
       'text-align'    : 'left',
-      'box-shadow'    : '1px 2px 5px rgba(0,0,0,.25)',
+      'box-shadow'    : '0px 2px 5px rgba(0,0,0,.25)',
       'display'       : 'inline-block',
       'opacity'       : '.95',
       'left'          : drag.origin.clientX - position.left - 9 - 16,
       'top'           : drag.origin.clientY - position.top - 10 - 16
 
-  }).append(
+  });
 
-    $('<i></i>').css({
+  if( currentActive.length > 1 ){
 
-      'display'      : 'inline-block',
-      'width'        : '16px',
-      'height'       : '16px',
-      'background'   : '#f00',
-      'margin-right' : '10px'
+    ghost.append(
 
-    })
+      $('<i></i>').css({
 
-  ).append(
+        'display'             : 'inline-block',
+        'width'               : '16px',
+        'height'              : '16px',
+        'margin-right'        : '10px',
+        'background-image'    : 'url(' + currentLastPureClicked.fsnode.icons.tiny + ')',
+        'background-position' : 'center center',
+        'background-size'     : '16px 16px'
 
-    $('<span></span>').text('###ICON NAME###').css({
+      })
 
-      'display'         : 'inline-block',
-      'font-family'     : 'Lato',
-      'font-size'       : '13px',
-      'color'           : '#fff',
-      'vertical-align' : 'text-top'
+    ).append(
 
-    })
+      $('<i></i>').css({
 
-  );
+        'display'          : 'inline-block',
+        'min-width'        : '19px',
+        'height'           : '19px',
+        'border-radius'    : '10px',
+        'padding'          : '0 3px',
+        'background-color' : '#fa565a',
+        'border'           : 'solid 2px #fff',
+        'position'         : 'absolute',
+        'top'              : '-7px',
+        'right'            : '-7px',
+        'font-family'      : 'Lato',
+      	'font-size'        : '13px',
+      	'color'            : '#fff',
+        'text-align'       : 'center',
+        'box-sizing'       : 'border-box'
+
+      }).text( currentActive.length )
+
+    );
+
+  }else{
+
+    ghost.append(
+
+      $('<i></i>').css({
+
+        'display'             : 'inline-block',
+        'width'               : '16px',
+        'height'              : '16px',
+        'margin-right'        : '10px',
+        'background-image'    : 'url(' + currentLastPureClicked.fsnode.icons.tiny + ')',
+        'background-position' : 'center center',
+        'background-size'     : '16px 16px'
+
+      })
+
+    ).append(
+
+      $('<span></span>').text( currentLastPureClicked.fsnode.name ).css({
+
+        'display'        : 'inline-block',
+        'font-family'    : 'Lato',
+        'font-size'      : '13px',
+        'color'          : '#fff',
+        'vertical-align' : 'text-top'
+
+      })
+
+    );
+
+  }
 
   drag.ghost( ghost );
-
-  drag.data( currentActive );
+  drag.data( currentActive  );
 
 });
 
