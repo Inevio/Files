@@ -264,120 +264,120 @@ var downloadAllActive = function(){
 
 var drawIcons = function(){
 
-  if( !currentList.length ){
-    return;
-  }
+  if( currentList.length ){
 
-  var grid = calculateGrid();
-  var x = grid.gap;
-  var y = 10 + currentScroll;
-  var iconsInRow = 0;
-  var currentRow = 0;
+    var grid = calculateGrid();
+    var x = grid.gap;
+    var y = 10 + currentScroll;
+    var iconsInRow = 0;
+    var currentRow = 0;
 
-  currentList.forEach( function( icon, i ){
+    currentList.forEach( function( icon, i ){
 
-    iconsInRow++;
+      iconsInRow++;
 
-    if( iconsInRow > grid.iconsInRow ){
+      if( iconsInRow > grid.iconsInRow ){
 
-      y += currentRows[ currentRow ] + ROWS_GAP;
-      x  = grid.gap;
-      iconsInRow = 1;
-      currentRow++;
+        y += currentRows[ currentRow ] + ROWS_GAP;
+        x  = grid.gap;
+        iconsInRow = 1;
+        currentRow++;
 
-    }
+      }
 
-    if( dropActive && dropIgnore.indexOf( icon ) === -1 ){
+      if( dropActive && dropIgnore.indexOf( icon ) === -1 ){
 
-      if( icon.fsnode.type !== TYPE_FILE ){
+        if( icon.fsnode.type !== TYPE_FILE ){
 
-        if( icon === dropActive ){
+          if( icon === dropActive ){
+
+            ctx.strokeStyle = '#60b25e';
+            ctx.fillStyle = '#60b25e';
+            drawRoundRect( ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true );
+
+          }else{
+
+            ctx.strokeStyle = '#ccd3d5';
+            ctx.fillStyle = '#eff7ef';
+            drawRoundRect( ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true );
+
+          }
+
+        }
+
+      }else{
+
+        if( icon.hover || icon.active ){
+
+          ctx.strokeStyle = '#ccd3d5';
+          ctx.fillStyle = '#f7f8fa';
+          drawRoundRect( ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true );
+
+        }
+
+        if( icon.active ){
 
           ctx.strokeStyle = '#60b25e';
           ctx.fillStyle = '#60b25e';
-          drawRoundRect( ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true );
-
-        }else{
-
-          ctx.strokeStyle = '#ccd3d5';
-          ctx.fillStyle = '#eff7ef';
-          drawRoundRect( ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true );
+          drawRoundRect( ctx, x, y + ICON_IMAGE_HEIGHT_AREA, ICON_WIDTH, icon.bigIconTextHeight, { bl : ICON_RADIUS, br : ICON_RADIUS }, true, false );
 
         }
 
       }
 
-    }else{
+      if( dropActive ){
 
-      if( icon.hover || icon.active ){
+        if( ( icon.fsnode.type !== TYPE_FILE && icon === dropActive ) || dropIgnore.indexOf( icon ) !== -1 ){
+          ctx.fillStyle = '#ffffff';
+        }else{
+          ctx.fillStyle = '#545f65';
+        }
 
-        ctx.strokeStyle = '#ccd3d5';
-        ctx.fillStyle = '#f7f8fa';
-        drawRoundRect( ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true );
-
-      }
-
-      if( icon.active ){
-
-        ctx.strokeStyle = '#60b25e';
-        ctx.fillStyle = '#60b25e';
-        drawRoundRect( ctx, x, y + ICON_IMAGE_HEIGHT_AREA, ICON_WIDTH, icon.bigIconTextHeight, { bl : ICON_RADIUS, br : ICON_RADIUS }, true, false );
-
-      }
-
-    }
-
-    if( dropActive ){
-
-      if( ( icon.fsnode.type !== TYPE_FILE && icon === dropActive ) || dropIgnore.indexOf( icon ) !== -1 ){
-        ctx.fillStyle = '#ffffff';
       }else{
-        ctx.fillStyle = '#545f65';
+        ctx.fillStyle = icon.active ? '#ffffff' : '#545f65';
       }
 
-    }else{
-      ctx.fillStyle = icon.active ? '#ffffff' : '#545f65';
-    }
+      ctx.font = '13px Lato';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText( icon.lines[ 0 ], x + ICON_WIDTH / 2, 4 + y + ICON_IMAGE_HEIGHT_AREA);
 
-    ctx.font = '13px Lato';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'top';
-    ctx.fillText( icon.lines[ 0 ], x + ICON_WIDTH / 2, 4 + y + ICON_IMAGE_HEIGHT_AREA);
+      if( icon.lines[ 1 ] ){
+        ctx.fillText( icon.lines[ 1 ], x + ICON_WIDTH / 2, 4 + y + 18 + ICON_IMAGE_HEIGHT_AREA);
+      }
 
-    if( icon.lines[ 1 ] ){
-      ctx.fillText( icon.lines[ 1 ], x + ICON_WIDTH / 2, 4 + y + 18 + ICON_IMAGE_HEIGHT_AREA);
-    }
+      var imgX = x;
+      var imgY = y;
 
-    var imgX = x;
-    var imgY = y;
+      if( !icon.bigIcon ){
 
-    if( !icon.bigIcon ){
+        icon.bigIcon = new Image ();
+        icon.bigIcon.src = icon.fsnode.icons.small + ( icon.fsnode.type === TYPE_FILE ? '?time=' + Date.now() : '' );
 
-      icon.bigIcon = new Image ();
-      icon.bigIcon.src = icon.fsnode.icons.small + ( icon.fsnode.type === TYPE_FILE ? '?time=' + Date.now() : '' );
+      }
 
-    }
+      if( icon.bigIcon.naturalWidth ){
 
-    if( icon.bigIcon.naturalWidth ){
+        var normalized = normalizeBigIconSize( icon.bigIcon );
 
-      var normalized = normalizeBigIconSize( icon.bigIcon );
+        ctx.drawImage( icon.bigIcon, imgX + ( ICON_WIDTH -  normalized.width ) / 2, imgY + ( ICON_IMAGE_HEIGHT_AREA - normalized.height ) / 2, normalized.width, normalized.height );
 
-      ctx.drawImage( icon.bigIcon, imgX + ( ICON_WIDTH -  normalized.width ) / 2, imgY + ( ICON_IMAGE_HEIGHT_AREA - normalized.height ) / 2, normalized.width, normalized.height );
+      }else{
+        $( icon.bigIcon ).on( 'load', requestDraw );
+      }
 
-    }else{
-      $( icon.bigIcon ).on( 'load', requestDraw );
-    }
+      if( ( dropActive && icon.fsnode.type === TYPE_FILE ) || dropIgnore.indexOf( icon ) !== -1 ){
 
-    if( ( dropActive && icon.fsnode.type === TYPE_FILE ) || dropIgnore.indexOf( icon ) !== -1 ){
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+        ctx.fillRect( x, y, ICON_WIDTH + 1, icon.bigIconHeight + 1 );
 
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-      ctx.fillRect( x, y, ICON_WIDTH + 1, icon.bigIconHeight + 1 );
+      }
 
-    }
+      x += ICON_WIDTH + grid.gap;
 
-    x += ICON_WIDTH + grid.gap;
+    });
 
-  });
+  }
 
   if( dropActive === true || dropIgnore.indexOf( dropActive ) !== -1 ){
 
