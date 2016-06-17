@@ -883,6 +883,56 @@ var requestDraw = function(){
 
 }
 
+var selectIcon = function( e, itemClicked ){
+
+  if( !itemClicked && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.shiftKey ){
+
+    currentActive.forEach( function( item ){ item.active = false; });
+    currentActive = [];
+
+  }else if( itemClicked && !e.metaKey && !e.ctrlKey && !e.shiftKey && currentActive.indexOf( itemClicked ) === -1 ){
+
+    currentActive.forEach( function( item ){ item.active = false; });
+    currentActive = [];
+
+    addToCollection( currentActive, itemClicked );
+    itemClicked.active = true;
+    currentLastPureClicked = itemClicked;
+
+  }else if( itemClicked && ( e.metaKey || e.ctrlKey ) && ( !e.shiftKey || ( e.shiftKey && ! currentLastPureClicked ) ) ){
+
+    itemClicked.active = toggleInCollection( currentActive, itemClicked );
+    currentLastPureClicked = itemClicked;
+
+  }else if( itemClicked && e.shiftKey ){
+
+    var positions = [ currentList.indexOf( currentLastPureClicked ), currentList.indexOf( currentLastDirtyClicked || currentLastPureClicked ) ].sort( function( a, b ){ return a - b; });
+
+    currentList.slice( positions[ 0 ], positions[ 1 ] + 1 ).forEach( function( item ){
+
+      removeFromCollection( currentActive, item );
+      item.active = false;
+
+    });
+
+    positions = [ currentList.indexOf( currentLastPureClicked ), currentList.indexOf( itemClicked ) ].sort( function( a, b ){ return a - b; });
+
+    currentList.slice( positions[ 0 ], positions[ 1 ] + 1 ).forEach( function( item ){
+
+      addToCollection( currentActive, item );
+      item.active = true;
+
+    });
+
+    currentLastDirtyClicked = itemClicked;
+
+  }
+
+  checkDraggableArea();
+  requestDraw();
+
+};
+
 var showRenameTextarea = function( icon ){
 
   var areaPosition = visualItemArea.position();
@@ -1125,6 +1175,43 @@ $(this)
 
   }
 
+})
+
+.key( 'left, right', function( e ){
+
+  var direction     = e.keyCode === 37 ? -1 : 1;
+  var itemClickedId = currentList.indexOf( currentLastPureClicked ) + direction;
+
+  if( !currentList[ itemClickedId ] ){
+    return;
+  }
+
+  selectIcon( e, currentList[ itemClickedId ] );
+
+})
+
+.key( 'up, down', function( e ){
+  
+  var grid          = calculateGrid();
+  var direction     = grid.iconsInRow * ( e.keyCode === 38 ? -1 : 1 );
+  var itemClickedId = currentList.indexOf( currentLastPureClicked ) + direction;
+
+  if( !currentList[ itemClickedId ] ){
+
+    if( direction > 0 ){
+      itemClickedId = currentList.length - 1;
+    }else{
+      itemClickedId = 0;
+    }
+
+  }
+
+  if( !currentList[ itemClickedId ] ){
+    return;
+  }
+
+  selectIcon( e, currentList[ itemClickedId ] );
+
 });
 
 visualSidebarItemArea
@@ -1210,55 +1297,7 @@ visualItemArea
 })
 
 .on( 'mousedown', function( e ){
-
-  var itemClicked = getIconWithMouserOver( e );
-
-  if( !itemClicked && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.shiftKey ){
-
-    currentActive.forEach( function( item ){ item.active = false; });
-    currentActive = [];
-
-  }else if( itemClicked && !e.metaKey && !e.ctrlKey && !e.shiftKey && currentActive.indexOf( itemClicked ) === -1 ){
-
-    currentActive.forEach( function( item ){ item.active = false; });
-    currentActive = [];
-
-    addToCollection( currentActive, itemClicked );
-    itemClicked.active = true;
-    currentLastPureClicked = itemClicked;
-
-  }else if( itemClicked && ( e.metaKey || e.ctrlKey ) && ( !e.shiftKey || ( e.shiftKey && ! currentLastPureClicked ) ) ){
-
-    itemClicked.active = toggleInCollection( currentActive, itemClicked );
-    currentLastPureClicked = itemClicked;
-
-  }else if( itemClicked && e.shiftKey ){
-
-    var positions = [ currentList.indexOf( currentLastPureClicked ), currentList.indexOf( currentLastDirtyClicked || currentLastPureClicked ) ].sort( function( a, b ){ return a - b; });
-
-    currentList.slice( positions[ 0 ], positions[ 1 ] + 1 ).forEach( function( item ){
-
-      removeFromCollection( currentActive, item );
-      item.active = false;
-
-    });
-
-    positions = [ currentList.indexOf( currentLastPureClicked ), currentList.indexOf( itemClicked ) ].sort( function( a, b ){ return a - b; });
-
-    currentList.slice( positions[ 0 ], positions[ 1 ] + 1 ).forEach( function( item ){
-
-      addToCollection( currentActive, item );
-      item.active = true;
-
-    });
-
-    currentLastDirtyClicked = itemClicked;
-
-  }
-
-  checkDraggableArea();
-  requestDraw();
-
+  selectIcon( e, getIconWithMouserOver( e ) );
 })
 
 .on( 'contextmenu', function( e ){
