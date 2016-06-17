@@ -768,16 +768,13 @@ var historyGoForward = function(){
 
 var makeIconVisible = function( icon ){
 
-  console.log( currentScroll, currentMaxScroll, ctx.height );
-  console.log( getIconPosition( icon ).y + icon.bigIconHeight );
-  console.log( getIconPosition( icon ).y + icon.bigIconHeight - ctx.height );
-
-  var scroll = -1 * ( getIconPosition( icon ).y + icon.bigIconHeight + ( ROWS_GAP / 2 ) - ctx.height );
+  var position = getIconPosition( icon );
+  var scroll   = -1 * ( position.y + icon.bigIconHeight + ( ROWS_GAP / 2 ) - ctx.height );
 
   if( scroll < currentScroll ){
     currentScroll = scroll;
-  }else if( scroll > ( currentScroll - ctx.height ) ){
-    currentScroll = scroll;
+  }else if( position.y < -1 * currentScroll ){
+    currentScroll = - 1 * position.y + ( ROWS_GAP / 2 );
   }
 
   requestDraw();
