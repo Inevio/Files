@@ -1196,49 +1196,57 @@ $(this)
 
 .key( 'left, right', null, function( e ){
 
-  var direction     = e.keyCode === 37 ? -1 : 1;
-  var itemClickedId = currentList.indexOf( currentLastPureClicked ) + direction;
-  itemClickedId     = itemClickedId < 0 ? 0 : itemClickedId;
+  if( !$(e.target).is('textarea') ){
 
-  if( !currentList[ itemClickedId ] ){
-    return;
+    var direction     = e.keyCode === 37 ? -1 : 1;
+    var itemClickedId = currentList.indexOf( currentLastPureClicked ) + direction;
+    itemClickedId     = itemClickedId < 0 ? 0 : itemClickedId;
+
+    if( !currentList[ itemClickedId ] ){
+      return;
+    }
+
+    e.metaKey  = false;
+    e.ctrlKey  = false;
+    e.shiftKey = false;
+
+    selectIcon( e, currentList[ itemClickedId ] );
+    makeIconVisible( currentList[ itemClickedId ] );
+
   }
-
-  e.metaKey  = false;
-  e.ctrlKey  = false;
-  e.shiftKey = false;
-
-  selectIcon( e, currentList[ itemClickedId ] );
-  makeIconVisible( currentList[ itemClickedId ] );
 
 })
 
 .key( 'up, down', function( e ){
 
-  var grid          = calculateGrid();
-  var direction     = grid.iconsInRow * ( e.keyCode === 38 ? -1 : 1 );
-  var itemClickedId = currentList.indexOf( currentLastPureClicked ) + direction;
+  if( !$(e.target).is('textarea') ){
 
-  if( !currentList[ itemClickedId ] ){
+    var grid          = calculateGrid();
+    var direction     = grid.iconsInRow * ( e.keyCode === 38 ? -1 : 1 );
+    var itemClickedId = currentList.indexOf( currentLastPureClicked ) + direction;
 
-    if( direction > 0 ){
-      itemClickedId = currentList.length - 1;
-    }else{
-      itemClickedId = 0;
+    if( !currentList[ itemClickedId ] ){
+
+      if( direction > 0 ){
+        itemClickedId = currentList.length - 1;
+      }else{
+        itemClickedId = 0;
+      }
+
     }
 
+    if( !currentList[ itemClickedId ] ){
+      return;
+    }
+
+    e.metaKey  = false;
+    e.ctrlKey  = false;
+    e.shiftKey = false;
+
+    selectIcon( e, currentList[ itemClickedId ] );
+    makeIconVisible( currentList[ itemClickedId ] );
+
   }
-
-  if( !currentList[ itemClickedId ] ){
-    return;
-  }
-
-  e.metaKey  = false;
-  e.ctrlKey  = false;
-  e.shiftKey = false;
-
-  selectIcon( e, currentList[ itemClickedId ] );
-  makeIconVisible( currentList[ itemClickedId ] );
 
 });
 
