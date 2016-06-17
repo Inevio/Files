@@ -1154,12 +1154,12 @@ $(this)
 
 })
 
-.key( 'esc', function(e){
+.key( 'esc', function( e ){
 
   if( $(e.target).is('textarea') ){
     hideRenameTextarea( true );
   }else{
-    console.log('TO DO');
+    selectIcon( e );
   }
 
 })
@@ -1191,7 +1191,7 @@ $(this)
 })
 
 .key( 'up, down', function( e ){
-  
+
   var grid          = calculateGrid();
   var direction     = grid.iconsInRow * ( e.keyCode === 38 ? -1 : 1 );
   var itemClickedId = currentList.indexOf( currentLastPureClicked ) + direction;
