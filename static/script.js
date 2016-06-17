@@ -1177,14 +1177,19 @@ $(this)
 
 })
 
-.key( 'left, right', function( e ){
+.key( 'left, right', null, function( e ){
 
   var direction     = e.keyCode === 37 ? -1 : 1;
   var itemClickedId = currentList.indexOf( currentLastPureClicked ) + direction;
+  itemClickedId     = itemClickedId < 0 ? 0 : itemClickedId;
 
   if( !currentList[ itemClickedId ] ){
     return;
   }
+
+  e.metaKey  = false;
+  e.ctrlKey  = false;
+  e.shiftKey = false;
 
   selectIcon( e, currentList[ itemClickedId ] );
 
@@ -1209,6 +1214,10 @@ $(this)
   if( !currentList[ itemClickedId ] ){
     return;
   }
+
+  e.metaKey  = false;
+  e.ctrlKey  = false;
+  e.shiftKey = false;
 
   selectIcon( e, currentList[ itemClickedId ] );
 
@@ -1574,7 +1583,7 @@ visualItemArea
     var destiny = itemOver ? itemOver.fsnode.id : currentOpened.id;
 
     list.filter( function( item ){
-      return item.fsnode.parent !== destiny;
+      return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
     }).forEach( function( item ){
 
       console.log('move',item.fsnode);
