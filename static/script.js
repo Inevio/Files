@@ -720,6 +720,7 @@ var hideRenameTextarea = function( cancel ){
   icon.lines       = getIconLines( name );
   currentList      = currentList.sort( currentSort );
 
+  makeIconVisible( icon );
   requestDraw();
 
   icon.fsnode.rename( name, function( error ){
@@ -730,6 +731,7 @@ var hideRenameTextarea = function( cancel ){
       icon.lines       = getIconLines( oldName );
       currentList      = currentList.sort( currentSort );
 
+      makeIconVisible( icon );
       requestDraw();
 
     }
@@ -900,7 +902,7 @@ var requestDraw = function(){
 
 var selectIcon = function( e, itemClicked ){
 
-  if( !itemClicked && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.shiftKey ){
+  if( !itemClicked && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.shiftKey && !visualRenameTextarea.hasClass('active') ){
 
     currentActive.forEach( function( item ){ item.active = false; });
     currentActive = [];
@@ -1716,16 +1718,6 @@ visualItemArea
 
   drag.ghost( ghost );
   drag.data( currentActive  );
-
-});
-
-visualRenameTextarea.on( 'blur', function(){
-
-  if( !visualRenameTextarea.hasClass('active') ){
-    return;
-  }
-
-  hideRenameTextarea();
 
 });
 
