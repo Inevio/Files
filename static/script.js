@@ -766,6 +766,24 @@ var historyGoForward = function(){
 
 };
 
+var makeIconVisible = function( icon ){
+
+  console.log( currentScroll, currentMaxScroll, ctx.height );
+  console.log( getIconPosition( icon ).y + icon.bigIconHeight );
+  console.log( getIconPosition( icon ).y + icon.bigIconHeight - ctx.height );
+
+  var scroll = -1 * ( getIconPosition( icon ).y + icon.bigIconHeight + ( ROWS_GAP / 2 ) - ctx.height );
+
+  if( scroll < currentScroll ){
+    currentScroll = scroll;
+  }else if( scroll > ( currentScroll - ctx.height ) ){
+    currentScroll = scroll;
+  }
+
+  requestDraw();
+
+};
+
 var normalizeBigIconSize = function( image ){
 
   if( image.naturalWidth > 64 || image.naturalHeight > 64 ){
@@ -1192,6 +1210,7 @@ $(this)
   e.shiftKey = false;
 
   selectIcon( e, currentList[ itemClickedId ] );
+  makeIconVisible( currentList[ itemClickedId ] );
 
 })
 
@@ -1220,6 +1239,7 @@ $(this)
   e.shiftKey = false;
 
   selectIcon( e, currentList[ itemClickedId ] );
+  makeIconVisible( currentList[ itemClickedId ] );
 
 });
 
