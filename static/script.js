@@ -429,6 +429,18 @@ var drawRoundRect = function( ctx, x, y, width, height, radius, fill, stroke ){
 
 };
 
+var findIconWithSimilarName = function( list, name ){
+
+  for( var i = 0; i < list.length; i++ ){
+
+    if( list[ i ].fsnode.name.toLowerCase() >= name ){
+      return list[ i ];
+    }
+
+  }
+
+};
+
 var getAvailableNewFolderName = function(){
 
   var found     = false;
@@ -1248,6 +1260,42 @@ $(this)
     makeIconVisible( currentList[ itemClickedId ] );
 
   }
+
+})
+
+.key( 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,0,1,2,3,4,5,6,7,8,9', function( e ){
+
+  var char  = e.key || String.fromCharCode( ( 96 <= e.which && e.which <= 105 ) ? e.which - 48 : e.which );
+  var found = false;
+
+  if( currentLastPureClicked && currentLastPureClicked.fsnode.type === TYPE_FILE ){
+
+    if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type === TYPE_FILE; }), char ) ){
+      selectIcon( e, found );
+      return makeIconVisible( found );
+    }
+
+    if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type !== TYPE_FILE; }), char ) ){
+      selectIcon( e, found );
+      return makeIconVisible( found );
+    }
+
+  }else{
+
+    if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type !== TYPE_FILE; }), char ) ){
+      selectIcon( e, found );
+      return makeIconVisible( found );
+    }
+
+    if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type === TYPE_FILE; }), char ) ){
+      selectIcon( e, found );
+      return makeIconVisible( found );
+    }
+
+  }
+
+  selectIcon( e, currentList[ currentList.length - 1 ] );
+  makeIconVisible( currentList[ currentList.length - 1 ] );
 
 });
 
