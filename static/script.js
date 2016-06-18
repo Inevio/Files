@@ -706,7 +706,7 @@ var hideRenameTextarea = function( cancel ){
 
   visualRenameTextarea.removeClass('active');
 
-  var name = visualRenameTextarea.val()
+  var name = visualRenameTextarea.val().replace( /(?:\r\n|\r|\n)/g, ' ' );
   var icon = visualRenameTextarea.data('icon');
 
   visualRenameTextarea.removeData('icon').val('');
@@ -1736,7 +1736,8 @@ visualItemArea
 
 });
 
-visualRenameTextarea.on( 'blur', function(){
+visualRenameTextarea
+.on( 'blur', function(){
 
   if( !visualRenameTextarea.hasClass('active') ){
     return;
@@ -1744,6 +1745,10 @@ visualRenameTextarea.on( 'blur', function(){
 
   hideRenameTextarea();
 
+})
+
+.on( 'paste', function(){
+  visualRenameTextarea.val( visualRenameTextarea.val().replace( /(?:\r\n|\r|\n)/g, ' ' ) );
 });
 
 getSidebarItems().then( function( list ){
