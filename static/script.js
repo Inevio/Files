@@ -1664,7 +1664,8 @@ visualItemArea
         'margin-right'        : '10px',
         'background-image'    : 'url(' + currentLastPureClicked.fsnode.icons.tiny + ')',
         'background-position' : 'center center',
-        'background-size'     : '16px 16px'
+        'background-size'     : 'contain',
+        'background-repeat'   : 'no-repeat'
 
       })
 
@@ -1704,7 +1705,8 @@ visualItemArea
         'margin-right'        : '10px',
         'background-image'    : 'url(' + currentLastPureClicked.fsnode.icons.tiny + ')',
         'background-position' : 'center center',
-        'background-size'     : '16px 16px'
+        'background-size'     : 'contain',
+        'background-repeat'   : 'no-repeat'
 
       })
 
