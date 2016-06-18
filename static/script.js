@@ -1115,7 +1115,7 @@ api.upload
 
   visualProgressBar.width( parseFloat( queueProgress * 100 ).toFixed( 4 ) + '%' );
 
-  var percentage = parseFloat( ( queueProgress * 100 ).toFixed( 1 ) );
+  var percentage = parseFloat( queueProgress * 100 ).toFixed( 1 );
 
   if( !time ){
     visualProgressStatusTime.text( lang.uploadingTimeCalculating.replace( '%d', percentage ) );
@@ -1145,6 +1145,7 @@ $(this)
 
   updateCanvasSize();
   updateRows();
+  checkScrollLimits();
   requestDraw();
 
 })
@@ -1580,6 +1581,10 @@ visualItemArea
   var itemOver = getIconWithMouserOver( e );
   dropIgnore = list || [];
 
+  if( itemOver && ( itemOver.fsnode.type === TYPE_FILE || dropIgnore.indexOf( itemOver ) !== -1 ) ){
+    itemOver = true;
+  }
+
   if( dropActive !== itemOver ){
 
     dropActive = itemOver || true;
@@ -1607,7 +1612,7 @@ visualItemArea
     $(this).data( 'wz-uploader-destiny', itemOver ? itemOver.fsnode.id : currentOpened.id );
   }else{
 
-    var destiny = itemOver ? itemOver.fsnode.id : currentOpened.id;
+    var destiny = itemOver && itemOver.fsnode.type !== TYPE_FILE ? itemOver.fsnode.id : currentOpened.id;
 
     list.filter( function( item ){
       return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
