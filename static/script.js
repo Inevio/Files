@@ -13,6 +13,7 @@ var TYPE_FILE = 3;
 
 var requestedFrame   = false;
 var currentOpened    = null;
+var currentIcons     = {};
 var currentList      = [];
 var currentRows      = [];
 var currentHover     = null;
@@ -96,21 +97,37 @@ var addToHistoryForward = function( item ){
 
 var appendItemToList = function( items ){
 
+  var list = [];
+
   if( items instanceof Array ){
 
-    items = items.map( function( item ){
-      return new Icon( item );
+    items.forEach( function( item ){
+
+      if( !currentIcons[ item.id ] ){
+
+        currentIcons[ item.id ] = new Icon( item );
+        list.push( currentIcons[ item.id ] );
+
+      }
+
     });
 
-  }else{
-    items = [ new Icon( items ) ];
+  }else if( !currentIcons[ items.id ] ){
+
+    currentIcons[ items.id ] = new Icon( items );
+    list.push( currentIcons[ items.id ] );
+
   }
 
-  currentList = currentList.concat( items );
-  currentList = currentList.sort( currentSort );
+  if( list.length ){
 
-  updateRows();
-  requestDraw();
+    currentList = currentList.concat( list );
+    currentList = currentList.sort( currentSort );
+
+    updateRows();
+    requestDraw();
+
+  }
 
 };
 
@@ -187,6 +204,7 @@ var clearHistoryForward = function(){
 var clearList = function(){
 
   currentList   = [];
+  currentIcons  = {};
   currentRows   = [];
   currentHover  = null;
   currentActive = [];
@@ -224,11 +242,8 @@ var createFolder = function(){
 
   currentOpened.createDirectory( getAvailableNewFolderName(), function( error, newDirectory ){
 
-    /*
-    setTimeout( function(){
-      beginRename( $( '.weexplorer-file-' + newDirectory.id, fileArea ) );
-    }, 100);
-    */
+    appendItemToList( newDirectory );
+    showRenameTextarea( currentIcons[ newDirectory.id ] );
 
   });
 
@@ -874,17 +889,25 @@ var removeFromCollection = function( collection, item ){
 
 var removeItemFromList = function( fsnodeId ){
 
+  if( !currentIcons[ fsnodeId ] ){
+    return;
+  }
+
+  var iconToRemove = currentIcons[ fsnodeId ];
+
   currentList = currentList.filter( function( icon ){
-    return icon.fsnode.id !== fsnodeId;
+    return icon !== iconToRemove;
   });
 
   currentActive = currentActive.filter( function( icon ){
-    return icon.fsnode.id !== fsnodeId;
+    return icon !== iconToRemove;
   });
 
-  if( currentHover && currentHover.fsnode.id === fsnodeId ){
+  if( currentHover && currentHover === iconToRemove ){
     currentHover = null;
   }
+
+  delete currentIcons[ fsnodeId ];
 
   checkDraggableArea();
   updateRows();
