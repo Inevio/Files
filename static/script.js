@@ -711,8 +711,8 @@ var getIconsInArea = function( start, end ){
 var getIconWithMouserOver = function( event ){
 
   var offset = visualItemArea.offset();
-  var posX   = event.pageX - offset.left;
-  var posY   = event.pageY - offset.top;
+  var posX   = event.clientX - offset.left;
+  var posY   = event.clientY - offset.top;
 
   // Get row
   var row     = null;
@@ -1509,7 +1509,7 @@ visualItemArea
   if( selectDragOrigin ){
 
     var offset = visualItemArea.offset();
-    selectDragCurrent = { x : e.pageX - offset.left, y : e.pageY - offset.top };
+    selectDragCurrent = { x : e.clientX - offset.left, y : e.clientY - offset.top };
 
     console.log( getIconsInArea( selectDragOrigin, selectDragCurrent ) )
     return requestDraw();
@@ -1553,7 +1553,7 @@ visualItemArea
   }else if( e.button === 0 ){
 
     var offset = visualItemArea.offset();
-    selectDragOrigin = { x : e.pageX - offset.left, y : e.pageY - offset.top };
+    selectDragOrigin = { x : e.clientX - offset.left, y : e.clientY - offset.top };
 
   }
 
@@ -1889,8 +1889,8 @@ visualItemArea
       'box-shadow'    : '0px 2px 5px rgba(0,0,0,.25)',
       'display'       : 'inline-block',
       'opacity'       : '.95',
-      'left'          : drag.origin.pageX - position.left - 9 - 16,
-      'top'           : drag.origin.pageY - position.top - 10 - 16
+      'left'          : drag.origin.clientX - position.left - 9 - 16,
+      'top'           : drag.origin.clientY - position.top - 10 - 16
 
   });
 
