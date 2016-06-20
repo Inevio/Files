@@ -27,6 +27,8 @@ var historyBackward  = [];
 var historyForward   = [];
 var dropActive       = false;
 var dropIgnore       = [];
+var selectDragOrigin = null;
+var selectDragCurrent = null;
 
 var win                        = $(this);
 var visualHistoryBack          = $('.folder-controls .back');
@@ -409,6 +411,13 @@ var drawIconsInGrid = function(){
 
   });
 
+  if( selectDragCurrent ){
+
+    ctx.fillStyle = 'rgba(96, 178, 94, 0.3)';
+    ctx.fillRect( selectDragOrigin.x, selectDragOrigin.y, selectDragCurrent.x - selectDragOrigin.x, selectDragCurrent.y - selectDragOrigin.y );
+
+  }
+
 };
 
 var drawIconsInList = function(){
@@ -605,6 +614,97 @@ var getIconPosition = function( icon ){
     y : posY
 
   };
+
+};
+
+var getIconsInArea = function( start, end ){
+
+  var startX, startY, endX, endY;
+
+  if( start.x < end.x ){
+    startX = start.x;
+    endX   = end.x;
+  }else if( start.x > end.x ){
+    startX = end.x;
+    endX   = start.x;
+  }else{
+    return [];
+  }
+
+  if( start.y < end.y ){
+    startY = start.y;
+    endY   = end.y;
+  }else if( start.y > end.y ){
+    startY = end.y;
+    endY   = start.y;
+  }else{
+    return [];
+  }
+
+  var grid  = calculateGrid();
+  var startPosX = grid.gap;
+  var startPosY = 10;
+  var startCol  = 0;
+  var startRow  = 0;
+  var endPosX   = grid.gap;
+  var endPosY   = 10;
+  var endCol    = 0;
+  var endRow    = 0;
+
+  for( var i = 0; i < grid.iconsInRow; i++ ){
+
+    if( startX < startPosX + ICON_WIDTH ){
+      break;
+    }
+
+    startPosX += ICON_WIDTH + grid.gap;
+    startCol++;
+
+  }
+
+  for( var i = 0; i < grid.iconsInRow; i++ ){
+
+    if( endX < endPosX + ICON_WIDTH ){
+      break;
+    }
+
+    endPosX += ICON_WIDTH + grid.gap;
+    endCol++;
+
+  }
+
+  for( var i = 0; i < currentRows.length; i++ ){
+
+    if( startY < startPosY + currentRows[ i ] ){
+      break;
+    }
+
+    startPosY += currentRows[ i ] + ROWS_GAP;
+    startRow++;
+
+  }
+
+  for( var i = 0; i < currentRows.length; i++ ){
+
+    if( endY < endPosY + currentRows[ i ] ){
+      break;
+    }
+
+    endPosY += currentRows[ i ] + ROWS_GAP;
+    endRow++;
+
+  }
+
+  console.log( 'startCol', startCol, 'startRow', startRow );
+  console.log( 'endCol  ', endCol,   'endRow  ', endRow );
+
+  var list = [];
+
+  for( var i = startRow; i <= endRow; i++ ){
+    list = list.concat( currentList.slice( i * grid.iconsInRow + startCol, i * grid.iconsInRow + endCol + 1 ) );
+  }
+
+  return list;
 
 };
 
@@ -1402,8 +1502,18 @@ visualItemArea
 
 .on( 'mousemove mousewheel', function( e ){
 
-  if( !currentList.length ){
+  if( !currentList.length && !selectDragOrigin ){
     return;
+  }
+
+  if( selectDragOrigin ){
+
+    var offset = visualItemArea.offset();
+    selectDragCurrent = { x : e.pageX - offset.left, y : e.pageY - offset.top };
+
+    console.log( getIconsInArea( selectDragOrigin, selectDragCurrent ) )
+    return requestDraw();
+
   }
 
   var itemOver = getIconWithMouserOver( e );
@@ -1435,7 +1545,33 @@ visualItemArea
 })
 
 .on( 'mousedown', function( e ){
-  selectIcon( e, getIconWithMouserOver( e ) );
+
+  var itemClicked = getIconWithMouserOver( e );
+
+  if( itemClicked ){
+    makeIconVisible( itemClicked );
+  }else if( e.button === 0 ){
+
+    var offset = visualItemArea.offset();
+    selectDragOrigin = { x : e.pageX - offset.left, y : e.pageY - offset.top };
+
+  }
+
+  selectIcon( e, itemClicked );
+
+})
+
+.on( 'mouseup', function( e ){
+
+  if( selectDragOrigin ){
+
+    selectDragOrigin  = null;
+    selectDragCurrent = null;
+
+    requestDraw();
+
+  }
+
 })
 
 .on( 'contextmenu', function( e ){
@@ -1753,8 +1889,8 @@ visualItemArea
       'box-shadow'    : '0px 2px 5px rgba(0,0,0,.25)',
       'display'       : 'inline-block',
       'opacity'       : '.95',
-      'left'          : drag.origin.clientX - position.left - 9 - 16,
-      'top'           : drag.origin.clientY - position.top - 10 - 16
+      'left'          : drag.origin.pageX - position.left - 9 - 16,
+      'top'           : drag.origin.pageY - position.top - 10 - 16
 
   });
 
