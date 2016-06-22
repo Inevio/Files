@@ -11,24 +11,25 @@ var TYPE_FOLDER_SPECIAL = 1;
 var TYPE_FOLDER = 2;
 var TYPE_FILE = 3;
 
-var requestedFrame   = false;
-var currentOpened    = null;
-var currentIcons     = {};
-var currentList      = [];
-var currentRows      = [];
-var currentHover     = null;
-var currentActive    = [];
-var currentScroll    = 0;
-var currentMaxScroll = 0;
-var currentLastPureClicked = null;
+var requestedFrame          = false;
+var currentOpened           = null;
+var currentIcons            = {};
+var currentList             = [];
+var currentRows             = [];
+var currentHover            = null;
+var currentActive           = [];
+var currentActiveIcons      = {};
+var currentScroll           = 0;
+var currentMaxScroll        = 0;
+var currentLastPureClicked  = null;
 var currentLastDirtyClicked = null;
-var currentSort      = null;
-var historyBackward  = [];
-var historyForward   = [];
-var dropActive       = false;
-var dropIgnore       = [];
-var selectDragOrigin = null;
-var selectDragCurrent = null;
+var currentSort             = null;
+var historyBackward         = [];
+var historyForward          = [];
+var dropActive              = false;
+var dropIgnore              = [];
+var selectDragOrigin        = null;
+var selectDragCurrent       = null;
 
 var win                        = $(this);
 var visualHistoryBack          = $('.folder-controls .back');
@@ -205,11 +206,12 @@ var clearHistoryForward = function(){
 
 var clearList = function(){
 
-  currentList   = [];
-  currentIcons  = {};
-  currentRows   = [];
-  currentHover  = null;
-  currentActive = [];
+  currentList        = [];
+  currentIcons       = {};
+  currentRows        = [];
+  currentHover       = null;
+  currentActive      = [];
+  currentActiveIcons = {};
 
   checkDraggableArea();
 
@@ -253,7 +255,7 @@ var createFolder = function(){
 
 var deleteAllActive = function(){
 
-  confirm( 'Title', function( doIt ){
+  confirm( '###TITLE###', function( doIt ){
 
     if( !doIt ){
       return;
@@ -664,7 +666,7 @@ var getIconsInArea = function( start, end ){
 
   for( var i = 0; i < grid.iconsInRow; i++ ){
 
-    if( endX < endPosX + ICON_WIDTH ){
+    if( endX < endPosX + ICON_WIDTH + grid.gap ){
       break;
     }
 
@@ -686,7 +688,7 @@ var getIconsInArea = function( start, end ){
 
   for( var i = 0; i < currentRows.length; i++ ){
 
-    if( endY < endPosY + currentRows[ i ] ){
+    if( endY < endPosY + currentRows[ i ] + ROWS_GAP ){
       break;
     }
 
@@ -697,6 +699,7 @@ var getIconsInArea = function( start, end ){
 
   console.log( 'startCol', startCol, 'startRow', startRow );
   console.log( 'endCol  ', endCol,   'endRow  ', endRow );
+  console.log( '' );
 
   var list = [];
 
@@ -1038,6 +1041,7 @@ var removeItemFromList = function( fsnodeId ){
   }
 
   delete currentIcons[ fsnodeId ];
+  delete currentActiveIcons[ fsnodeId ];
 
   checkDraggableArea();
   updateRows();
@@ -1071,19 +1075,28 @@ var selectIcon = function( e, itemClicked ){
 
     currentActive.forEach( function( item ){ item.active = false; });
     currentActive = [];
+    currentActiveIcons = {};
 
   }else if( itemClicked && !e.metaKey && !e.ctrlKey && !e.shiftKey && currentActive.indexOf( itemClicked ) === -1 ){
 
     currentActive.forEach( function( item ){ item.active = false; });
-    currentActive = [];
 
-    addToCollection( currentActive, itemClicked );
-    itemClicked.active = true;
-    currentLastPureClicked = itemClicked;
+    currentActive                               = [ itemClicked ];
+    currentActiveIcons                          = {};
+    currentActiveIcons[ itemClicked.fsnode.id ] = itemClicked;
+    itemClicked.active                          = true;
+    currentLastPureClicked                      = itemClicked;
 
   }else if( itemClicked && ( e.metaKey || e.ctrlKey ) && ( !e.shiftKey || ( e.shiftKey && ! currentLastPureClicked ) ) ){
 
     itemClicked.active = toggleInCollection( currentActive, itemClicked );
+
+    if( itemClicked.active ){
+      currentActiveIcons[ itemClicked.fsnode.id ] = itemClicked;
+    }else{
+      delete currentActiveIcons[ itemClicked.fsnode.id ];
+    }
+
     currentLastPureClicked = itemClicked;
 
   }else if( itemClicked && e.shiftKey ){
@@ -1092,8 +1105,13 @@ var selectIcon = function( e, itemClicked ){
 
     currentList.slice( positions[ 0 ], positions[ 1 ] + 1 ).forEach( function( item ){
 
-      removeFromCollection( currentActive, item );
-      item.active = false;
+      if( currentActiveIcons[ item.fsnode.id ] ){
+
+        delete currentActiveIcons[ item.fsnode.id ];
+        removeFromCollection( currentActive, item );
+        item.active = false;
+
+      }
 
     });
 
@@ -1101,8 +1119,13 @@ var selectIcon = function( e, itemClicked ){
 
     currentList.slice( positions[ 0 ], positions[ 1 ] + 1 ).forEach( function( item ){
 
-      addToCollection( currentActive, item );
-      item.active = true;
+      if( !currentActiveIcons[ item.fsnode.id ] ){
+
+        currentActiveIcons[ item.fsnode.id ] = item;
+        currentActive.push( item );
+        item.active = true;
+
+      }
 
     });
 
@@ -1510,8 +1533,23 @@ visualItemArea
 
     var offset = visualItemArea.offset();
     selectDragCurrent = { x : e.clientX - offset.left, y : e.clientY - offset.top };
+    var iconsInArea = getIconsInArea( selectDragOrigin, selectDragCurrent );
 
-    console.log( getIconsInArea( selectDragOrigin, selectDragCurrent ) )
+    currentActive.forEach( function( item ){
+      item.active = false;
+    });
+
+    currentActive = [];
+    currentActiveIcons = {};
+
+    iconsInArea.forEach( function( item ){
+
+      currentActiveIcons[ item.fsnode.id ] = item;
+      currentActive.push( item );
+      item.active = true;
+
+    });
+
     return requestDraw();
 
   }
@@ -1926,8 +1964,8 @@ visualItemArea
         'top'              : '-7px',
         'right'            : '-7px',
         'font-family'      : 'Lato',
-      	'font-size'        : '13px',
-      	'color'            : '#fff',
+        'font-size'        : '13px',
+        'color'            : '#fff',
         'text-align'       : 'center',
         'box-sizing'       : 'border-box'
 
