@@ -32,6 +32,7 @@ var selectDragOrigin        = null;
 var selectDragCurrent       = null;
 
 var win                        = $(this);
+var window                     = win.parents().slice( -1 )[ 0 ].parentNode.defaultView;
 var visualHistoryBack          = $('.folder-controls .back');
 var visualHistoryForward       = $('.folder-controls .forward');
 var visualSidebarItemArea      = $('.ui-navgroup');
@@ -675,6 +676,10 @@ var getIconsInArea = function( start, end ){
 
   }
 
+  if( endCol >= grid.iconsInRow ){
+    endCol = grid.iconsInRow - 1;
+  }
+
   for( var i = 0; i < currentRows.length; i++ ){
 
     if( startY < startPosY + currentRows[ i ] ){
@@ -1201,6 +1206,57 @@ var sortByName = function( a, b ){
 
 };
 
+var moveListenerMousedown = function( e ){
+
+  var offset = visualItemArea.offset();
+  selectDragCurrent = { x : e.clientX - offset.left, y : e.clientY - offset.top };
+  var iconsInArea = getIconsInArea( selectDragOrigin, selectDragCurrent );
+
+  currentActive.forEach( function( item ){
+    item.active = false;
+  });
+
+  currentActive = [];
+  currentActiveIcons = {};
+
+  iconsInArea.forEach( function( item ){
+
+    currentActiveIcons[ item.fsnode.id ] = item;
+    currentActive.push( item );
+    item.active = true;
+
+  });
+
+  return requestDraw();
+
+};
+
+var moveListenerMouseup = function(){
+
+  selectDragOrigin  = null;
+  selectDragCurrent = null;
+
+  stopListeningMove();
+  requestDraw();
+
+};
+
+var startListeningMove = function(){
+
+  $( window )
+  .on( 'mousemove', moveListenerMousedown )
+  .on( 'mouseup', moveListenerMouseup );
+
+};
+
+var stopListeningMove = function(){
+
+  $( window )
+  .off( 'mousemove', moveListenerMousedown )
+  .off( 'mouseup', moveListenerMouseup );
+
+};
+
 var toggleInCollection = function( collection, item ){
 
   if( collection.indexOf( item ) === -1 ){
@@ -1546,33 +1602,8 @@ visualItemArea
 
 .on( 'mousemove mousewheel', function( e ){
 
-  if( !currentList.length && !selectDragOrigin ){
+  if( ( !currentList.length && !selectDragOrigin ) || selectDragOrigin ){
     return;
-  }
-
-  if( selectDragOrigin ){
-
-    var offset = visualItemArea.offset();
-    selectDragCurrent = { x : e.clientX - offset.left, y : e.clientY - offset.top };
-    var iconsInArea = getIconsInArea( selectDragOrigin, selectDragCurrent );
-
-    currentActive.forEach( function( item ){
-      item.active = false;
-    });
-
-    currentActive = [];
-    currentActiveIcons = {};
-
-    iconsInArea.forEach( function( item ){
-
-      currentActiveIcons[ item.fsnode.id ] = item;
-      currentActive.push( item );
-      item.active = true;
-
-    });
-
-    return requestDraw();
-
   }
 
   var itemOver = getIconWithMouserOver( e );
@@ -1613,23 +1644,11 @@ visualItemArea
 
     var offset = visualItemArea.offset();
     selectDragOrigin = { x : e.clientX - offset.left, y : e.clientY - offset.top };
+    startListeningMove();
 
   }
 
   selectIcon( e, itemClicked );
-
-})
-
-.on( 'mouseup', function( e ){
-
-  if( selectDragOrigin ){
-
-    selectDragOrigin  = null;
-    selectDragCurrent = null;
-
-    requestDraw();
-
-  }
 
 })
 
