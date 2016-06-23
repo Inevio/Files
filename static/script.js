@@ -1095,6 +1095,16 @@ var requestDraw = function(){
 
 }
 
+var selectAllIcons = function(){
+
+  currentActiveIcons = {};
+  currentActive      = currentList.map( function( item ){ item.active = true; return item; });
+
+  checkDraggableArea();
+  requestDraw();
+
+};
+
 var selectIcon = function( e, itemClicked ){
 
   if( !itemClicked && !e.shiftKey && !e.metaKey && !e.ctrlKey && !e.shiftKey && !visualRenameTextarea.hasClass('active') ){
@@ -1518,6 +1528,10 @@ $(this)
 
 .key( 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,0,1,2,3,4,5,6,7,8,9', function( e ){
 
+  if( e.metaKey || e.ctrlKey || e.shiftKey ){
+    return;
+  }
+
   var char  = e.key || String.fromCharCode( ( 96 <= e.which && e.which <= 105 ) ? e.which - 48 : e.which );
   var found = false;
 
@@ -1550,6 +1564,10 @@ $(this)
   selectIcon( e, currentList[ currentList.length - 1 ] );
   makeIconVisible( currentList[ currentList.length - 1 ] );
 
+})
+
+.key( 'ctrl+a, cmd+a', function(){
+  selectAllIcons();
 });
 
 visualSidebarItemArea
