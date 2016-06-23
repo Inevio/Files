@@ -697,14 +697,24 @@ var getIconsInArea = function( start, end ){
 
   }
 
-  console.log( 'startCol', startCol, 'startRow', startRow );
-  console.log( 'endCol  ', endCol,   'endRow  ', endRow );
-  console.log( '' );
-
   var list = [];
 
   for( var i = startRow; i <= endRow; i++ ){
-    list = list.concat( currentList.slice( i * grid.iconsInRow + startCol, i * grid.iconsInRow + endCol + 1 ) );
+
+    if( i === startRow ){
+
+      currentList.slice( i * grid.iconsInRow + startCol, i * grid.iconsInRow + endCol + 1 ).forEach( function( item ){
+
+        if( startPosY + item.bigIconHeight > startY ){
+          list.push( item );
+        }
+
+      });
+
+    }else{
+      list = list.concat( currentList.slice( i * grid.iconsInRow + startCol, i * grid.iconsInRow + endCol + 1 ) );
+    }
+
   }
 
   return list;
@@ -774,7 +784,18 @@ var getIconWithMouserOver = function( event ){
     col = grid.iconsInRow - 1;
   }
 
-  return currentList[ row * grid.iconsInRow + col ];
+  var icon = currentList[ row * grid.iconsInRow + col ];
+
+  if( !icon ){
+    return;
+  }
+
+  rowsPos = rowsPos - currentScroll - currentRows[ row ] - ROWS_GAP;
+  posY    = posY - currentScroll;
+
+  if( posY >= rowsPos && posY <= rowsPos + icon.bigIconHeight ){
+    return icon;
+  }
 
 };
 
