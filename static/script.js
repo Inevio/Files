@@ -30,6 +30,7 @@ var dropActive              = false;
 var dropIgnore              = [];
 var selectDragOrigin        = null;
 var selectDragCurrent       = null;
+var automaticScroll         = 0;
 
 var win                        = $(this);
 var window                     = win.parents().slice( -1 )[ 0 ].parentNode.defaultView;
@@ -74,6 +75,15 @@ var Icon = function( fsnode ){
   this.bigIconHeight = ICON_IMAGE_HEIGHT_AREA + this.bigIconTextHeight;
 
   return this;
+
+};
+
+var addScroll = function( value ){
+
+  currentScroll += value;
+
+  checkScrollLimits();
+  requestDraw();
 
 };
 
@@ -417,7 +427,7 @@ var drawIconsInGrid = function(){
   if( selectDragCurrent ){
 
     ctx.fillStyle = 'rgba(96, 178, 94, 0.3)';
-    ctx.fillRect( selectDragOrigin.x, selectDragOrigin.y, selectDragCurrent.x - selectDragOrigin.x, selectDragCurrent.y - selectDragOrigin.y );
+    ctx.fillRect( selectDragOrigin.x, selectDragOrigin.y + currentScroll, selectDragCurrent.x - selectDragOrigin.x, selectDragCurrent.y - selectDragOrigin.y );
 
   }
 
@@ -1219,7 +1229,7 @@ var sortByName = function( a, b ){
 var moveListenerMousedown = function( e ){
 
   var offset = visualItemArea.offset();
-  selectDragCurrent = { x : e.clientX - offset.left, y : e.clientY - offset.top };
+  selectDragCurrent = { x : e.clientX - offset.left, y : e.clientY - offset.top - currentScroll };
   var iconsInArea = getIconsInArea( selectDragOrigin, selectDragCurrent );
 
   currentActive.forEach( function( item ){
@@ -1237,7 +1247,18 @@ var moveListenerMousedown = function( e ){
 
   });
 
-  return requestDraw();
+  requestDraw();
+
+  var topDistance    = e.clientY - offset.top;
+  var bottomDistance = e.clientY - offset.top - visualItemArea.height();
+
+  if( topDistance < 0 ){
+    setAutomaticScroll( topDistance < -100 ? -100 : topDistance );
+  }else if( bottomDistance > 0 ){
+    setAutomaticScroll( bottomDistance > 100 ? 100 : bottomDistance );
+  }else{
+    setAutomaticScroll( 0 );
+  }
 
 };
 
@@ -1246,8 +1267,25 @@ var moveListenerMouseup = function(){
   selectDragOrigin  = null;
   selectDragCurrent = null;
 
+  setAutomaticScroll( 0 );
   stopListeningMove();
   requestDraw();
+
+};
+
+var setAutomaticScroll = function( size ){
+
+  clearInterval( automaticScroll );
+
+  if( !size ){
+    return;
+  }
+
+  addScroll( -1 * size );
+
+  automaticScroll = setInterval( function(){
+    addScroll( -1 * size );
+  }, 1000 / 60 );
 
 };
 
@@ -1597,12 +1635,7 @@ visualUploadButton.on( 'click', function(){
 
 visualItemArea
 .on( 'mousewheel', function( e, delta, x, y ){
-
-  currentScroll += y;
-
-  checkScrollLimits();
-  requestDraw();
-
+  addScroll( y );
 })
 
 .on( 'mouseout', function( e ){
@@ -1661,7 +1694,7 @@ visualItemArea
   }else if( e.button === 0 ){
 
     var offset = visualItemArea.offset();
-    selectDragOrigin = { x : e.clientX - offset.left, y : e.clientY - offset.top };
+    selectDragOrigin = { x : e.clientX - offset.left, y : e.clientY - offset.top - currentScroll };
     startListeningMove();
 
   }
