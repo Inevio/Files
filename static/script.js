@@ -33,6 +33,8 @@ var selectDragCurrent       = null;
 var automaticScroll         = 0;
 var uploadingAreaPosition   = 0;
 var uploadingAreaTimer      = 0;
+var currentGoToItemString   = '';
+var currentGoToItemTimer    = 0;
 
 var win                        = $(this);
 var window                     = win.parents().slice( -1 )[ 0 ].parentNode.defaultView;
@@ -208,6 +210,10 @@ var clearCanvas = function(){
     ctx.scale( pixelRatio, pixelRatio );
   }
 
+};
+
+var clearGoToItemString = function(){
+  currentGoToItemString = '';
 };
 
 var clearHistoryForward = function(){
@@ -1598,35 +1604,38 @@ win
 
 })
 
-.key( 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,0,1,2,3,4,5,6,7,8,9', function( e ){
+.key( 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,0,1,2,3,4,5,6,7,8,9,space', function( e ){
+
+  clearTimeout( currentGoToItemTimer );
 
   if( e.metaKey || e.ctrlKey || e.shiftKey ){
     return;
   }
 
-  var char  = e.key || String.fromCharCode( ( 96 <= e.which && e.which <= 105 ) ? e.which - 48 : e.which );
-  var found = false;
+  currentGoToItemString += e.key || String.fromCharCode( ( 96 <= e.which && e.which <= 105 ) ? e.which - 48 : e.which );
+  currentGoToItemTimer   = setTimeout( clearGoToItemString, 1000 );
+  var found              = false;
 
   if( currentLastPureClicked && currentLastPureClicked.fsnode.type === TYPE_FILE ){
 
-    if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type === TYPE_FILE; }), char ) ){
+    if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type === TYPE_FILE; }), currentGoToItemString ) ){
       selectIcon( e, found );
       return makeIconVisible( found );
     }
 
-    if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type !== TYPE_FILE; }), char ) ){
+    if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type !== TYPE_FILE; }), currentGoToItemString ) ){
       selectIcon( e, found );
       return makeIconVisible( found );
     }
 
   }else{
 
-    if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type !== TYPE_FILE; }), char ) ){
+    if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type !== TYPE_FILE; }), currentGoToItemString ) ){
       selectIcon( e, found );
       return makeIconVisible( found );
     }
 
-    if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type === TYPE_FILE; }), char ) ){
+    if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type === TYPE_FILE; }), currentGoToItemString ) ){
       selectIcon( e, found );
       return makeIconVisible( found );
     }
