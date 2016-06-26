@@ -1573,9 +1573,9 @@ win
     var direction     = grid.iconsInRow * ( e.keyCode === 38 ? -1 : 1 );
     var itemClickedId = currentList.indexOf( currentLastPureClicked ) + direction;
 
-    if( !currentList[ itemClickedId ] ){
+    if( !currentLastPureClicked ){
 
-      if( direction > 0 ){
+      if( direction < 0 ){
         itemClickedId = currentList.length - 1;
       }else{
         itemClickedId = 0;
