@@ -31,6 +31,8 @@ var dropIgnore              = [];
 var selectDragOrigin        = null;
 var selectDragCurrent       = null;
 var automaticScroll         = 0;
+var uploadingAreaPosition   = 0;
+var uploadingAreaTimer      = 0;
 
 var win                        = $(this);
 var window                     = win.parents().slice( -1 )[ 0 ].parentNode.defaultView;
@@ -40,6 +42,7 @@ var visualSidebarItemArea      = $('.ui-navgroup');
 var visualSidebarItemPrototype = $('.ui-navgroup-element.wz-prototype');
 var visualItemArea             = $('.item-area');
 var visualRenameTextarea       = $('.rename');
+var visualUploadingArea        = $('.uploading-area');
 var visualProgressStatusNumber = $('.uploading-area .status-number');
 var visualProgressStatusTime   = $('.uploading-area .status-time');
 var visualProgressBar          = $('.uploading-area .progress .current');
@@ -190,8 +193,8 @@ var checkScrollLimits = function(){
 
   if( currentScroll > 0 || currentMaxScroll < ctx.height ){
     currentScroll = 0;
-  }else if( -1 * currentMaxScroll + ctx.height > currentScroll ){
-    currentScroll = -1 * currentMaxScroll + ctx.height;
+  }else if( -1 * currentMaxScroll + ctx.height - uploadingAreaPosition > currentScroll ){
+    currentScroll = -1 * currentMaxScroll + ctx.height - uploadingAreaPosition;
   }
 
 };
@@ -1297,11 +1300,36 @@ var startListeningMove = function(){
 
 };
 
+var startUploadingAnimation = function(){
+
+  clearInterval( uploadingAreaTimer );
+
+  uploadingAreaTimer = setInterval( function(){
+
+    uploadingAreaPosition = parseInt( visualUploadingArea.css('bottom') );
+
+    checkScrollLimits();
+    requestDraw();
+
+  }, 1000 / 60 );
+
+};
+
 var stopListeningMove = function(){
 
   $( window )
   .off( 'mousemove', moveListenerMousedown )
   .off( 'mouseup', moveListenerMouseup );
+
+};
+
+var stopUploadingAnimation = function(){
+
+  uploadingAreaPosition = parseInt( visualUploadingArea.css('bottom') );
+
+  clearInterval( uploadingAreaTimer );
+  checkScrollLimits();
+  requestDraw();
 
 };
 
@@ -1417,6 +1445,7 @@ api.upload
   }else{
 
     win.addClass('uploading');
+    startUploadingAnimation();
 
     visualProgressStatusNumber.text( ( list.length === 1 ? lang.uploadingNumberFile : lang.uploadingNumberFiles ).replace( '%d', list.length ) );
 
@@ -1449,11 +1478,12 @@ api.upload
   }
 
   win.removeClass('uploading');
+  startUploadingAnimation();
 
 });
 
 // DOM Events
-$(this)
+win
 .on( 'ui-view-resize ui-view-maximize ui-view-unmaximize', function(){
 
   updateCanvasSize();
@@ -1461,6 +1491,10 @@ $(this)
   checkScrollLimits();
   requestDraw();
 
+})
+
+.on( 'transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function(){
+  stopUploadingAnimation();
 })
 
 .key( 'delete', function(e){
