@@ -237,6 +237,18 @@ var clearList = function(){
 
 };
 
+var clipboardCopy = function(){
+  api.app.storage( 'clipboard', { copy : currentActive.map( function( item ){ return item; } ) } );
+};
+
+var clipboardCut = function(){
+  api.app.storage( 'clipboard', { cut : currentActive.map( function( item ){ return item; } ) } );
+};
+
+var clipboardPaste = function(){
+  console.log( '###PASTE###', api.app.storage( 'clipboard') );
+};
+
 var contextmenuAcceptFile = function( fsnode ){
 
   fsnode.accept( function( error ){
@@ -1758,6 +1770,7 @@ visualItemArea
     api.menu()
     .addOption( lang.upload, visualUploadButton.click )
     .addOption( lang.newFolder, createFolder )
+    .addOption( '###PASTE###', clipboardPaste )
     .render();
 
   /*}else if( icon.hasClass( 'shared-pending' ) ){
@@ -1858,7 +1871,9 @@ visualItemArea
   }else if( itemClicked.fsnode.type === TYPE_FILE ){
 
     menu.addOption( lang.openFile, openFile.bind( null, itemClicked.fsnode.id ) )
-    menu.addOption( lang.openFileLocal, itemClicked.fsnode.openLocal );
+    .addOption( lang.openFileLocal, itemClicked.fsnode.openLocal )
+    .addOption( '###COPY###', clipboardCopy )
+    .addOption( '###CUT###', clipboardCut );
 
     if( itemClicked.fsnode.permissions.write ){
       menu.addOption( lang.rename, showRenameTextarea.bind( null, itemClicked ) );
@@ -1897,7 +1912,9 @@ visualItemArea
 
     menu
     .addOption( lang.openFolder, openFolder.bind( null, itemClicked.fsnode.id ) )
-    .addOption( lang.openInNewWindow, api.app.createView.bind( null, itemClicked.fsnode.id, 'main') );
+    .addOption( lang.openInNewWindow, api.app.createView.bind( null, itemClicked.fsnode.id, 'main') )
+    .addOption( '###COPY###', clipboardCopy )
+    .addOption( '###CUT###', clipboardCut );
 
     if( itemClicked.fsnode.permissions.send ){
       menu.addOption( lang.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
