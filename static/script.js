@@ -296,7 +296,7 @@ var deleteAllActive = function(){
     currentActive.forEach( function( item ){
 
       item.fsnode.remove( function( error ){
-        //console.log( error );
+        console.log( error );
       });
 
     });
@@ -567,7 +567,7 @@ var getFolderItems = function( id ){
 
   api.fs( id, function( error, fsnode ){
 
-    fsnode.list( function( error, list ){
+    fsnode.list({ withPermissions: true }, function( error, list ){
       // To Do -> Error
       end.resolve( fsnode, list );
     });
@@ -1761,9 +1761,9 @@ visualItemArea
 .on( 'contextmenu', function( e ){
 
   var itemClicked = getIconWithMouserOver( e );
-
   // Context menu
   var menu = api.menu();
+  console.log('itemClicked', itemClicked?itemClicked.fsnode:'null')
 
   if( !itemClicked ){
 
@@ -2046,8 +2046,8 @@ visualItemArea
 
       console.log('move',item.fsnode);
 
-      item.fsnode.move( destiny, null, function(){
-        console.log( arguments );
+      item.fsnode.move( destiny, function( err ){
+        console.log( arguments )
       });
 
     });
