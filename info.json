@@ -222,59 +222,59 @@
 
                 "selectFile" : {
 
-                    "template" : "selectFile.html",
+                    "template" : "main.html",
 
-                    "resizable" : false,
-                    "maxizable" : false,
+                    "resizable" : true,
+                    "maxizable" : true,
 
                     "width"  : {
 
-                        "default" : 692,
-                        "min"     : 552,
+                        "default" : 771,
+                        "min"     : 655,
                         "max"     : 0
 
                     },
 
                     "height" : {
 
-                        "default" : 591,
+                        "default" : 534,
                         "min"     : 400,
                         "max"     : 0
 
                     },
 
-                    "css"    : ["selectFile.css"],
-                    "script" : ["selectFile.js"],
-                    "start"  : []
+                    "css"    : ["style.css"],
+                    "script" : ["script.js"],
+                    "start"  : ["start.js"]
 
                 },
 
                 "saveFile" : {
 
-                    "template" : "saveFile.html",
+                    "template" : "main.html",
 
-                    "resizable" : false,
-                    "maxizable" : false,
+                    "resizable" : true,
+                    "maxizable" : true,
 
                     "width"  : {
 
-                        "default" : 692,
-                        "min"     : 552,
+                        "default" : 771,
+                        "min"     : 655,
                         "max"     : 0
 
                     },
 
                     "height" : {
 
-                        "default" : 591,
+                        "default" : 534,
                         "min"     : 400,
                         "max"     : 0
 
                     },
 
-                    "css"    : ["saveFile.css"],
-                    "script" : ["saveFile.js"],
-                    "start"  : []
+                    "css"    : ["style.css"],
+                    "script" : ["script.js"],
+                    "start"  : ["start.js"]
 
                 }
 
