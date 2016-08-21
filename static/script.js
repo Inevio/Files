@@ -40,6 +40,8 @@ var win                        = $(this);
 var window                     = win.parents().slice( -1 )[ 0 ].parentNode.defaultView;
 var visualHistoryBack          = $('.folder-controls .back');
 var visualHistoryForward       = $('.folder-controls .forward');
+var visualBreadcrumbs          = $('.folder-breadcrumbs');
+var visualBreadcrumbsEntryPrototype = $('.folder-breadcrumbs .entry.wz-prototype');
 var visualSidebarItemArea      = $('.ui-navgroup');
 var visualSidebarItemPrototype = $('.ui-navgroup-element.wz-prototype');
 var visualItemArea             = $('.item-area');
@@ -246,7 +248,34 @@ var clipboardCut = function(){
 };
 
 var clipboardPaste = function(){
-  console.log( '###PASTE###', api.app.storage( 'clipboard') );
+
+  var storage = api.app.storage( 'clipboard');
+
+  if( storage.copy ){
+
+    storage.copy.forEach( function( item ){
+
+      console.log( item.fsnode );
+      item.fsnode.copy( currentOpened.id, function(){
+        console.log( arguments );
+      });
+
+    });
+
+  }else if( storage.cut ){
+
+    storage.cut.forEach( function( item ){
+
+      item.fsnode.move( currentOpened.id, function(){
+        console.log( arguments );
+      });
+
+    });
+
+  }
+
+  console.log( '###PASTE###', storage.copy, storage.cut );
+
 };
 
 var contextmenuAcceptFile = function( fsnode ){
@@ -434,7 +463,7 @@ var drawIconsInGrid = function(){
       $( icon.bigIcon ).on( 'load', requestDraw );
     }
 
-    if( ( dropActive && icon.fsnode.type === TYPE_FILE ) || dropIgnore.indexOf( icon ) !== -1 ){
+    if( ( dropActive && icon.fsnode.type === TYPE_FILE ) || dropIgnore.indexOf( icon ) !== -1 || icon.fsnode.fileId === 'TO_UPDATE' ){
 
       ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
       ctx.fillRect( x, y, ICON_WIDTH + 1, icon.bigIconHeight + 1 );
@@ -529,6 +558,20 @@ var findIconWithSimilarName = function( list, name ){
 
 };
 
+var generateBreadcrumbs = function( path ){
+
+  visualBreadcrumbs.find('.entry').not('.wz-prototype').remove();
+
+  path.reverse().forEach( function( item ){
+
+    var entry = visualBreadcrumbsEntryPrototype.clone().removeClass('wz-prototype');
+    entry.text( item.name );
+    visualBreadcrumbs.prepend( entry );
+
+  });
+
+};
+
 var getAvailableNewFolderName = function(){
 
   var found     = false;
@@ -561,17 +604,13 @@ var getAvailableNewFolderName = function(){
 
 };
 
-var getFolderItems = function( id ){
+var getFolderItems = function( fsnode ){
 
   var end = $.Deferred();
 
-  api.fs( id, function( error, fsnode ){
-
-    fsnode.list({ withPermissions: true }, function( error, list ){
-      // To Do -> Error
-      end.resolve( fsnode, list );
-    });
-
+  fsnode.list({ withPermissions: true }, function( error, list ){
+    // To Do -> Error
+    end.resolve( list );
   });
 
   return end;
@@ -835,6 +874,19 @@ var getIconWithMouserOver = function( event ){
 
 };
 
+var getItemPath = function( fsnode ){
+
+  var end = $.Deferred();
+
+  fsnode.getPath( function( error, path ){
+    // To Do -> Error
+    end.resolve( path || [] );
+  });
+
+  return end;
+
+};
+
 var getMaxIconHeight = function( list ){
 
   var maxHeightInRow = 0;
@@ -859,10 +911,15 @@ var getSidebarItems = function(){
 
   api.fs( 'root', function( error, fsnode ){
 
-    fsnode.list( true, function( error, list ){
+    fsnode.list( function( error, list ){
 
       list = list.filter( function( item ){
-        return item.type === 1;
+        return item.type === 2;
+      });
+
+      list = list.sort( function( a, b ){
+        // TO DO -> Prevent this artifact when use sortByName
+        return sortByName( { fsnode : a }, { fsnode : b } );
       });
 
       list.unshift( fsnode );
@@ -1036,30 +1093,33 @@ var openFile = function( fsnode ){
 
 var openFolder = function( id, isBack, isForward ){
 
-  getFolderItems( id ).then( function( fsnode, list ){
+  api.fs( id, function( error, fsnode ){
 
-    fsnode.getPath( function(){
-      //console.log( arguments );
+    $.when( getFolderItems( fsnode ), getItemPath( fsnode ) ).done( function( list, path ){
+
+      console.log( arguments );
+
+      visualSidebarItemArea.find('.active').removeClass('active');
+      visualSidebarItemArea.find( '.item-' + fsnode.id ).addClass('active');
+
+      if( !isBack && !isForward && currentOpened ){
+        addToHistoryBackward( currentOpened );
+        clearHistoryForward();
+      }else if( isBack ){
+        addToHistoryForward( currentOpened );
+      }else if( isForward ){
+        addToHistoryBackward( currentOpened );
+      }
+
+      currentOpened = fsnode;
+      currentLastPureClicked = null;
+
+      clearList();
+      appendItemToList( list );
+      generateBreadcrumbs( path );
+      requestDraw();
+
     });
-
-    visualSidebarItemArea.find('.active').removeClass('active');
-    visualSidebarItemArea.find( '.item-' + fsnode.id ).addClass('active');
-
-    if( !isBack && !isForward && currentOpened ){
-      addToHistoryBackward( currentOpened );
-      clearHistoryForward();
-    }else if( isBack ){
-      addToHistoryForward( currentOpened );
-    }else if( isForward ){
-      addToHistoryBackward( currentOpened );
-    }
-
-    currentOpened = fsnode;
-    currentLastPureClicked = null;
-
-    clearList();
-    appendItemToList( list );
-    requestDraw();
 
   });
 
@@ -1420,6 +1480,16 @@ api.fs
 
 })
 
+.on( 'move', function( fsnode, finalDestiny, originalDestiny ){
+
+  if( originalDestiny === currentOpened.id ){
+    removeItemFromList( fsnode.id );
+  }else if( finalDestiny === currentOpened.id ){
+    appendItemToList( fsnode );
+  }
+
+})
+
 .on( 'thumbnail', function( fsnode ){
 
   if( fsnode.parent !== currentOpened.id ){
@@ -1443,11 +1513,9 @@ api.fs
 
 .on( 'remove', function( fsnodeId, quota, parent ){
 
-  if( parent !== currentOpened.id ){
-    return;
+  if( parent === currentOpened.id ){
+    removeItemFromList( fsnodeId );
   }
-
-  removeItemFromList( fsnodeId );
 
 });
 
