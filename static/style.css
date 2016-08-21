@@ -207,7 +207,7 @@
   width: 120px;
 
   .button{
-    float: left;
+    float: right;
     width: 26px;
     height: 26px;
     /*margin: 4px;*/
@@ -389,6 +389,89 @@
 
 }
 
+.ui-confirm{
+  display: none;
+}
+
+.wz-view.select, .wz-view.save{
+
+  .ui-header{
+    height: 30px;
+  }
+
+  .ui-header-brand{
+    padding: 8px 0 7px 16px;
+    width: auto;
+  }
+
+  .ui-input-search, .ui-header-buttons{
+    display: none;
+  }
+
+  .ui-navbar, .ui-content{
+    height: ~'calc(100% - 72px)';
+  }
+
+  .ui-confirm{
+    display: block;
+    float: left;
+    text-align: right;
+    position: relative;
+    height: 40px;
+    width: 100%;
+    border-top: 1px solid #ccd3d5;
+    background: #e9ecef;
+    padding: 5px 12px 6px;
+    box-sizing: border-box;
+
+    .ui-input{
+      display: none;
+    }
+
+    .ui-btn{
+      float: right;
+      margin-top: 1px;
+      margin-left: 10px;
+    }
+  }
+
+}
+
+.wz-view.selectPath{
+
+  .folder-utils{
+
+    .upload, .download{
+      display: none;
+    }
+
+  }
+
+}
+
+.wz-view.selectFile{
+
+  .folder-utils{
+
+    .upload{
+      display: none;
+    }
+
+  }
+
+}
+
+.wz-view.save{
+
+  .ui-confirm{
+    .ui-input{
+      display: block;
+      float: right;
+      width: ~'calc( 100% - 208px )';
+    }
+  }
+
+}
 /*
 .item-area{
   display: flex;

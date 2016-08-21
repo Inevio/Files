@@ -2256,7 +2256,13 @@ updateCanvasSize();
 clearCanvas();
 
 if( params ){
-  openFolder( typeof params === 'object' ? parseInt( params.data ) || 0 : params );
+
+  if( params.command === 'selectPath' ||  params.command === 'selectFile' ){
+    openFolder( params.path || 'root' );
+  }else{
+    openFolder( typeof params === 'object' ? parseInt( params.data ) || 'root' : params );
+  }
+
 }else{
   openFolder('root');
 }
