@@ -8,6 +8,7 @@ var title          = $( '#weexplorer-menu-name', win );
 var sidebar        = $( '#weexplorer-sidebar', win );
 var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
 var record         = [];
+var transitionTime = 300;
 
 // Functions
 var icon = function( data ){
@@ -94,9 +95,10 @@ var openDirectory = function( id, jump, clear ){
 // Events
 $( '#weexplorer-menu-sidebar' ).on( 'tap', function(){
 
-    $( '#weexplorer-sidebar' ).transition({ left : 0 }, 200, function(){
+    $( '#weexplorer-sidebar' ).transition({ x : 0 }, transitionTime, function(){
         win.addClass( 'sidebar' );
     });
+    $( '.opacity-cover' ).show().transition({ opacity : '0.3' }, transitionTime);
 
 });
 
@@ -161,8 +163,11 @@ win.on( 'tap', function(){
 
     if( win.hasClass( 'sidebar' ) ){
 
-        $( '#weexplorer-sidebar' ).transition({ left : '-80%' }, 200, function(){
+        $( '#weexplorer-sidebar' ).transition({ x : '-100%' }, transitionTime , function(){
             win.removeClass( 'sidebar' );
+        });
+        $( '.opacity-cover' ).transition({ opacity : '0' }, transitionTime, function(){
+          $(this).hide();
         });
 
     }

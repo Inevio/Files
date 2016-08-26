@@ -1,31 +1,37 @@
 
+.opacity-cover{
+  z-index: 2;
+  background-color: black;
+  opacity: 0;
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
 #weexplorer-menu{
   width: 100%;
-  height: 48px;
+  height: 54px;
   position: absolute;
   top: 0;
   left: 0;
-  background-image: -webkit-linear-gradient(bottom, #d6d6d6, #fff);
-  background-image: -moz-linear-gradient(bottom, #d6d6d6, #fff);
-  background-image: -o-linear-gradient(bottom, #d6d6d6, #fff);
-  background-image: linear-gradient(to top, #d6d6d6, #fff);
-  border-bottom: 1px solid #B6B6B6;
-  box-shadow: 0 2px 4px rgba( 0, 0, 0, 0.1 ), inset 0 1px rgba( 255, 255, 255, 0.1 );
+  background-color: #60b25e;
+  border-bottom: 2px solid #56a054;
   text-align: center;
   z-index: 1;
 }
 
 #weexplorer-menu-sidebar{
   float: left;
-  padding: 12px 10px;
+  padding: 22px 18px;
 }
 
 #weexplorer-menu-sidebar-icon{
-  width: 24px;
-  height: 22px;
+  width: 18px;
+  height: 12px;
   float: left;
-  background: url( '@static/mobile/sprite.png' ) -30px 0 no-repeat;
-  background-size: 78px 26px;
+  background: url( '@static/mobile/hamburguer.png' ) no-repeat;
+  background-size: 18px 12px;
 }
 
 #weexplorer-menu-options{
@@ -45,9 +51,11 @@
 
 #weexplorer-menu-name{
   display: inline-block;
-  margin-top: 15px;
-  font-size: 19px;
-  color: #333;
+  margin-top: 18px;
+  font-size: 20px;
+  font-family: Lato;
+  font-weight: bold;
+  color: #ffffff;
 }
 
 #weexplorer-content{
@@ -57,7 +65,7 @@
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  padding: 49px 10px 0;
+  padding: 56px 10px 0;
   overflow-y: auto;
 }
 
@@ -157,14 +165,12 @@
 }
 
 #weexplorer-sidebar{
-  width: 80%;
+  width: ~'calc(100% - 50px)';
   height: 100%;
   position: absolute;
   top: 0;
-  left: -80%;
-  background: #EBEBEB;
-  border-right: 1px solid #B6B6B6;
-  box-shadow: 2px 0 4px rgba( 0, 0, 0, 0.1 );
+  transform: translate3d(-100%,0,0);
+  background: #ffffff;
   z-index: 2;
 }
 
