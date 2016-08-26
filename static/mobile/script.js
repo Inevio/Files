@@ -122,6 +122,7 @@ $( '#weexplorer-content' )
 
             structure.open( function( error ){
                 // To Do -> Error
+                console.log(error);
             });
 
         }
