@@ -393,7 +393,7 @@
   display: none;
 }
 
-.wz-view.select, .wz-view.save{
+.wz-view.selectSource, .wz-iew.selectDestiny{
 
   .ui-header{
     height: 30px;
@@ -437,7 +437,7 @@
 
 }
 
-.wz-view.selectPath{
+.wz-view.selectSource.directory, .wz-view.selectDestiny{
 
   .folder-utils{
 
@@ -449,19 +449,7 @@
 
 }
 
-.wz-view.selectFile{
-
-  .folder-utils{
-
-    .upload{
-      display: none;
-    }
-
-  }
-
-}
-
-.wz-view.save{
+.wz-view.selectDestiny{
 
   .ui-confirm{
     .ui-input{

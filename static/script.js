@@ -35,6 +35,11 @@ var uploadingAreaPosition   = 0;
 var uploadingAreaTimer      = 0;
 var currentGoToItemString   = '';
 var currentGoToItemTimer    = 0;
+var enabledMultipleSelect   = true;
+
+if( params && ( params.command === 'selectSource' ||  params.command === 'selectDestiny' ) ){
+  enabledMultipleSelect = params.command === 'selectSource' && params.type === 'file' && params.multiple;
+}
 
 var win                        = $(this);
 var window                     = win.parents().slice( -1 )[ 0 ].parentNode.defaultView;
@@ -54,6 +59,8 @@ var visualCreateFolderButton   = $('.folder-utils .create-folder');
 var visualDeleteButton         = $('.folder-utils .delete');
 var visualDownloadButton       = $('.folder-utils .download');
 var visualUploadButton         = $('.folder-utils .upload');
+var visualAcceptButton         = $('.ui-confirm .accept');
+var visualCancelButton         = $('.ui-confirm .cancel');
 var ctx                        = visualItemArea[ 0 ].getContext('2d');
 var backingStoreRatio   = ctx.webkitBackingStorePixelRatio ||
                           ctx.mozBackingStorePixelRatio ||
@@ -1204,7 +1211,7 @@ var selectIcon = function( e, itemClicked ){
     currentActive = [];
     currentActiveIcons = {};
 
-  }else if( itemClicked && !e.metaKey && !e.ctrlKey && !e.shiftKey && currentActive.indexOf( itemClicked ) === -1 ){
+  }else if( itemClicked && ( !enabledMultipleSelect || ( !e.metaKey && !e.ctrlKey && !e.shiftKey ) ) && currentActive.indexOf( itemClicked ) === -1 ){
 
     currentActive.forEach( function( item ){ item.active = false; });
 
@@ -2249,6 +2256,28 @@ getSidebarItems().then( function( list ){
   list.forEach( appendVisualSidebarItem );
 });
 
+visualAcceptButton
+.on( 'click', function(){
+
+  var current = Object.keys( currentActiveIcons );
+
+  if( current.length === 1 ){
+    current = current[ 0 ];
+  }
+
+  params.callback( null, current );
+  api.app.removeView( win );
+
+});
+
+visualCancelButton
+.on( 'click', function(){
+
+  params.callback('USER ABORT');
+  api.app.removeView( win );
+
+});
+
 // Start the app
 currentSort = sortByName;
 
@@ -2257,7 +2286,7 @@ clearCanvas();
 
 if( params ){
 
-  if( params.command === 'selectPath' ||  params.command === 'selectFile' ){
+  if( params.command === 'selectSource' ||  params.command === 'selectDestiny' ){
     openFolder( params.path || 'root' );
   }else{
     openFolder( typeof params === 'object' ? parseInt( params.data ) || 'root' : params );
