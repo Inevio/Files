@@ -38,8 +38,8 @@
   width: 4px;
   height: 18px;
   float: right;
-  padding: 21px 16px;
-  margin-left: 20px;
+  padding: 21px 16px 15px 0;
+  margin-left: 34px;
   text-align: center;
 }
 
@@ -58,6 +58,7 @@
   font-family: Lato;
   font-weight: bold;
   color: #ffffff;
+  max-width: ~'calc(100% - 118px)';
 }
 
 #weexplorer-content{

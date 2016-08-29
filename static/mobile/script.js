@@ -175,7 +175,7 @@ sidebar.on( 'tap', '.weexplorer-sidebar-element', function(){
     openDirectory( $(this).data('fileId'), false, true );
   }
 
-  win.trigger('tap');
+  hideSidebar();
 
 });
 
