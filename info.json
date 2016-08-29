@@ -220,7 +220,7 @@
 
                 },
 
-                "selectFile" : {
+                "selectSource" : {
 
                     "template" : "main.html",
 
@@ -249,7 +249,7 @@
 
                 },
 
-                "saveFile" : {
+                "selectDestiny" : {
 
                     "template" : "main.html",
 
