@@ -35,18 +35,20 @@
 }
 
 #weexplorer-menu-options{
-  width: 24px;
-  height: 6px;
+  width: 4px;
+  height: 18px;
   float: right;
   padding: 21px 16px;
+  margin-left: 20px;
+  text-align: center;
 }
 
 #weexplorer-menu-options-icon{
-  width: 24px;
-  height: 6px;
-  float: left;
-  background: url( '@static/mobile/sprite.png' ) -54px 0 no-repeat;
-  background-size: 78px 26px;
+  width: 3px;
+  height: 18px;
+  background: url( '@static/mobile/more.png' ) 0px 0px no-repeat;
+  background-size: 6px 18px;
+  display: inline-block;
 }
 
 #weexplorer-menu-name{
@@ -65,16 +67,17 @@
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  padding: 56px 10px 0;
-  overflow-y: auto;
+  padding-top: 56px;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .weexplorer-element{
   width: 100%;
-  height: 44px;
+  height: 48px;
   padding: 7px 0;
   float: left;
-  border-bottom: 1px solid #DCDCDC;
+  border-bottom: 1px solid #e5e9ea;
   position: relative;
 }
 
@@ -108,26 +111,31 @@
 .weexplorer-element-icon{
   /*max-width: 44px;
   max-height: 44px;*/
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   /*float: left;*/
-  margin-right: 10px;
   position: absolute;
-  top: 7px;
+  top: 11px;
+  left: 16px;
+  border-radius: 3px;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
 .weexplorer-element-info{
   /*float: left;*/
   width: 100%;
-  padding: 0px 36px 0px 54px;
+  padding: 0px 40px 0px 74px;
   box-sizing: border-box;
 }
 
 .weexplorer-element-name{
   font-size: 17px;
+  font-family: Lato;
   float: left;
   margin-top: 4px;
-  color: #4E9C21;
+  color: #545f65;
   width: 100%;
 }
 
@@ -140,28 +148,28 @@
 }
 
 .weexplorer-element-data{
-  font-size: 15px;
+  font-size: 13px;
   float: left;
-  margin-top: 4px;
+  margin-top: 8px;
   clear: both;
-  color: #666;
+  color: #889399;
 }
 
 .weexplorer-element-options{
-  width: 24px;
-  height: 6px;
-  padding: 19px 6px;
+  width: 22px;
+  height: 22px;
+  padding: 14px 8px;
   position: absolute;
   top: 7px;
   right: 0px;
 }
 
 .weexplorer-element-options-icon{
-  width: 24px;
-  height: 6px;
+  width: 22px;
+  height: 22px;
   float: left;
-  background: url( '@static/mobile/sprite.png' ) -54px -6px no-repeat;
-  background-size: 78px 26px;
+  background: url( '@static/mobile/moreinfo.png' ) 0px 0px no-repeat;
+  background-size: 22px 22px;
 }
 
 #weexplorer-sidebar{

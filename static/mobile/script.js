@@ -19,7 +19,7 @@ var icon = function( data ){
   // Insert data
   file.find('.weexplorer-element-name').text( data.name );
   file.find('.weexplorer-element-data').text( api.tool.bytesToUnit( data.size ) );
-  file.find('.weexplorer-element-icon').attr('src',data.icons.small);
+  file.find('.weexplorer-element-icon').css('background-image', 'url(' + data.icons.small + ')' )
   file.data( 'id', data.id );
 
   if( data.type < 2 ){
@@ -92,14 +92,33 @@ var openDirectory = function( id, jump, clear ){
 
 };
 
-// Events
-$( '#weexplorer-menu-sidebar' ).on( 'tap', function(){
+var showSidebar = function(){
 
   $( '#weexplorer-sidebar' ).transition({ x : 0 }, transitionTime, function(){
       win.addClass( 'sidebar' );
   });
   $( '.opacity-cover' ).show().transition({ opacity : '0.3' }, transitionTime);
 
+};
+
+var hideSidebar = function(){
+
+  if( win.hasClass( 'sidebar' ) ){
+
+    $( '#weexplorer-sidebar' ).transition({ x : '-100%' }, transitionTime , function(){
+      win.removeClass( 'sidebar' );
+    });
+    $( '.opacity-cover' ).transition({ opacity : '0' }, transitionTime, function(){
+      $(this).hide();
+    });
+
+  }
+
+}
+
+// Events
+$( '#weexplorer-menu-sidebar' ).on( 'tap', function(){
+  showSidebar();
 });
 
 $( '#weexplorer-sidebar' ).on( 'tap', function( e ){
@@ -160,18 +179,10 @@ sidebar.on( 'tap', '.weexplorer-sidebar-element', function(){
 
 });
 
-win.on( 'tap', function(){
+$('.opacity-cover').on('click', function(e){
 
-  if( win.hasClass( 'sidebar' ) ){
-
-    $( '#weexplorer-sidebar' ).transition({ x : '-100%' }, transitionTime , function(){
-      win.removeClass( 'sidebar' );
-    });
-    $( '.opacity-cover' ).transition({ opacity : '0' }, transitionTime, function(){
-      $(this).hide();
-    });
-
-  }
+  hideSidebar();
+  e.stopPropagation();
 
 });
 
