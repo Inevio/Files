@@ -41,7 +41,7 @@ var iconBack = function(){
 
     itemBack
       .css( 'display', 'block' )
-      .children( '#weexplorer-back-text' )
+      .children( '.weexplorer-back-text' )
       .text( 'Back to ' + record[ 1 ].name );
 
   }
@@ -75,7 +75,7 @@ var openDirectory = function( id, jump, clear ){
 
       // To Do -> Error
 
-      content.children().not( itemProto ).not( itemBack ).remove();
+      content.children().not( itemProto ).not( itemBack ).not('.empty-folder').remove();
 
       var icons = $();
 
@@ -84,6 +84,13 @@ var openDirectory = function( id, jump, clear ){
       }
 
       iconBack();
+
+      if( list.length === 0 ){
+        $('.empty-folder').addClass('active');
+      }else{
+        $('.empty-folder').removeClass('active');
+      }
+
       content.append( icons );
 
     });

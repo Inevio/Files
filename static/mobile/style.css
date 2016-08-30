@@ -46,7 +46,7 @@
 #weexplorer-menu-options-icon{
   width: 3px;
   height: 18px;
-  background: url( '@static/mobile/more.png' ) 0px 0px no-repeat;
+  background: url( '@static/mobile/more.png' ) -3px 0px no-repeat;
   background-size: 6px 18px;
   display: inline-block;
 }
@@ -86,25 +86,18 @@
   display: none;
 }
 
-#weexplorer-back-arrow{
-  width: 30px;
-  height: 26px;
+.weexplorer-back-arrow{
+  width: 28px;
+  height: 24px;
   float: left;
-  padding: 9px 7px;
-  margin-right: 10px;
+  margin: 13px 24px 0px 21px;
+  background: url( '@static/mobile/goback.png' ) 0 0 no-repeat;
+  background-size: 26px 24px;
 }
 
-#weexplorer-back-arrow-icon{
-  width: 30px;
-  height: 26px;
+.weexplorer-back-text{
   float: left;
-  background: url( '@static/mobile/sprite.png' ) 0 0 no-repeat;
-  background-size: 78px 26px;
-}
-
-#weexplorer-back-text{
-  float: left;
-  margin-top: 13px;
+  margin-top: 16px;
   font-size: 17px;
   color: #666;
 }
@@ -183,9 +176,24 @@
   z-index: 2;
 }
 
+.weexplorer-sidebar-header{
+  width: 100%;
+  height: 84px;
+}
+
+.weexplorer-sidebar-title{
+  margin-top: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #545f65;
+  float: left;
+  margin-left: 19px;
+  font-family: Lato;
+}
+
 .weexplorer-sidebar-element{
   width: 100%;
-  height: 52px;
+  height: 62px;
   border-top: 1px solid transparent;
   border-bottom: 1px solid transparent;
   float: left;
@@ -209,56 +217,128 @@
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  padding: 15px 0;
+  padding: 17px 0;
 }
 
 .active .weexplorer-sidebar-container{
   border-bottom: 1px solid transparent;
 }
 
-.weexplorer-sidebar-icon{
-  width: 16px;
-  height: 16px;
+.weexplorer-sidebar-icon-container{
+  width: 25px;
+  height: 25px;
   float: left;
-  background: url( '@static/mobile/sidebar.png' ) no-repeat -32px 0;
-  background-size: 112px 32px;
+  text-align: center;
 }
 
-.title .weexplorer-sidebar-icon{
-  background-position: 0 0;
+.weexplorer-sidebar-icon{
+  width: 21px;
+  height: 21px;
+  margin: 0 auto;
+  background: url( '@static/mobile/sprite-sidebar.png' ) no-repeat 0px 0;
+  background-size: 298px 26px;
+  display: inline-block;
 }
 
-.user .weexplorer-sidebar-icon{
-  background-position: -16px 0;
-}
-
-.doc .weexplorer-sidebar-icon{
-  background-position: -48px 0;
-}
-
-.photo .weexplorer-sidebar-icon{
-  background-position: -64px 0;
-}
-
-.video .weexplorer-sidebar-icon{
-  background-position: -80px 0;
+.active.user .weexplorer-sidebar-icon{
+  background-position: -22px 0;
 }
 
 .music .weexplorer-sidebar-icon{
-  background-position: -96px 0;
+  width: 19px;
+  height: 23px;
+  background-position: -44px 0;
+}
+
+.active.music .weexplorer-sidebar-icon{
+  background-position: -63px 0;
+}
+
+.photo .weexplorer-sidebar-icon{
+  width: 25px;
+  height: 20px;
+  background-position: -82px 0;
+}
+
+.active.photo .weexplorer-sidebar-icon{
+  background-position: -107px 0;
+}
+
+.doc .weexplorer-sidebar-icon{
+  width: 22px;
+  height: 26px;
+  background-position: -132px 0;
+}
+
+.active.doc .weexplorer-sidebar-icon{
+  background-position: -154px 0;
+}
+
+.sharedFolder .weexplorer-sidebar-icon{
+  width: 20px;
+  height: 20px;
+  background-position: -176px 0;
+}
+
+.active.sharedFolder .weexplorer-sidebar-icon{
+  background-position: -197px 0;
+}
+
+.receivedFolder .weexplorer-sidebar-icon{
+  width: 20px;
+  height: 22px;
+  background-position: -218px 0;
+}
+
+.active.receivedFolder .weexplorer-sidebar-icon{
+  background-position: -239px 0;
+}
+
+.video .weexplorer-sidebar-icon{
+  width: 19px;
+  height: 22px;
+  background-position: -260px 0;
+}
+
+.active.video .weexplorer-sidebar-icon{
+  background-position: -279px 0;
 }
 
 .weexplorer-sidebar-name{
+  margin-top: 4px;
   font-size: 17px;
-  color: #666;
+  font-weight: bold;
+  color: #545f65;
   float: left;
-  margin-left: 10px;
+  margin-left: 17px;
+  font-family: Lato;
 }
 
 .active .weexplorer-sidebar-name{
-  color: #FFF;
+  color: #ffffff;
 }
 
 .title .weexplorer-sidebar-name{
   font-weight: bold;
+}
+
+.empty-folder{
+  position: absolute !important;
+  width: 100%;
+  text-align: center;
+  font-size: 36px;
+  font-family: Lato;
+  line-height: 1.5em;
+  color: #889399;
+  display: none;
+}
+
+.empty-folder.active{
+  display: block;
+}
+
+.center-vertical{
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
