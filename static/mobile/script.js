@@ -237,13 +237,13 @@ $.when( rootPath, hiddenPath, inboxPath, sharedPath, customPath ).then( function
       controlFolder.addClass( 'sharedFolder' );
     }
 
-    if( element.name === 'Documents' || element.name === 'Documentos' ){
+    if( element.name === 'Documents' || element.name === 'Documentos' || element.alias == 'documents' ){
       controlFolder.removeClass( 'folder' ).addClass( 'doc' );
-    }else if( element.name === 'Music' || element.name === 'Música' ){
+    }else if( element.name === 'Music' || element.name === 'Música' || element.alias == 'music' ){
       controlFolder.removeClass( 'folder' ).addClass( 'music' );
-    }else if( element.name === 'Images' || element.name === 'Imágenes' ){
+    }else if( element.name === 'Images' || element.name === 'Imágenes' || element.alias == 'images' ){
       controlFolder.removeClass( 'folder' ).addClass( 'photo' );
-    }else if( element.name === 'Video' || element.name === 'Vídeos' ){
+    }else if( element.name === 'Video' || element.name === 'Vídeos' || element.alias == 'videos' ){
       controlFolder.removeClass( 'folder' ).addClass( 'video' );
     }
 
@@ -263,9 +263,10 @@ api.fs( 'root', function( error, structure ){
 
   structure.list( true, function( error, list ){
 
+    console.log(list);
     // Vamos a filtrar la lista para quedarnos solo con las carpetas ocultas, es decir, de tipo 7
     list = list.filter( function( item ){
-      return item.type === 7;
+      return item.type === 1;
     });
 
     // Ya tenemos las carpetas ocultas, cumplimos la promesa
