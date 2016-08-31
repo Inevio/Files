@@ -162,7 +162,7 @@ $( '#weexplorer-content' )
 
   e.stopPropagation();
 
-  console.log( $(this).parent().data() );
+  //console.log( $(this).parent().data() );
 
   api.fs( $(this).parent().data('id'), function( error, structure ){
     console.log( structure );
@@ -264,7 +264,6 @@ api.fs( 'root', function( error, structure ){
 
   structure.list( true, function( error, list ){
 
-    console.log(list);
     // Vamos a filtrar la lista para quedarnos solo con las carpetas ocultas, es decir, de tipo 7
     list = list.filter( function( item ){
       return item.type === 1;
