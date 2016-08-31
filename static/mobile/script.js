@@ -91,6 +91,7 @@ var openDirectory = function( id, jump, clear ){
         $('.empty-folder').removeClass('active');
       }
 
+      $('#weexplorer-content').scrollTop(0);
       content.append( icons );
 
     });
