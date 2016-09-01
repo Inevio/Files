@@ -152,7 +152,29 @@ $('.option.download .ui-checkbox').on( 'click', function( e ){
 
 });
 
+var translate = function () {
+
+  $ ('.ui-header-brand').find('span').text(lang.link.createLinkToFile);
+  $ ('.generate-link').find('.title').text(lang.link.linkToFile);
+  $ ('.generate-link').find('.link').attr('placeholder' , lang.link.url);
+  $ ('.generate-link').find('.private').text(lang.link.private);
+  $ ('.generate-link').find('.public').text(lang.link.public);
+  $ ('.password').find('figcaption').text(lang.link.password);
+  $ ('.preview').find('figcaption').text(lang.link.preview);
+  $ ('.download').find('figcaption').text(lang.link.download);
+  $ ('.generate-link').find('input').attr('placeholder', lang.link.passwordTitle);
+  $ ('.create-link').text(lang.link.createLink);
+  $ ('.show-links').text(lang.link.showLinks);
+  $ ('.links').find('th')[0].text(lang.link.permissionsTitle);
+  $ ('.links').find('th')[1].text(lang.link.url);
+  $ ('.links').find('th')[2].text(lang.link.visitsTitle);
+  $ ('.links').find('th')[3].text(lang.link.downloadTitle);
+  $ ('.links').find('th')[4].text(lang.link.importedTitle);
+
+}
+
 // Start
+translate();
 api.fs( params, function( error, fsnode ){
 
   fsnode.getLinks( function( error, links ){
