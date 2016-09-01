@@ -1274,12 +1274,14 @@ var selectIcon = function( e, itemClicked ){
 
 var showRenameTextarea = function( icon ){
 
+  makeIconVisible( icon );
+
   var areaPosition = visualItemArea.position();
   var iconPosition = getIconPosition( icon );
 
   visualRenameTextarea.val( icon.fsnode.name ).css({
 
-    top : areaPosition.top + iconPosition.y + ICON_IMAGE_HEIGHT_AREA,
+    top : areaPosition.top + iconPosition.y + currentScroll + ICON_IMAGE_HEIGHT_AREA,
     left : areaPosition.left + iconPosition.x,
 
   }).data( 'icon', icon ).addClass('active').focus().select();

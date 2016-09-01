@@ -12,7 +12,13 @@
   padding: 1px 0;
 }
 
+.ui-navbar{
+  overflow-y: auto;
+}
+
 .ui-navgroup-element{
+
+  width: 100%;
 
   .ui-navgroup-element-icon{
     width: 16px;
