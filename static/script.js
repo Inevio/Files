@@ -296,13 +296,13 @@ var contextmenuAcceptFile = function( fsnode ){
     var banner = api.banner();
 
     if( fsnode.pointerType === 0 ){
-      banner.setTitle( lang.folderShareAccepted );
+      banner.setTitle( lang.main.folderShareAccepted );
     }else{
-      banner.setTitle( lang.fileShareAccepted );
+      banner.setTitle( lang.main.fileShareAccepted );
     }
 
     banner
-    .setText( fsnode.name + ' ' + lang.beenAccepted )
+    .setText( fsnode.name + ' ' + lang.main.beenAccepted )
     .setIcon( 'https://static.inevio.com/app/1/file_accepted.png' )
     .render();
 
@@ -323,7 +323,7 @@ var createFolder = function(){
 
 var deleteAllActive = function(){
 
-  confirm( '###TITLE###', function( doIt ){
+  confirm( lang.main.tittle, function( doIt ){
 
     if( !doIt ){
       return;
@@ -583,7 +583,7 @@ var getAvailableNewFolderName = function(){
 
   var found     = false;
   var finished  = false;
-  var name      = lang.newFolder;
+  var name      = lang.main.newFolder;
   var iteration = 1;
 
   while( !finished ){
@@ -602,7 +602,7 @@ var getAvailableNewFolderName = function(){
     if( !found ){
       finished = true;
     }else{
-      name = lang.newFolder + ' ' + iteration++;
+      name = lang.main.newFolder + ' ' + iteration++;
     }
 
   }
@@ -1091,7 +1091,7 @@ var openFile = function( fsnode ){
   fsnode.open( currentList.filter(function( item ){ return item.fsnode.type === TYPE_FILE; }).map( function( item ){ return item.fsnode.id; }), function( error ){
 
     if( error ){
-      alert( lang.noApp );
+      alert( lang.main.noApp );
     }
 
   });
@@ -1533,14 +1533,14 @@ api.upload
 
     var files = parseInt( visualProgressStatusNumber.text().match(/\d+/)[ 0 ] ) + list.length;
 
-    visualProgressStatusNumber.text( ( files === 1 ? lang.uploadingNumberFile : lang.uploadingNumberFiles ).replace( '%d', files ) );
+    visualProgressStatusNumber.text( ( files === 1 ? lang.main.uploadingNumberFile : lang.main.uploadingNumberFiles ).replace( '%d', files ) );
 
   }else{
 
     win.addClass('uploading');
     startUploadingAnimation();
 
-    visualProgressStatusNumber.text( ( list.length === 1 ? lang.uploadingNumberFile : lang.uploadingNumberFiles ).replace( '%d', list.length ) );
+    visualProgressStatusNumber.text( ( list.length === 1 ? lang.main.uploadingNumberFile : lang.main.uploadingNumberFiles ).replace( '%d', list.length ) );
 
   }
 
@@ -1553,13 +1553,13 @@ api.upload
   var percentage = parseFloat( queueProgress * 100 ).toFixed( 1 );
 
   if( !time ){
-    visualProgressStatusTime.text( lang.uploadingTimeCalculating.replace( '%d', percentage ) );
+    visualProgressStatusTime.text( lang.main.uploadingTimeCalculating.replace( '%d', percentage ) );
   }else if( time < 60 ){
-    visualProgressStatusTime.text( ( parseInt( time ) === 1 ? lang.uploadingTimeSecond : lang.uploadingTimeSeconds ).replace( '%d', parseInt( time ) ).replace( '%d', percentage ) );
+    visualProgressStatusTime.text( ( parseInt( time ) === 1 ? lang.main.uploadingTimeSecond : lang.main.uploadingTimeSeconds ).replace( '%d', parseInt( time ) ).replace( '%d', percentage ) );
   }else if( time < 3600 ){
-    visualProgressStatusTime.text( ( parseInt( time / 60 ) === 1 ? lang.uploadingTimeMinute : lang.uploadingTimeMinutes ).replace( '%d', parseInt( time / 60 ) ).replace( '%d', percentage ) );
+    visualProgressStatusTime.text( ( parseInt( time / 60 ) === 1 ? lang.main.uploadingTimeMinute : lang.main.uploadingTimeMinutes ).replace( '%d', parseInt( time / 60 ) ).replace( '%d', percentage ) );
   }else{
-    visualProgressStatusTime.text( ( parseInt( time / 3600 ) === 1 ? lang.uploadingTimeHour : lang.uploadingTimeHours ).replace( '%d', parseInt( time / 3600 ) ).replace( '%d', percentage ) );
+    visualProgressStatusTime.text( ( parseInt( time / 3600 ) === 1 ? lang.main.uploadingTimeHour : lang.main.uploadingTimeHours ).replace( '%d', parseInt( time / 3600 ) ).replace( '%d', percentage ) );
   }
 
 })
@@ -1843,9 +1843,9 @@ visualItemArea
   if( !itemClicked ){
 
     api.menu()
-    .addOption( lang.upload, visualUploadButton.click )
-    .addOption( lang.newFolder, createFolder )
-    .addOption( '###PASTE###', clipboardPaste )
+    .addOption( lang.main.upload, visualUploadButton.click )
+    .addOption( lang.main.newFolder, createFolder )
+    .addOption( lang.main.paste, clipboardPaste )
     .render();
 
   /*}else if( icon.hasClass( 'shared-pending' ) ){
@@ -1945,29 +1945,29 @@ visualItemArea
   */
   }else if( itemClicked.fsnode.type === TYPE_FILE ){
 
-    menu.addOption( lang.openFile, openFile.bind( null, itemClicked.fsnode.id ) )
-    .addOption( lang.openFileLocal, itemClicked.fsnode.openLocal )
-    .addOption( '###COPY###', clipboardCopy )
-    .addOption( '###CUT###', clipboardCut );
+    menu.addOption( lang.main.openFile, openFile.bind( null, itemClicked.fsnode.id ) )
+    .addOption( lang.main.openFileLocal, itemClicked.fsnode.openLocal )
+    .addOption( lang.main.copy , clipboardCopy )
+    .addOption( lang.main.cut , clipboardCut );
 
     if( itemClicked.fsnode.permissions.write ){
-      menu.addOption( lang.rename, showRenameTextarea.bind( null, itemClicked ) );
+      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, itemClicked ) );
     }
 
     if( itemClicked.fsnode.permissions.link ){
-      menu.addOption( lang.createLink, api.app.createView.bind( null, itemClicked.fsnode.id, 'link') );
+      menu.addOption( lang.main.createLink, api.app.createView.bind( null, itemClicked.fsnode.id, 'link') );
     }
 
     if( itemClicked.fsnode.permissions.send ){
-      menu.addOption( lang.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
+      menu.addOption( lang.main.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
     }
 
     if( itemClicked.fsnode.permissions.share ){
-      menu.addOption( lang.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share') );
+      menu.addOption( lang.main.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share') );
     }
 
     if( itemClicked.fsnode.permissions.download ){
-      menu.addOption( lang.download, downloadAllActive );
+      menu.addOption( lang.main.download, downloadAllActive );
     }
 
     if( [ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ].indexOf( itemClicked.fsnode.mime ) !== -1 ){
@@ -1979,32 +1979,32 @@ visualItemArea
     }
 
     menu
-    .addOption( lang.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') )
-    .addOption( lang.remove, deleteAllActive, 'warning' );
+    .addOption( lang.main.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') )
+    .addOption( lang.main.remove, deleteAllActive, 'warning' );
 
   // To Do -> Check all the rules -> else if( icon.hasClass('directory') || ( icon.data( 'filePointerType' ) === 0 && !icon.hasClass('pointer-pending') ) ){
   }else if( itemClicked.fsnode.type === TYPE_FOLDER ){
 
     menu
-    .addOption( lang.openFolder, openFolder.bind( null, itemClicked.fsnode.id ) )
-    .addOption( lang.openInNewWindow, api.app.createView.bind( null, itemClicked.fsnode.id, 'main') )
-    .addOption( '###COPY###', clipboardCopy )
-    .addOption( '###CUT###', clipboardCut );
+    .addOption( lang.main.openFolder, openFolder.bind( null, itemClicked.fsnode.id ) )
+    .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, itemClicked.fsnode.id, 'main') )
+    .addOption( lang.main.copy, clipboardCopy )
+    .addOption( lang.main.cut, clipboardCut );
 
     if( itemClicked.fsnode.permissions.send ){
-      menu.addOption( lang.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
+      menu.addOption( lang.main.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
     }
 
     if( itemClicked.fsnode.permissions.share ){
-      menu.addOption( lang.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share'));
+      menu.addOption( lang.main.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share'));
     }
 
     if( itemClicked.fsnode.permissions.write ){
-      menu.addOption( lang.rename, showRenameTextarea.bind( null, itemClicked ) );
+      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, itemClicked ) );
     }
 
     if( itemClicked.fsnode.permissions.download ){
-      menu.addOption( lang.download, downloadAllActive );
+      menu.addOption( lang.main.download, downloadAllActive );
     }
 
     /*if( itemClicked.fsnode.permissions.download ){
@@ -2036,8 +2036,8 @@ visualItemArea
     }*/
 
     menu
-    .addOption( lang.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') )
-    .addOption( lang.remove, deleteAllActive, 'warning' );
+    .addOption( lang.main.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') )
+    .addOption( lang.main.remove, deleteAllActive, 'warning' );
 
   }/*else if( icon.hasClass( 'pointer-pending' ) ){
     // To Do
@@ -2278,9 +2278,23 @@ visualCancelButton
 
 });
 
+// Load texts
+
+var translate = function(){
+
+  $('.ui-header-brand').find('span').text(lang.main.appName);
+  $('.ui-input-search').find('input').attr('placeholder', lang.main.search);
+  $('.ui-navgroup-title-txt').text(lang.main.favourites);
+  $('.status-number').text(lang.main.uploadXFiles);
+  $('.ui-confirm').find('.accept').find('span').text(lang.main.open);
+  $('.ui-confirm').find('.cancel').find('span').text(lang.main.cancel);
+  $('.ui-confirm').find('.ui-input').find('input').attr('placeholder', lang.main.fileName);
+
+};
+
 // Start the app
 currentSort = sortByName;
-
+translate();
 updateCanvasSize();
 clearCanvas();
 

@@ -34,3 +34,22 @@ api.fs( params, function( error, fsnode ){
   }
 
 });
+var translate = function (){
+
+  $('.ui-header-brand').find('span').text(lang.properties.properties);
+  $('.file-info').find('.title').text(lang.properties.size);
+  $('.file-info').find('.metadata').find('.type').text(lang.properties.type);
+  $('.file-info').find('.metadata').find('.type').text(lang.properties.special);
+  $('.file-path').find('span').text(lang.properties.path);
+  $('.file-date').find('.creation').find('.title').text(lang.properties.creation);
+  $('.file-date').find('.modification').find('.title').text(lang.properties.modification);
+  $('.file-permissions').find('.title').text(lang.properties.permissions);
+  $('.file-permissions').find('.link').text(lang.properties.link);
+  $('.file-permissions').find('.modify').text(lang.properties.modify);
+  $('.file-permissions').find('.copy').text(lang.properties.copy);
+  $('.file-permissions').find('.download').text(lang.properties.download);
+  $('.file-permissions').find('.share').text(lang.properties.share);
+  $('.file-permissions').find('.send').text(lang.properties.send);
+  $('.file-shared').find('.title').text(lang.properties.whoAccess);
+};
+translate();

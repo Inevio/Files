@@ -1,6 +1,155 @@
 
 {
 
+    "main" : {
+
+      "appName"                   : "FILES",
+      "search"                    : "Buscar",
+      "favourites"                : "Favoritos",
+      "uploadXFiles"              : "Subiendo X archivos -",
+      "open"                      : "Abrir",
+      "folderShareAccepted"       : "Carpeta aceptada",
+      "fileShareAccepted"         : "Archivo aceptado",
+      "beenAccepted"              : "ha sido aceptado",
+      "newFolder"                 : "Nueva carpeta",
+      "noApp"                     : "No se encontró una app asociada",
+      "uploadingNumberFile"       : "Subiendo %d archivo - ",
+      "uploadingNumberFiles"      : "Subiendo %d archivos - ",
+      "uploadingTimeSecond"       : "Quedan %d segundo - %d%",
+      "uploadingTimeSeconds"      : "Quedan %d segundos - %d%",
+      "uploadingTimeMinute"       : "Quedan %d minuto - %d%",
+      "uploadingTimeMinutes"      : "Quedan %d minutos - %d%",
+      "uploadingTimeHour"         : "Quedan %d hora - %d%",
+      "uploadingTimeHours"        : "Quedan %d horas - %d%",
+      "uploadingTimeCalculating"  : "Calculando... - %d%",
+      "upload"                    : "Subir archivo",
+      "paste"                     : "Pegar",
+      "cut"                       : "Cortar",
+      "copy"                      : "Copiar",
+      "openFile"                  : "Abir archivo",
+      "openFileLocal"             : "Abrir en local",
+      "rename"                    : "Renombrar",
+      "createLink"                : "Crear enlace",
+      "sendTo"                    : "Enviar a...",
+      "shareWith"                 : "Compartir con...",
+      "download"                  : "Descargar",
+      "properties"                : "Propiedades",
+      "remove"                    : "Eliminar",
+      "openFolder"                : "Abrir carpeta",
+      "openInNewWindow"           : "Abrir en una nueva ventana",
+
+    },
+
+    "share" : {
+
+      "share"                     : "Compartir",
+      "search"                    : "Buscar",
+      "query"                     : "Consulta",
+      "globalPermissions"         : "Permisos globales",
+      "link"                      : "Enlace",
+      "modify"                    : "Modificar",
+      "copy"                      : "Copiar",
+      "download"                  : "Descargar",
+      "send"                      : "Enviar",
+      "save"                      : "Guardar"
+
+
+
+    },
+
+    "send" : {
+
+      "fileSent"                  : "Tu achivo ha sido enviado!",
+      "fileSentCorrectly"         : "ha sido envido correctamente",
+      "emptyList"                 : "Lista vacía",
+      "sendTitle"                 : "Elije a quién quieres enviar el archivo",
+      "sendListTitle"             : "Contactos:",
+      "sendChosenTitle"           : "Enviado a:",
+      "sendHowMessage"            : "Mensaje:",
+      "sendHowExplanation"        : "Escribe un mensaje para que tus contactos sepan por qué les envías el archivo",
+      "sendHowButton"             : "Enviado!",
+      "loadingList"               : "Cargando..."
+
+
+
+    },
+    "properties" :{
+
+      "properties"                : "Propiedades",
+      "size"                      : "Tamaño",
+      "type"                      : "Tipo",
+      "special"                   : "Especial",
+      "path"                      : "Ruta",
+      "creation"                  : "Creado",
+      "modification"              : "Modificado",
+      "permissions"               : "Permisos",
+      "link"                      : "Enlace",
+      "modify"                    : "Modificar",
+      "copy"                      : "Copiar",
+      "download"                  : "Descargar",
+      "share"                     : "Compartir",
+      "send"                      : "Enviar",
+      "whoAccess"                 : "Quien tiene acceso"
+    },
+    "link" :{
+      "createLinkToFile"          : "Crear enlace a archivo",
+      "linkToFile"                : "Enlace al archivo",
+      "url"                       : "URL",
+      "public"                    : "Descripción pública",
+      "private"                   : "Descripción privada",
+      "passwordTitle"             : "CONTRASEÑA",
+      "password"                  : "Contraseña",
+      "preview"                   : "Vista previa",
+      "download"                  : "Descargar e importar",
+      "createLink"                : "Crear enlace",
+      "showLinks"                 : "Enlaces activos",
+      "permissionsTitle"          : "PERMISOS",
+      "visitsTitle"               : "VISTAS",
+      "downloadTitle"             : "DESCARGAS",
+      "importedTitle"             : "IMPORTADOS"
+    },
+    "received" : {
+
+      "error"                     : "Lo siento, ha ocurrido un error",
+      "sentBy"                    : "Enviado a",
+      "on"                        : "el",
+      "at"                        : "a las",
+      "fileAccepted"              : "EL archivo ha sido aceptado",
+      "fileRefused"               : "El archivo ha sido rechazado",
+      "receivedFile"              : "Archivo recibido",
+      "contentAccept"             : "Aceptar",
+      "contentRefuse"             : "Rechazar",
+      "fileShareAccepted"         : "Archivo aceptado",
+      "beenAccepted"              : "ha sido aceptado",
+      "fileShareRefused"          : "Archivo rechazado",
+      "beenRefused"               : "ha sido rechazado",
+    },
+    "shared" : {
+      "error"                     : "Lo siento, ha ocurrido un error",
+      "sharedBy"                  : "Compartido con",
+      "sharedFolderTitle"         : "Carpeta compartida",
+      "sharedFile"                : "Archivo Compartido",
+      "sharedFolder"              : "Directorio compartido",
+      "sharedFileTitle"           : "Archivo compartido",
+      "fileSharedBy"              : "Archivo compartido con",
+      "fileShareAccepted"         : "Archivo aceptado",
+      "folderShareAccepted"       : "Carpeta aceptada",
+      "beenAccepted"              : "ha sido aceptada",
+      "folderShareRefused"        : "Carpeta rechazada",
+      "fileShareRefused"          : "Archivo rechazado",
+      "beenRefused"               : "ha sido rechazado",
+      "attr"                      : "Permisos",
+      "attrLink"                  : "Link",
+      "attrModify"                : "Modificar",
+      "attrCopy"                  : "Copiar",
+      "attrDownload"              : "Descargar",
+      "attrShare"                 : "Compartir",
+      "attrSend"                  : "Enviar",
+      "contentAccept"             : "Aceptar",
+      "contentRefuse"             : "Rechazar",
+
+    },
+
     "errorOpenDirectory" : "No ha sido posible abrir el directorio",
     "deleteFile" : "¿Seguro que quieres eliminar",
     "deleteFile2" : " el archivo seleccionado? Si lo haces jamás podrás recuperarlo.",
@@ -15,19 +164,10 @@
     "sortBySize" : "Ord. por Tamaño",
     "sortByCreation" : "Ord. por Creación",
     "sortByModif" : "Ord. por Modif",
-    "openFile" : "Abrir archivo",
-    "openFileLocal" : "Abrir en local",
-    "createLink" : "Crear enlace",
-    "sendTo" : "Enviar a...",
-    "shareWith" : "Compartir con...",
-    "download" : "Descargar",
-    "rename" : "Renombrar",
+
     "addToSidebar" : "Añadir al sidebar",
     "removeFromSidebar" : "Quitar del sidebar",
-    "properties" : "Propiedades",
-    "remove" : "Eliminar",
-    "openFolder" : "Abrir carpeta",
-    "openInNewWindow" : "Abrir en una nueva ventana",
+
     "acceptFile" : "Aceptar",
     "refuseFile" : "Rechazar",
     "upload" : "Subir archivo",
@@ -38,12 +178,8 @@
     "directoryEmpty" : "Directorio vacío",
     "inboxEmpty" : "No has recibido ningún fichero",
     "inboxEmptyExplain" : "",
-    "sharedEmpty" : "Sin ficheros compartidos",
-    "sharedEmptyExplain" : "",
 
-    "favourites" : "Favoritos",
-    "uploading" : "Subiendo",
-    "of"        : "de",
+
 
     "linkTitle" : "Haz click en Generar para crear un enlace",
     "linkQuestion" : "¿Quieres ponerle una contraseña al enlace?",
@@ -55,6 +191,13 @@
     "noteDownload" : "Los enlaces sin vista previa tienen activada la descarga e importación",
     "inputPassword" : "Contraseña...",
     "previousTitle" : "Enlaces creados",
+    "sharedEmpty" : "Sin ficheros compartidos",
+    "sharedEmptyExplain" : "",
+
+       "favourites" : "Favoritos",
+       "uploading" : "Subiendo",
+       "of"        : "de",
+
     "previousUrl" : "URL",
     "previousViews" : "Visto",
     "previousDownloads" : "Descargado",
@@ -73,13 +216,7 @@
     "propertiesCreated" : "Creado",
     "propertiesModified" : "Modif.",
     "propertiesOwner" : "Dueño",
-    "attr" : "Permisos",
-    "attrLink" : "Link",
-    "attrModify" : "Modificar",
-    "attrCopy" : "Copiar",
-    "attrDownload" : "Descargar",
-    "attrShare" : "Compartir",
-    "attrSend" : "Enviar",
+
 
     "directory" : "Directorio",
     "specialDirectory" : "Directorio Especial",
@@ -90,24 +227,10 @@
     "sharedFolder" : "Directorio Compartido",
     "unknown" : "Desconocido",
 
-    "error" : "Lo siento, ha ocurrido un error",
-    "sentBy" : "Enviado por",
-    "on" : "el",
-    "at" : "a las",
-    "fileAccepted" : "El archivo ha sido aceptado",
-    "fileRefused" : "El archivo ha sido rechazado",
-    "receivedFile" : "Archivo recibido",
-    "contentAccept" : "Aceptar",
-    "contentRefuse" : "Rechazar",
 
-    "fileSent" : "Tu archivo ha sido enviado!",
-    "fileSentCorrectly" : "ha sido enviado correctamente",
-    "sendTitle" : "Elije a quién quieres enviar el archivo",
-    "sendListTitle" : "Contactos:",
-    "sendChosenTitle" : "Enviado a:",
-    "sendHowMessage" : "Mensaje:",
-    "sendHowExplanation" : "Escribe un mensaje para que tus contactos sepan por qué les envías el archivo",
-    "sendHowButton" : "Enviar!",
+
+
+
 
     "shareTitle" : "Elije con quién quieres compartir el archivo",
     "shareListTitle" : "Contactos:",
@@ -124,26 +247,14 @@
     "shareHowShare" : "Compartir:",
     "shareHowSend" : "Enviar:",
     "shareSave" : "Guardar",
-    "emptyList" : "Lista vacía",
-    "loadingList" : "Cargando...",
     "fileShared" : "Archivo compartido",
     "fileSharedStart" : "Todos los cambios en",
     "fileSharedEnd" : "han sido guardados",
 
     "folderSharedBy" : "Carpeta compartida por",
-    "fileSharedBy" : "Archivo compartido por",
-    "sharedBy" : "Compartido por",
-    "sharedFolderTitle" : "Carpeta compartida",
-    "sharedFileTitle" : "Archivo compartido",
-    "folderShareAccepted" : "Carpeta aceptada",
-    "fileShareAccepted" : "Archivo aceptado",
-    "beenAccepted" : "ha sido aceptado",
-    "folderShareRefused" : "Carpeta rechazada",
-    "fileShareRefused" : "Archivo rechazado",
-    "beenRefused" : "ha sido rechazado",
+
 
     "accept" : "Aceptar",
-    "noApp" : "No se encontró una app asociada",
 
     "fileTypeTitle" : "Tipo:",
     "durationTitle" : "Duración:",
@@ -176,15 +287,5 @@
     "accept" : "Aceptar",
     "cancel" : "Cancelar",
     "replace" : "¿Desea reemplazar el fichero?",
-
-    "uploadingNumberFile"      : "Subiendo %d archivo - ",
-    "uploadingNumberFiles"     : "Subiendo %d archivos - ",
-    "uploadingTimeSecond"      : "Quedan %d segundo - %d%",
-    "uploadingTimeSeconds"     : "Quedan %d segundos - %d%",
-    "uploadingTimeMinute"      : "Quedan %d minuto - %d%",
-    "uploadingTimeMinutes"     : "Quedan %d minutos - %d%",
-    "uploadingTimeHour"        : "Quedan %d hora - %d%",
-    "uploadingTimeHours"       : "Quedan %d horas - %d%",
-    "uploadingTimeCalculating" : "Calculando... - %d%"
 
 }
