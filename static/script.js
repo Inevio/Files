@@ -323,7 +323,7 @@ var createFolder = function(){
 
 var deleteAllActive = function(){
 
-  confirm( lang.main.tittle, function( doIt ){
+  confirm( lang.main.title, function( doIt ){
 
     if( !doIt ){
       return;
@@ -2281,6 +2281,8 @@ visualCancelButton
 // Load texts
 
 var translate = function(){
+
+  console.log( lang );
 
   $('.ui-header-brand').find('span').text(lang.main.appName);
   $('.ui-input-search').find('input').attr('placeholder', lang.main.search);
