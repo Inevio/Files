@@ -3,7 +3,7 @@
 
     "main" : {
 
-      "appName"                   : "FILES",
+      "appName"                   : "Files",
       "search"                    : "Search",
       "favourites"                : "Favourites",
       "uploadXFiles"              : "Uploading X files -",
@@ -37,11 +37,11 @@
       "remove"                    : "Delete",
       "openFolder"                : "Open folder",
       "openInNewWindow"           : "Open in a new window",
-      "title"                     : "Title:"
+      "title"                     : "###TITLE@@@"
 
     },
 
-    "share" : {
+    "share" : {
 
       "share"                     : "Share",
       "search"                    : "Search",
@@ -51,7 +51,6 @@
       "modify"  : "Modify",
       "copy"  : "Copy",
       "download"  : "Download",
-      "share" : "Share",
       "send"  : "Send",
       "save"  : "Save"
 
@@ -75,6 +74,7 @@
 
 
     },
+
     "properties" :{
 
       "properties"  : "Properties",
@@ -93,6 +93,7 @@
       "send"  : "Send",
       "whoAccess"  : "Who has access"
     },
+
     "link" :{
       "createLinkToFile"  : "Create link to file",
       "linkToFile"  : "Link to the file",
@@ -110,6 +111,7 @@
       "downloadTitle" : "DOWNLOADS",
       "importedTitle" : "IMPORTED"
     },
+
     "received" : {
 
       "error"                     : "Sorry, an error occurred",
@@ -124,8 +126,9 @@
       "fileShareAccepted"         : "File accepted",
       "beenAccepted"              : "has been accepted",
       "fileShareRefused"          : "File refused",
-      "beenRefused"               : "has been refused",
+      "beenRefused"               : "has been refused"
     },
+
     "shared" : {
       "error"                     : "Sorry, an error occurred",
       "sharedBy"                  : "Shared by",
@@ -148,7 +151,7 @@
       "attrShare"                 : "Share",
       "attrSend"                  : "Send",
       "contentAccept"             : "Accept",
-      "contentRefuse"             : "Refuse",
+      "contentRefuse"             : "Refuse"
 
     },
 
@@ -249,9 +252,6 @@
 
     "folderSharedBy" : "Folder shared by",
 
-
-    "accept" : "Accept",
-
     "fileTypeTitle" : "File type:",
     "durationTitle" : "Duration:",
     "locationTitle" : "Location:",
@@ -281,6 +281,6 @@
     "saving"  : "Saving...",
     "accept"  : "Accept",
     "cancel"  : "Cancel",
-    "replace" : "Do you want to replace the file?",
+    "replace" : "Do you want to replace the file?"
 
 }
