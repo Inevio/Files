@@ -1,4 +1,6 @@
-
+.wz-app{
+  border-radius: 6px;
+}
 .ui-header-brand{
   width: 164px;
 }
@@ -106,7 +108,7 @@
     content: '';
     height: 1px;
     width: 100%;
-    background: #ccd3d5;
+    background: #e5e9ea;
     display: block;
     position: relative;
     top: 34px;
@@ -416,7 +418,9 @@
 
   .ui-navbar, .ui-content{
     height: ~'calc(100% - 72px)';
-  }
+    background: #f9f9fb;
+    border-right: 1px solid #dbe0e2;
+   }
 
   .ui-confirm{
     display: block;
