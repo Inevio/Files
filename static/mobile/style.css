@@ -1,7 +1,7 @@
 
 .opacity-cover{
   z-index: 2;
-  background-color: black;
+  background-color: rgba(0,0,0,0.3);
   opacity: 0;
   display: none;
   position: absolute;
@@ -341,4 +341,359 @@
   position: relative;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.file-options{
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  position: absolute;
+  bottom: 0;
+  transform: translate3d(0,0,0);
+  z-index: 3;
+  top: 100%;
+}
+
+.options-container{
+  display: inline-block;
+  width: 100%;
+}
+
+.option-section{
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.option-section:before{
+  clear: both;
+  content: "";
+  display: block;
+  width: ~'calc(100% - 16px)';
+  height: 1px;
+  margin: 0 auto;
+  background: #e5e9ea;
+}
+
+.file-options .options-header{
+  width: 100%;
+  height: 64px;
+  display: inline-block;
+}
+
+.file-options .options-header .options-logo{
+  width: 32px;
+  height: 32px;
+  margin: 16px 24px 16px 20px;
+  float: left;
+}
+
+.file-options .file-title{
+  float: left;
+  font-family: Lato;
+  font-size: 17px;
+  color: #545f65;
+}
+
+.file-options .options-header .options-more{
+  float: right;
+  width: 23px;
+  height: 23px;
+  background-image: url('https://static.inevio.com/script/filesformobile/static/info.png');
+  background-size: cover;
+  float: right;
+  margin: 0 18px 0 8px;
+}
+
+.file-options .option-title{
+  font-size: 13px;
+  font-weight: bold;
+  font-family: Lato;
+  color: #889399;
+  margin: 15px 20px 12px;
+}
+
+.option-section .option{
+  width: 100%;
+  height: 48px;
+}
+
+.option-section .option figure{
+  float: left;
+  width: 20px;
+  height: 20px;
+  background-image: url('https://static.inevio.com/script/filesformobile/static/sprite-info.png');
+  background-size: 126px 22px;
+}
+
+.option-section .option.create-link figure{
+  width: 23px;
+  height: 19px;
+  background-position: -84px 0px;
+  margin-top: 14px;
+  margin-left: 26px;
+  margin-right: 26px;
+}
+
+.option-section .option.send-to figure{
+  width: 15px;
+  height: 20px;
+  background-position: -68px 0px;
+  margin-top: 15px;
+  margin-left: 28px;
+  margin-right: 33px;
+}
+
+.option-section .option.share-with figure{
+  width: 26px;
+  height: 18px;
+  background-position: 0px 0px;
+  margin-top: 15px;
+  margin-left: 25px;
+  margin-right: 24px;
+}
+
+.option-section .option.download figure{
+  width: 22px;
+  height: 22px;
+  background-position: -46px 0px;
+  margin-top: 13px;
+  margin-left: 23px;
+  margin-right: 31px;
+}
+
+.option-section .option.rename figure{
+  width: 19px;
+  height: 19px;
+  background-position: -107px 0px;
+  margin-top: 15px;
+  margin-left: 25px;
+  margin-right: 33px;
+}
+
+.option-section .option.delete figure{
+  width: 18px;
+  height: 19px;
+  background-position: -27px 0px;
+  margin-top: 15px;
+  margin-left: 25px;
+  margin-right: 34px;
+}
+
+.option-section .option div{
+  font-family: Lato;
+  font-size: 15px;
+  color: #545f65;
+  float: left;
+}
+
+.create-link-container{
+  width: 100%;
+  height: 350px;
+  position: absolute;
+  transform: translate3d(100%, 0, 0);
+  bottom: 45px;
+  background-color: white;
+  text-align: center;
+  display: none;
+}
+
+.create-link-container:before{
+  clear: both;
+  content: "";
+  display: block;
+  width: ~'calc(100% - 16px)';
+  height: 1px;
+  margin: 0 auto;
+  background: #e5e9ea;
+}
+
+.create-link-container .create-link-title{
+  font-family: Lato;
+  font-size: 21px;
+  margin-top: 30px;
+  color: #545f65;
+  text-align: center;
+  margin-bottom: 38px;
+}
+
+.toggles-container{
+  margin: 0 20px;
+}
+
+.toggle{
+  height: 31px;
+  margin-bottom: 20px;
+}
+
+.toggle .toggle-name{
+  font-family: Lato;
+  font-size: 15px;
+  color: #545f65;
+  float: left;
+}
+
+.toggle .selector{
+  width: 51px;
+  height: 29px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  background-color: #f9f9fb;
+  border: solid 1px #ccd3d5;
+  float: right;
+}
+
+.toggle .selector i{
+  float: left;
+  width: 25px;
+  height: 25px;
+  background-color: #889399;
+  border-radius: 50%;
+  margin-top: 2px;
+  margin-left: 2px;
+}
+
+.toggle .selector.active i{
+  margin-left: 24px;
+  background-color: #60b25e;
+}
+
+.generate-btn{
+  margin-top: 25px;
+  width: 160px;
+  height: 47px;
+  -webkit-border-radius: 24px;
+  -moz-border-radius: 24px;
+  border-radius: 24px;
+  background-color: #60b25e;
+  background-image: none;
+}
+
+.file-details{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform: translate3d(0, 100%, 0);
+  top: 64px;
+  background-color: white;
+  text-align: center;
+}
+
+.file-details .title{
+  margin: 15px 0px 18px 20px;
+  font-family: Lato;
+  font-size: 13px;
+  font-weight: bold;
+  color: #889399;
+}
+
+.file-section:before{
+  clear: both;
+  content: "";
+  display: block;
+  width: ~'calc(100% - 16px)';
+  height: 1px;
+  margin: 0 auto;
+  background: #e5e9ea;
+}
+
+.file-size-section{
+  width: 100%;
+  height: 90px;
+  text-align: left;
+}
+
+.file-size-section .file-size-value{
+  color: #545f65;
+  font-size: 29px;
+  font-family: Lato;
+  font-weight: bold;
+  margin-left: 20px;
+}
+
+.file-location-section{
+  width: 100%;
+  height: 90px;
+  text-align: left;
+}
+
+.file-location-section .file-location-title{
+  margin-bottom: 28px;
+}
+
+.file-location-section .file-location-value{
+  color: #545f65;
+  font-size: 15px;
+  font-family: Lato;
+  margin-left: 20px;
+}
+
+.file-dates-section{
+  width: 100%;
+  height: 75px;
+  text-align: left;
+}
+
+.file-created-section, .file-modified-section{
+  float: left;
+  width: 50%;
+}
+
+.file-dates-section .divider{
+  width: 1px;
+  height: 45px;
+  background-color: #e5e9ea;
+  float: left;
+}
+
+.file-modified-section{
+  width: ~'calc(50% - 1px)';
+}
+
+.file-created-value, .file-modified-value{
+  color: #545f65;
+  font-size: 15px;
+  font-family: Lato;
+  margin-left: 20px;
+}
+
+.file-modified-title, .file-modified-value{
+  margin-left: 14px !important;
+}
+
+.file-owners-section{
+  width: 100%;
+  text-align: left;
+}
+
+.file-owners-section .user{
+  width: ~'calc(100% - 40px)';
+  height: 35px;
+  margin: 0px 20px 10px;
+}
+
+.file-owners-section .user figure{
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-image: url('https://download.inevio.com/avatar/512/small');
+  float: left;
+}
+
+.file-owners-section .username{
+  font-family: Lato;
+  font-size: 15px;
+  color: #545f65;
+  margin-left: 15px;
+  float: left;
+}
+
+.file-owners-section .is-owner{
+  font-family: Lato;
+  font-size: 12px;
+  float: right;
+  color: #889399;
 }
