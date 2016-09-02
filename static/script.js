@@ -1104,8 +1104,6 @@ var openFolder = function( id, isBack, isForward ){
 
     $.when( getFolderItems( fsnode ), getItemPath( fsnode ) ).done( function( list, path ){
 
-      console.log( arguments );
-
       visualSidebarItemArea.find('.active').removeClass('active');
       visualSidebarItemArea.find( '.item-' + fsnode.id ).addClass('active');
 
@@ -1118,6 +1116,7 @@ var openFolder = function( id, isBack, isForward ){
         addToHistoryBackward( currentOpened );
       }
 
+      currentScroll = 0;
       currentOpened = fsnode;
       currentLastPureClicked = null;
 
@@ -1356,6 +1355,7 @@ var moveListenerMouseup = function(){
 
   selectDragOrigin  = null;
   selectDragCurrent = null;
+  currentLastPureClicked = currentActive[ 0 ] || null;
 
   setAutomaticScroll( 0 );
   stopListeningMove();
