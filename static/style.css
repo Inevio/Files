@@ -18,6 +18,14 @@
   overflow-y: auto;
 }
 
+.ui-navgroup{
+  width: 100%;
+}
+
+.ui-navgroup-title{
+  text-transform: uppercase;
+}
+
 .ui-navgroup-element{
 
   width: 100%;

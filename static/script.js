@@ -190,6 +190,16 @@ var calculateGrid = function(){
 
 };
 
+var changeVolumeName = function( fsnode ){
+
+  if( fsnode.type === 0 && !isNaN( parseInt( fsnode.name ) ) ){
+    fsnode.name = api.system.user().user;
+  }
+
+  return fsnode;
+
+};
+
 var checkDraggableArea = function(){
 
   if( currentActive.length ){
@@ -569,6 +579,8 @@ var generateBreadcrumbs = function( path ){
 
   visualBreadcrumbs.find('.entry').not('.wz-prototype').remove();
 
+  path[ 0 ] = changeVolumeName( path[ 0 ] );
+
   path.reverse().forEach( function( item ){
 
     var entry = visualBreadcrumbsEntryPrototype.clone().removeClass('wz-prototype');
@@ -921,7 +933,7 @@ var getSidebarItems = function(){
     fsnode.list( function( error, list ){
 
       list = list.filter( function( item ){
-        return item.type === 2;
+        return item.type === 1;
       });
 
       list = list.sort( function( a, b ){
@@ -929,8 +941,7 @@ var getSidebarItems = function(){
         return sortByName( { fsnode : a }, { fsnode : b } );
       });
 
-      list.unshift( fsnode );
-
+      list.unshift( changeVolumeName( fsnode ) );
       first.resolve( list );
 
     });
@@ -2283,8 +2294,6 @@ visualCancelButton
 // Load texts
 
 var translate = function(){
-
-  console.log( lang );
 
   $('.ui-header-brand').find('span').text(lang.main.appName);
   $('.ui-input-search').find('input').attr('placeholder', lang.main.search);
