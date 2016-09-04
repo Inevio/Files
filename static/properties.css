@@ -120,7 +120,7 @@
     margin-left: 21px;
   }
 
-  .path{
+  /*.path{
     width: 100%;
     box-sizing: border-box;
     padding: 22px 20px 0;
@@ -141,6 +141,36 @@
       background-repeat: no-repeat;
       background-position: -31px 0;
       opacity: 0.8;
+    }
+
+  }*/
+
+  .folder-breadcrumbs{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 22px 20px 0;
+
+    .entry{
+      font-family: Lato;
+      font-size: 15px;
+      color: #545f65;
+    }
+
+    .entry + .entry{
+
+      &:before{
+        content : '';
+        display: inline-block;
+        margin: 0 10px;
+        width: 5px;
+        height: 9px;
+        background-image: url(@static/img/properties/sprite.png);
+        background-size: 58px 22px;
+        background-repeat: no-repeat;
+        background-position: -31px 0;
+        opacity: 0.8;
+      }
+
     }
 
   }
