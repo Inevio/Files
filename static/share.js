@@ -16,19 +16,19 @@ var appendUserToUsersList = function( user ){
 
 var translate = function(){
 
-  $('.ui-header-brand').find('span').text(lang.share.share);
-  $('.file-name').find('span').text(lang.share.fileName);
-  $('.users-area').find('p').text(lang.share.search);
-  $('.users-area').find('input').attr('placeholder', lang.share.query);
-  $('.shared-area').find('p').text(lang.share.shareWith);
-  $('.global-permissions').find('p').text(lang.share.globalPermissions);
-  $('.global-permissions').find('.link').find('figcaption').text(lang.share.link);
-  $('.global-permissions').find('.link').find('figcaption').text(lang.share.modify);
-  $('.global-permissions').find('.link').find('figcaption').text(lang.share.copy);
-  $('.global-permissions').find('.link').find('figcaption').text(lang.share.download);
-  $('.global-permissions').find('.link').find('figcaption').text(lang.share.share);
-  $('.global-permissions').find('.link').find('figcaption').text(lang.share.send);
-  $('.global-permissions').find('.save').text(lang.share.save);
+  $('.ui-header-brand span').text(lang.share.share);
+  $('.file-name .name').text(lang.share.fileName);
+  $('.users-area .title').text(lang.share.search);
+  $('.users-area .search').attr('placeholder', lang.share.query);
+  $('.shared-area .title').text(lang.share.shareWith);
+  $('.global-permissions .title').text(lang.share.globalPermissions);
+  $('.global-permissions .link .name').text(lang.share.link);
+  $('.global-permissions .modify .name').text(lang.share.modify);
+  $('.global-permissions .copy .name').text(lang.share.copy);
+  $('.global-permissions .download .name').text(lang.share.download);
+  $('.global-permissions .share .name').text(lang.share.share);
+  $('.global-permissions .send .name').text(lang.share.send);
+  $('.global-permissions .save').text(lang.share.save);
 
 };
 
