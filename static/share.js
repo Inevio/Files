@@ -1,16 +1,55 @@
 
 // Variables
-var visualUsersList              = $('.users-list');
-var visualUsersListUserPrototype = $('.users-list .user.wz-prototype');
+var visualUsersAreaList               = $('.users-area .users-list');
+var visualUsersAreaListUserPrototype  = $('.users-area .users-list .user.wz-prototype');
+var visualSharedAreaList              = $('.shared-area .users-list');
+var visualSharedAreaListUserPrototype = $('.shared-area .users-list .user.wz-prototype');
 
 // Functions
-var appendUserToUsersList = function( user ){
+var appendUserToUsersList = function( listArea, prototype, user ){
 
-  var newUser = visualUsersListUserPrototype.clone().removeClass('wz-prototype');
+  console.log( user );
+
+  var newUser = prototype.clone().removeClass('wz-prototype');
 
   newUser.find('.avatar').attr( 'src', user.avatar.small );
   newUser.find('.name').text( user.fullName );
-  visualUsersList.append( newUser );
+  newUser.data( 'user', user );
+  listArea.append( newUser );
+
+};
+
+var loadInfo = function( id ){
+
+  var users = $.Deferred();
+  var sharedWith = $.Deferred();
+
+  api.user.friendList( false, function( error, list ){
+    users.resolve( list );
+  });
+
+  wz.fs( id, function( error, fsnode ){
+
+    $('.file-name .icon').css( 'background-image', 'url(' + fsnode.icons.tiny + ')' );
+    $('.file-name .name').text( fsnode.name );
+
+    fsnode.sharedWith( function( error, users, permissions ){
+
+      sharedWith.resolve({
+        users : users,
+        permissions : permissions
+      });
+
+    });
+
+  });
+
+  $.when( users, sharedWith ).done( function( users, sharedWith ){
+
+    users.forEach( appendUserToUsersList.bind( null, visualUsersAreaList, visualUsersAreaListUserPrototype ) );
+    sharedWith.users.forEach( appendUserToUsersList.bind( null, visualSharedAreaList, visualSharedAreaListUserPrototype ) );
+
+  });
 
 };
 
@@ -33,20 +72,18 @@ var translate = function(){
 };
 
 // Events
+$('.users-area .users-list').on( 'click', '.user', function(){
+  visualSharedAreaList.append( $(this) );
+});
+
+$('.shared-area .users-list').on( 'click', '.user', function(){
+  visualUsersAreaList.append( $(this) );
+});
+
 $('.permission .icon').on( 'click', function(){
   $(this).parent('.permission').toggleClass('active');
 });
 
 // Start the app
+loadInfo( params );
 translate();
-api.user.friendList( false, function( error, list ){
-  list.forEach( appendUserToUsersList );
-});
-
-wz.fs( params, function( error, fsnode ){
-
-  fsnode.sharedWith( function(){
-    console.log( arguments );
-  });
-
-});
