@@ -73,7 +73,7 @@
   }
 
   .search{
-    margin: 15px 7 0;
+    margin: 15px 7px 0;
     padding: 0 13px 0px 47px;
     height: 46px;
     border-radius: 6px;
@@ -83,7 +83,7 @@
     font-size: 19px;
     color: #545f65;
     line-height: 48px;
-    width: 100%;
+    width: ~'calc( 100% - 14px )';
     box-sizing: border-box;
     background: url('@static/img/share/search.png') no-repeat;
     background-size: 20px 20px;

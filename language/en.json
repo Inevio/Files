@@ -44,8 +44,8 @@
     "share" : {
 
       "share"                     : "Share",
-      "search"                    : "Search",
-      "query"                     : "Query",
+      "search"                    : "###SEARCH###",
+      "query"                     : "###QUERY###",
       "globalPermissions"         : "Global permissions",
       "link"  : "Link",
       "modify"  : "Modify",
