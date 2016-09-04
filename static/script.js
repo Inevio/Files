@@ -1500,9 +1500,9 @@ api.fs
 
 })
 
-.on( 'move', function( fsnode, finalDestiny, originalDestiny ){
+.on( 'move', function( fsnode, finalDestiny, originalSource ){
 
-  if( originalDestiny === currentOpened.id ){
+  if( originalSource === currentOpened.id ){
     removeItemFromList( fsnode.id );
   }else if( finalDestiny === currentOpened.id ){
     appendItemToList( fsnode );
@@ -1754,6 +1754,30 @@ win
 visualSidebarItemArea
 .on( 'click', '.ui-navgroup-element', function(){
   openFolder( $(this).attr('data-id') );
+})
+
+.on( 'wz-dropenter', '.ui-navgroup-element', function( e, item ){
+  $(this).addClass('dropover');
+})
+
+.on( 'wz-dropleave', '.ui-navgroup-element', function( e, item ){
+  $(this).removeClass('dropover');
+})
+
+.on( 'wz-drop', '.ui-navgroup-element', function( e, item, list ){
+
+  var destiny = $(this).removeClass('dropover').data('id');
+
+  list.filter( function( item ){
+    return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
+  }).forEach( function( item ){
+
+    item.fsnode.move( destiny, function( err ){
+      console.log( arguments )
+    });
+
+  });
+
 });
 
 visualHistoryBack.on( 'click', historyGoBack );
