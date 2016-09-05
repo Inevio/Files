@@ -1,6 +1,9 @@
 .wz-app{
   border-radius: 6px;
 }
+.ui-header{
+  border-color: #dbe0e2;
+}
 .ui-header-brand{
   width: 164px;
 }
@@ -12,6 +15,7 @@
   border-top: none;
   border-bottom: none;
   padding: 1px 0;
+  border-color: #dbe0e2;
 }
 
 .ui-navbar{
