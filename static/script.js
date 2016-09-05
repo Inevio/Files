@@ -581,13 +581,19 @@ var generateBreadcrumbs = function( path ){
 
   path[ 0 ] = changeVolumeName( path[ 0 ] );
 
-  path.reverse().forEach( function( item ){
+  var list = [];
+
+  path.forEach( function( item ){
 
     var entry = visualBreadcrumbsEntryPrototype.clone().removeClass('wz-prototype');
     entry.text( item.name );
-    visualBreadcrumbs.prepend( entry );
+    entry.data( 'id', item.id );
+    list.push( entry );
 
   });
+
+  list[ list.length - 1 ].addClass('current');
+  visualBreadcrumbs.prepend( list );
 
 };
 
@@ -1782,6 +1788,11 @@ visualSidebarItemArea
 
 visualHistoryBack.on( 'click', historyGoBack );
 visualHistoryForward.on( 'click', historyGoForward );
+
+visualBreadcrumbs.on( 'click', '.entry:not(.current)', function(){
+  openFolder( $(this).data('id') );
+});
+
 visualCreateFolderButton.on( 'click', createFolder );
 visualDeleteButton.on( 'click', deleteAllActive );
 visualDownloadButton.on( 'click', downloadAllActive );
