@@ -91,7 +91,14 @@
       "download"                  : "Descargar",
       "share"                     : "Compartir",
       "send"                      : "Enviar",
-      "whoAccess"                 : "Quien tiene acceso"
+      "whoAccess"                 : "Quien tiene acceso",
+      "metadataDirectory" : "Carpeta",
+      "metadataFile" : "Archivo",
+      "metadataSpecialImage" : "Imagen",
+      "metadataSpecialVideo" : "Vídeo",
+      "metadataSpecialAudio" : "Música",
+      "metadataSpecialPdf" : "PDF"
+
     },
 
     "link" :{

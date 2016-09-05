@@ -24,6 +24,8 @@ var loadInfo = function( id ){
     $('.file-date .creation-value').text( ( new Date( fsnode.dateCreated ) ).format('d/m/Y H:i:s') );
     $('.file-date .modification-value').text( ( new Date( fsnode.dateModified ) ).format('d/m/Y H:i:s') );
 
+    updateFSNodeType( fsnode );
+
     if( fsnode.permissions.link ){
       $('.file-permissions .permission.link').addClass('active');
     }
@@ -83,6 +85,44 @@ var translate = function (){
   $('.file-permissions .share span').text(lang.properties.share);
   $('.file-permissions .send span').text(lang.properties.send);
   $('.file-shared .title').text(lang.properties.whoAccess);
+};
+
+var updateFSNodeType = function( fsnode ){
+
+  if( fsnode.type !== 3 ){
+    $('.metadata-type').text( lang.properties.metadataDirectory );
+    $('.title.special, .metadata-special').hide();
+    return;
+  }
+
+  fsnode.getFormats( function( error, formats ){
+
+    var special = '';
+
+    if( formats && formats.original && formats.original.metadata ){
+
+      if( formats.original.metadata.exif ){
+        special = lang.properties.metadataSpecialImage;
+      }else if( fsnode.mime.indexOf('video') === 0 ){
+        special = lang.properties.metadataSpecialVideo;
+      }else if( fsnode.mime.indexOf('audio') === 0 ){
+        special = lang.properties.metadataSpecialAudio;
+      }else if( formats.original.metadata.pdf ){
+        special = lang.properties.metadataSpecialPdf;
+      }
+
+    }
+
+    $('.metadata-type').text( lang.properties.metadataFile );
+
+    if( special ){
+      $('.metadata-special').text( special );
+    }else{
+      $('.title.special, .metadata-special').hide();
+    }
+
+  });
+
 };
 
 loadInfo( params );

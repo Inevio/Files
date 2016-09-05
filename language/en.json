@@ -91,7 +91,14 @@
       "download"  : "Download",
       "share" : "Share",
       "send"  : "Send",
-      "whoAccess"  : "Who has access"
+      "whoAccess"  : "Who has access",
+      "metadataDirectory" : "Folder",
+      "metadataFile" : "File",
+      "metadataSpecialImage" : "Image",
+      "metadataSpecialVideo" : "Video",
+      "metadataSpecialAudio" : "Music",
+      "metadataSpecialPdf" : "PDF"
+
     },
 
     "link" :{
