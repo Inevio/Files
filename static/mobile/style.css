@@ -418,7 +418,7 @@
   float: right;
   width: 23px;
   height: 23px;
-  background-image: url('https://static.inevio.com/script/filesformobile/static/info.png');
+  background-image: url('@static/mobile/info.png');
   background-size: cover;
   float: right;
   margin: 0 18px 0 8px;
@@ -441,7 +441,7 @@
   float: left;
   width: 20px;
   height: 20px;
-  background-image: url('https://static.inevio.com/script/filesformobile/static/sprite-info.png');
+  background-image: url('@static/mobile/sprite-info.png');
   background-size: 126px 22px;
 }
 
