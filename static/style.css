@@ -203,6 +203,15 @@
     font-family: Lato;
     font-size: 13px;
     color: #889399;
+
+    &:hover{
+      color: #4e9c21;
+    }
+
+    &.current{
+      color: #545f65;
+    }
+
   }
 
   .entry + .entry{
