@@ -2213,12 +2213,12 @@ visualItemArea
       $('<i></i>').css({
 
         'display'             : 'inline-block',
-        'width'               : '16px',
-        'height'              : '16px',
+        'width'               : '17px',
+        'height'              : '17px',
         'margin-right'        : '10px',
-        'background-image'    : 'url(' + currentLastPureClicked.fsnode.icons.tiny + ')',
-        'background-position' : 'center center',
-        'background-size'     : 'contain',
+        'background-image'    : 'url(https://staticbeta.inevio.com/app/1/img/sprite.png)',
+        'background-position' : '-385px 0px',
+        'background-size'     : '402px 18px',
         'background-repeat'   : 'no-repeat'
 
       })
