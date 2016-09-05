@@ -578,6 +578,7 @@
   top: 64px;
   background-color: white;
   text-align: center;
+  display: none;
 }
 
 .file-details .title{

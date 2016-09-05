@@ -9,7 +9,7 @@ var sidebar        = $( '#weexplorer-sidebar', win );
 var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
 var record         = [];
 var transitionTime = 300;
-var mode           = 0;
+var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-link, 4 == more-info
 var optionsDeployed= false;
 
 // Functions
@@ -106,6 +106,7 @@ var showSidebar = function(){
 
   $( '#weexplorer-sidebar' ).transition({ x : 0 }, transitionTime, function(){
       win.addClass( 'sidebar' );
+      mode = 1;
   });
   showCover();
 
@@ -117,6 +118,7 @@ var hideSidebar = function(){
 
     $( '#weexplorer-sidebar' ).transition({ x : '-100%' }, transitionTime , function(){
       win.removeClass( 'sidebar' );
+      mode = 0;
     });
     hideCover();
 
@@ -147,7 +149,7 @@ var showOptions = function(){
 
   $( '.file-options' ).transition({
     'y' : '-289px'
-  },500, function(){
+  },transitionTime, function(){
     mode = 2;
     yDeployed = '-289px';
   });
@@ -161,7 +163,7 @@ var deployOptions = function(){
 
     $( '.file-options' ).transition({
       'y' : '-458px'
-    },500, function(){
+    },transitionTime, function(){
       optionsDeployed = true;
       yDeployed = '-458px'
     });
@@ -178,7 +180,7 @@ var undeployOptions = function(){
 
     $( '.file-options' ).transition({
       'y' : '-289px'
-    },500, function(){
+    },transitionTime, function(){
       optionsDeployed = false;
       yDeployed = '-289px';
     });
@@ -191,7 +193,9 @@ var hideOptions = function(){
 
   $( '.file-options' ).transition({
     'y' : '0%'
-  },500);
+  },transitionTime,function(){
+    mode = 0;
+  });
 
   hideCover();
 
@@ -203,11 +207,11 @@ var showCreateLink = function(){
 
     $( '.file-options' ).transition({
       'y' : '-413px'
-    },500);
+    },transitionTime);
 
     $( '.create-link-container' ).show().transition({
       'x' : '0'
-    },500, function(){
+    },transitionTime, function(){
       mode = 3;
     });
 
@@ -221,11 +225,11 @@ var hideCreateLink = function(){
 
     $( '.file-options' ).transition({
       'y' : yDeployed
-    },500);
+    },transitionTime);
 
     $( '.create-link-container' ).transition({
       'x' : '100%'
-    },500, function(){
+    },transitionTime, function(){
       mode = 2;
       $(this).hide();
     });
@@ -239,8 +243,6 @@ var showFileInfo = function(){
 }
 
 var hideFileInfo = function(){
-
-
 
 }
 
@@ -313,6 +315,23 @@ $('.opacity-cover').on('click', function(e){
   e.stopPropagation();
 
 });
+
+win.on('swipeup', '.file-options', function(){
+  deployOptions();
+})
+
+.on('swipedown', '.file-options', function(){
+  undeployOptions();
+})
+
+.on('swiperight', '.files-container', function(){
+  $('.hamburger').click();
+})
+
+.on('swipeleft', '.sidebar', function(){
+  $('.back').click();
+});
+
 
 // Start app
 openDirectory( 'root' );
