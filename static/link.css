@@ -1,6 +1,7 @@
 
 .wz-view{
   background-color: #f9f9fb;
+  border-radius: 6px;
 
   .password-input{
     display: none;
@@ -57,7 +58,7 @@
   height: 32px;
   padding: 15px 0;
   background-color: #fff;
-  border-bottom: 1px solid #ccd3d5;
+  border-bottom: 1px solid #e2e6e8;
 
   .icon{
     float: left;
