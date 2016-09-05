@@ -1,6 +1,6 @@
 
 .wz-view.wz-mobile-view{
-  overflow: hidden;
+  overflow: hidden !important;
 }
 
 .opacity-cover{
@@ -393,6 +393,17 @@
   height: 32px;
   margin: 16px 24px 16px 20px;
   float: left;
+  text-align: center;
+}
+
+.options-logo i{
+  width: 32px;
+  height: 32px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  display: inline-block;
+  margin: 0 auto;
 }
 
 .file-options .file-title{
@@ -400,6 +411,7 @@
   font-family: Lato;
   font-size: 17px;
   color: #545f65;
+  max-width: ~'calc(100% - 140px)';
 }
 
 .file-options .options-header .options-more{

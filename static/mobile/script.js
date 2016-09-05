@@ -145,7 +145,17 @@ var hideCover = function(){
 
 }
 
-var showOptions = function(){
+var showOptions = function( file ){
+
+  var imageUrl;
+  if( file.thumbnails['32'] ){
+    imageUrl = file.thumbnails['32'];
+  }else{
+    imageUrl = file.icons['32'];
+  }
+
+  $('.file-options .file-title').text( file.name );
+  $('.file-options .options-logo i').css('background-image', 'url("' + imageUrl  + '")');
 
   $( '.file-options' ).show().transition({
     'y' : '-289px'
@@ -283,13 +293,16 @@ $( '#weexplorer-content' )
 
 .on( 'tap', '.weexplorer-element-options', function( e ){
 
-  e.stopPropagation();
-
-  //console.log( $(this).parent().data() );
-  showOptions();
   api.fs( $(this).parent().data('id'), function( error, structure ){
+
     console.log( structure );
+    if( !error ){
+      showOptions( structure );
+    }
+
   });
+
+  e.stopPropagation();
 
 });
 
@@ -312,7 +325,12 @@ sidebar.on( 'tap', '.weexplorer-sidebar-element', function(){
 
 $('.opacity-cover').on('click', function(e){
 
-  hideSidebar();
+  if( mode == 1 ){
+    hideSidebar();
+  }else if( mode == 2 ){
+    hideOptions();
+  }
+
   e.stopPropagation();
 
 });
