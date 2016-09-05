@@ -147,7 +147,7 @@ var hideCover = function(){
 
 var showOptions = function(){
 
-  $( '.file-options' ).transition({
+  $( '.file-options' ).show().transition({
     'y' : '-289px'
   },transitionTime, function(){
     mode = 2;
@@ -195,6 +195,7 @@ var hideOptions = function(){
     'y' : '0%'
   },transitionTime,function(){
     mode = 0;
+    $(this).hide();
   });
 
   hideCover();
