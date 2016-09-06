@@ -293,6 +293,9 @@ $( '#weexplorer-content' )
 
 .on( 'tap', '.weexplorer-element-options', function( e ){
 
+  $('.weexplorer-element.file.active').removeClass('active');
+  $(this).parent().addClass('active');
+
   api.fs( $(this).parent().data('id'), function( error, structure ){
 
     console.log( structure );
@@ -350,6 +353,22 @@ win.on('swipeup', '.file-options', function(){
 .on('swipeleft', '.sidebar', function(){
   $('.back').click();
 });
+
+$('.option.download').on('click', function(){
+
+  console.log('click');
+  api.fs( $('.weexplorer-element.file.active').data('id') , function( e, file ){
+
+    console.log(arguments);
+    if(e){
+      return;
+    }
+
+    file.download();
+
+  });
+
+})
 
 
 // Start app
