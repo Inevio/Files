@@ -368,11 +368,11 @@ var drawIcons = function(){
 
   if( dropActive === true || dropIgnore.indexOf( dropActive ) !== -1 ){
 
-    ctx.fillStyle = '#60b25e';
-    ctx.fillRect( 0, 0, ctx.width, 4 );
-    ctx.fillRect( 0, 0, 4, ctx.height );
-    ctx.fillRect( 0, ctx.height - 4, ctx.width, 4 );
-    ctx.fillRect( ctx.width - 4, 0, 4, ctx.height );
+    ctx.fillStyle = '#8fc98e';
+    ctx.fillRect( 0, 0, ctx.width, 3 );
+    ctx.fillRect( 0, 0, 3, ctx.height );
+    ctx.fillRect( 0, ctx.height - 3, ctx.width, 3 );
+    ctx.fillRect( ctx.width - 3, 0, 3, ctx.height );
 
   }
 
@@ -412,7 +412,7 @@ var drawIconsInGrid = function(){
         }else{
 
           ctx.strokeStyle = '#ccd3d5';
-          ctx.fillStyle = '#eff7ef';
+          ctx.fillStyle = '#f9fafb';
           drawRoundRect( ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true );
 
         }
