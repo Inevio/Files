@@ -46,7 +46,9 @@ var window                     = win.parents().slice( -1 )[ 0 ].parentNode.defau
 var visualHistoryBack          = $('.folder-controls .back');
 var visualHistoryForward       = $('.folder-controls .forward');
 var visualBreadcrumbs          = $('.folder-breadcrumbs');
-var visualBreadcrumbsEntryPrototype = $('.folder-breadcrumbs .entry.wz-prototype');
+var visualBreadcrumbsEntryPrototype = $('.folder-breadcrumbs > .entry.wz-prototype');
+var visualBreadcrumbsList      = $('.folder-breadcrumbs .list');
+var visualBreadcrumbsListEntryPrototype = $('.folder-breadcrumbs .list .entry.wz-prototype');
 var visualSidebarItemArea      = $('.ui-navgroup');
 var visualSidebarItemPrototype = $('.ui-navgroup-element.wz-prototype');
 var visualItemArea             = $('.item-area');
@@ -591,6 +593,12 @@ var generateBreadcrumbs = function( path ){
     list.push( entry );
 
   });
+
+  /*
+  var entry = visualBreadcrumbsEntryPrototype.clone().removeClass('wz-prototype');
+  entry.addClass('list-trigger').append('<i></i>');
+  list.push( entry );
+  */
 
   list[ list.length - 1 ].addClass('current');
   visualBreadcrumbs.prepend( list );
@@ -1789,8 +1797,20 @@ visualSidebarItemArea
 visualHistoryBack.on( 'click', historyGoBack );
 visualHistoryForward.on( 'click', historyGoForward );
 
-visualBreadcrumbs.on( 'click', '.entry:not(.current)', function(){
+visualBreadcrumbs.on( 'click', '.entry:not(.current, .list-trigger)', function(){
   openFolder( $(this).data('id') );
+});
+
+visualBreadcrumbs.on( 'click', '.list-trigger', function(){
+
+  var position = $(this).position();
+
+  visualBreadcrumbsList.css({
+    display : 'block',
+    left : parseInt( position.left ),
+    top : position.top + 20
+  });
+
 });
 
 visualCreateFolderButton.on( 'click', createFolder );

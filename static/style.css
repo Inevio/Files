@@ -49,7 +49,7 @@
     width: 16px;
     height: 15px;
     background: url('@static/img/sprite.png') no-repeat;
-    background-size: 402px 18px;
+    background-size: 415px 18px;
     background-position: -300px 0;
   }
 
@@ -161,7 +161,7 @@
 
     i{
       background: url('@static/img/sprite.png') no-repeat;
-      background-size: 402px 18px;
+      background-size: 415px 18px;
       width: 7px;
       height: 12px;
       display: block;
@@ -226,10 +226,61 @@
       width: 4px;
       height: 8px;
       background: url('@static/img/sprite.png') no-repeat;
-      background-size: 402px 18px;
+      background-size: 415px 18px;
       background-position: -66px 0;
       position: absolute;
       margin: 4px 0 0 -14px;
+    }
+
+  }
+
+  .list-trigger{
+    padding: 0 3px;
+
+    i{
+      width: 13px;
+      height: 3px;
+      background: url('@static/img/sprite.png') no-repeat;
+      background-size: 415px 18px;
+      background-position: -402px 0;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    &:hover i{
+      background-position: -402px -4px;
+    }
+
+  }
+
+  .list{
+    z-index: 1;
+    min-width: 80px;
+    max-width: 200px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 12px 20px;
+    background-color: rgba(255,255,255,.98);
+    box-shadow: 0 5px 10px rgba(0,0,0,.1);
+    border: solid 1px rgba(0,0,0,.15);
+    border-radius: 6px;
+    display: none;
+
+    li{
+      font-family: Lato;
+      font-size: 13px;
+      color: #545f65;
+      margin-bottom: 12px;
+
+      &:last-child{
+        margin-bottom: 0;
+      }
+
+      &:hover{
+        color: #4e9c21;
+      }
+
     }
 
   }
@@ -275,7 +326,7 @@
 
   .button i{
     background: url('@static/img/sprite.png') no-repeat;
-    background-size: 402px 18px;
+    background-size: 415px 18px;
     display: block;
   }
 
