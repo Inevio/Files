@@ -48,9 +48,11 @@ var loadInfo = function( id ){
       usersList[ user.id ] = user;
     });
 
-    sharedWith.filter( function( share ){
+    sharedWith = sharedWith.filter( function( share ){
       return !share.isOwner;
-    }).forEach( function( share ){
+    })
+
+    sharedWith.forEach( function( share ){
 
       if( usersList[ share.userId ] ){
         share.user = usersList[ share.userId ];

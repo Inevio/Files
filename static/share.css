@@ -155,15 +155,13 @@
   }
 
   .users-list{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    height: 185px;
-    padding-bottom: 10px;
+    float: left;
+    height: 195px;
     box-sizing: border-box;
 
     .user{
-      margin-top: 18px;
+      float: left;
+      margin: 18px 2px 0;
       width: 110px;
       text-align: center;
 
