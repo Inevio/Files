@@ -144,19 +144,19 @@
     width: 24px;
     height: 24px;
     border-radius: 3px;
-    background-color: #fff;
     border: solid 1px #e5e9ea;
 
     &.enabled{
       border-color: #ccd3d5;
-    }
-
-    &.enabled:hover{
       background-image: -webkit-linear-gradient(bottom, #fafafa, #fff);
       background-image: -moz-linear-gradient(bottom, #fafafa, #fff);
       background-image: -o-linear-gradient(bottom, #fafafa, #fff);
       background-image: -ms-linear-gradient(bottom, #fafafa, #fff);
       background-image: linear-gradient(to top, #fafafa, #fff);
+    }
+
+    &.enabled:hover{
+      background-image: #fff;
     }
 
     i{
