@@ -6,15 +6,14 @@ var visualSharedAreaList              = $('.shared-area .users-list');
 var visualSharedAreaListUserPrototype = $('.shared-area .users-list .user.wz-prototype');
 
 // Functions
-var appendUserToUsersList = function( listArea, prototype, user ){
-
-  console.log( user );
+var appendUserToUsersList = function( listArea, prototype, user, permissions ){
 
   var newUser = prototype.clone().removeClass('wz-prototype');
 
   newUser.find('.avatar').attr( 'src', user.avatar.small );
   newUser.find('.name').text( user.fullName );
   newUser.data( 'user', user );
+  newUser.data( 'permissions', permissions );
   listArea.append( newUser );
 
 };
@@ -33,21 +32,56 @@ var loadInfo = function( id ){
     $('.file-name .icon').css( 'background-image', 'url(' + fsnode.icons.tiny + ')' );
     $('.file-name .name').text( fsnode.name );
 
-    fsnode.sharedWith( function( error, users, permissions ){
-
-      sharedWith.resolve({
-        users : users,
-        permissions : permissions
-      });
-
+    fsnode.sharedWith( function( error, users ){
+      sharedWith.resolve( users );
     });
 
   });
 
   $.when( users, sharedWith ).done( function( users, sharedWith ){
 
-    users.forEach( appendUserToUsersList.bind( null, visualUsersAreaList, visualUsersAreaListUserPrototype ) );
-    sharedWith.users.forEach( appendUserToUsersList.bind( null, visualSharedAreaList, visualSharedAreaListUserPrototype ) );
+    var currentUser = api.system.user();
+    var usersList = {};
+    var sharedPromises = [];
+
+    users.forEach( function( user ){
+      usersList[ user.id ] = user;
+    });
+
+    sharedWith.filter( function( share ){
+      return !share.isOwner;
+    }).forEach( function( share ){
+
+      if( usersList[ share.userId ] ){
+        share.user = usersList[ share.userId ];
+      }else if( share.userId === currentUser.id ){
+        share.user = currentUser;
+      }else{
+
+        var promise = $.Deferred();
+
+        sharedPromises.push( promise );
+
+        api.user( share.userId, function( error, user ){
+          share.user = user;
+          promise.resolve();
+        });
+
+      }
+
+    });
+
+    $.when.apply( null, sharedPromises ).done( function(){
+
+      users.forEach( function( user ){
+        appendUserToUsersList( visualUsersAreaList, visualUsersAreaListUserPrototype, user );
+      });
+
+      sharedWith.forEach( function( share ){
+        appendUserToUsersList( visualSharedAreaList, visualSharedAreaListUserPrototype, share.user, share.permissions );
+      });
+
+    });
 
   });
 
