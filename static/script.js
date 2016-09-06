@@ -423,8 +423,8 @@ var drawIconsInGrid = function(){
 
       if( icon.hover || icon.active ){
 
-        ctx.strokeStyle = '#ccd3d5';
-        ctx.fillStyle = '#f7f8fa';
+        ctx.strokeStyle = '#e4e8e9';
+        ctx.fillStyle = '#f9fafb';
         drawRoundRect( ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true );
 
       }
