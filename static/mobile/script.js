@@ -394,7 +394,6 @@ win.on('swipeup', '.file-options', function(){
 
 $('.option.download').on('click', function(){
 
-  console.log('click');
   api.fs( $('.weexplorer-element.file.active').data('id') , function( e, file ){
 
     console.log(arguments);
