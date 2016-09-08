@@ -716,4 +716,9 @@
   font-size: 12px;
   float: right;
   color: #889399;
+  display: none;
+}
+
+.file-owners-section .user.owner .is-owner{
+  display: block;
 }
