@@ -13,6 +13,16 @@ var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-
 var optionsDeployed= false;
 
 // Functions
+var addZero = function( value ){
+
+  if( value < 10 ){
+    return '0' + value;
+  }else{
+    return value;
+  }
+
+};
+
 var icon = function( data ){
 
   // Clone prototype
@@ -148,14 +158,42 @@ var hideCover = function(){
 var showOptions = function( file ){
 
   var imageUrl;
+  var createdDate  = new Date( file.created );
+  var modifiedDate = new Date( file.modified );
+
+  console.log( api.tool.bytesToUnit( file.size, 2 ) );
+
   if( file.thumbnails['32'] ){
     imageUrl = file.thumbnails['32'];
   }else{
     imageUrl = file.icons['32'];
   }
 
+  $('.file-options .file-created-value').text(
+
+      addZero( createdDate.getMonth() + 1 ) + '/' +
+      addZero( createdDate.getDate() ) + '/' +
+      createdDate.getFullYear() + ', ' +
+      addZero( createdDate.getHours() ) + ':' +
+      addZero( createdDate.getMinutes() ) + ':' +
+      addZero( createdDate.getSeconds() )
+
+  );
+
+  $('.file-options .file-modified-value').text(
+
+      addZero( modifiedDate.getMonth() + 1 ) + '/' +
+      addZero( modifiedDate.getDate() ) + '/' +
+      modifiedDate.getFullYear() + ', ' +
+      addZero( modifiedDate.getHours() ) + ':' +
+      addZero( modifiedDate.getMinutes() ) + ':' +
+      addZero( modifiedDate.getSeconds() )
+
+  );
+
   $('.file-options .file-title').text( file.name );
   $('.file-options .options-logo i').css('background-image', 'url("' + imageUrl  + '")');
+  $('.file-options .file-size-value').text( api.tool.bytesToUnit( file.size, 2 ) );
 
   $( '.file-options' ).show().transition({
     'y' : '-289px'
@@ -366,6 +404,30 @@ $('.option.download').on('click', function(){
 
     file.download();
 
+  });
+
+});
+
+$('.options-more').on('click', function(){
+
+  if( mode == 3 ){
+
+    $( '.create-link-container' ).transition({
+      'x' : '100%'
+    },transitionTime, function(){
+      $(this).hide();
+    });
+
+  }
+
+  $('.file-details').show().transition({
+    'y' : '0%'
+  },transitionTime);
+
+  $('.file-options').transition({
+    'y' : '-100%'
+  },transitionTime, function(){
+    mode = 4;
   });
 
 })
