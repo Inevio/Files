@@ -191,6 +191,67 @@ var showOptions = function( file ){
 
   );
 
+  file.sharedWith( true, function( error, owner, permissions, users ){
+
+    if( owner.length != 0 ){
+
+      var userxNameField;
+      var userxAvatarField;
+      var permissionText;
+      var userPrototype = $('.file-options .user.wz-prototype');
+
+      for ( var i = 0; i < owner.length; i++ ) {
+
+        var userx ='.user-'+ owner[i].id;
+        var user = userPrototype.clone().removeClass('wz-prototype').addClass('user-' + owner[i].id);
+
+        if( i===0 ){
+
+          user.insertAfter(userPrototype);
+
+        }else{
+
+          user.insertAfter( $('.user' + (i)) );
+
+        }
+
+        if( owner[i].id == file.owner ){
+
+          permissionText = $(userx + ' .change-permission',win);
+          permissionText.text ( lang.propertiesOwner );
+          $( userx ).toggleClass( 'owner' );
+
+        }
+
+        userxNameField = $(userx + ' .username',win);
+        userxAvatarField = $(userx + ' figure',win);
+        userxNameField.text( owner[i].fullName );
+        userxAvatarField.css( "background-image",'url("'+owner[i].avatar.small+'")' );
+
+        if( owner[i].id == api.system.user().id ){
+          userxNameField.text( userxNameField.text() + ' ' + lang.propertiesFileOwner );
+        }
+
+      }
+
+    }else{
+
+      var user = userPrototype.clone().removeClass('wz-prototype').addClass( 'user-' + api.system.user().id ).insertAfter(userPrototype);
+
+      var userx ='.user-' + api.system.user().id;
+      $( userx ).toggleClass( 'owner' );
+      var userxNameField = $( userx + ' .username',win );
+      var userxAvatarField = $( userx + ' i',win );
+      userxNameField.text( api.system.user().fullName );
+      userxAvatarField.css( "background-image",'url("'+api.system.user().avatar.small+'")' );
+      permissionText = $( userx + ' .change-permission',win );
+      permissionText.text ( lang.propertiesOwner );
+      userxNameField.text( userxNameField.text() + ' ' + lang.propertiesFileOwner );
+
+    }
+
+  });
+
   $('.file-options .file-title').text( file.name );
   $('.file-options .options-logo i').css('background-image', 'url("' + imageUrl  + '")');
   $('.file-options .file-size-value').text( api.tool.bytesToUnit( file.size, 2 ) );
