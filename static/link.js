@@ -165,7 +165,7 @@ var translate = function () {
   $ ('.create-link').text(lang.link.createLink);
   $ ('.show-links').text(lang.link.showLinks);
   $ ('.links').find('th').eq(0).text(lang.link.permissionsTitle);
-  $ ('.links').find('th').eq(1).text(lang.link.url);
+  $ ('.links').find('th').eq(1).text(lang.link.permissionLinkTitle);
   $ ('.links').find('th').eq(2).text(lang.link.visitsTitle);
   $ ('.links').find('th').eq(3).text(lang.link.downloadTitle);
   $ ('.links').find('th').eq(4).text(lang.link.importedTitle);

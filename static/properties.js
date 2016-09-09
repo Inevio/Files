@@ -77,7 +77,7 @@ var translate = function (){
   $('.file-path span').text(lang.properties.path);
   $('.file-date .creation .title').text(lang.properties.creation);
   $('.file-date .modification .title').text(lang.properties.modification);
-  $('.file-permissions .title span').text(lang.properties.permissions);
+  $('.file-permissions .title').text(lang.properties.permissions);
   $('.file-permissions .link span').text(lang.properties.link);
   $('.file-permissions .modify span').text(lang.properties.modify);
   $('.file-permissions .copy span').text(lang.properties.copy);
