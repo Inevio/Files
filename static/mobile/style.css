@@ -591,7 +591,7 @@
 
 .file-details{
   width: 100%;
-  height: 100%;
+  height: ~'calc(100% - 64px)';
   position: absolute;
   transform: translate3d(0, 100%, 0);
   top: 64px;
@@ -622,6 +622,10 @@
   width: 100%;
   height: 90px;
   text-align: left;
+}
+
+.file-options.folder .file-size-section{
+  display: none;
 }
 
 .file-size-section .file-size-value{
@@ -684,7 +688,12 @@
 
 .file-owners-section{
   width: 100%;
+  height: ~'calc(100% - 255px)';
   text-align: left;
+}
+
+.file-options.folder .file-owners-section{
+  height: ~'calc(100% - 165px)';
 }
 
 .file-owners-section .user{
@@ -700,6 +709,12 @@
   background-size: cover;
   background-position: 50% 50%;
   float: left;
+}
+
+.file-owners-container{
+  height: ~'calc(100% - 46px)';
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .file-owners-section .username{

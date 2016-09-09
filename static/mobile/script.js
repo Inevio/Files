@@ -7,6 +7,7 @@ var itemBack       = $( '.weexplorer-element.back', win );
 var title          = $( '#weexplorer-menu-name', win );
 var sidebar        = $( '#weexplorer-sidebar', win );
 var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
+var userPrototype  = $('.file-options .user.wz-prototype');
 var record         = [];
 var transitionTime = 300;
 var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-link, 4 == more-info
@@ -160,8 +161,12 @@ var showOptions = function( file ){
   var imageUrl;
   var createdDate  = new Date( file.created );
   var modifiedDate = new Date( file.modified );
+  if( file.type == 2 || file.type == 0 ){
+    $('.file-options').addClass('folder');
+  }else{
+    $('.file-options').removeClass('folder');
+  }
 
-  console.log( api.tool.bytesToUnit( file.size, 2 ) );
 
   if( file.thumbnails['32'] ){
     imageUrl = file.thumbnails['32'];
@@ -193,55 +198,46 @@ var showOptions = function( file ){
 
   file.sharedWith( true, function( error, owner, permissions, users ){
 
+    console.log(arguments);
     if( owner.length != 0 ){
 
       var userxNameField;
       var userxAvatarField;
       var permissionText;
-      var userPrototype = $('.file-options .user.wz-prototype');
+      var toInsert = []
 
       for ( var i = 0; i < owner.length; i++ ) {
 
         var userx ='.user-'+ owner[i].id;
         var user = userPrototype.clone().removeClass('wz-prototype').addClass('user-' + owner[i].id);
 
-        if( i===0 ){
-
-          user.insertAfter(userPrototype);
-
-        }else{
-
-          user.insertAfter( $('.user' + (i)) );
-
-        }
-
         if( owner[i].id == file.owner ){
 
-          permissionText = $(userx + ' .change-permission',win);
-          permissionText.text ( lang.propertiesOwner );
-          $( userx ).toggleClass( 'owner' );
+          user.find('.is-owner').text ( lang.propertiesOwner );
+          user.toggleClass( 'owner' );
 
         }
 
-        userxNameField = $(userx + ' .username',win);
-        userxAvatarField = $(userx + ' figure',win);
-        userxNameField.text( owner[i].fullName );
-        userxAvatarField.css( "background-image",'url("'+owner[i].avatar.small+'")' );
+        user.find('.username').text( owner[i].fullName );
+        user.find('figure').css( "background-image",'url("'+owner[i].avatar.small+'")' );
 
         if( owner[i].id == api.system.user().id ){
-          userxNameField.text( userxNameField.text() + ' ' + lang.propertiesFileOwner );
+          user.find('.username').text( user.find('.username').text() + ' ' + lang.propertiesFileOwner );
         }
 
+        toInsert.push(user);
+
       }
+
+      $('.file-owners-container').append( toInsert );
 
     }else{
 
       var user = userPrototype.clone().removeClass('wz-prototype').addClass( 'user-' + api.system.user().id ).insertAfter(userPrototype);
-
       var userx ='.user-' + api.system.user().id;
       $( userx ).toggleClass( 'owner' );
       var userxNameField = $( userx + ' .username',win );
-      var userxAvatarField = $( userx + ' i',win );
+      var userxAvatarField = $( userx + ' figure',win );
       userxNameField.text( api.system.user().fullName );
       userxAvatarField.css( "background-image",'url("'+api.system.user().avatar.small+'")' );
       permissionText = $( userx + ' .change-permission',win );
@@ -300,14 +296,23 @@ var undeployOptions = function(){
 
 var hideOptions = function(){
 
-  $( '.file-options' ).transition({
-    'y' : '0%'
-  },transitionTime,function(){
-    mode = 0;
-    $(this).hide();
-  });
+  if( optionsDeployed ){
+    undeployOptions();
+  }else{
 
-  hideCover();
+    if( mode == 4 ){
+      hideFileInfo();
+    }
+
+    $( '.file-options' ).transition({
+      'y' : '0%'
+    },transitionTime,function(){
+      mode = 0;
+      $(this).hide();
+    });
+    hideCover();
+
+  }
 
 }
 
@@ -350,9 +355,41 @@ var hideCreateLink = function(){
 
 var showFileInfo = function(){
 
+  if( mode == 3 ){
+
+    $( '.create-link-container' ).transition({
+      'x' : '100%'
+    },transitionTime, function(){
+      $(this).hide();
+    });
+
+  }
+
+  $('.file-details').show().transition({
+    'y' : '0%'
+  },transitionTime);
+
+  $('.file-options').transition({
+    'y' : '-100%'
+  },transitionTime, function(){
+    mode = 4;
+  });
+
 }
 
 var hideFileInfo = function(){
+
+  $('.file-details').show().transition({
+    'y' : '100%'
+  },transitionTime, function(){
+    $(this).hide();
+  });
+
+  $('.file-options').transition({
+    'y' : '0'
+  },transitionTime, function(){
+    mode = 2;
+  });
 
 }
 
@@ -441,8 +478,12 @@ win.on('swipeup', '.file-options', function(){
   deployOptions();
 })
 
+.on('swipedown', '.file-owners-section', function(e){
+  e.stopPropagation();
+})
+
 .on('swipedown', '.file-options', function(){
-  undeployOptions();
+  hideOptions();
 })
 
 .on('swiperight', '.files-container', function(){
@@ -470,25 +511,7 @@ $('.option.download').on('click', function(){
 
 $('.options-more').on('click', function(){
 
-  if( mode == 3 ){
-
-    $( '.create-link-container' ).transition({
-      'x' : '100%'
-    },transitionTime, function(){
-      $(this).hide();
-    });
-
-  }
-
-  $('.file-details').show().transition({
-    'y' : '0%'
-  },transitionTime);
-
-  $('.file-options').transition({
-    'y' : '-100%'
-  },transitionTime, function(){
-    mode = 4;
-  });
+  showFileInfo();
 
 })
 
