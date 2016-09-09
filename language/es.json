@@ -114,10 +114,11 @@
       "download"                  : "Descargar e importar",
       "createLink"                : "Crear enlace",
       "showLinks"                 : "Enlaces activos",
-      "permissionsTitle"          : "PERMISOS",
-      "visitsTitle"               : "VISTAS",
-      "downloadTitle"             : "DESCARGAS",
-      "importedTitle"             : "IMPORTADOS"
+      "permissionsTitle"          : "Permisos",
+      "visitsTitle"               : "Vistas",
+      "permissionLinkTitle"       : "Enlace",
+      "downloadTitle"             : "Descargas",
+      "importedTitle"             : "Importados"
     },
 
     "received" : {

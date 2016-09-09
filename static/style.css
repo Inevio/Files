@@ -41,9 +41,11 @@
   }
 
   &.dropover{
-    background-color: #d9eadb;
+    background-color: #e1e4e7;
+    /*
     border-top: 1px solid #c1dfc2;
     border-bottom: 1px solid #c1dfc2;
+    */
   }
 
   i{
@@ -149,15 +151,19 @@
 
     &.enabled{
       border-color: #ccd3d5;
+      /* ui-btn style
       background-image: -webkit-linear-gradient(bottom, #fafafa, #fff);
       background-image: -moz-linear-gradient(bottom, #fafafa, #fff);
       background-image: -o-linear-gradient(bottom, #fafafa, #fff);
       background-image: -ms-linear-gradient(bottom, #fafafa, #fff);
       background-image: linear-gradient(to top, #fafafa, #fff);
+      */
     }
 
     &.enabled:hover{
+      /*
       background: #fff;
+      */
     }
 
     i{
