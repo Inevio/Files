@@ -1,5 +1,6 @@
 
 // Variables
+var win                               = $(this)
 var visualUsersAreaList               = $('.users-area .users-list');
 var visualUsersAreaListUserPrototype  = $('.users-area .users-list .user.wz-prototype');
 var visualSharedAreaList              = $('.shared-area .users-list');
@@ -27,13 +28,17 @@ var loadInfo = function( id ){
     users.resolve( list );
   });
 
-  wz.fs( id, function( error, fsnode ){
+  api.fs( id, function( error, fsnode ){
 
     $('.file-name .icon').css( 'background-image', 'url(' + fsnode.icons.tiny + ')' );
     $('.file-name .name').text( fsnode.name );
 
     fsnode.sharedWith( function( error, users ){
-      sharedWith.resolve( users );
+
+      sharedWith.resolve( users.filter( function( share ){
+        return !share.isOwner;
+      }))
+
     });
 
   });
@@ -81,6 +86,54 @@ var loadInfo = function( id ){
 
       sharedWith.forEach( function( share ){
         appendUserToUsersList( visualSharedAreaList, visualSharedAreaListUserPrototype, share.user, share.permissions );
+      });
+
+      if( sharedWith.length ){
+
+        var permissions = sharedWith[ 0 ].permissions;
+
+        Object.keys( permissions ).forEach( function( permission ){
+
+          if( permissions[ permission ] ){
+            $('.permissions-list .permission.' + permission ).addClass('active')
+          }
+
+        });
+
+      }else{
+        $('.permissions-list .permission').addClass('active')
+      }
+
+      $('.save').on( 'click', function(){
+
+        var permissions = $('.permissions-list .permission')
+
+        permissions = {
+          p : permissions.filter('.link').hasClass('active'),
+          p : permissions.filter('.modify').hasClass('active'),
+          p : permissions.filter('.copy').hasClass('active'),
+          p : permissions.filter('.download').hasClass('active'),
+          p : permissions.filter('.share').hasClass('active'),
+          p : permissions.filter('.send').hasClass('active')
+        }
+
+        var promises = [];
+
+        [].forEach( function( user ){
+
+          var promise = $.Deferred()
+          promises.push( promise )
+
+          fsnode.addShare( user, permissions, function( err ){
+            promise.resolve( err )
+          })
+
+        })
+
+        $.when.apply ( null, promises ).done( function(){
+          api.app.removeView( win )
+        })
+
       });
 
     });
