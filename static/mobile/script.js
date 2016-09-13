@@ -365,6 +365,10 @@ var showFileInfo = function(){
 
   }
 
+  if( optionsDeployed ){
+    optionsDeployed = false;
+  }
+
   $('.file-details').show().transition({
     'y' : '0%'
   },transitionTime);

@@ -410,6 +410,7 @@
   float: left;
   font-family: Lato;
   font-size: 17px;
+  line-height: 1.1em;
   color: #545f65;
   max-width: ~'calc(100% - 140px)';
 }
