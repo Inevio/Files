@@ -161,12 +161,11 @@ var showOptions = function( file ){
   var imageUrl;
   var createdDate  = new Date( file.created );
   var modifiedDate = new Date( file.modified );
-  if( file.type == 2 || file.type == 0 ){
+  if( file.type == 0 ){
     $('.file-options').addClass('folder');
   }else{
     $('.file-options').removeClass('folder');
   }
-
 
   if( file.thumbnails['32'] ){
     imageUrl = file.thumbnails['32'];
@@ -176,25 +175,27 @@ var showOptions = function( file ){
 
   $('.file-options .file-created-value').text(
 
-      addZero( createdDate.getMonth() + 1 ) + '/' +
-      addZero( createdDate.getDate() ) + '/' +
-      createdDate.getFullYear() + ', ' +
-      addZero( createdDate.getHours() ) + ':' +
-      addZero( createdDate.getMinutes() ) + ':' +
-      addZero( createdDate.getSeconds() )
+    addZero( createdDate.getMonth() + 1 ) + '/' +
+    addZero( createdDate.getDate() ) + '/' +
+    createdDate.getFullYear() + ', ' +
+    addZero( createdDate.getHours() ) + ':' +
+    addZero( createdDate.getMinutes() ) + ':' +
+    addZero( createdDate.getSeconds() )
 
   );
 
   $('.file-options .file-modified-value').text(
 
-      addZero( modifiedDate.getMonth() + 1 ) + '/' +
-      addZero( modifiedDate.getDate() ) + '/' +
-      modifiedDate.getFullYear() + ', ' +
-      addZero( modifiedDate.getHours() ) + ':' +
-      addZero( modifiedDate.getMinutes() ) + ':' +
-      addZero( modifiedDate.getSeconds() )
+    addZero( modifiedDate.getMonth() + 1 ) + '/' +
+    addZero( modifiedDate.getDate() ) + '/' +
+    modifiedDate.getFullYear() + ', ' +
+    addZero( modifiedDate.getHours() ) + ':' +
+    addZero( modifiedDate.getMinutes() ) + ':' +
+    addZero( modifiedDate.getSeconds() )
 
   );
+
+  $('.file-owners-container .user').not('.wz-prototype').remove();
 
   file.sharedWith( true, function( error, owner, permissions, users ){
 
