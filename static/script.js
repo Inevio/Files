@@ -2327,13 +2327,16 @@ getSidebarItems().then( function( list ){
 visualAcceptButton
 .on( 'click', function(){
 
+  console.log( currentActive, currentActiveIcons )
+
+  var validIcons = currentActive.filter( function( icon ){
+
+  })
+  return
+
   var current = Object.keys( currentActiveIcons );
 
-  if( current.length === 1 ){
-    current = current[ 0 ];
-  }
-
-  params.callback( null, current );
+  params.callback( null, Object.keys( currentActiveIcons ) );
   api.app.removeView( win );
 
 });
@@ -2354,8 +2357,8 @@ var translate = function(){
   $('.ui-input-search').find('input').attr('placeholder', lang.main.search);
   $('.ui-navgroup-title-txt').text(lang.main.favourites);
   $('.status-number').text(lang.main.uploadXFiles);
-  $('.ui-confirm').find('.accept').find('span').text(lang.main.open);
-  $('.ui-confirm').find('.cancel').find('span').text(lang.main.cancel);
+  $('.ui-confirm .accept span').text(lang.main.open);
+  $('.ui-confirm .cancel span').text(lang.main.cancel);
   $('.ui-confirm').find('.ui-input').find('input').attr('placeholder', lang.main.fileName);
 
 };
