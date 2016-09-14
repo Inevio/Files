@@ -109,26 +109,71 @@ var loadInfo = function( id ){
         var permissions = $('.permissions-list .permission')
 
         permissions = {
-          p : permissions.filter('.link').hasClass('active'),
-          p : permissions.filter('.modify').hasClass('active'),
-          p : permissions.filter('.copy').hasClass('active'),
-          p : permissions.filter('.download').hasClass('active'),
-          p : permissions.filter('.share').hasClass('active'),
-          p : permissions.filter('.send').hasClass('active')
+          link     : permissions.filter('.link').hasClass('active'),
+          move     : permissions.filter('.modify').hasClass('active'),
+          write    : permissions.filter('.modify').hasClass('active'),
+          copy     : permissions.filter('.copy').hasClass('active'),
+          download : permissions.filter('.download').hasClass('active'),
+          share    : permissions.filter('.share').hasClass('active'),
+          send     : permissions.filter('.send').hasClass('active')
         }
 
         var promises = [];
 
-        [].forEach( function( user ){
+        var usersSharing = [];
+        $.each( $( '.shared-area .user' ).not( $( '.shared-area .user.wz-prototype' ) , function( i , domUser ){
+
+          usersSharing.push( domUser.data( 'user' ).id )
+
+        })
+
+        // ADD SHARE
+        // Todo esto teniendo en cuenta que el Array sharedWith sea una lista de id's, si no es asi he de modificarlo
+        var newUsersSharing = $.makeArray( usersSharing ).not( $.makeArray( sharedWith ) )
+        $.each( newUsersSharing , function( i , userId ){
 
           var promise = $.Deferred()
           promises.push( promise )
 
-          fsnode.addShare( user, permissions, function( err ){
-            promise.resolve( err )
+          api.fs( id , function( error , fsnode ){
+
+            fsnode.addShare( userId , permissions, function( err ){
+              promise.resolve( err )
+            })
+
           })
 
         })
+
+        // REMOVE SHARE
+        // Todo esto teniendo en cuenta que el Array sharedWith sea una lista de id's, si no es asi he de modificarlo
+        var oldNotSharingUsers = users.filter(function( user ){
+
+          return sharedWith.indexOf( user.id ) < 0
+
+        })
+        var newNotSharingUsers = users.filter(function( user ){
+
+          return usersSharing.indexOf( user.id ) < 0
+
+        })
+
+        var usersToRemoveShare = $.makeArray( newNotSharingUsers ).not( $.makeArray( oldNotSharingUsers ) )
+        $.each( usersToRemoveShare , function( i , userId ){
+
+          var promise = $.Deferred()
+          promises.push( promise )
+
+          api.fs( id , function( error , fsnode ){
+
+            fsnode.removeShare( userId , permissions, function( err ){
+              promise.resolve( err )
+            })
+
+          })
+
+        })
+
 
         $.when.apply ( null, promises ).done( function(){
           api.app.removeView( win )
