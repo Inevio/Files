@@ -205,28 +205,34 @@ var showOptions = function( file ){
       var userxNameField;
       var userxAvatarField;
       var permissionText;
-      var toInsert = []
+      var toInsert = [];
+      var insertedIds = [];
 
       for ( var i = 0; i < owner.length; i++ ) {
 
-        var userx ='.user-'+ owner[i].id;
-        var user = userPrototype.clone().removeClass('wz-prototype').addClass('user-' + owner[i].id);
+        if( insertedIds.indexOf( owner[i].id ) == -1 ){
 
-        if( owner[i].id == file.owner ){
+          var userx ='.user-'+ owner[i].id;
+          var user = userPrototype.clone().removeClass('wz-prototype').addClass('user-' + owner[i].id);
 
-          user.find('.is-owner').text ( lang.propertiesOwner );
-          user.toggleClass( 'owner' );
+          if( owner[i].id == file.owner ){
+
+            user.find('.is-owner').text ( lang.propertiesOwner );
+            user.toggleClass( 'owner' );
+
+          }
+
+          user.find('.username').text( owner[i].fullName );
+          user.find('figure').css( "background-image",'url("'+owner[i].avatar.small+'")' );
+
+          if( owner[i].id == api.system.user().id ){
+            user.find('.username').text( user.find('.username').text() + ' ' + lang.propertiesFileOwner );
+          }
+
+          insertedIds.push( owner[i].id )
+          toInsert.push( user );
 
         }
-
-        user.find('.username').text( owner[i].fullName );
-        user.find('figure').css( "background-image",'url("'+owner[i].avatar.small+'")' );
-
-        if( owner[i].id == api.system.user().id ){
-          user.find('.username').text( user.find('.username').text() + ' ' + lang.propertiesFileOwner );
-        }
-
-        toInsert.push(user);
 
       }
 
