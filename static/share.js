@@ -119,12 +119,10 @@ var loadInfo = function( id ){
         }
 
         var promises = [];
-
         var usersSharing = [];
-        $.each( $( '.shared-area .user' ).not( $( '.shared-area .user.wz-prototype' ) , function( i , domUser ){
 
-          usersSharing.push( domUser.data( 'user' ).id )
-
+        $('.shared-area .user:not(.wz-prototype)').each( function( i , domUser ){
+          usersSharing.push( domUser.data('user').id )
         })
 
         // ADD SHARE
@@ -148,17 +146,15 @@ var loadInfo = function( id ){
         // REMOVE SHARE
         // Todo esto teniendo en cuenta que el Array sharedWith sea una lista de id's, si no es asi he de modificarlo
         var oldNotSharingUsers = users.filter(function( user ){
-
           return sharedWith.indexOf( user.id ) < 0
-
         })
+
         var newNotSharingUsers = users.filter(function( user ){
-
           return usersSharing.indexOf( user.id ) < 0
-
         })
 
         var usersToRemoveShare = $.makeArray( newNotSharingUsers ).not( $.makeArray( oldNotSharingUsers ) )
+
         $.each( usersToRemoveShare , function( i , userId ){
 
           var promise = $.Deferred()
