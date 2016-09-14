@@ -12,6 +12,7 @@ var record         = [];
 var transitionTime = 300;
 var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-link, 4 == more-info
 var optionsDeployed= false;
+var actualPathId   = 0;
 
 // Functions
 var addZero = function( value ){
@@ -64,6 +65,8 @@ var iconBack = function(){
 var openDirectory = function( id, jump, clear ){
 
   api.fs( id, function( error, structure ){
+
+    actualPathId = id;
 
     if( !jump ){
 
@@ -310,7 +313,7 @@ var deployOptions = function(){
 var undeployOptions = function(){
 
   if( !optionsDeployed ){
-    hideOptions();
+    hideOptions(false);
   }else{
 
     $( '.file-options' ).transition({
@@ -324,12 +327,13 @@ var undeployOptions = function(){
 
 }
 
-var hideOptions = function(){
+var hideOptions = function( fullHide ){
 
-  if( optionsDeployed ){
+  if( optionsDeployed && !fullHide ){
     undeployOptions();
   }else{
 
+    optionsDeployed = false;
     if( mode == 4 ){
       hideFileInfo();
     }
@@ -501,7 +505,7 @@ $('.opacity-cover').on('click', function(e){
   if( mode == 1 ){
     hideSidebar();
   }else if( mode == 2 ){
-    hideOptions();
+    hideOptions(false);
   }
 
   e.stopPropagation();
@@ -517,7 +521,7 @@ win.on('swipeup', '.file-options', function(){
 })
 
 .on('swipedown', '.file-options', function(){
-  hideOptions();
+  hideOptions(false);
 })
 
 .on('swiperight', '.files-container', function(){
@@ -530,7 +534,7 @@ win.on('swipeup', '.file-options', function(){
 
 $('.option.download').on('click', function(){
 
-  api.fs( $('.weexplorer-element.file.active').data('id') , function( e, file ){
+  api.fs( $('.weexplorer-element.active').data('id') , function( e, file ){
 
     console.log(arguments);
     if(e){
@@ -546,6 +550,30 @@ $('.option.download').on('click', function(){
 $('.options-more').on('click', function(){
 
   showFileInfo();
+
+});
+
+$('.option.delete').on('click',function(){
+
+  api.fs( $('.weexplorer-element.active').data('id') , function( e, file ){
+
+    console.log(arguments);
+    if(e){
+      return;
+    }
+
+    file.remove( function( error, o){
+
+      if( !error ){
+
+        hideOptions(true);
+        openDirectory( actualPathId );
+
+      }
+
+    });
+
+  });
 
 })
 
