@@ -652,6 +652,11 @@
   font-size: 15px;
   font-family: Lato;
   margin-left: 20px;
+  max-width: ~'calc(100% - 40px)';
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+  height: 23px;
 }
 
 .file-dates-section{

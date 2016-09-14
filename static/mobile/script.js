@@ -197,9 +197,32 @@ var showOptions = function( file ){
 
   $('.file-owners-container .user').not('.wz-prototype').remove();
 
-  file.sharedWith( true, function( error, owner, permissions, users ){
+  file.getPath( function( error, pathList ){
+
+    if( !error ){
+
+      var stringPath = '';
+
+      for( var i=0, len = pathList.length; i < len; i++ ){
+
+        stringPath = stringPath + pathList[i].name;
+
+        if( i != (len-1) ){
+          stringPath = stringPath + ' > ';
+        }
+
+      }
+
+      $('.file-options .file-location-value').text( stringPath );
+
+    }
 
     console.log(arguments);
+
+  });
+
+  file.sharedWith( true, function( error, owner, permissions, users ){
+
     if( owner.length != 0 ){
 
       var userxNameField;
