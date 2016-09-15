@@ -66,7 +66,7 @@ var openDirectory = function( id, jump, clear ){
 
   api.fs( id, function( error, structure ){
 
-    actualPathId = id;
+
 
     if( !jump ){
 
@@ -99,7 +99,10 @@ var openDirectory = function( id, jump, clear ){
           icons = icons.add( icon(list[ i ]) );
       }
 
-      iconBack();
+      if( id != actualPathId){
+        iconBack();
+      }
+      actualPathId = id;
 
       if( list.length === 0 ){
         $('.empty-folder').addClass('active');
@@ -469,7 +472,7 @@ var acceptRename = function(){
 
           $('.file-options .file-title').text( $('.file-options .file-rename').val() );
           cancelRename();
-          openDirectory( actualPathId );
+          openDirectory( actualPathId, true );
 
         }
 
@@ -634,7 +637,7 @@ $('.option.delete').on('click',function(){
       if( !error ){
 
         hideOptions(true);
-        openDirectory( actualPathId );
+        openDirectory( actualPathId, true );
 
       }
 
