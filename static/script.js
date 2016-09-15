@@ -2327,16 +2327,27 @@ getSidebarItems().then( function( list ){
 visualAcceptButton
 .on( 'click', function(){
 
-  console.log( currentActive, currentActiveIcons )
+  console.log( currentActive, currentActiveIcons, params )
 
   var validIcons = currentActive.filter( function( icon ){
 
+    if( params.mode === 'file' ){
+      return icon.fsnode.type === 3
+    }
+
+    return icon.fsnode.type === 2
+
+  }).map( function( icon ){
+    return icon.fsnode.id
   })
-  return
 
-  var current = Object.keys( currentActiveIcons );
+  if( !validIcons.length ){
+    return
+  }
 
-  params.callback( null, Object.keys( currentActiveIcons ) );
+  console.log( validIcons )
+
+  params.callback( null, validIcons );
   api.app.removeView( win );
 
 });
