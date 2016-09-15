@@ -10,7 +10,7 @@ var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
 var userPrototype  = $('.file-options .user.wz-prototype');
 var record         = [];
 var transitionTime = 300;
-var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-link, 4 == more-info
+var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-link, 4 == more-info, 5 == renaming
 var optionsDeployed= false;
 var actualPathId   = 0;
 
@@ -282,6 +282,7 @@ var showOptions = function( file ){
   });
 
   $('.file-options .file-title').text( file.name );
+  $('.file-options .file-rename').val( file.name );
   $('.file-options .options-logo i').css('background-image', 'url("' + imageUrl  + '")');
   $('.file-options .file-size-value').text( api.tool.bytesToUnit( file.size, 2 ) );
 
@@ -329,13 +330,15 @@ var undeployOptions = function(){
 
 var hideOptions = function( fullHide ){
 
-  if( optionsDeployed && !fullHide ){
+  if( optionsDeployed && !fullHide && mode!=3 ){
     undeployOptions();
   }else{
 
     optionsDeployed = false;
     if( mode == 4 ){
       hideFileInfo();
+    }else if( mode == 3 ){
+      hideCreateLink();
     }
 
     $( '.file-options' ).transition({
@@ -407,6 +410,9 @@ var showFileInfo = function(){
     'y' : '0%'
   },transitionTime);
 
+  $('.file-options .options-more').hide();
+  $('.file-options .options-close').show();
+
   $('.file-options').transition({
     'y' : '-100%'
   },transitionTime, function(){
@@ -429,19 +435,76 @@ var hideFileInfo = function(){
     mode = 2;
   });
 
+  $('.file-options .options-close').hide();
+  $('.file-options .options-more').show();
+
+}
+
+var activateRename = function(){
+
+  mode = 5;
+  $('.file-options .file-title').hide();
+  $('.file-options .file-rename').show().focus();
+  $('.file-options .options-more').hide();
+  $('.file-options .rename-accept, .file-options .rename-cancel').show();
+
+}
+
+var acceptRename = function(){
+
+  api.fs( $('.weexplorer-element.active').data('id') , function( e, file ){
+
+    console.log(arguments);
+    if(e){
+      return;
+    }
+
+    if( $('.file-options .file-rename').val() != $('.file-options .file-title').text() ){
+
+      file.rename( $('.file-options .file-rename').val() ,function( error, o){
+
+        console.log(arguments);
+
+        if( !error ){
+
+          $('.file-options .file-title').text( $('.file-options .file-rename').val() );
+          cancelRename();
+          openDirectory( actualPathId );
+
+        }
+
+      });
+
+    }else{
+      cancelRename();
+    }
+
+
+  });
+
+}
+
+var cancelRename = function(){
+
+  $('.file-options .file-rename').hide();
+  $('.file-options .file-title').show();
+  $('.file-options .rename-accept, .file-options .rename-cancel').hide();
+  $('.file-options .options-more').show();
+  mode = 2;
+
 }
 
 // Events
-$( '#weexplorer-menu-sidebar' ).on( 'tap', function(){
+$( '#weexplorer-menu-sidebar' ).on( 'click', function(){
   showSidebar();
 });
 
-$( '#weexplorer-sidebar' ).on( 'tap', function( e ){
+$( '#weexplorer-sidebar' ).on( 'click', function( e ){
   e.stopPropagation();
 });
 
 $( '#weexplorer-content' )
-.on( 'tap', '.weexplorer-element', function(){
+.on( 'click', '.weexplorer-element', function(){
 
   api.fs( $(this).data('id'), function( error, structure ){
 
@@ -465,7 +528,7 @@ $( '#weexplorer-content' )
 
 })
 
-.on( 'tap', '.weexplorer-element-options', function( e ){
+.on( 'click', '.weexplorer-element-options', function( e ){
 
   $('.weexplorer-element.file.active').removeClass('active');
   $(this).parent().addClass('active');
@@ -483,14 +546,14 @@ $( '#weexplorer-content' )
 
 });
 
-itemBack.on( 'tap', function(){
+itemBack.on( 'click', function(){
 
   record.shift();
   openDirectory( record[ 0 ].id, true );
 
 });
 
-sidebar.on( 'tap', '.weexplorer-sidebar-element', function(){
+sidebar.on( 'click', '.weexplorer-sidebar-element', function(){
 
   if( !$(this).hasClass('active') ){
     openDirectory( $(this).data('fileId'), false, true );
@@ -504,8 +567,8 @@ $('.opacity-cover').on('click', function(e){
 
   if( mode == 1 ){
     hideSidebar();
-  }else if( mode == 2 ){
-    hideOptions(false);
+  }else{
+    hideOptions(true);
   }
 
   e.stopPropagation();
@@ -521,6 +584,10 @@ win.on('swipeup', '.file-options', function(){
 })
 
 .on('swipedown', '.file-options', function(){
+  hideOptions(false);
+})
+
+.on('click', '.file-options .options-close', function(){
   hideOptions(false);
 })
 
@@ -576,6 +643,26 @@ $('.option.delete').on('click',function(){
   });
 
 })
+
+$('.option.create-link').on('click', function(){
+  showCreateLink();
+});
+
+$('.create-link-container .selector').on('click', function(){
+  $(this).toggleClass('active');
+})
+
+$('.option.rename').on('click', function(){
+  activateRename();
+});
+
+$('.file-options .rename-accept').on('click', function(){
+  acceptRename();
+});
+
+$('.file-options .rename-cancel').on('click', function(){
+  cancelRename();
+});
 
 
 // Start app
