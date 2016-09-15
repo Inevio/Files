@@ -606,12 +606,13 @@ $('.option.download').on('click', function(){
 
   api.fs( $('.weexplorer-element.active').data('id') , function( e, file ){
 
-    console.log(arguments);
     if(e){
       return;
     }
 
-    file.download();
+    file.download( function(){
+      console.log(arguments);
+    });
 
   });
 
