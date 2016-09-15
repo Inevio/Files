@@ -520,7 +520,7 @@ $( '#weexplorer-content' )
       openDirectory( structure.id );
     }else{
 
-      structure.open( function( error ){
+      structure.open( content.find('.file').map( function(){ return $(this).data('id') }).get(), function( error ){
           // To Do -> Error
           console.log(error);
       });
