@@ -415,14 +415,51 @@
   max-width: ~'calc(100% - 140px)';
 }
 
+.file-options .file-rename{
+  font-size: 17px;
+  line-height: 1.1em;
+  color: #545f65;
+  max-width: ~'calc(100% - 180px)';
+  display: none;
+}
+
 .file-options .options-header .options-more{
   float: right;
   width: 23px;
   height: 23px;
   background-image: url('@static/mobile/info.png');
   background-size: cover;
-  float: right;
   margin: 0 18px 0 8px;
+}
+
+.file-options .options-header .options-close{
+  float: right;
+  width: 12px;
+  height: 12px;
+  background-image: url('@static/mobile/cerrar-info.png');
+  background-size: cover;
+  margin: 0 18px 0 13px;
+  display: none;
+}
+
+.file-options .options-header .rename-accept{
+  float: right;
+  width: 17px;
+  height: 14px;
+  background-image: url('@static/mobile/aceptar-renombrar.png');
+  background-size: cover;
+  margin: 0 18px 0 13px;
+  display: none;
+}
+
+.file-options .options-header .rename-cancel{
+  float: right;
+  width: 14px;
+  height: 14px;
+  background-image: url('@static/mobile/cancelar-renombrar.png');
+  background-size: cover;
+  margin: 0 10px 0 13px;
+  display: none;
 }
 
 .file-options .option-title{
@@ -512,7 +549,7 @@
   height: 350px;
   position: absolute;
   transform: translate3d(100%, 0, 0);
-  bottom: 45px;
+  top: 64px;
   background-color: white;
   text-align: center;
   display: none;
