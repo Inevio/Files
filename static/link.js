@@ -19,7 +19,7 @@ var appendLink = function( link ){
 
   var newLink = linkPrototype.clone().removeClass('wz-prototype');
 
-  newLink.addClass( 'link-' + link.id );
+  newLink.addClass( 'link link-' + link.id );
   newLink.find('td:eq(1)').text( link.url );
   newLink.find('td:eq(2)').text( link.visitsCounter );
   newLink.find('td:eq(3)').text( link.downloadsCounter );
@@ -40,6 +40,7 @@ var appendLink = function( link ){
   linksList.append( newLink );
 
   showLinks.addClass('show');
+  newLink.data( 'id' , link.id );
 
   if( showLinks.hasClass('opened') ){
     api.view.setSize( win.width(), DEFAULT_HEIGHT + ( win.hasClass('show-password') ? passwordInput.outerHeight( true ) : 0 ) + linksList.outerHeight( true ) );
@@ -47,15 +48,38 @@ var appendLink = function( link ){
 
 };
 
+var removeLink = function( link ){
+
+  $( '.link-' + link ).remove();
+  if ( showLinks.hasClass('opened') ) {
+
+    if ( linksList.find('.link').length === 0 ) {
+
+      showLinks.removeClass('opened show');
+      api.view.setSize( win.width(), DEFAULT_HEIGHT + ( win.hasClass('show-password') ? passwordInput.outerHeight( true ) : 0 ) );
+
+    }else{
+
+      api.view.setSize( win.width(), DEFAULT_HEIGHT + ( win.hasClass('show-password') ? passwordInput.outerHeight( true ) : 0 ) + linksList.outerHeight( true ) );
+
+    }
+
+  }
+
+}
 // API Events
 api.fs
 .on( 'linkAdded', function( link, fsnode ){
 
-  if( fsnode.id !== params ){
-    return;
+  if( fsnode.id === params ){
+    appendLink( link );
   }
 
-  appendLink( link );
+})
+
+.on( 'linkRemoved', function( hash ){
+
+  removeLink( hash );
 
 });
 
@@ -73,7 +97,6 @@ showLinks.on( 'click', function(){
     api.view.setSize( win.width(), DEFAULT_HEIGHT + ( win.hasClass('show-password') ? passwordInput.outerHeight( true ) : 0 ) + linksList.outerHeight( true ) );
 
   }
-
 });
 
 linkOutput.on( 'focus', function(){
@@ -152,6 +175,22 @@ $('.option.download .ui-checkbox').on( 'click', function( e ){
 
 });
 
+win.on( 'click' , '.remove-link' , function(){
+
+  var id = $(this).closest('tr').data('id');
+
+  api.fs( params, function( error, node ){
+
+      if( error ){
+          return;
+      }
+
+      node.removeLink( id );
+
+  });
+
+});
+
 var translate = function () {
 
   $ ('.ui-header-brand').find('span').text(lang.link.createLinkToFile);
@@ -163,12 +202,13 @@ var translate = function () {
   $ ('.preview').find('figcaption').text(lang.link.preview);
   $ ('.download').find('figcaption').text(lang.link.download);
   $ ('.create-link').text(lang.link.createLink);
-  $ ('.show-links').text(lang.link.showLinks);
+  $ ('.show-links span').text(lang.link.showLinks);
   $ ('.links').find('th').eq(0).text(lang.link.permissionsTitle);
   $ ('.links').find('th').eq(1).text(lang.link.permissionLinkTitle);
   $ ('.links').find('th').eq(2).text(lang.link.visitsTitle);
   $ ('.links').find('th').eq(3).text(lang.link.downloadTitle);
   $ ('.links').find('th').eq(4).text(lang.link.importedTitle);
+  $ ('.remove-link-button' ).text(lang.main.remove);
 
 }
 

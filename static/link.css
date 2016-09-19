@@ -275,13 +275,13 @@
       width: 87px;
     }
     &:nth-child( 2 ){
-      width: 163px;
+      width: 183px;
     }
     &:nth-child( 3 ){
-      width: 82px;
+      width: 72px;
     }
     &:nth-child( 4){
-      width: 103px;
+      width: 93px;
     }
     &:nth-child( 5 ){
       width: 86px;
@@ -306,12 +306,27 @@
     padding: 1px 0 0;
   }
 
+  tr:hover .icon{
+    display: none;
+  }
+
+  tr:hover .remove-link-button{
+    display: inline-block;
+  }
+
   tr:nth-child( odd ){
 
     td{
       background: #f9f9fb;
     }
 
+  }
+
+  .remove-link-button{
+    display: none;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
   }
 
   .icon{

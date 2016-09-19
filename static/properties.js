@@ -64,6 +64,8 @@ var loadInfo = function( id ){
 
     });
 
+    loadOwners( fsnode );
+
   });
 
 };
@@ -124,6 +126,16 @@ var updateFSNodeType = function( fsnode ){
   });
 
 };
+
+var loadOwners = function( fsnode ){
+
+  fsnode.sharedWith( function( err , users ){
+
+    console.log( users );
+
+  });
+
+}
 
 loadInfo( params );
 translate();
