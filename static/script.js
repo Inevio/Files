@@ -11,6 +11,7 @@ var TYPE_FOLDER_SPECIAL = 1;
 var TYPE_FOLDER = 2;
 var TYPE_FILE = 3;
 
+var channel                 = null;
 var requestedFrame          = false;
 var currentOpened           = null;
 var currentIcons            = {};
@@ -994,7 +995,7 @@ var getSidebarItems = function(){
 
       }
 
-      customPath.resolve( folders );
+      second.resolve( folders );
 
     });
 
@@ -1480,6 +1481,87 @@ var updateCanvasSize = function(){
   ctx.width  = visualItemArea.width();
   ctx.height = visualItemArea.height();
 
+};
+
+var addToSidebar = function( fsnode ){
+
+  wql.addFolder( [ fsnode.id , 0 ], function( error, result ){
+
+      // To Do -> Error
+      if( !error && result.affectedRows ){
+
+          addToSidebarUi( fsnode.id , fsnode.name );
+
+          if( channel === null ){
+
+              api.channel( function( error, chn ){
+
+                  channel = chn;
+                  channel.send( { action : 'addToTaskbar', id : fsnode.id , name : fsnode.name } );
+
+              });
+
+          }else{
+
+              channel.send( { action : 'addToTaskbar', id : fsnode.id , name : fsnode.name } );
+
+          }
+
+      }
+
+  });
+
+};
+
+var addToSidebarUi = function( id, name ){
+
+    if( isInSidebar( id ) ){
+        return false;
+    }
+
+    var newSidebarElement = visualSidebarItemPrototype.clone().removeClass('wz-prototype');
+
+    newSidebarElement.addClass( 'item-' + id ).attr( 'data-id', id );
+    newSidebarElement.find('.ui-navgroup-element-txt').text( name );
+
+    visualSidebarItemArea.append( newSidebarElement );
+
+};
+
+var isInSidebar = function( id ){
+    return visualSidebarItemArea.find( '.item-' + id ).length;
+};
+
+var removeFromSidebar = function( fsnode ){
+
+  wql.removeFolder( fsnode.id , function( error, result ){
+
+      // To Do -> Error
+      if( !error && result.affectedRows ){
+
+          removeFromSidebarUi( fsnode.id );
+
+          if( channel === null ){
+
+              api.channel( function( error, chn ){
+
+                  channel = chn;
+                  channel.send( { action : 'removeFromTaskbar', id : fsnode.id } );
+
+              });
+
+          }else{
+              channel.send( { action : 'removeFromTaskbar', id : fsnode.id } );
+          }
+
+      }
+
+  });
+
+};
+
+var removeFromSidebarUi = function( id ){
+    return visualSidebarItemArea.find( '.item-' + id ).remove();
 };
 
 // API Events
@@ -2057,7 +2139,9 @@ visualItemArea
     .addOption( lang.main.openFolder, openFolder.bind( null, itemClicked.fsnode.id ) )
     .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, itemClicked.fsnode.id, 'main') )
     .addOption( lang.main.copy, clipboardCopy )
-    .addOption( lang.main.cut, clipboardCut );
+    .addOption( lang.main.cut, clipboardCut )
+    .addOption( lang.addToSidebar, addToSidebar.bind( null , itemClicked.fsnode ) )
+    .addOption( lang.removeFromSidebar, removeFromSidebar.bind( null , itemClicked.fsnode ) );
 
     if( itemClicked.fsnode.permissions.send ){
       menu.addOption( lang.main.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );

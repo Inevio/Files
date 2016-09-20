@@ -1,7 +1,10 @@
 
 // Variables
+var win  = $( this );
 var visualBreadcrumbs = $('.folder-breadcrumbs');
 var visualBreadcrumbsEntryPrototype = $('.folder-breadcrumbs .entry.wz-prototype');
+var userPrototype = $('.file-shared .user.wz-prototype');
+var userList = $('.file-shared .list');
 
 // Functions
 var changeVolumeName = function( fsnode ){
@@ -64,7 +67,7 @@ var loadInfo = function( id ){
 
     });
 
-    loadOwners( fsnode );
+    loadUsers( fsnode );
 
   });
 
@@ -127,13 +130,41 @@ var updateFSNodeType = function( fsnode ){
 
 };
 
-var loadOwners = function( fsnode ){
+var loadUsers = function( fsnode ){
 
   fsnode.sharedWith( function( err , users ){
 
-    console.log( users );
+    $.each( users , function( i , user ){
+
+      var isOwner = user.isOwner;
+
+      api.user( user.userId , function( err , user ){
+
+        appendUser( user , isOwner );
+
+      });
+
+
+    });
 
   });
+
+}
+
+var appendUser = function( user , isOwner ){
+
+  var newUser = userPrototype.clone();
+  newUser.removeClass( 'wz-prototype' ).addClass( 'user-' + user.id );
+  newUser.find( 'img' ).css( 'background-image' , 'url(' + user.avatar.small + ')' );
+  newUser.find( '.name' ).text( user.fullName );
+
+  if ( isOwner ) {
+    newUser.find( '.rol' ).text( lang.propertiesOwner );
+  }
+
+  userList.append( newUser );
+
+  win.height( $( '.file-shared' ).outerHeight() + 506 );
 
 }
 
