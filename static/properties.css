@@ -1,3 +1,4 @@
+@border-color: #e5e9ea;
 
 .ui-header{
   height: 34px;
@@ -28,7 +29,7 @@
   height: 32px;
   padding: 16px 0;
   background-color: #fff;
-  border-bottom: 1px solid #ccd3d5;
+  border-bottom: 1px solid @border-color;
 
   .icon{
     float: left;
@@ -60,7 +61,7 @@
 .file-info{
   float: left;
   width: 100%;
-  border-bottom: 1px solid #ccd3d5;
+  border-bottom: 1px solid @border-color;
   background: #f9f9fb;
 
   .size{
@@ -113,7 +114,7 @@
   height: 60px;
   padding: 16px 0;
   background-color: #fff;
-  border-bottom: 1px solid #ccd3d5;
+  border-bottom: 1px solid @border-color;
 
   .title{
     margin-left: 21px;
@@ -179,7 +180,7 @@
 .file-date{
   float: left;
   width: 100%;
-  border-bottom: 1px solid #ccd3d5;
+  border-bottom: 1px solid @border-color;
   background: #f9f9fb;
 
   .creation{
@@ -220,7 +221,7 @@
   height: 103px;
   padding: 16px 0 0;
   background-color: #fff;
-  border-bottom: 1px solid #ccd3d5;
+  border-bottom: 1px solid @border-color;
 
   .title{
     margin-left: 21px;
@@ -301,7 +302,6 @@
     img{
       width: 35px;
       height: 35px;
-      background: #0f0;
       border-radius: 18px;
       margin-right: 14px;
     }
@@ -315,7 +315,6 @@
     .rol{
       position: absolute;
       right: 0px;
-      margin: 11px 0 0;
       font-family: Lato;
 	    font-size: 13px;
 	    color: #889399;
