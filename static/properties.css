@@ -87,7 +87,7 @@
     margin: 14px 0;
     width: 1px;
     height: 89px;
-    background: #ccd3d5;
+    background: @border-color;
   }
 
   .metadata{
@@ -195,7 +195,7 @@
     margin: 14px 0;
     width: 1px;
     height: 45px;
-    background: #ccd3d5;
+    background: @border-color;
   }
 
   .modification{
