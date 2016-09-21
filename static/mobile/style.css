@@ -45,7 +45,6 @@
   padding: 21px 16px 15px 0;
   margin-left: 34px;
   text-align: center;
-  display: none;
 }
 
 #weexplorer-menu-options-icon{
@@ -53,7 +52,8 @@
   height: 18px;
   background: url( '@static/mobile/more.png' ) -3px 0px no-repeat;
   background-size: 6px 18px;
-  display: inline-block;
+  /*display: inline-block;*/
+  display: none;
 }
 
 #weexplorer-menu-name{
@@ -491,6 +491,10 @@
   margin-top: 14px;
   margin-left: 26px;
   margin-right: 26px;
+}
+
+.option-section .option.send-to{
+  display: none;
 }
 
 .option-section .option.send-to figure{
