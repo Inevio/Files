@@ -121,55 +121,49 @@ var loadInfo = function( id ){
         var promises = [];
         var usersSharing = [];
 
-        $('.shared-area .user:not(.wz-prototype)').each( function( i , domUser ){
-          usersSharing.push( domUser.data('user').id )
+        $('.shared-area .user:not(.wz-prototype)').each( function( i ){
+          usersSharing.push( $(this).data('user').id )
         })
 
         // ADD SHARE
         // Todo esto teniendo en cuenta que el Array sharedWith sea una lista de id's, si no es asi he de modificarlo
-        var newUsersSharing = $.makeArray( usersSharing ).not( $.makeArray( sharedWith ) )
-        $.each( newUsersSharing , function( i , userId ){
+        var usersToAddShare    = api.tool.arrayDifference( usersSharing, sharedWith )
+        var usersToRemoveShare = api.tool.arrayDifference( sharedWith, usersSharing )
+        var toAddPromises      = [];
+        var toRemovePromises   = [];
 
-          var promise = $.Deferred()
-          promises.push( promise )
+        console.log('ADD',usersToAddShare)
+        console.log('REM',usersToRemoveShare)
 
-          api.fs( id , function( error , fsnode ){
+        usersToAddShare.forEach( function( userId ){
+          promises.push( $.Deferred() )
+        })
+
+        toRemovePromises.forEach( function( userId ){
+          promises.push( $.Deferred() )
+        })
+
+        promises = promises.concat( toAddPromises ).concat( toRemovePromises )
+
+        api.fs( id, function( error , fsnode ){
+
+          usersToAddShare.forEach( function( userId, i ){
 
             fsnode.addShare( userId , permissions, function( err ){
-              promise.resolve( err )
+              toAddPromises[ i ].resolve( err )
             })
 
           })
 
-        })
-
-        // REMOVE SHARE
-        // Todo esto teniendo en cuenta que el Array sharedWith sea una lista de id's, si no es asi he de modificarlo
-        var oldNotSharingUsers = users.filter(function( user ){
-          return sharedWith.indexOf( user.id ) < 0
-        })
-
-        var newNotSharingUsers = users.filter(function( user ){
-          return usersSharing.indexOf( user.id ) < 0
-        })
-
-        var usersToRemoveShare = $.makeArray( newNotSharingUsers ).not( $.makeArray( oldNotSharingUsers ) )
-
-        $.each( usersToRemoveShare , function( i , userId ){
-
-          var promise = $.Deferred()
-          promises.push( promise )
-
-          api.fs( id , function( error , fsnode ){
+          usersToRemoveShare.forEach( function( userId, i ){
 
             fsnode.removeShare( userId , permissions, function( err ){
-              promise.resolve( err )
+              toRemovePromises[ i ].resolve( err )
             })
 
           })
 
         })
-
 
         $.when.apply ( null, promises ).done( function(){
           api.app.removeView( win )
