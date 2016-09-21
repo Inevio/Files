@@ -11,7 +11,7 @@ var userPrototype  = $('.file-options .user.wz-prototype');
 var record         = [];
 var transitionTime = 300;
 var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-link, 4 == more-info, 5 == renaming
-var optionsDeployed= false;
+//var optionsDeployed= false;
 var actualPathId   = 0;
 
 // Functions
@@ -290,16 +290,16 @@ var showOptions = function( file ){
   $('.file-options .file-size-value').text( api.tool.bytesToUnit( file.size, 2 ) );
 
   $( '.file-options' ).show().transition({
-    'y' : '-289px'
+    'y' : '-410px'
   },transitionTime, function(){
     mode = 2;
-    yDeployed = '-289px';
+    //yDeployed = '-410px';
   });
   showCover();
 
 }
 
-var deployOptions = function(){
+/*var deployOptions = function(){
 
   if( !optionsDeployed && mode == 2 ){
 
@@ -312,9 +312,9 @@ var deployOptions = function(){
 
   }
 
-}
+}*/
 
-var undeployOptions = function(){
+/*var undeployOptions = function(){
 
   if( !optionsDeployed ){
     hideOptions(false);
@@ -329,30 +329,24 @@ var undeployOptions = function(){
 
   }
 
-}
+}*/
 
 var hideOptions = function( fullHide ){
 
-  if( optionsDeployed && !fullHide && mode!=3 ){
-    undeployOptions();
-  }else{
-
-    optionsDeployed = false;
-    if( mode == 4 ){
-      hideFileInfo();
-    }else if( mode == 3 ){
-      hideCreateLink();
-    }
-
-    $( '.file-options' ).transition({
-      'y' : '0%'
-    },transitionTime,function(){
-      mode = 0;
-      $(this).hide();
-    });
-    hideCover();
-
+  optionsDeployed = false;
+  if( mode == 4 ){
+    hideFileInfo();
+  }else if( mode == 3 ){
+    hideCreateLink();
   }
+
+  $( '.file-options' ).transition({
+    'y' : '0%'
+  },transitionTime,function(){
+    mode = 0;
+    $(this).hide();
+  });
+  hideCover();
 
 }
 
@@ -578,16 +572,12 @@ $('.opacity-cover').on('click', function(e){
 
 });
 
-win.on('swipeup', '.file-options', function(){
-  deployOptions();
-})
-
-.on('swipedown', '.file-owners-section', function(e){
+win.on('swipedown', '.file-owners-section', function(e){
   e.stopPropagation();
 })
 
 .on('swipedown', '.file-options', function(){
-  hideOptions(false);
+  hideOptions();
 })
 
 .on('click', '.file-options .options-close', function(){
