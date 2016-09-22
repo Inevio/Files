@@ -386,6 +386,12 @@ var hideCreateLink = function(){
 
 }
 
+var createLink = function(){
+
+  
+
+}
+
 var showFileInfo = function(){
 
   if( mode == 3 ){
