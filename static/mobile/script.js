@@ -364,6 +364,8 @@ var showCreateLink = function(){
       mode = 3;
     });
 
+    $('.options-header .options-more').hide();
+
   }
 
 }
@@ -381,6 +383,7 @@ var hideCreateLink = function(){
       'x' : '100%'
     },transitionTime, function(){
 
+      $('.options-header .options-more').show();
       $(this).hide();
       if( mode == 6 ){
 
