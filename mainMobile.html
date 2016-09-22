@@ -87,6 +87,7 @@
   <section class="create-link-container">
 
     <div class="create-link-title">Crear enlace</div>
+
     <section class="toggles-container">
       <section class="preview toggle">
         <div class="toggle-name center-vertical">Generar vista previa</div>
@@ -102,8 +103,15 @@
       </section>
     </section>
 
-    <button class="ui-btn accept generate-btn">
-      <span class="ellipsis">Generar</span>
+    <section class="link-container">
+      <input type="text" class="generated-link" readonly>
+    </section>
+
+    <button class="ui-btn accept generate-btn active">
+      <span class="ellipsis">#Generar#</span>
+    </button>
+    <button class="ui-btn accept back-link-btn">
+      <span class="ellipsis">#Volver#</span>
     </button>
 
   </section>

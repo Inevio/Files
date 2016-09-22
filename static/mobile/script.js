@@ -10,9 +10,10 @@ var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
 var userPrototype  = $('.file-options .user.wz-prototype');
 var record         = [];
 var transitionTime = 300;
-var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-link, 4 == more-info, 5 == renaming
+var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-link, 4 == more-info, 5 == renaming, 6 == link created
 //var optionsDeployed= false;
 var actualPathId   = 0;
+var yDeployed      = '-410px';
 
 // Functions
 var addZero = function( value ){
@@ -289,10 +290,10 @@ var showOptions = function( file ){
   $('.file-options .file-size-value').text( api.tool.bytesToUnit( file.size, 2 ) );
 
   $( '.file-options' ).show().transition({
-    'y' : '-410px'
+    'y' : yDeployed
   },transitionTime, function(){
     mode = 2;
-    //yDeployed = '-410px';
+    yDeployed = '-410px';
   });
   showCover();
 
@@ -369,7 +370,8 @@ var showCreateLink = function(){
 
 var hideCreateLink = function(){
 
-  if( mode == 3 ){
+  console.log(mode);
+  if( mode == 3 || mode == 6 ){
 
     $( '.file-options' ).transition({
       'y' : yDeployed
@@ -378,8 +380,29 @@ var hideCreateLink = function(){
     $( '.create-link-container' ).transition({
       'x' : '100%'
     },transitionTime, function(){
-      mode = 2;
+
       $(this).hide();
+      if( mode == 6 ){
+
+        $('.toggles-container').transition({
+          'x': '0%'
+        },0, function(){
+
+          $(this).show();
+          $('.link-container input').val('');
+          $('.generate-btn').show();
+          $('.back-link-btn').hide();
+
+        });
+
+        $('.link-container').transition({
+          'x': '100%'
+        },0);
+
+      }
+
+      mode = 2;
+
     });
 
   }
@@ -388,7 +411,43 @@ var hideCreateLink = function(){
 
 var createLink = function(){
 
-  
+  api.fs( $('.weexplorer-element.active').data('id'),function( error, structure ){
+
+    //var password  = ( $('.link-password input').attr('checked') && $('.link-password-input').val() ) ? $('.link-password-input').val() : null;
+    var preview   = $('.toggles-container .preview .selector').hasClass('active');
+    var downloads = $('.toggles-container .download .selector').hasClass('active');
+
+      structure.addLink( null, preview, downloads, function( error, link ){
+
+        if( error ){
+          return alert( error );
+        }
+
+        /*if( appendLink( link, true ) ){
+          checkViewSize();
+        }*/
+
+        mode = 6;
+        var input = $('.link-container input');
+        input.val( link.url );
+        input[ 0 ].setSelectionRange( 0, input[ 0 ].value.length );
+
+        $('.toggles-container').transition({
+          'x': '-100%'
+        },transitionTime,function(){
+          $(this).hide();
+        });
+
+        $('.link-container').transition({
+          'x': '0'
+        },transitionTime);
+
+        $('.generate-btn').hide();
+        $('.back-link-btn').show();
+
+    });
+
+  })
 
 }
 
@@ -652,6 +711,14 @@ $('.file-options .rename-accept').on('click', function(){
 
 $('.file-options .rename-cancel').on('click', function(){
   cancelRename();
+});
+
+$('.create-link-container .generate-btn').on('click', function(){
+  createLink();
+});
+
+$('.create-link-container .back-link-btn').on('click', function(){
+  hideCreateLink();
 });
 
 api.fs.on( 'move', function( structure, destinyID, originID ){
