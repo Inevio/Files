@@ -35,11 +35,12 @@ var icon = function( data ){
   file.find('.weexplorer-element-data').text( api.tool.bytesToUnit( data.size ) );
   file.find('.weexplorer-element-icon').css('background-image', 'url(' + data.icons.small + ')' )
   file.data( 'id', data.id );
+  file.addClass( 'file-' + data.id );
 
   if( data.type < 2 ){
-      file.addClass('directory');
+    file.addClass('directory');
   }else{
-      file.addClass('file');
+    file.addClass('file');
   }
 
   // Return icon
@@ -65,8 +66,6 @@ var iconBack = function(){
 var openDirectory = function( id, jump, clear ){
 
   api.fs( id, function( error, structure ){
-
-
 
     if( !jump ){
 
@@ -96,7 +95,7 @@ var openDirectory = function( id, jump, clear ){
       var icons = $();
 
       for( var i in list ){
-          icons = icons.add( icon(list[ i ]) );
+        icons = icons.add( icon(list[ i ]) );
       }
 
       if( id != actualPathId){
@@ -333,7 +332,7 @@ var showOptions = function( file ){
 
 var hideOptions = function( fullHide ){
 
-  optionsDeployed = false;
+  //optionsDeployed = false;
   if( mode == 4 ){
     hideFileInfo();
   }else if( mode == 3 ){
@@ -399,10 +398,6 @@ var showFileInfo = function(){
 
   }
 
-  if( optionsDeployed ){
-    optionsDeployed = false;
-  }
-
   $('.file-details').show().transition({
     'y' : '0%'
   },transitionTime);
@@ -462,12 +457,8 @@ var acceptRename = function(){
 
         console.log(arguments);
 
-        if( !error ){
-
-          $('.file-options .file-title').text( $('.file-options .file-rename').val() );
-          cancelRename();
-          openDirectory( actualPathId, true );
-
+        if( error ){
+          alert( error );
         }
 
       });
@@ -628,7 +619,6 @@ $('.option.delete').on('click',function(){
       if( !error ){
 
         hideOptions(true);
-        openDirectory( actualPathId, true );
 
       }
 
@@ -658,6 +648,123 @@ $('.file-options .rename-cancel').on('click', function(){
   cancelRename();
 });
 
+api.fs.on( 'move', function( structure, destinyID, originID ){
+
+ console.log('move', structure);
+
+   /*if( originID !== destinyID ){
+
+       if( originID === current.id ){
+
+           fileArea.children( '.weexplorer-file-' + structure.id ).remove();
+           centerIcons();
+           updateFolderStatusMessage();
+
+       }else if( destinyID === current.id ){
+           displayIcons( icon( structure ) );
+       }
+
+   }*/
+
+})
+
+.on( 'new', function( structure ){
+
+  console.log('new', structure);
+
+  if( structure.parent === actualPathId ){
+    //appendIcon( icon( structure ) );
+    openDirectory( actualPathId, true );
+  }
+
+})
+
+.on( 'modified', function( structure ){
+
+  console.log('modified', structure);
+
+  /*if( structure.parent === current.id ){
+
+    var file = $('.file-' + structure.id );
+
+    if( file.hasClass('temporal-file') && structure.type !== 3 ){
+
+     file
+       .removeClass('temporal-file weexplorer-file-uploading')
+       .addClass('file')
+       .data( 'fsnode', structure )
+       .find('img')
+           .attr( 'attr', file.find('img').attr('src').replace( '?upload', '' ) );
+
+
+    }else if( file.hasClass('file') && structure.type === 3 ){
+
+     file
+       .addClass('temporal-file weexplorer-file-uploading')
+       .removeClass('file')
+       .data( 'fsnode', structure )
+       .find('img')
+           .attr( 'attr', file.find('img').attr('src').replace( '?upload', '' ) );
+
+
+    }else{
+     file.data( 'fsnode', structure );
+    }
+
+    console.log( file.data('fsnode').mime );
+
+  }*/
+
+})
+
+.on( 'remove', function( id, quota, parent ){
+
+  console.log('remove', arguments);
+
+  $( '.file-' + id ).remove();
+  $( '.weexplorer-sidebar .folder-' + id ).remove();
+
+  if( actualPathId === id ){
+    itemBack.click();
+  }
+
+})
+
+.on( 'rename', function( structure ){
+
+  console.log('rename', structure);
+
+  $( '.file-' + structure.id + ' .weexplorer-element-name').text( structure.name );
+  //sortIcons( fileArea.find('.weexplorer-file') );
+
+  if( mode = 5 ){
+    cancelRename();
+    $('.file-options .file-title').text( $('.file-options .file-rename').val() );
+  }
+
+  if( structure.id === actualPathId ){
+    $( '#weexplorer-menu #weexplorer-menu-name' ).text( structure.name );
+  }
+
+  $( '.weexplorer-sidebar .folder-' + structure.id + ' .weexplorer-sidebar-name' ).text( structure.name );
+
+})
+
+/*.on( 'sharedStart', function( structure ){
+
+   $( '.weexplorer-file-' + structure.id, win ).addClass( 'shared' );
+
+})
+
+.on( 'sharedStop', function( structure ){
+
+   $( '.weexplorer-file-' + structure.id, win ).removeClass( 'shared' );
+
+})*/
+
+.on( 'thumbnail', function( structure ){
+  $( '.file-' + structure.id ).find('.weexplorer-element-icon').css('background-image', 'url(' + structure.icons.small + ')' )
+});
 
 // Start app
 openDirectory( 'root' );
