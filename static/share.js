@@ -109,6 +109,7 @@ var loadInfo = function( id ){
         var permissions = $('.permissions-list .permission')
 
         permissions = {
+          read     : true,
           link     : permissions.filter('.link').hasClass('active'),
           move     : permissions.filter('.modify').hasClass('active'),
           write    : permissions.filter('.modify').hasClass('active'),
@@ -120,6 +121,9 @@ var loadInfo = function( id ){
 
         var promises = [];
         var usersSharing = [];
+        var sharedWithIds = sharedWith.map( function( item ){ return item.userId })
+
+        console.log( sharedWithIds )
 
         $('.shared-area .user:not(.wz-prototype)').each( function( i ){
           usersSharing.push( $(this).data('user').id )
@@ -127,8 +131,8 @@ var loadInfo = function( id ){
 
         // ADD SHARE
         // Todo esto teniendo en cuenta que el Array sharedWith sea una lista de id's, si no es asi he de modificarlo
-        var usersToAddShare    = api.tool.arrayDifference( usersSharing, sharedWith )
-        var usersToRemoveShare = api.tool.arrayDifference( sharedWith, usersSharing )
+        var usersToAddShare    = api.tool.arrayDifference( usersSharing, sharedWithIds )
+        var usersToRemoveShare = api.tool.arrayDifference( sharedWithIds, usersSharing )
         var toAddPromises      = [];
         var toRemovePromises   = [];
 
@@ -136,20 +140,23 @@ var loadInfo = function( id ){
         console.log('REM',usersToRemoveShare)
 
         usersToAddShare.forEach( function( userId ){
-          promises.push( $.Deferred() )
+          toAddPromises.push( $.Deferred() )
         })
 
-        toRemovePromises.forEach( function( userId ){
-          promises.push( $.Deferred() )
+        usersToRemoveShare.forEach( function( userId ){
+          toRemovePromises.push( $.Deferred() )
         })
 
         promises = promises.concat( toAddPromises ).concat( toRemovePromises )
 
         api.fs( id, function( error , fsnode ){
 
+          console.log( 'FSNODE', fsnode )
+
           usersToAddShare.forEach( function( userId, i ){
 
             fsnode.addShare( userId , permissions, function( err ){
+              console.log( 'ADD', err )
               toAddPromises[ i ].resolve( err )
             })
 
@@ -157,7 +164,8 @@ var loadInfo = function( id ){
 
           usersToRemoveShare.forEach( function( userId, i ){
 
-            fsnode.removeShare( userId , permissions, function( err ){
+            fsnode.removeShare( userId, function( err ){
+              console.log( 'REM', err )
               toRemovePromises[ i ].resolve( err )
             })
 
