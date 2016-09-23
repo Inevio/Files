@@ -80,6 +80,14 @@ var loadInfo = function( id ){
 
     $.when.apply( null, sharedPromises ).done( function(){
 
+      users = users.sort( function( a, b ){
+          return a.fullName.localeCompare( b.fullName );
+      });
+
+      sharedWith = sharedWith.sort( function( a, b ){
+          return a.fullName.localeCompare( b.fullName );
+      });
+
       users.forEach( function( user ){
         appendUserToUsersList( visualUsersAreaList, visualUsersAreaListUserPrototype, user );
       });
@@ -203,18 +211,67 @@ var translate = function(){
 
 };
 
+var containsWord = function( wordToCompare ){
+
+  return function( index , element ) {
+
+    return $( element ).find( '.name' ).text().toLowerCase().indexOf( wordToCompare.toLowerCase() ) !== -1;
+
+  }
+
+}
+
+var appendUserInOrder = function( list , user ){
+
+  var usersInDom = list.find( '.user:not(.wz-prototype)' ).toArray();
+  var nUsersInDom = usersInDom.length;
+  var appended = false;
+
+  if ( nUsersInDom === 0 ) {
+    list.append( user );
+    return;
+  }
+
+  usersInDom.forEach(function( userInDom ){
+
+    var userInDom = $( userInDom );
+
+    if ( !appended && user.find( '.name' ).text().localeCompare( userInDom.find( '.name' ).text() ) === -1 ) {
+      userInDom.before( user );
+      appended = true;
+    }
+
+  });
+
+  if ( !appended ) {
+    $( usersInDom[ nUsersInDom -1 ] ).after( user );
+  }
+
+}
 // Events
 $('.users-area .users-list').on( 'click', '.user', function(){
-  visualSharedAreaList.append( $(this) );
+  appendUserInOrder( visualSharedAreaList , $(this) );
 });
 
 $('.shared-area .users-list').on( 'click', '.user', function(){
-  visualUsersAreaList.append( $(this) );
+  appendUserInOrder( visualUsersAreaList , $(this) );
 });
 
 $('.permission .icon').on( 'click', function(){
   $(this).parent('.permission').toggleClass('active');
 });
+
+$('.users-area .search').on( 'input' , function(){
+
+  var filter = $( this ).val();
+  var users = $( '.user' );
+  var usersToShow = users.filter( containsWord( filter ) );
+
+  users.removeClass( 'covert' );
+  users.not( usersToShow ).addClass( 'covert' );
+
+});
+
 
 // Start the app
 loadInfo( params );

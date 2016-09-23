@@ -45,17 +45,16 @@
     "share" : {
 
       "share"                     : "Share",
-      "search"                    : "###SEARCH###",
-      "query"                     : "###QUERY###",
+      "search"                    : "Choose who you want to share it with",
+      "query"                     : "Search",
       "globalPermissions"         : "Global permissions",
-      "link"  : "Link",
-      "modify"  : "Modify",
-      "copy"  : "Copy",
-      "download"  : "Download",
-      "send"  : "Send",
-      "save"  : "Save"
-
-
+      "link"                      : "Link",
+      "modify"                    : "Modify",
+      "copy"                      : "Copy",
+      "download"                  : "Download",
+      "send"                      : "Send",
+      "save"                      : "Save",
+      "shareWith"                 : "Sharing with:"
 
     },
 
