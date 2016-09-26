@@ -80,12 +80,22 @@ var loadInfo = function( id ){
 
     $.when.apply( null, sharedPromises ).done( function(){
 
+      users = users.filter( function( user ){
+        var notFound = true;
+        sharedWith.forEach( function( shared ){
+          if ( user.id === shared.userId ) {
+            found =  false;
+          }
+        });
+        return notFound;
+      });
+
       users = users.sort( function( a, b ){
         return a.fullName.localeCompare( b.fullName );
       });
 
       sharedWith = sharedWith.sort( function( a, b ){
-        return a.user.fullName.localeCompare( b.fullName );
+        return a.user.fullName.localeCompare( b.user.fullName );
       });
 
       users.forEach( function( user ){
