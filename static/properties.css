@@ -304,6 +304,7 @@
       height: 35px;
       border-radius: 18px;
       margin-right: 14px;
+      background-size: cover;
     }
 
     .name{

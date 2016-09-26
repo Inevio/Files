@@ -10,6 +10,7 @@ var TYPE_ROOT = 0;
 var TYPE_FOLDER_SPECIAL = 1;
 var TYPE_FOLDER = 2;
 var TYPE_FILE = 3;
+var PROGRESS_RADIUS = 5;
 
 var channel                 = null;
 var requestedFrame          = false;
@@ -503,9 +504,6 @@ var drawIconsInGrid = function(){
       ctx.fillText( icon.lines[ 1 ], x + ICON_WIDTH / 2, 4 + y + 18 + ICON_IMAGE_HEIGHT_AREA);
     }
 
-    var imgX = x;
-    var imgY = y;
-
     if( !icon.bigIcon ){
 
       icon.bigIcon = new Image ();
@@ -517,10 +515,21 @@ var drawIconsInGrid = function(){
 
       var normalized = normalizeBigIconSize( icon.bigIcon );
 
-      ctx.drawImage( icon.bigIcon, imgX + ( ICON_WIDTH -  normalized.width ) / 2, imgY + ( ICON_IMAGE_HEIGHT_AREA - normalized.height ) / 2, normalized.width, normalized.height );
+      ctx.drawImage( icon.bigIcon, x + ( ICON_WIDTH -  normalized.width ) / 2, y + ( ICON_IMAGE_HEIGHT_AREA - normalized.height ) / 2, normalized.width, normalized.height );
 
     }else{
       $( icon.bigIcon ).on( 'load', requestDraw );
+    }
+
+    if ( icon.bigIcon.naturalWidth ) {
+
+      //pintar progreso en la esquina del icono
+      //printProgressCircle( ctx , { x:  , y:  } , PROGRESS_RADIUS , progress );
+
+    }else{
+
+      //pintar progresso en el centro
+
     }
 
     if(
@@ -547,6 +556,24 @@ var drawIconsInGrid = function(){
   }
 
 };
+
+var printProgressCircle = function( ctx , center , radius , progress ){
+
+  var centerX = center.x;
+  var centerY = center.y;
+
+  ctx.beginPath();
+
+  var startAngle = 1.5;
+  var endAngle = startAngle + 2 * progress;
+  context.arc( centerX , centerY , radius , startAngle*Math.PI , endAngle*Math.PI );
+
+  context.lineWidth = 10;
+  context.strokeStyle = 'black';
+
+  context.stroke();
+
+}
 
 var drawIconsInList = function(){
 
