@@ -21,6 +21,7 @@
 .ui-navbar{
   border-right: 1px solid #dbe0e2;
   overflow-y: auto;
+  background: #f9f9fb;
 }
 
 .ui-navgroup{
@@ -117,6 +118,7 @@
   float: left;
   height: ~'calc(100% - 41px)';
   width: ~'calc(100% - 181px)';
+  background: #fff;
 }
 
 .folder-tools{
@@ -503,7 +505,6 @@
 
   .ui-navbar, .ui-content{
     height: ~'calc(100% - 72px)';
-    background: #f9f9fb;
    }
 
   .ui-confirm{

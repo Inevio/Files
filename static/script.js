@@ -37,9 +37,11 @@ var uploadingAreaTimer      = 0;
 var currentGoToItemString   = '';
 var currentGoToItemTimer    = 0;
 var enabledMultipleSelect   = true;
+var disabledFileIcons       = false;
 
 if( params && ( params.command === 'selectSource' ||  params.command === 'selectDestiny' ) ){
-  enabledMultipleSelect = params.command === 'selectSource' && params.type === 'file' && params.multiple;
+  enabledMultipleSelect = params.command === 'selectSource' && params.mode === 'file' && params.multiple;
+  disabledFileIcons = params.command === 'selectSource' && params.mode === 'directory';
 }
 
 var win                        = $(this);
@@ -92,6 +94,37 @@ var Icon = function( fsnode ){
   this.bigIconHeight = ICON_IMAGE_HEIGHT_AREA + this.bigIconTextHeight;
 
   return this;
+
+};
+
+var acceptButtonHandler = function(){
+
+  console.log( currentActive, currentActiveIcons, params )
+
+  var validIcons = currentActive.filter( function( icon ){
+
+    if( params.mode === 'file' ){
+      return icon.fsnode.type === 3
+    }
+
+    return icon.fsnode.type === 2
+
+  }).map( function( icon ){
+    return icon.fsnode.id
+  })
+
+  if( !validIcons.length ){
+
+    if( params.mode === 'file' ){
+      return
+    }
+
+    validIcons = [ currentOpened.id ]
+
+  }
+
+  params.callback( null, validIcons );
+  api.app.removeView( win );
 
 };
 
@@ -192,6 +225,13 @@ var calculateGrid = function(){
   };
 
 };
+
+var cancelButtonHandler = function(){
+
+  params.callback('USER ABORT');
+  api.app.removeView( win );
+
+}
 
 var changeVolumeName = function( fsnode ){
 
@@ -483,7 +523,12 @@ var drawIconsInGrid = function(){
       $( icon.bigIcon ).on( 'load', requestDraw );
     }
 
-    if( ( dropActive && icon.fsnode.type === TYPE_FILE ) || dropIgnore.indexOf( icon ) !== -1 || icon.fsnode.fileId === 'TO_UPDATE' ){
+    if(
+      ( disabledFileIcons && icon.fsnode.type === TYPE_FILE ) ||
+      ( dropActive && icon.fsnode.type === TYPE_FILE ) ||
+      dropIgnore.indexOf( icon ) !== -1 ||
+      icon.fsnode.fileId === 'TO_UPDATE'
+    ){
 
       ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
       ctx.fillRect( x, y, ICON_WIDTH + 1, icon.bigIconHeight + 1 );
@@ -1077,6 +1122,10 @@ var historyGoForward = function(){
 
 var makeIconVisible = function( icon ){
 
+  if( disabledFileIcons && icon.fsnode.type === TYPE_FILE ){
+    return
+  }
+
   var position = getIconPosition( icon );
   var scroll   = -1 * ( position.y + icon.bigIconHeight + ( ROWS_GAP / 2 ) - ctx.height );
 
@@ -1236,6 +1285,8 @@ var selectIcon = function( e, itemClicked ){
     currentActive = [];
     currentActiveIcons = {};
 
+  }else if( itemClicked && disabledFileIcons && itemClicked.fsnode.type === TYPE_FILE ){
+    return
   }else if( itemClicked && ( !enabledMultipleSelect || ( !e.metaKey && !e.ctrlKey && !e.shiftKey ) ) && currentActive.indexOf( itemClicked ) === -1 ){
 
     currentActive.forEach( function( item ){ item.active = false; });
@@ -1341,7 +1392,7 @@ var sortByName = function( a, b ){
 
 };
 
-var moveListenerMousedown = function( e ){
+var moveListenerMousemove = function( e ){
 
   var offset = visualItemArea.offset();
   selectDragCurrent = { x : e.clientX - offset.left, y : e.clientY - offset.top - currentScroll };
@@ -1408,7 +1459,7 @@ var setAutomaticScroll = function( size ){
 var startListeningMove = function(){
 
   $( window )
-  .on( 'mousemove', moveListenerMousedown )
+  .on( 'mousemove', moveListenerMousemove )
   .on( 'mouseup', moveListenerMouseup );
 
 };
@@ -1431,7 +1482,7 @@ var startUploadingAnimation = function(){
 var stopListeningMove = function(){
 
   $( window )
-  .off( 'mousemove', moveListenerMousedown )
+  .off( 'mousemove', moveListenerMousemove )
   .off( 'mouseup', moveListenerMouseup );
 
 };
@@ -1971,7 +2022,7 @@ visualItemArea
 
   if( itemClicked ){
     makeIconVisible( itemClicked );
-  }else if( e.button === 0 ){
+  }else if( e.button === 0 && enabledMultipleSelect ){
 
     var offset = visualItemArea.offset();
     selectDragOrigin = { x : e.clientX - offset.left, y : e.clientY - offset.top - currentScroll };
@@ -2207,14 +2258,20 @@ visualItemArea
 
   var itemClicked = getIconWithMouserOver( e );
 
-  if( !itemClicked ){
+  if( !itemClicked || ( disabledFileIcons && itemClicked.fsnode.type === TYPE_FILE ) ){
     return;
   }
 
   if( itemClicked.fsnode.type === TYPE_ROOT || itemClicked.fsnode.type === TYPE_FOLDER_SPECIAL || itemClicked.fsnode.type === TYPE_FOLDER ){
     openFolder( itemClicked.fsnode.id );
   }else if( itemClicked.fsnode.type === TYPE_FILE ){
-    openFile( itemClicked.fsnode );
+
+    if( params && params.command === 'selectSource' ){
+      acceptButtonHandler()
+    }else{
+      openFile( itemClicked.fsnode );
+    }
+
   }
 
 })
@@ -2409,40 +2466,10 @@ getSidebarItems().then( function( list ){
 });
 
 visualAcceptButton
-.on( 'click', function(){
-
-  console.log( currentActive, currentActiveIcons, params )
-
-  var validIcons = currentActive.filter( function( icon ){
-
-    if( params.mode === 'file' ){
-      return icon.fsnode.type === 3
-    }
-
-    return icon.fsnode.type === 2
-
-  }).map( function( icon ){
-    return icon.fsnode.id
-  })
-
-  if( !validIcons.length ){
-    return
-  }
-
-  console.log( validIcons )
-
-  params.callback( null, validIcons );
-  api.app.removeView( win );
-
-});
+.on( 'click', acceptButtonHandler );
 
 visualCancelButton
-.on( 'click', function(){
-
-  params.callback('USER ABORT');
-  api.app.removeView( win );
-
-});
+.on( 'click', cancelButtonHandler );
 
 // Load texts
 
