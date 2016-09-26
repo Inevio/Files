@@ -81,11 +81,11 @@ var loadInfo = function( id ){
     $.when.apply( null, sharedPromises ).done( function(){
 
       users = users.sort( function( a, b ){
-          return a.fullName.localeCompare( b.fullName );
+        return a.fullName.localeCompare( b.fullName );
       });
 
       sharedWith = sharedWith.sort( function( a, b ){
-          return a.fullName.localeCompare( b.fullName );
+        return a.user.fullName.localeCompare( b.fullName );
       });
 
       users.forEach( function( user ){
