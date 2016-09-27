@@ -220,6 +220,33 @@
 
                 },
 
+                "accept" : {
+
+                    "template" : "accept.html",
+
+                    "resizable"   : false,
+
+                    "width"  : {
+
+                        "default" : 450,
+                        "min"     : 0,
+                        "max"     : 0
+
+                    },
+
+                    "height" : {
+
+                        "default" : 335,
+                        "min"     : 0,
+                        "max"     : 0
+
+                    },
+
+                    "css"    : ["accept.css"],
+                    "script" : ["accept.js"]
+
+                },
+
                 "selectSource" : {
 
                     "template" : "main.html",
