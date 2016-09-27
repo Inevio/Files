@@ -84,7 +84,7 @@ var loadInfo = function( id ){
         var notFound = true;
         sharedWith.forEach( function( shared ){
           if ( user.id === shared.userId ) {
-            found =  false;
+            notFound =  false;
           }
         });
         return notFound;

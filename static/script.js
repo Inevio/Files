@@ -1,5 +1,7 @@
 'use strict';
 
+ //api.app.createView('accept');
+
 var ICON_WIDTH = 106;
 var ICON_TEXT_WIDTH = 106 - 6;
 var ICON_IMAGE_HEIGHT_AREA = 80;
@@ -11,6 +13,8 @@ var TYPE_FOLDER_SPECIAL = 1;
 var TYPE_FOLDER = 2;
 var TYPE_FILE = 3;
 var PROGRESS_RADIUS = 5;
+var PROGRESS_ICON = new Image();
+PROGRESS_ICON.src = 'https://staticbeta.inevio.com/app/1/img/processing@2x.png';
 
 var channel                 = null;
 var requestedFrame          = false;
@@ -523,12 +527,19 @@ var drawIconsInGrid = function(){
 
     if ( icon.bigIcon.naturalWidth ) {
 
-      //pintar progreso en la esquina del icono
-      //printProgressCircle( ctx , { x:  , y:  } , PROGRESS_RADIUS , progress );
+      var normalized = normalizeBigIconSize( icon.bigIcon );
+      var centerX = normalized.width + x + ( ICON_WIDTH -  normalized.width ) / 2;
+      var centerY = normalized.height + y + ( ICON_IMAGE_HEIGHT_AREA -  normalized.height ) / 2;
+
+      drawProgressCircle( ctx , { x: centerX , y: centerY }  , 0.25 );
+
 
     }else{
 
-      //pintar progresso en el centro
+      var centerX = x + ICON_WIDTH / 2 - 13;
+      var centerY = y + ICON_IMAGE_HEIGHT_AREA / 2 - 13;
+
+      drawProgressCircle( ctx , { x: centerX , y: centerY }  , 0.25 );
 
     }
 
@@ -557,21 +568,30 @@ var drawIconsInGrid = function(){
 
 };
 
-var printProgressCircle = function( ctx , center , radius , progress ){
+var drawProgressCircle = function( ctx , center , progress ){
 
   var centerX = center.x;
   var centerY = center.y;
 
   ctx.beginPath();
+  ctx.arc( centerX , centerY , 13 , 0 , 2*Math.PI );
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = '#ccd3d5';
+  ctx.fillStyle = '#fff';
+  ctx.fill();
 
+  ctx.stroke();
+
+  ctx.beginPath();
   var startAngle = 1.5;
   var endAngle = startAngle + 2 * progress;
-  context.arc( centerX , centerY , radius , startAngle*Math.PI , endAngle*Math.PI );
+  ctx.arc( centerX , centerY , 12 , startAngle*Math.PI , endAngle*Math.PI );
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = '#60b25e';
 
-  context.lineWidth = 10;
-  context.strokeStyle = 'black';
+  ctx.stroke();
 
-  context.stroke();
+  ctx.drawImage( PROGRESS_ICON , centerX - 7 , centerY - 6 , 14 , 13 );
 
 }
 
