@@ -135,7 +135,9 @@
       "fileShareAccepted"         : "Archivo aceptado",
       "beenAccepted"              : "ha sido aceptado",
       "fileShareRefused"          : "Archivo rechazado",
-      "beenRefused"               : "ha sido rechazado"
+      "beenRefused"               : "ha sido rechazado",
+      "hasShared"                 : "ha sido compartido contigo"
+
     },
 
     "shared" : {
