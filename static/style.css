@@ -211,11 +211,13 @@
   float: left;
   width: ~'calc(100% - 204px)';
   margin-top: 4px;
+  overflow: hidden;
 
-  .entry{
+  & > .entry{
     font-family: Lato;
     font-size: 13px;
     color: #889399;
+    white-space: nowrap;
 
     &:hover{
       color: #4e9c21;
@@ -225,9 +227,13 @@
       color: #545f65;
     }
 
+    .hidden{
+      display: none;
+    }
+
   }
 
-  .entry + .entry{
+  & > .entry + .entry{
     margin-left: 20px;
 
     &:before{
@@ -276,7 +282,8 @@
     border-radius: 6px;
     display: none;
 
-    li{
+    .entry{
+      display: block;
       font-family: Lato;
       font-size: 13px;
       color: #545f65;
