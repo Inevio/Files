@@ -1676,6 +1676,14 @@ var removeFromSidebarUi = function( id ){
     return visualSidebarItemArea.find( '.item-' + id ).remove();
 };
 
+var acceptContent = function( fsnode ){
+  fsnode.accept();
+}
+
+var refuseContent = function( fsnode ){
+  fsnode.refuse();
+}
+
 // API Events
 api.fs
 .on( 'new', function( fsnode ){
@@ -2244,6 +2252,11 @@ visualItemArea
       menu.addOption( lang.main.download, downloadAllActive );
     }
 
+    if ( itemClicked.fsnode.pending ) {
+      menu.addOption( lang.received.contentAccept , acceptContent.bind( null , itemClicked.fsnode ) );
+      menu.addOption( lang.received.contentRefuse , refuseContent.bind( null , itemClicked.fsnode ) );
+    }
+
     if( [ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ].indexOf( itemClicked.fsnode.mime ) !== -1 ){
 
       menu.addOption( 'Establecer como fondo', function(){
@@ -2281,6 +2294,11 @@ visualItemArea
 
     if( itemClicked.fsnode.permissions.download ){
       menu.addOption( lang.main.download, downloadAllActive );
+    }
+
+    if ( itemClicked.fsnode.pending ) {
+      menu.addOption( lang.received.contentAccept , acceptContent.bind( null , itemClicked.fsnode ) );
+      menu.addOption( lang.received.contentRefuse , refuseContent.bind( null , itemClicked.fsnode ) );
     }
 
     /*if( itemClicked.fsnode.permissions.download ){
