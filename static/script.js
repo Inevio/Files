@@ -1,7 +1,5 @@
 'use strict';
 
- //api.app.createView('accept');
-
 var ICON_WIDTH = 106;
 var ICON_TEXT_WIDTH = 106 - 6;
 var ICON_IMAGE_HEIGHT_AREA = 80;
@@ -2332,6 +2330,10 @@ visualItemArea
   }
 
   var itemClicked = getIconWithMouserOver( e );
+
+  if ( itemClicked.fsnode.pending ) {
+    api.app.createView( itemClicked.fsnode , 'received' );
+  }
 
   if( !itemClicked || ( disabledFileIcons && itemClicked.fsnode.type === TYPE_FILE ) ){
     return;

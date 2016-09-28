@@ -1,79 +1,25 @@
+var fsnode = params;
 
-    var win = $( this );
+//Methods
+var setInfo = function(){
 
-    api.fs( params, function( error, structure ){
+  $( '.file-info .icon' ).css( 'background-image' , 'url(' + fsnode.icons.tiny + ')' );
+  $( '.file-info .name' ).text( fsnode.name + ' ' + lang.received.hasShared );
+  $( '.accept-file' ).text( lang.received.contentAccept );
+  $( '.refuse-file' ).text( lang.received.contentRefuse );
 
-        if( error ){
-            return alert( lang.recieived.error );
-        }
+}
 
-        api.user( structure.metadata.inbox.sender, function( error, user ){
-            $( '.received-content-info.who', win ).text( lang.received.sentBy + ' ' + user.fullName );
-        });
+$( '.accept-file' ).on( 'click' , function(){
 
-        var date = new Date( parseInt( structure.metadata.inbox.time, 10 ) );
+  fsnode.accept();
 
-        $( '.received-content-info.date', win ).text( ' ' + lang.received.on + ' ' + date.toLocaleDateString() );
+});
 
-        var hour = date.getHours();
-            if( hour < 10 ){ hour = '0' + hour; }
-        var minute = date.getMinutes();
-            if( minute < 10 ){ minute = '0' + minute; }
-        var second = date.getSeconds();
-            if( second < 10 ){ second = '0' + second; }
+$( '.refuse-file' ).on( 'click' , function(){
 
-        $( '.received-content-info.hour', win ).text( ' ' + lang.received.at + ' ' + hour + ':' + minute + ':' + second );
-        $( '.received-content-name', win ).text( structure.name );
-        $( '.received-content-size', win ).text( api.tool.bytesToUnit( structure.size, 2 ) );
-        $( '.received-content-message', win ).text( structure.metadata.inbox.message );
+  fsnode.refuse();
 
-        win
-        .on( 'mousedown', '.received-content-accept', function(){
+});
 
-            structure.accept( function( error ){
-
-                if( error ){
-                    alert( error, api.view.remove );
-                }else{
-
-                    api.banner()
-                        .setTitle( lang.received.fileShareAccepted )
-                        .setText( structure.name + ' ' + lang.received.beenAccepted )
-                        .setIcon( 'https://static.inevio.com/app/1/file_accepted.png' )
-                        .render();
-
-                    api.view.remove();
-
-                }
-
-            });
-
-        })
-
-        .on( 'mousedown', '.received-content-refuse', function(){
-
-            structure.refuse( function( error ){
-
-                if( error ){
-                    alert( error, api.view.remove );
-                }else{
-
-                    api.banner()
-                        .setTitle( lang.received.fileShareRefused )
-                        .setText( structure.name + ' ' + lang.received.beenRefused )
-                        .setIcon( 'https://static.inevio.com/app/1/file_denied.png' )
-                        .render();
-
-                    api.view.remove();
-
-                }
-
-            });
-
-        });
-
-    });
-
-    $( '.received-file', win ).text( lang.received.receivedFile );
-    $( '.received-content-accept', win ).text( lang.received.contentAccept );
-    $( '.received-content-refuse', win ).text( lang.received.contentRefuse );
+setInfo();

@@ -135,7 +135,9 @@
       "fileShareAccepted"         : "File accepted",
       "beenAccepted"              : "has been accepted",
       "fileShareRefused"          : "File refused",
-      "beenRefused"               : "has been refused"
+      "beenRefused"               : "has been refused",
+      "hasShared"                 : "has been shared with you"
+
     },
 
     "shared" : {
