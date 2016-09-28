@@ -698,6 +698,35 @@ var generateBreadcrumbs = function( path ){
   list[ list.length - 1 ].addClass('current');
   visualBreadcrumbs.prepend( list );
 
+  var isOverflowing = visualBreadcrumbs[ 0 ].clientWidth < visualBreadcrumbs[ 0 ].scrollWidth;
+  var firstIteration = true;
+  var limitReached = false;
+
+  while( isOverflowing && !limitReached ){
+
+    if( firstIteration ){
+
+      firstIteration = false
+      var entry = visualBreadcrumbsEntryPrototype.clone().removeClass('wz-prototype');
+      entry.addClass('list-trigger').append('<i></i>');
+      visualBreadcrumbs.prepend( entry );
+
+    }
+
+    var entries = visualBreadcrumbs.children('.entry').not('.wz-prototype, .list-trigger');
+
+    if( entries.length > 1 ){
+      entries.first().prependTo( visualBreadcrumbsList )
+    }else{
+      limitReached = true
+    }
+
+    isOverflowing = visualBreadcrumbs[ 0 ].clientWidth < visualBreadcrumbs[ 0 ].scrollWidth;
+
+  }
+
+  console.log( isOverflowing )
+
 };
 
 var getAvailableNewFolderName = function(){
