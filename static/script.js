@@ -81,14 +81,15 @@ var pixelRatio          = api.tool.devicePixelRatio() / backingStoreRatio;
 
 var Icon = function( fsnode ){
 
-  this.fsnode            = fsnode;
-  this.active            = false;
-  this.hover             = false;
-  this.bigIcon           = null;
-  this.bigIconHeight     = 0;
-  this.bigIconTextHeight = 0;
-  this.smallIcon         = null;
-  this.lines             = getIconLines( fsnode.name );
+  this.fsnode             = fsnode;
+  this.active             = false;
+  this.hover              = false;
+  this.bigIcon            = null;
+  this.bigIconHeight      = 0;
+  this.bigIconTextHeight  = 0;
+  this.smallIcon          = null;
+  this.conversionProgress = -1;
+  this.lines              = getIconLines( fsnode.name );
 
   if( this.lines.length > 1 ){
     this.bigIconTextHeight = 4 + 14 + 4 + 14 + 4;
@@ -525,21 +526,24 @@ var drawIconsInGrid = function(){
       $( icon.bigIcon ).on( 'load', requestDraw );
     }
 
-    if ( icon.bigIcon.naturalWidth ) {
+    if( icon.conversionProgress !== -1 ){
 
-      var normalized = normalizeBigIconSize( icon.bigIcon );
-      var centerX = normalized.width + x + ( ICON_WIDTH -  normalized.width ) / 2;
-      var centerY = normalized.height + y + ( ICON_IMAGE_HEIGHT_AREA -  normalized.height ) / 2;
+      if ( icon.bigIcon.naturalWidth ) {
 
-      drawProgressCircle( ctx , { x: centerX , y: centerY }  , 0.25 );
+        var normalized = normalizeBigIconSize( icon.bigIcon );
+        var centerX = normalized.width + x + ( ICON_WIDTH -  normalized.width ) / 2;
+        var centerY = normalized.height + y + ( ICON_IMAGE_HEIGHT_AREA -  normalized.height ) / 2;
 
+        drawProgressCircle( ctx , { x: centerX , y: centerY }  , icon.conversionProgress );
 
-    }else{
+      }else{
 
-      var centerX = x + ICON_WIDTH / 2 - 13;
-      var centerY = y + ICON_IMAGE_HEIGHT_AREA / 2 - 13;
+        var centerX = x + ICON_WIDTH / 2
+        var centerY = y + ICON_IMAGE_HEIGHT_AREA / 2
 
-      drawProgressCircle( ctx , { x: centerX , y: centerY }  , 0.25 );
+        drawProgressCircle( ctx , { x: centerX , y: centerY }  , icon.conversionProgress );
+
+      }
 
     }
 
@@ -1558,6 +1562,18 @@ var toggleInCollection = function( collection, item ){
 
 };
 
+var updateIconConversionProgress = function( fsnodeId, progress ){
+
+  if( !currentIcons[ fsnodeId ] ){
+    return
+  }
+
+  currentIcons[ fsnodeId ].conversionProgress = progress
+
+  requestDraw()
+
+}
+
 var updateRows = function(){
 
   var grid         = calculateGrid();
@@ -1731,6 +1747,18 @@ api.fs
     removeItemFromList( fsnodeId );
   }
 
+})
+
+.on( 'conversionStart', function( fsnodeId ){
+  updateIconConversionProgress( fsnodeId, 0 )
+})
+
+.on( 'conversionProgress', function( fsnodeId, progress ){
+  updateIconConversionProgress( fsnodeId, progress )
+})
+
+.on( 'conversionEnd', function( fsnodeId ){
+  updateIconConversionProgress( fsnodeId, -1 )
 });
 
 api.upload
