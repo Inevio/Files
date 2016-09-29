@@ -1,18 +1,19 @@
+<figure class="opacity-cover"></figure>
 
 <article id="weexplorer-menu">
     <figure id="weexplorer-menu-sidebar">
         <i id="weexplorer-menu-sidebar-icon"></i>
     </figure>
-    <span id="weexplorer-menu-name"></span>
+    <span id="weexplorer-menu-name" class="ellipsis"></span>
     <figure id="weexplorer-menu-options">
         <i id="weexplorer-menu-options-icon"></i>
     </figure>
 </article>
 
-<section id="weexplorer-content" class="wz-scroll">
+<section id="weexplorer-content">
 
     <section class="weexplorer-element wz-prototype">
-        <img class="weexplorer-element-icon" />
+        <figure class="weexplorer-element-icon"></figure>
         <article class="weexplorer-element-info">
             <span class="weexplorer-element-name ellipsis"></span>
             <span class="weexplorer-element-data"></span>
@@ -23,11 +24,138 @@
     </section>
 
     <article class="weexplorer-element back">
-        <figure id="weexplorer-back-arrow">
-            <i id="weexplorer-back-arrow-icon"></i>
-        </figure>
-        <span id="weexplorer-back-text"></span>
+        <figure class="weexplorer-back-arrow"></figure>
+        <span class="weexplorer-back-text"></span>
     </article>
+
+    <span class="empty-folder center-vertical">Empty<br>folder</span>
+
+</section>
+
+<section class="file-options">
+
+  <section class="options-header">
+    <figure class="options-logo"><i class="center-vertical"></i></figure>
+    <div class="file-title ellipsis center-vertical"></div>
+    <input type="text" class="file-rename center-vertical ellipsis"/>
+    <figure class="options-more center-vertical"></figure>
+    <figure class="options-close center-vertical"></figure>
+    <figure class="rename-accept center-vertical"></figure>
+    <figure class="rename-cancel center-vertical"></figure>
+  </section>
+
+  <section class="options-container">
+
+    <section class="option-section">
+
+      <div class="option-title">COMPARTIR</div>
+      <section class="option create-link">
+        <figure></figure>
+        <div class="center-vertical">Crear enlace</div>
+      </section>
+      <section class="option send-to">
+        <figure></figure>
+        <div class="center-vertical">Enviar a</div>
+      </section>
+      <section class="option share-with">
+        <figure></figure>
+        <div class="center-vertical">Compartir con</div>
+      </section>
+
+    </section>
+
+    <section class="option-section">
+
+      <div class="option-title">OPCIONES</div>
+      <section class="option download">
+        <figure></figure>
+        <div class="center-vertical">Descargar</div>
+      </section>
+      <section class="option rename">
+        <figure></figure>
+        <div class="center-vertical">Renombrar</div>
+      </section>
+      <section class="option delete">
+        <figure></figure>
+        <div class="center-vertical">Borrar</div>
+      </section>
+
+    </section>
+
+  </section>
+
+  <section class="create-link-container">
+
+    <div class="create-link-title">Crear enlace</div>
+
+    <section class="toggles-container">
+      <section class="preview toggle">
+        <div class="toggle-name center-vertical">Generar vista previa</div>
+        <figure class="selector"><i></i></figure>
+      </section>
+      <section class="download toggle">
+        <div class="toggle-name center-vertical">Permitir descarga e importación</div>
+        <figure class="selector"><i></i></figure>
+      </section>
+      <section class="password toggle">
+        <div class="toggle-name center-vertical">Proteger el enlace con contraseña</div>
+        <figure class="selector"><i></i></figure>
+      </section>
+    </section>
+
+    <section class="link-container">
+      <input type="text" class="generated-link" readonly>
+    </section>
+
+    <button class="ui-btn accept generate-btn active">
+      <span class="ellipsis">#Generar#</span>
+    </button>
+    <button class="ui-btn accept back-link-btn">
+      <span class="ellipsis">#Volver#</span>
+    </button>
+
+  </section>
+
+  <section class="file-details">
+
+    <section class="file-size-section file-section">
+      <div class="file-size-title title">#TAMAÑO#</div>
+      <div class="file-size-value"></div>
+    </section>
+
+    <section class="file-location-section file-section">
+      <div class="file-location-title title">#UBICACIÓN#</div>
+      <div class="file-location-value">User > Probando > etc</div>
+    </section>
+
+    <section class="file-dates-section file-section">
+
+      <section class="file-created-section">
+        <div class="file-created-title title">#CREADO#</div>
+        <div class="file-created-value"></div>
+      </section>
+      <figure class="divider center-vertical"></figure>
+      <section class="file-modified-section">
+        <div class="file-modified-title title">#MODIFICADO#</div>
+        <div class="file-modified-value"></div>
+      </section>
+
+    </section>
+
+    <section class="file-owners-section file-section">
+
+      <div class="file-owners-title title">QUIEN TIENE ACCESO</div>
+      <section class="file-owners-container">
+        <section class="user wz-prototype">
+          <figure></figure>
+          <div class="username center-vertical"></div>
+          <span class="is-owner center-vertical"></span>
+        </section>
+      </section>
+
+    </section>
+
+  </section>
 
 </section>
 
@@ -35,16 +163,15 @@
 
     <section class="weexplorer-sidebar-element wz-prototype">
         <article class="weexplorer-sidebar-container">
-            <i class="weexplorer-sidebar-icon"></i>
+            <figure class="weexplorer-sidebar-icon-container">
+              <i class="weexplorer-sidebar-icon center-vertical"></i>
+            </figure>
             <span class="weexplorer-sidebar-name"></span>
         </article>
     </section>
 
-    <section class="weexplorer-sidebar-element">
-        <article class="weexplorer-sidebar-container title">
-            <i class="weexplorer-sidebar-icon"></i>
-            <span class="weexplorer-sidebar-name">Favourites</span>
-        </article>
+    <section class="weexplorer-sidebar-header">
+      <span class="weexplorer-sidebar-title">Favourites</span>
     </section>
 
 </aside>
