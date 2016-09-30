@@ -2618,7 +2618,7 @@ visualCancelButton
 
 var translate = function(){
 
-  $('.ui-header-brand').find('span').text(lang.main.appName);
+  $('.ui-header-brand').find('.name').text(lang.main.appName);
   $('.ui-input-search').find('input').attr('placeholder', lang.main.search);
   $('.ui-navgroup-title-txt').text(lang.main.favourites);
   $('.status-number').text(lang.main.uploadXFiles);
