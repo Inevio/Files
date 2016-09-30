@@ -3,6 +3,7 @@
 var win  = $( this );
 var visualBreadcrumbs = $('.folder-breadcrumbs');
 var visualBreadcrumbsEntryPrototype = $('.folder-breadcrumbs .entry.wz-prototype');
+var visualBreadcrumbsList = $('.folder-breadcrumbs .list');
 var userPrototype = $('.file-shared .user.wz-prototype');
 var userList = $('.file-shared .list');
 
@@ -57,13 +58,45 @@ var loadInfo = function( id ){
 
       path[ 0 ] = changeVolumeName( path[ 0 ] );
 
-      path.reverse().forEach( function( item ){
+      var list = [];
+
+      path.forEach( function( item ){
 
         var entry = visualBreadcrumbsEntryPrototype.clone().removeClass('wz-prototype');
         entry.text( item.name );
-        visualBreadcrumbs.prepend( entry );
+        entry.data( 'id', item.id );
+        list.push( entry );
 
       });
+
+      visualBreadcrumbs.prepend( list );
+
+      var isOverflowing = visualBreadcrumbs[ 0 ].clientWidth < visualBreadcrumbs[ 0 ].scrollWidth;
+      var firstIteration = true;
+      var limitReached = false;
+
+      while( isOverflowing && !limitReached ){
+
+        if( firstIteration ){
+
+          firstIteration = false
+          var entry = visualBreadcrumbsEntryPrototype.clone().removeClass('wz-prototype');
+          entry.addClass('list-trigger').append('<i></i>');
+          visualBreadcrumbs.prepend( entry );
+
+        }
+
+        var entries = visualBreadcrumbs.children('.entry').not('.wz-prototype, .list-trigger');
+
+        if( entries.length > 1 ){
+          entries.first().prependTo( visualBreadcrumbsList )
+        }else{
+          limitReached = true
+        }
+
+        isOverflowing = visualBreadcrumbs[ 0 ].clientWidth < visualBreadcrumbs[ 0 ].scrollWidth;
+
+      }
 
     });
 
@@ -79,7 +112,7 @@ var translate = function (){
   $('.file-info .title').text(lang.properties.size);
   $('.file-info .metadata .type').text(lang.properties.type);
   $('.file-info .metadata .special').text(lang.properties.special);
-  $('.file-path span').text(lang.properties.path);
+  $('.file-path .title').text(lang.properties.path);
   $('.file-date .creation .title').text(lang.properties.creation);
   $('.file-date .modification .title').text(lang.properties.modification);
   $('.file-permissions .title').text(lang.properties.permissions);
@@ -168,5 +201,23 @@ var appendUser = function( user , isOwner ){
 
 }
 
+// Events
+visualBreadcrumbs.on( 'click', '.list-trigger', function(){
+
+  var position = $(this).position();
+
+  visualBreadcrumbsList.css({
+    display : 'block',
+    left : parseInt( position.left ),
+    top : position.top + 20
+  });
+
+  win.one( 'mousedown', function(){
+    visualBreadcrumbsList.css( 'display', 'none' )
+  })
+
+});
+
+// Start
 loadInfo( params );
 translate();

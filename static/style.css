@@ -234,10 +234,6 @@
       color: #545f65;
     }
 
-    .hidden{
-      display: none;
-    }
-
   }
 
   & > .entry + .entry{

@@ -54,7 +54,6 @@ var visualHistoryForward       = $('.folder-controls .forward');
 var visualBreadcrumbs          = $('.folder-breadcrumbs');
 var visualBreadcrumbsEntryPrototype = $('.folder-breadcrumbs > .entry.wz-prototype');
 var visualBreadcrumbsList      = $('.folder-breadcrumbs .list');
-var visualBreadcrumbsListEntryPrototype = $('.folder-breadcrumbs .list .entry.wz-prototype');
 var visualSidebarItemArea      = $('.ui-navgroup');
 var visualSidebarItemPrototype = $('.ui-navgroup-element.wz-prototype');
 var visualItemArea             = $('.item-area');
@@ -660,14 +659,6 @@ var drawRoundRect = function( ctx, x, y, width, height, radius, fill, stroke ){
 
 };
 
-var enableHandlerForHideBreadcrumbsList = function(){
-
-  win.one( 'mousedown', function(){
-    visualBreadcrumbsList.css( 'display', 'none' )
-  })
-
-}
-
 var findIconWithSimilarName = function( list, name ){
 
   for( var i = 0; i < list.length; i++ ){
@@ -696,12 +687,6 @@ var generateBreadcrumbs = function( path ){
     list.push( entry );
 
   });
-
-  /*
-  var entry = visualBreadcrumbsEntryPrototype.clone().removeClass('wz-prototype');
-  entry.addClass('list-trigger').append('<i></i>');
-  list.push( entry );
-  */
 
   list[ list.length - 1 ].addClass('current');
   visualBreadcrumbs.prepend( list );
@@ -732,8 +717,6 @@ var generateBreadcrumbs = function( path ){
     isOverflowing = visualBreadcrumbs[ 0 ].clientWidth < visualBreadcrumbs[ 0 ].scrollWidth;
 
   }
-
-  console.log( isOverflowing )
 
 };
 
@@ -2071,7 +2054,9 @@ visualBreadcrumbs.on( 'click', '.list-trigger', function(){
     top : position.top + 20
   });
 
-  enableHandlerForHideBreadcrumbsList()
+  win.one( 'mousedown', function(){
+    visualBreadcrumbsList.css( 'display', 'none' )
+  })
 
 });
 
