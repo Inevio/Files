@@ -660,6 +660,14 @@ var drawRoundRect = function( ctx, x, y, width, height, radius, fill, stroke ){
 
 };
 
+var enableHandlerForHideBreadcrumbsList = function(){
+
+  win.one( 'mousedown', function(){
+    visualBreadcrumbsList.css( 'display', 'none' )
+  })
+
+}
+
 var findIconWithSimilarName = function( list, name ){
 
   for( var i = 0; i < list.length; i++ ){
@@ -2044,6 +2052,15 @@ visualBreadcrumbs.on( 'click', '.entry:not(.current, .list-trigger)', function()
   openFolder( $(this).data('id') );
 });
 
+visualBreadcrumbsList
+.on( 'mousedown', '.entry', function( e ){
+  e.stopPropagation()
+})
+
+.on( 'click', '.entry', function(){
+  win.trigger('mousedown')
+});
+
 visualBreadcrumbs.on( 'click', '.list-trigger', function(){
 
   var position = $(this).position();
@@ -2053,6 +2070,8 @@ visualBreadcrumbs.on( 'click', '.list-trigger', function(){
     left : parseInt( position.left ),
     top : position.top + 20
   });
+
+  enableHandlerForHideBreadcrumbsList()
 
 });
 
