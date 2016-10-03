@@ -122,6 +122,18 @@ var loadInfo = function( id ){
         $('.permissions-list .permission').addClass('active')
       }
 
+      var oldPermissions = $('.permissions-list .permission');
+      oldPermissions = {
+        read     : true,
+        link     : oldPermissions.filter('.link').hasClass('active'),
+        move     : oldPermissions.filter('.modify').hasClass('active'),
+        write    : oldPermissions.filter('.modify').hasClass('active'),
+        copy     : oldPermissions.filter('.copy').hasClass('active'),
+        download : oldPermissions.filter('.download').hasClass('active'),
+        share    : oldPermissions.filter('.share').hasClass('active'),
+        send     : oldPermissions.filter('.send').hasClass('active')
+      }
+
       $('.save').on( 'click', function(){
 
         var permissions = $('.permissions-list .permission')
@@ -147,12 +159,26 @@ var loadInfo = function( id ){
           usersSharing.push( $(this).data('user').id )
         })
 
+        var permissionsChanged = false;
+        if ( JSON.stringify( oldPermissions ) != JSON.stringify( permissions ) ) {
+          permissionsChanged = true;
+        }
+
         // ADD SHARE
         // Todo esto teniendo en cuenta que el Array sharedWith sea una lista de id's, si no es asi he de modificarlo
         var usersToAddShare    = api.tool.arrayDifference( usersSharing, sharedWithIds )
         var usersToRemoveShare = api.tool.arrayDifference( sharedWithIds, usersSharing )
         var toAddPromises      = [];
         var toRemovePromises   = [];
+
+        /* FALTA PROBARLO - Cuando cambian los permisos
+        if( permissionsChanged ){
+
+          usersToRemoveShare = users;
+          usersToAddShare = sharedWithIds;
+
+        }
+        */
 
         console.log('ADD',usersToAddShare)
         console.log('REM',usersToRemoveShare)
@@ -171,20 +197,20 @@ var loadInfo = function( id ){
 
           console.log( 'FSNODE', fsnode )
 
-          usersToAddShare.forEach( function( userId, i ){
-
-            fsnode.addShare( userId , permissions, function( err ){
-              console.log( 'ADD', err )
-              toAddPromises[ i ].resolve( err )
-            })
-
-          })
-
           usersToRemoveShare.forEach( function( userId, i ){
 
             fsnode.removeShare( userId, function( err ){
               console.log( 'REM', err )
               toRemovePromises[ i ].resolve( err )
+            })
+
+          })
+
+          usersToAddShare.forEach( function( userId, i ){
+
+            fsnode.addShare( userId , permissions, function( err ){
+              console.log( 'ADD', err )
+              toAddPromises[ i ].resolve( err )
             })
 
           })

@@ -40,7 +40,6 @@
     background-position: center center;
     background-repeat: no-repeat;
     margin: 0 20px 0 20px;
-    background-color: #f00;
   }
 
   .name{
@@ -112,7 +111,6 @@
         width: 58px;
         height: 58px;
         border-radius: 29px;
-        background: #f00;
         display: inline-block;
       }
 
@@ -172,7 +170,6 @@
         width: 46px;
         height: 46px;
         border-radius: 23px;
-        background: #f00;
         display: inline-block;
       }
 

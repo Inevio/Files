@@ -308,10 +308,12 @@ var cancelButtonHandler = function(){
 
 }
 
-var changeVolumeName = function( fsnode ){
+var changeName = function( fsnode ){
 
   if( fsnode.type === 0 && !isNaN( parseInt( fsnode.name ) ) ){
     fsnode.name = api.system.user().user;
+  }else if( fsnode.type === 1 ){
+    fsnode.name = lang.main.folderTranslations[ fsnode.name ] || fsnode.name
   }
 
   return fsnode;
@@ -451,7 +453,7 @@ var createFolder = function(){
 
 var deleteAllActive = function(){
 
-  confirm( lang.main.title, function( doIt ){
+  confirm( lang.main.confirmDelete, function( doIt ){
 
     if( !doIt ){
       return;
@@ -747,12 +749,11 @@ var generateBreadcrumbs = function( path ){
 
   visualBreadcrumbs.find('.entry').not('.wz-prototype').remove();
 
-  path[ 0 ] = changeVolumeName( path[ 0 ] );
-
   var list = [];
 
   path.forEach( function( item ){
 
+    changeName( item )
     var entry = visualBreadcrumbsEntryPrototype.clone().removeClass('wz-prototype');
     entry.text( item.name );
     entry.data( 'id', item.id );
@@ -829,8 +830,14 @@ var getFolderItems = function( fsnode ){
   var end = $.Deferred();
 
   fsnode.list({ withPermissions: true }, function( error, list ){
+
     // To Do -> Error
+    list.forEach( function( item ){
+        changeName( item )
+      });
+
     end.resolve( list );
+
   });
 
   return end;
@@ -1135,6 +1142,13 @@ var getSidebarItems = function(){
 
       list = list.filter( function( item ){
         return item.type === 1;
+      })
+
+      list.forEach( function( item ){
+
+        injectAliasAttribute( item )
+        changeName( item )
+
       });
 
       list = list.sort( function( a, b ){
@@ -1142,7 +1156,7 @@ var getSidebarItems = function(){
         return sortByName( { fsnode : a }, { fsnode : b } );
       });
 
-      list.unshift( changeVolumeName( fsnode ) );
+      list.unshift( changeName( injectAliasAttribute( fsnode ) ) );
       first.resolve( list );
 
     });
@@ -1258,6 +1272,18 @@ var historyGoForward = function(){
   if( !historyForward.length ){
     visualHistoryForward.removeClass('enabled');
   }
+
+};
+
+var injectAliasAttribute = function( fsnode ){
+
+  if( fsnode.type === 0 && !isNaN( parseInt( fsnode.name ) ) ){
+    fsnode.alias = 'root'
+  }else if( fsnode.type === 1 && lang.main.folderTranslations[ fsnode.name ] ){
+    fsnode.alias = lang.main.folderAlias[ fsnode.name ]
+  }
+
+  return fsnode;
 
 };
 
@@ -1936,7 +1962,7 @@ api.upload
 
 // DOM Events
 win
-.on( 'ui-view-resize ui-view-maximize ui-view-unmaximize', function(){
+.on( 'ui-view-resize ui-view-maximize ui-view-unmaximize ui-view-resize-end', function(){
 
   updateCanvasSize();
   updateRows();
@@ -2249,118 +2275,35 @@ visualItemArea
 .on( 'contextmenu', function( e ){
 
   var itemClicked = getIconWithMouserOver( e );
-  // Context menu
   var menu = api.menu();
   console.log('itemClicked', itemClicked?itemClicked.fsnode:'null')
 
   if( !itemClicked ){
 
-    api.menu()
+    if( currentOpened.type === 1 && currentOpened.name === 'Received' ){
+      return
+    }
+
+    menu
     .addOption( lang.main.upload, visualUploadButton.click )
     .addOption( lang.main.newFolder, createFolder )
     .addOption( lang.main.paste, clipboardPaste )
-    .render();
 
-  /*}else if( icon.hasClass( 'shared-pending' ) ){
+  }else if( itemClicked.fsnode.pending ){
 
-    menu.addOption( lang.acceptFile, contextmenuAcceptFile.bind( null, itemClicked.fsnode ) )
-
-    .addOption( lang.properties, function(){
-      api.app.createView( icon.data( 'file-id' ), 'properties' );
-    })
-
-    .addOption( lang.refuseFile, function(){
-
-      api.fs( icon.data( 'file-id' ), function( error, structure ){
-
-        structure.refuse( function( error ){
-
-          if( error ){
-            alert( error );
-            return;
-          }
-
-          var banner = api.banner();
-
-          if( structure.pointerType === 0 ){
-            banner.setTitle( lang.folderShareRefused );
-          }else{
-            banner.setTitle( lang.fileShareRefused );
-          }
-
-          banner
-          .setText( structure.name + ' ' + lang.beenRefused )
-          .setIcon( 'https://static.inevio.com/app/1/file_denied.png' )
-          .render();
-
-        });
-
-      });
-
-    }, 'warning');
-
-  }else if( icon.hasClass('received') ){
-
-    menu
-    .addOption( lang.acceptFile, function(){
-
-      api.fs( icon.data( 'file-id' ), function( error, structure ){
-
-        structure.accept( function( error ){
-
-          if( error ){
-            alert( error );
-          }else{
-
-            api.banner()
-            .setTitle( lang.fileShareAccepted )
-            .setText( structure.name + ' ' + lang.beenAccepted )
-            .setIcon( 'https://static.inevio.com/app/1/file_accepted.png' )
-            .render();
-
-          }
-
-        });
-
-      });
-
-    })
-
-    .addOption( lang.properties, function(){
-      api.app.createView( icon.data( 'file-id' ), 'properties' );
-    })
-
-    .addOption( lang.refuseFile, function(){
-
-      api.fs( icon.data( 'file-id' ), function( error, structure ){
-
-        structure.refuse( function( error ){
-
-          if( error ){
-            alert( error );
-          }else{
-
-            api.banner()
-            .setTitle( lang.fileShareRefused )
-            .setText( structure.name + ' ' + lang.beenRefused )
-            .setIcon( 'https://static.inevio.com/app/1/file_denied.png' )
-            .render();
-
-          }
-
-        });
-
-      });
-
-    }, 'warning');
+    menu.addOption( lang.received.contentAccept , acceptContent.bind( null , itemClicked.fsnode ) );
+    menu.addOption( lang.received.contentRefuse , refuseContent.bind( null , itemClicked.fsnode ), 'warning');
 
   // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
-  */
   }else if( itemClicked.fsnode.type === TYPE_FILE ){
 
-    menu.addOption( lang.main.openFile, openFile.bind( null, itemClicked.fsnode.id ) )
-    //.addOption( lang.main.openFileLocal, itemClicked.fsnode.openLocal )
-    .addOption( lang.main.copy , clipboardCopy )
+    menu.addOption( lang.main.openFile, openFile.bind( null, itemClicked.fsnode.id ) );
+
+    if( api.system.user().id === 512 ){
+      menu.addOption( lang.main.openFileLocal, itemClicked.fsnode.openLocal )
+    }
+
+    menu.addOption( lang.main.copy , clipboardCopy )
     .addOption( lang.main.cut , clipboardCut );
 
     if( itemClicked.fsnode.permissions.write ){
@@ -2371,9 +2314,9 @@ visualItemArea
       menu.addOption( lang.main.createLink, api.app.createView.bind( null, itemClicked.fsnode.id, 'link') );
     }
 
-    if( itemClicked.fsnode.permissions.send ){
+    /*if( itemClicked.fsnode.permissions.send ){
       menu.addOption( lang.main.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
-    }
+    }*/
 
     if( itemClicked.fsnode.permissions.share ){
       menu.addOption( lang.main.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share') );
@@ -2381,11 +2324,6 @@ visualItemArea
 
     if( itemClicked.fsnode.permissions.download ){
       menu.addOption( lang.main.download, downloadAllActive );
-    }
-
-    if ( itemClicked.fsnode.pending ) {
-      menu.addOption( lang.received.contentAccept , acceptContent.bind( null , itemClicked.fsnode ) );
-      menu.addOption( lang.received.contentRefuse , refuseContent.bind( null , itemClicked.fsnode ) );
     }
 
     if( [ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ].indexOf( itemClicked.fsnode.mime ) !== -1 ){
@@ -2480,15 +2418,13 @@ visualItemArea
 
   var itemClicked = getIconWithMouserOver( e );
 
-  if ( itemClicked.fsnode.pending ) {
-    api.app.createView( itemClicked.fsnode , 'received' );
-  }
-
   if( !itemClicked || ( disabledFileIcons && itemClicked.fsnode.type === TYPE_FILE ) ){
     return;
   }
 
-  if( itemClicked.fsnode.type === TYPE_ROOT || itemClicked.fsnode.type === TYPE_FOLDER_SPECIAL || itemClicked.fsnode.type === TYPE_FOLDER ){
+  if ( itemClicked.fsnode.pending ) {
+    api.app.createView( itemClicked.fsnode , 'received' );
+  }else if( itemClicked.fsnode.type === TYPE_ROOT || itemClicked.fsnode.type === TYPE_FOLDER_SPECIAL || itemClicked.fsnode.type === TYPE_FOLDER ){
     openFolder( itemClicked.fsnode.id );
   }else if( itemClicked.fsnode.type === TYPE_FILE ){
 
