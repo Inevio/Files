@@ -381,7 +381,7 @@ var createFolder = function(){
 
 var deleteAllActive = function(){
 
-  confirm( lang.main.title, function( doIt ){
+  confirm( lang.main.confirmDelete, function( doIt ){
 
     if( !doIt ){
       return;

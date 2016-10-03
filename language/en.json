@@ -38,7 +38,7 @@
       "remove"                    : "Delete",
       "openFolder"                : "Open folder",
       "openInNewWindow"           : "Open in a new window",
-      "title"                     : "###TITLE@@@",
+      "confirmDelete"             : "Are you sure, you want to delete the selected element?",
       "folderTranslations"        : {
 
         "Documents" : "Documents",
