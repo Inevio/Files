@@ -236,10 +236,12 @@ var cancelButtonHandler = function(){
 
 }
 
-var changeVolumeName = function( fsnode ){
+var changeName = function( fsnode ){
 
   if( fsnode.type === 0 && !isNaN( parseInt( fsnode.name ) ) ){
     fsnode.name = api.system.user().user;
+  }else if( fsnode.type === 1 ){
+    fsnode.name = lang.main.folderTranslations[ fsnode.name ] || fsnode.name
   }
 
   return fsnode;
@@ -675,12 +677,11 @@ var generateBreadcrumbs = function( path ){
 
   visualBreadcrumbs.find('.entry').not('.wz-prototype').remove();
 
-  path[ 0 ] = changeVolumeName( path[ 0 ] );
-
   var list = [];
 
   path.forEach( function( item ){
 
+    changeName( item )
     var entry = visualBreadcrumbsEntryPrototype.clone().removeClass('wz-prototype');
     entry.text( item.name );
     entry.data( 'id', item.id );
@@ -757,8 +758,14 @@ var getFolderItems = function( fsnode ){
   var end = $.Deferred();
 
   fsnode.list({ withPermissions: true }, function( error, list ){
+
     // To Do -> Error
+    list.forEach( function( item ){
+        changeName( item )
+      });
+
     end.resolve( list );
+
   });
 
   return end;
@@ -1063,6 +1070,13 @@ var getSidebarItems = function(){
 
       list = list.filter( function( item ){
         return item.type === 1;
+      })
+
+      list.forEach( function( item ){
+
+        injectAliasAttribute( item )
+        changeName( item )
+
       });
 
       list = list.sort( function( a, b ){
@@ -1070,7 +1084,7 @@ var getSidebarItems = function(){
         return sortByName( { fsnode : a }, { fsnode : b } );
       });
 
-      list.unshift( changeVolumeName( fsnode ) );
+      list.unshift( changeName( injectAliasAttribute( fsnode ) ) );
       first.resolve( list );
 
     });
@@ -1186,6 +1200,18 @@ var historyGoForward = function(){
   if( !historyForward.length ){
     visualHistoryForward.removeClass('enabled');
   }
+
+};
+
+var injectAliasAttribute = function( fsnode ){
+
+  if( fsnode.type === 0 && !isNaN( parseInt( fsnode.name ) ) ){
+    fsnode.alias = 'root'
+  }else if( fsnode.type === 1 && lang.main.folderTranslations[ fsnode.name ] ){
+    fsnode.alias = lang.main.folderAlias[ fsnode.name ]
+  }
+
+  return fsnode;
 
 };
 
