@@ -1864,7 +1864,7 @@ api.upload
 
 // DOM Events
 win
-.on( 'ui-view-resize ui-view-maximize ui-view-unmaximize', function(){
+.on( 'ui-view-resize ui-view-maximize ui-view-unmaximize ui-view-resize-end', function(){
 
   updateCanvasSize();
   updateRows();
