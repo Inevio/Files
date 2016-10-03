@@ -38,7 +38,26 @@
       "remove"                    : "Delete",
       "openFolder"                : "Open folder",
       "openInNewWindow"           : "Open in a new window",
-      "title"                     : "###TITLE@@@"
+      "title"                     : "###TITLE@@@",
+      "folderTranslations"        : {
+
+        "Documents" : "Documents",
+        "Images" : "Images",
+        "Music" : "Music",
+        "Received" : "Received",
+        "Videos" : "Videos"
+
+      },
+
+      "folderAlias" : {
+
+        "Documents" : "documents",
+        "Images" : "images",
+        "Music" : "music",
+        "Received" : "received",
+        "Videos" : "videos"
+
+      }
 
     },
 
