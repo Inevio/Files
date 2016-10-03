@@ -38,7 +38,26 @@
       "remove"                    : "Eliminar",
       "openFolder"                : "Abrir carpeta",
       "openInNewWindow"           : "Abrir en una nueva ventana",
-      "title"                     : "###TITLE###"
+      "confirmDelete"             : "¿Esta seguro que desea eliminar el archivo seleccionado?",
+      "folderTranslations"        : {
+
+        "Documents" : "Documentos",
+        "Images" : "Imágenes",
+        "Music" : "Música",
+        "Received" : "Recibidos",
+        "Videos" : "Vídeos"
+
+      },
+
+      "folderAlias" : {
+
+        "Documents" : "documents",
+        "Images" : "images",
+        "Music" : "music",
+        "Received" : "received",
+        "Videos" : "videos"
+
+      }
 
     },
 
