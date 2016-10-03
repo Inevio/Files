@@ -2177,118 +2177,35 @@ visualItemArea
 .on( 'contextmenu', function( e ){
 
   var itemClicked = getIconWithMouserOver( e );
-  // Context menu
   var menu = api.menu();
   console.log('itemClicked', itemClicked?itemClicked.fsnode:'null')
 
   if( !itemClicked ){
 
-    api.menu()
+    if( currentOpened.type === 1 && currentOpened.name === 'Received' ){
+      return
+    }
+
+    menu
     .addOption( lang.main.upload, visualUploadButton.click )
     .addOption( lang.main.newFolder, createFolder )
     .addOption( lang.main.paste, clipboardPaste )
-    .render();
 
-  /*}else if( icon.hasClass( 'shared-pending' ) ){
+  }else if( itemClicked.fsnode.pending ){
 
-    menu.addOption( lang.acceptFile, contextmenuAcceptFile.bind( null, itemClicked.fsnode ) )
-
-    .addOption( lang.properties, function(){
-      api.app.createView( icon.data( 'file-id' ), 'properties' );
-    })
-
-    .addOption( lang.refuseFile, function(){
-
-      api.fs( icon.data( 'file-id' ), function( error, structure ){
-
-        structure.refuse( function( error ){
-
-          if( error ){
-            alert( error );
-            return;
-          }
-
-          var banner = api.banner();
-
-          if( structure.pointerType === 0 ){
-            banner.setTitle( lang.folderShareRefused );
-          }else{
-            banner.setTitle( lang.fileShareRefused );
-          }
-
-          banner
-          .setText( structure.name + ' ' + lang.beenRefused )
-          .setIcon( 'https://static.inevio.com/app/1/file_denied.png' )
-          .render();
-
-        });
-
-      });
-
-    }, 'warning');
-
-  }else if( icon.hasClass('received') ){
-
-    menu
-    .addOption( lang.acceptFile, function(){
-
-      api.fs( icon.data( 'file-id' ), function( error, structure ){
-
-        structure.accept( function( error ){
-
-          if( error ){
-            alert( error );
-          }else{
-
-            api.banner()
-            .setTitle( lang.fileShareAccepted )
-            .setText( structure.name + ' ' + lang.beenAccepted )
-            .setIcon( 'https://static.inevio.com/app/1/file_accepted.png' )
-            .render();
-
-          }
-
-        });
-
-      });
-
-    })
-
-    .addOption( lang.properties, function(){
-      api.app.createView( icon.data( 'file-id' ), 'properties' );
-    })
-
-    .addOption( lang.refuseFile, function(){
-
-      api.fs( icon.data( 'file-id' ), function( error, structure ){
-
-        structure.refuse( function( error ){
-
-          if( error ){
-            alert( error );
-          }else{
-
-            api.banner()
-            .setTitle( lang.fileShareRefused )
-            .setText( structure.name + ' ' + lang.beenRefused )
-            .setIcon( 'https://static.inevio.com/app/1/file_denied.png' )
-            .render();
-
-          }
-
-        });
-
-      });
-
-    }, 'warning');
+    menu.addOption( lang.received.contentAccept , acceptContent.bind( null , itemClicked.fsnode ) );
+    menu.addOption( lang.received.contentRefuse , refuseContent.bind( null , itemClicked.fsnode ), 'warning');
 
   // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
-  */
   }else if( itemClicked.fsnode.type === TYPE_FILE ){
 
-    menu.addOption( lang.main.openFile, openFile.bind( null, itemClicked.fsnode.id ) )
-    .addOption( lang.main.openFileLocal, itemClicked.fsnode.openLocal )
-    .addOption( lang.main.copy , clipboardCopy )
+    menu.addOption( lang.main.openFile, openFile.bind( null, itemClicked.fsnode.id ) );
+
+    if( api.system.user().id === 512 ){
+      menu.addOption( lang.main.openFileLocal, itemClicked.fsnode.openLocal )
+    }
+
+    menu.addOption( lang.main.copy , clipboardCopy )
     .addOption( lang.main.cut , clipboardCut );
 
     if( itemClicked.fsnode.permissions.write ){
@@ -2299,9 +2216,9 @@ visualItemArea
       menu.addOption( lang.main.createLink, api.app.createView.bind( null, itemClicked.fsnode.id, 'link') );
     }
 
-    if( itemClicked.fsnode.permissions.send ){
+    /*if( itemClicked.fsnode.permissions.send ){
       menu.addOption( lang.main.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
-    }
+    }*/
 
     if( itemClicked.fsnode.permissions.share ){
       menu.addOption( lang.main.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share') );
@@ -2309,11 +2226,6 @@ visualItemArea
 
     if( itemClicked.fsnode.permissions.download ){
       menu.addOption( lang.main.download, downloadAllActive );
-    }
-
-    if ( itemClicked.fsnode.pending ) {
-      menu.addOption( lang.received.contentAccept , acceptContent.bind( null , itemClicked.fsnode ) );
-      menu.addOption( lang.received.contentRefuse , refuseContent.bind( null , itemClicked.fsnode ) );
     }
 
     if( [ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ].indexOf( itemClicked.fsnode.mime ) !== -1 ){
