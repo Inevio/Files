@@ -68,6 +68,7 @@ var visualDownloadButton       = $('.folder-utils .download');
 var visualUploadButton         = $('.folder-utils .upload');
 var visualAcceptButton         = $('.ui-confirm .accept');
 var visualCancelButton         = $('.ui-confirm .cancel');
+var visualDestinyNameInput     = $('.ui-confirm input');
 var ctx                        = visualItemArea[ 0 ].getContext('2d');
 var backingStoreRatio   = ctx.webkitBackingStorePixelRatio ||
                           ctx.mozBackingStorePixelRatio ||
@@ -102,32 +103,103 @@ var Icon = function( fsnode ){
 
 var acceptButtonHandler = function(){
 
-  console.log( currentActive, currentActiveIcons, params )
+  if( params.command === 'selectSource' ){
 
-  var validIcons = currentActive.filter( function( icon ){
+    var validIcons = currentActive.filter( function( icon ){
 
-    if( params.mode === 'file' ){
-      return icon.fsnode.type === 3
+      if( params.mode === 'file' ){
+        return icon.fsnode.type === 3
+      }
+
+      return icon.fsnode.type === 2
+
+    }).map( function( icon ){
+      return icon.fsnode.id
+    })
+
+    if( !validIcons.length ){
+
+      if( params.mode === 'file' ){
+        return
+      }
+
+      validIcons = [ currentOpened.id ]
+
     }
 
-    return icon.fsnode.type === 2
+    params.callback( null, validIcons );
+    api.app.removeView( win );
 
-  }).map( function( icon ){
-    return icon.fsnode.id
-  })
+  }else if( params.command === 'selectDestiny'){
 
-  if( !validIcons.length ){
+    var name = visualDestinyNameInput.val()
 
-    if( params.mode === 'file' ){
+    if( !name && !params.name ){
       return
     }
 
-    validIcons = [ currentOpened.id ]
+    if( !name ){
+      name = params.name
+    }
+
+    if( params.extension ){
+
+      var currentExtension = name.slice( -1 * params.extension.length )
+
+      if( currentExtension !== params.extension ){
+        name += '.' + params.extension.replace( /^\.+/, '')
+      }
+
+    }
+
+    var found = false;
+
+    for( var i = 0; i < currentList.length; i++ ){
+
+      if( currentList[ i ].fsnode.type !== TYPE_FILE ){
+        continue
+      }
+
+      if( currentList[ i ].fsnode.name === name ){
+        found = currentList[ i ]
+        break
+      }
+
+    }
+
+    if( found ){
+
+      confirm( '###REPLACE###', function( accepted ){
+
+        if( accepted ){
+
+          params.callback( null, {
+
+            destiny : currentOpened.id,
+            replace : found.fsnode.id,
+            name    : name
+
+          })
+          api.app.removeView( win )
+
+        }
+
+      })
+
+    }else{
+
+      params.callback( null, {
+
+        destiny : currentOpened.id,
+        replace : null,
+        name    : name
+
+      })
+      api.app.removeView( win );
+
+    }
 
   }
-
-  params.callback( null, validIcons );
-  api.app.removeView( win );
 
 };
 
@@ -1392,6 +1464,10 @@ var selectIcon = function( e, itemClicked ){
     itemClicked.active                          = true;
     currentLastPureClicked                      = itemClicked;
 
+    if( params.command === 'selectDestiny' && currentLastPureClicked.fsnode.type === TYPE_FILE ){
+      setDestinyNameInput( currentLastPureClicked.fsnode.name )
+    }
+
   }else if( itemClicked && ( e.metaKey || e.ctrlKey ) && ( !e.shiftKey || ( e.shiftKey && ! currentLastPureClicked ) ) ){
 
     itemClicked.active = toggleInCollection( currentActive, itemClicked );
@@ -1551,6 +1627,28 @@ var setAutomaticScroll = function( size ){
 
 };
 
+var setDestinyNameInput = function( name ){
+
+  name = name || params.name
+
+  if( !name ){
+    return
+  }
+
+  if( params.extension ){
+
+    var currentExtension = name.slice( -1 * params.extension.length )
+
+    if( currentExtension !== params.extension ){
+      name += '.' + params.extension.replace( /^\.+/, '')
+    }
+
+  }
+
+  visualDestinyNameInput.val( name )
+
+};
+
 var startListeningMove = function(){
 
   $( window )
@@ -1673,21 +1771,21 @@ var addToSidebar = function( fsnode ){
 
 var addToSidebarUi = function( id, name ){
 
-    if( isInSidebar( id ) ){
-        return false;
-    }
+  if( isInSidebar( id ) ){
+    return false;
+  }
 
-    var newSidebarElement = visualSidebarItemPrototype.clone().removeClass('wz-prototype');
+  var newSidebarElement = visualSidebarItemPrototype.clone().removeClass('wz-prototype');
 
-    newSidebarElement.addClass( 'item-' + id ).attr( 'data-id', id );
-    newSidebarElement.find('.ui-navgroup-element-txt').text( name );
+  newSidebarElement.addClass( 'item-' + id ).attr( 'data-id', id );
+  newSidebarElement.find('.ui-navgroup-element-txt').text( name );
 
-    visualSidebarItemArea.append( newSidebarElement );
+  visualSidebarItemArea.append( newSidebarElement );
 
 };
 
 var isInSidebar = function( id ){
-    return visualSidebarItemArea.find( '.item-' + id ).length;
+  return visualSidebarItemArea.find( '.item-' + id ).length;
 };
 
 var removeFromSidebar = function( fsnode ){
@@ -1719,7 +1817,7 @@ var removeFromSidebar = function( fsnode ){
 };
 
 var removeFromSidebarUi = function( id ){
-    return visualSidebarItemArea.find( '.item-' + id ).remove();
+  return visualSidebarItemArea.find( '.item-' + id ).remove();
 };
 
 var acceptContent = function( fsnode ){
@@ -2353,7 +2451,7 @@ visualItemArea
     openFolder( itemClicked.fsnode.id );
   }else if( itemClicked.fsnode.type === TYPE_FILE ){
 
-    if( params && params.command === 'selectSource' ){
+    if( params && ( params.command === 'selectSource' || params.command === 'selectDestiny' ) ){
       acceptButtonHandler()
     }else{
       openFile( itemClicked.fsnode );
@@ -2567,7 +2665,7 @@ var translate = function(){
   $('.ui-input-search').find('input').attr('placeholder', lang.main.search);
   $('.ui-navgroup-title-txt').text(lang.main.favourites);
   $('.status-number').text(lang.main.uploadXFiles);
-  $('.ui-confirm .accept span').text(lang.main.open);
+  $('.ui-confirm .accept span').text( params.command === 'selectSource' ? lang.main.open : lang.main.select );
   $('.ui-confirm .cancel span').text(lang.main.cancel);
   $('.ui-confirm').find('.ui-input').find('input').attr('placeholder', lang.main.fileName);
 
@@ -2582,7 +2680,13 @@ clearCanvas();
 if( params ){
 
   if( params.command === 'selectSource' ||  params.command === 'selectDestiny' ){
+
     openFolder( params.path || 'root' );
+
+    if( params.command === 'selectDestiny' ){
+      setDestinyNameInput()
+    }
+
   }else{
     openFolder( typeof params === 'object' ? parseInt( params.data ) || 'root' : params );
   }
