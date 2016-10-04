@@ -66,7 +66,10 @@ var iconBack = function(){
 
 var openDirectory = function( id, jump, clear ){
 
+  console.log('abro directorio', id);
   api.fs( id, function( error, structure ){
+
+    console.log(arguments);
 
     if( !jump ){
 
