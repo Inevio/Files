@@ -171,14 +171,11 @@ var loadInfo = function( id ){
         var toAddPromises      = [];
         var toRemovePromises   = [];
 
-        /* FALTA PROBARLO - Cuando cambian los permisos
         if( permissionsChanged ){
 
-          usersToRemoveShare = users;
           usersToAddShare = sharedWithIds;
 
         }
-        */
 
         console.log('ADD',usersToAddShare)
         console.log('REM',usersToRemoveShare)
