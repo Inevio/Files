@@ -1730,6 +1730,29 @@ var refuseContent = function( fsnode ){
   fsnode.refuse();
 }
 
+var getReceivedItems = function(){
+
+  var received = $( '.ui-navgroup .received' );
+
+  api.fs( received.attr( 'data-id' ) , function( e , fsnode ){
+
+    fsnode.list( null , function( e , list ){
+
+      if ( list.length ) {
+
+        var badge = received.find( '.ui-navgroup-element-badge' );
+
+        badge.show();
+        badge.text( list.length );
+
+      }
+
+    });
+
+  });
+
+}
+
 // API Events
 api.fs
 .on( 'new', function( fsnode ){
@@ -2527,6 +2550,7 @@ visualRenameTextarea
 
 getSidebarItems().then( function( list ){
   list.forEach( appendVisualSidebarItem );
+  getReceivedItems();
 });
 
 visualAcceptButton
