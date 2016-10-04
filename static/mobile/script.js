@@ -93,7 +93,7 @@ var openDirectory = function( id, jump, clear ){
     structure.list( function( error, list ){
 
       // To Do -> Error
-
+      console.log(arguments);
       content.children().not( itemProto ).not( itemBack ).not('.empty-folder').remove();
 
       var icons = $();
@@ -872,6 +872,7 @@ $.when( rootPath, hiddenPath, inboxPath, sharedPath, customPath ).then( function
   // Y generamos el sidebar
   hiddenPath.forEach( function( element ){
 
+    //console.log(arguments);
     var controlFolder = sidebarElement.clone().removeClass('wz-prototype');
 
     controlFolder
@@ -930,6 +931,7 @@ api.fs( 'root', function( error, structure ){
 api.fs( 'inbox', function( error, structure ){
 
   // Ya tenemos la carpeta de recibidos, cumplimos la promesa
+  console.log(arguments);
   inboxPath.resolve( structure );
 
 });
