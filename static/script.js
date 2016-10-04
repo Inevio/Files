@@ -171,7 +171,7 @@ var acceptButtonHandler = function(){
 
       confirm( '###REPLACE###', function( accepted ){
 
-        if( !accepted ){
+        if( accepted ){
 
           params.callback( null, {
 
@@ -2428,7 +2428,7 @@ visualItemArea
     openFolder( itemClicked.fsnode.id );
   }else if( itemClicked.fsnode.type === TYPE_FILE ){
 
-    if( params && params.command === 'selectSource' ){
+    if( params && ( params.command === 'selectSource' || params.command === 'selectDestiny' ) ){
       acceptButtonHandler()
     }else{
       openFile( itemClicked.fsnode );
@@ -2641,7 +2641,7 @@ var translate = function(){
   $('.ui-input-search').find('input').attr('placeholder', lang.main.search);
   $('.ui-navgroup-title-txt').text(lang.main.favourites);
   $('.status-number').text(lang.main.uploadXFiles);
-  $('.ui-confirm .accept span').text(lang.main.open);
+  $('.ui-confirm .accept span').text( params.command === 'selectSource' ? lang.main.open : lang.main.select );
   $('.ui-confirm .cancel span').text(lang.main.cancel);
   $('.ui-confirm').find('.ui-input').find('input').attr('placeholder', lang.main.fileName);
 
