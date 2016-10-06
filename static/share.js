@@ -173,7 +173,7 @@ var loadInfo = function( id ){
 
         if( permissionsChanged ){
 
-          usersToAddShare = sharedWithIds;
+          usersToAddShare = usersSharing;
 
         }
 
