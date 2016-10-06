@@ -13,6 +13,9 @@ var TYPE_FILE = 3;
 var PROGRESS_RADIUS = 5;
 var PROGRESS_ICON = new Image();
 PROGRESS_ICON.src = 'https://staticbeta.inevio.com/app/1/img/processing@2x.png';
+var SHARING_ICON = new Image();
+SHARING_ICON.src = 'https://staticbeta.inevio.com/app/1/img/sharing@2x.png';
+
 
 var channel                 = null;
 var requestedFrame          = false;
@@ -597,6 +600,15 @@ var drawIconsInGrid = function(){
       $( icon.bigIcon ).on( 'load', requestDraw );
     }
 
+    if ( icon.fsnode.isSharedRoot ) {
+
+      var centerX = x + ICON_WIDTH / 2
+      var centerY = y + ICON_IMAGE_HEIGHT_AREA / 2
+
+      drawSharedCircle( ctx , { x: centerX , y: centerY } );
+
+    }
+
     if( icon.conversionProgress !== -1 ){
 
       if ( icon.bigIcon.naturalWidth ) {
@@ -667,6 +679,24 @@ var drawProgressCircle = function( ctx , center , progress ){
   ctx.stroke();
 
   ctx.drawImage( PROGRESS_ICON , centerX - 7 , centerY - 6 , 14 , 13 );
+
+}
+
+var drawSharedCircle = function( ctx , center ){
+
+  var centerX = center.x;
+  var centerY = center.y;
+
+  ctx.beginPath();
+  ctx.arc( centerX , centerY , 13 , 0 , 2*Math.PI );
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = '#ccd3d5';
+  ctx.fillStyle = '#fff';
+  ctx.fill();
+
+  ctx.stroke();
+
+  ctx.drawImage( SHARING_ICON , centerX - 7 , centerY - 6 , 14 , 13 );
 
 }
 
@@ -1821,7 +1851,14 @@ var removeFromSidebarUi = function( id ){
 };
 
 var acceptContent = function( fsnode ){
-  fsnode.accept();
+
+  // AUN NO PROBADO
+  api.fs.selectSource( { type: 'directory' } , function( e , dir ){
+
+    fsnode.accept( dir );
+
+  });
+
 }
 
 var refuseContent = function( fsnode ){
@@ -1839,8 +1876,6 @@ var getReceivedItems = function(){
       if ( list.length ) {
 
         var badge = received.find( '.ui-navgroup-element-badge' );
-
-        badge.show();
         badge.text( list.length );
 
       }
@@ -2320,13 +2355,9 @@ visualItemArea
   // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
   }else if( itemClicked.fsnode.type === TYPE_FILE ){
 
-    menu.addOption( lang.main.openFile, openFile.bind( null, itemClicked.fsnode.id ) );
-
-    if( api.system.user().id === 512 ){
-      menu.addOption( lang.main.openFileLocal, itemClicked.fsnode.openLocal )
-    }
-
-    menu.addOption( lang.main.copy , clipboardCopy )
+    menu.addOption( lang.main.openFile, openFile.bind( null, itemClicked.fsnode.id ) )
+    .addOption( lang.main.openFileLocal, itemClicked.fsnode.openLocal )
+    .addOption( lang.main.copy , clipboardCopy )
     .addOption( lang.main.cut , clipboardCut );
 
     if( itemClicked.fsnode.permissions.write ){
