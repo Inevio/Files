@@ -564,7 +564,7 @@ $( '#weexplorer-content' )
     }
 
     // Abrir directorios
-    if( structure.type <= 1 ){
+    if( structure.type <= 2 ){
       openDirectory( structure.id );
     }else{
 
