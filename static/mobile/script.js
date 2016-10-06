@@ -165,8 +165,9 @@ var hideCover = function(){
 var showOptions = function( file ){
 
   var imageUrl;
-  var createdDate  = new Date( file.created );
-  var modifiedDate = new Date( file.modified );
+  var createdDate  = new Date( file.dateCreated );
+  var modifiedDate = new Date( file.dateModified );
+  console.log( file );
   if( file.type == 0 ){
     $('.file-options').addClass('folder');
   }else{
