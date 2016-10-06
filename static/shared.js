@@ -52,23 +52,23 @@
     api.fs( params, function( error, structure ){
 
         if( error ){
-            alert( lang.error );
+            alert( lang.shared.error );
         }else{
 
             api.user( structure.pointerOwner, function( error, user ){
 
                 if( structure.pointerType === 0 ){
 
-                    $( '.received-file', win ).text( lang.sharedFolderTitle );
-                    $( '.received-content-info.who', win ).text( lang.folderSharedBy + ' ' + user.fullName );
+                    $( '.received-file', win ).text( lang.shared.sharedFolderTitle );
+                    $( '.received-content-info.who', win ).text( lang.shared.folderSharedBy + ' ' + user.fullName );
 
                 }else if( structure.pointerType === 2 ){
 
-                    $( '.received-file', win ).text( lang.sharedFileTitle );
-                    $( '.received-content-info.who', win ).text( lang.fileSharedBy + ' ' + user.fullName );
+                    $( '.received-file', win ).text( lang.shared.sharedFileTitle );
+                    $( '.received-content-info.who', win ).text( lang.shared.fileSharedBy + ' ' + user.fullName );
 
                 }else{
-                    $( '.received-content-info.who', win ).text( lang.sharedBy + ' ' + user.fullName );
+                    $( '.received-content-info.who', win ).text( lang.shared.sharedBy + ' ' + user.fullName );
                 }
 
             });
@@ -93,13 +93,13 @@
                             var banner = api.banner();
 
                             if( structure.pointerType === 0 ){
-                                banner.setTitle( lang.folderShareAccepted );
+                                banner.setTitle( lang.shared.folderShareAccepted );
                             }else{
-                                banner.setTitle( lang.fileShareAccepted );
+                                banner.setTitle( lang.shared.fileShareAccepted );
                             }
 
                             banner
-                                .setText( structure.name + ' ' + lang.beenAccepted )
+                                .setText( structure.name + ' ' + lang.shared.beenAccepted )
                                 .setIcon( 'https://static.inevio.com/app/1/file_accepted.png' )
                                 .render();
 
@@ -124,13 +124,13 @@
                             var banner = api.banner();
 
                             if( structure.pointerType === 0 ){
-                                banner.setTitle( lang.folderShareRefused );
+                                banner.setTitle( lang.shared.folderShareRefused );
                             }else{
-                                banner.setTitle( lang.fileShareRefused );
+                                banner.setTitle( lang.shared.fileShareRefused );
                             }
 
                             banner
-                                .setText( structure.name + ' ' + lang.beenRefused )
+                                .setText( structure.name + ' ' + lang.shared.beenRefused )
                                 .setIcon( 'https://static.inevio.com/app/1/file_denied.png' )
                                 .render();
 
@@ -146,12 +146,12 @@
 
     });
 
-    $( '.attr', win ).text( lang.attr + ':' );
-    $( '.attr-link', win ).text( lang.attrLink );
-    $( '.attr-modify', win ).text( lang.attrModify );
-    $( '.attr-copy', win ).text( lang.attrCopy );
-    $( '.attr-download', win ).text( lang.attrDownload );
-    $( '.attr-share', win ).text( lang.attrShare );
-    $( '.attr-send', win ).text( lang.attrSend );
-    $( '.received-content-accept', win ).text( lang.contentAccept );
-    $( '.received-content-refuse', win ).text( lang.contentRefuse );
+    $( '.attr', win ).text( lang.shared.attr + ':' );
+    $( '.attr-link', win ).text( lang.shared.attrLink );
+    $( '.attr-modify', win ).text( lang.shared.attrModify );
+    $( '.attr-copy', win ).text( lang.shared.attrCopy );
+    $( '.attr-download', win ).text( lang.shared.attrDownload );
+    $( '.attr-share', win ).text( lang.shared.attrShare );
+    $( '.attr-send', win ).text( lang.shared.attrSend );
+    $( '.received-content-accept', win ).text( lang.shared.contentAccept );
+    $( '.received-content-refuse', win ).text( lang.shared.contentRefuse );

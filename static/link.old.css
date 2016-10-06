@@ -1,0 +1,224 @@
+
+.wz-view{
+    background: #f6f6f6;
+}
+
+.link-title{
+    float: left;
+    margin-top: 13px;
+    margin-left: 20px;
+    font-size: 15px;
+    color: #646464;
+}
+
+.file-icon-wrapper{
+    height: 128px;
+    width: 100%;
+    position: relative;
+    margin: 30px 0 0;
+}
+
+.file-icon{
+    max-height: 128px;
+    max-width: 128px;
+    vertical-align: middle;
+    margin: auto;
+    overflow: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.file-name{
+    text-align: center;
+    font-size: 16px;
+    color: #666;
+    margin: 15px 0;
+}
+
+.options-wrapper{
+    text-align: center;
+}
+
+.options{
+    display: inline-block;
+    min-width: 228px;
+}
+
+.option, .note-download{
+    float: left;
+    clear: both;
+    text-align: left;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.note-download{
+    max-width: 200px;
+    line-height: 16px;
+    font-size: 13px;
+    color: #999;
+    margin-left: 28px;
+    display: none;
+}
+
+label i{
+    margin-right: 10px !important;
+}
+
+.generate-wrapper{
+    margin: 20px 0 30px;
+    text-align: center;
+    height: 30px;
+}
+
+.link-password-input{
+    display: none;
+}
+
+.wz-view.show-password .link-password-input{
+    display: inline-block;
+    width: 330px;
+    margin-right: 6px;
+}
+
+.link-generate{
+    width: auto;
+    height: 30px;
+    padding: 0 30px;
+    font-family: Lato;
+    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+}
+
+.link-table-header, .link-table-list{
+    width: 100%;
+    text-align: left;
+    display: none;
+    height: 0 !important;
+    empty-cells: show;
+}
+
+.wz-view.show-list .link-table-header, .wz-view.show-list .link-table-list{
+    display: block;
+    height: auto !important;
+}
+
+.link-table-cell{
+    font-size: 12px;
+    height: 26px;
+    border: 1px solid #dcdcdc;
+    color: #666;
+    vertical-align: middle;
+}
+
+.link-table-cell:first-child{
+    border-left: none;
+}
+
+.link-table-cell:last-child{
+    border-right: none;
+}
+
+.link-table-header .link-table-cell{
+    height: 30px;
+    font-size: 13px;
+    background: #fff;
+    border-bottom: none;
+}
+
+.link-table-list tr:last-child .link-table-cell{
+    border-bottom: none;
+}
+
+.link-table-cell-password,
+.link-table-cell-download,
+.link-table-cell-preview{
+    width: 20px;
+    border-right: none;
+    border-left: none;
+    text-align: right;
+}
+
+.link-table-cell-download{
+    width: 18px;
+}
+
+.link-table-cell-password{
+    text-align: center;
+}
+
+.link-table-cell-password i,
+.link-table-cell-download i,
+.link-table-cell-preview i{
+    background: url('@static/link_sprite.png') 0 0;
+    background-size: 76px 15px;
+    display: inline-block;
+}
+
+.link-table-cell-password i{
+    width: 9px;
+    height: 15px;
+    background-position: 0 0;
+}
+
+.link-table-cell-preview i{
+    width: 16px;
+    height: 14px;
+    background-position: -18px 0;
+    margin-top: 2px;
+}
+
+.link-table-cell-download i{
+    width: 13px;
+    height: 13px;
+    background-position: -50px 0;
+    margin-top: 2px;
+}
+
+.link-table-cell-password.active i{
+    background-position: -9px 0;
+}
+
+.link-table-cell-preview.active i{
+    background-position: -34px 0;
+}
+
+.link-table-cell-download.active i{
+    background-position: -63px 0;
+}
+
+.link-table-cell-password{
+    width: 21px;
+}
+
+.link-table-cell-url{
+    padding-left: 10px;
+    width: 154px;
+}
+
+.link-table-cell-views, .link-table-cell-imports{
+    padding-left: 10px;
+    width: 70px;
+}
+
+.link-table-cell-downloads{
+    padding-left: 10px;
+    width: 75px;
+}
+
+.link-table-cell-delete{
+    padding-left: 10px;
+    width: 55px;
+    color: #dc513a;
+}
+
+.link-table-cell-delete span:hover{
+    text-decoration: underline;
+}
+
+.wz-dialog input{
+    text-align: center;
+}
