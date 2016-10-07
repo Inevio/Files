@@ -609,10 +609,11 @@ var drawIconsInGrid = function(){
       $( icon.bigIcon ).on( 'load', requestDraw );
     }
 
-    if ( icon.fsnode.isSharedRoot ) {
+    if ( icon.fsnode.isSharedRoot && icon.bigIcon.naturalWidth ) {
 
-      var centerX = x + ICON_WIDTH / 2
-      var centerY = y + ICON_IMAGE_HEIGHT_AREA / 2
+      var normalized = normalizeBigIconSize( icon.bigIcon );
+      var centerX = normalized.width + x + ( ICON_WIDTH -  normalized.width ) / 2;
+      var centerY = normalized.height + y + ( ICON_IMAGE_HEIGHT_AREA -  normalized.height ) / 2;
 
       drawSharedCircle( ctx , { x: centerX , y: centerY } );
 
@@ -1863,10 +1864,13 @@ var removeFromSidebarUi = function( id ){
 
 var acceptContent = function( fsnode ){
 
-  // AUN NO PROBADO
-  api.fs.selectSource( { type: 'directory' } , function( e , dir ){
+  api.fs.selectSource( { title: lang.received.chooseDestiny , mode: 'directory' } , function( e , dir ){
 
-    fsnode.accept( dir );
+    if (!e) {
+      fsnode.accept( dir[0] , function(){
+        console.log(arguments);
+      });
+    }
 
   });
 
@@ -2520,7 +2524,17 @@ visualItemArea
   }
 
   if ( itemClicked.fsnode.pending ) {
-    api.app.createView( itemClicked.fsnode , 'received' );
+
+    api.fs.selectSource( { title: lang.received.chooseDestiny , mode: 'directory' } , function( e , dir ){
+
+      if (!e) {
+        itemClicked.fsnode.accept( dir[0] , function(){
+          console.log(arguments);
+        });
+      }
+
+    });
+
   }else if( itemClicked.fsnode.type === TYPE_ROOT || itemClicked.fsnode.type === TYPE_FOLDER_SPECIAL || itemClicked.fsnode.type === TYPE_FOLDER ){
     openFolder( itemClicked.fsnode.id );
   }else if( itemClicked.fsnode.type === TYPE_FILE ){

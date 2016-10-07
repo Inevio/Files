@@ -156,7 +156,8 @@
       "beenAccepted"              : "has been accepted",
       "fileShareRefused"          : "File refused",
       "beenRefused"               : "has been refused",
-      "hasShared"                 : "has been shared with you"
+      "hasShared"                 : "has been shared with you",
+      "chooseDestiny"             : "Choose a destiny and accept the file"
 
     },
 
