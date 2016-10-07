@@ -1933,7 +1933,7 @@ api.fs
 
 })
 
-.on( 'rename', function( fsnode ){console.log('rename',arguments);
+.on( 'rename', function( fsnode ){
 
   if( fsnode.parent !== currentOpened.id ){
     return;
@@ -1957,7 +1957,7 @@ api.fs
 
 })
 
-.on( 'move', function( fsnode, finalDestiny, originalSource ){console.log('move',arguments);
+.on( 'move', function( fsnode, finalDestiny, originalSource ){
 
   if( originalSource === currentOpened.id ){
     removeItemFromList( fsnode.id );

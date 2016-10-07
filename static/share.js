@@ -153,8 +153,6 @@ var loadInfo = function( id ){
         var usersSharing = [];
         var sharedWithIds = sharedWith.map( function( item ){ return item.userId })
 
-        console.log( sharedWithIds )
-
         $('.shared-area .user:not(.wz-prototype)').each( function( i ){
           usersSharing.push( $(this).data('user').id )
         })
@@ -172,13 +170,8 @@ var loadInfo = function( id ){
         var toRemovePromises   = [];
 
         if( permissionsChanged ){
-
           usersToAddShare = usersSharing;
-
         }
-
-        console.log('ADD',usersToAddShare)
-        console.log('REM',usersToRemoveShare)
 
         usersToAddShare.forEach( function( userId ){
           toAddPromises.push( $.Deferred() )
@@ -192,8 +185,6 @@ var loadInfo = function( id ){
 
         api.fs( id, function( error , fsnode ){
 
-          console.log( 'FSNODE', fsnode )
-
           usersToRemoveShare.forEach( function( userId, i ){
 
             fsnode.removeShare( userId, function( err ){
@@ -205,7 +196,7 @@ var loadInfo = function( id ){
 
           usersToAddShare.forEach( function( userId, i ){
 
-            fsnode.addShare( userId , permissions, function( err ){
+            fsnode.addShare( userId, permissions, function( err ){
               console.log( 'ADD', err )
               toAddPromises[ i ].resolve( err )
             })
