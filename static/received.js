@@ -1,4 +1,5 @@
 var fsnode = params;
+var app = $(this);
 
 //Methods
 var setInfo = function(){
@@ -12,13 +13,22 @@ var setInfo = function(){
 
 $( '.accept-file' ).on( 'click' , function(){
 
-  fsnode.accept();
+  api.fs.selectSource( { title: lang.received.chooseDestiny , mode: 'directory' } , function( e , dir ){
+
+    if (!e) {
+      fsnode.accept( dir[0] , function(){
+        wz.app.removeView( app );
+      });
+    }
+
+  });
 
 });
 
 $( '.refuse-file' ).on( 'click' , function(){
 
   fsnode.refuse();
+  wz.app.removeView( app );
 
 });
 
