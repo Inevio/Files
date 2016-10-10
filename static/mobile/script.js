@@ -66,6 +66,7 @@ var iconBack = function(){
 
 var openDirectory = function( id, jump, clear ){
 
+  console.log('abro directorio', id);
   api.fs( id, function( error, structure ){
 
     if( !jump ){
@@ -90,7 +91,6 @@ var openDirectory = function( id, jump, clear ){
     structure.list( function( error, list ){
 
       // To Do -> Error
-
       content.children().not( itemProto ).not( itemBack ).not('.empty-folder').remove();
 
       var icons = $();
@@ -165,8 +165,9 @@ var hideCover = function(){
 var showOptions = function( file ){
 
   var imageUrl;
-  var createdDate  = new Date( file.created );
-  var modifiedDate = new Date( file.modified );
+  var createdDate  = new Date( file.dateCreated );
+  var modifiedDate = new Date( file.dateModified );
+  console.log( file );
   if( file.type == 0 ){
     $('.file-options').addClass('folder');
   }else{
@@ -222,8 +223,6 @@ var showOptions = function( file ){
       $('.file-options .file-location-value').text( stringPath );
 
     }
-
-    console.log(arguments);
 
   });
 
@@ -372,7 +371,6 @@ var showCreateLink = function(){
 
 var hideCreateLink = function(){
 
-  console.log(mode);
   if( mode == 3 || mode == 6 ){
 
     $( '.file-options' ).transition({
@@ -514,7 +512,6 @@ var acceptRename = function(){
 
   api.fs( $('.weexplorer-element.active').data('id') , function( e, file ){
 
-    console.log(arguments);
     if(e){
       return;
     }
@@ -522,8 +519,6 @@ var acceptRename = function(){
     if( $('.file-options .file-rename').val() != $('.file-options .file-title').text() ){
 
       file.rename( $('.file-options .file-rename').val() ,function( error, o){
-
-        console.log(arguments);
 
         if( error ){
           alert( error );
@@ -569,7 +564,7 @@ $( '#weexplorer-content' )
     }
 
     // Abrir directorios
-    if( structure.type <= 1 ){
+    if( structure.type <= 2 ){
       openDirectory( structure.id );
     }else{
 
@@ -591,7 +586,6 @@ $( '#weexplorer-content' )
 
   api.fs( $(this).parent().data('id'), function( error, structure ){
 
-    console.log( structure );
     if( !error ){
       showOptions( structure );
     }
@@ -677,7 +671,6 @@ $('.option.delete').on('click',function(){
 
   api.fs( $('.weexplorer-element.active').data('id') , function( e, file ){
 
-    console.log(arguments);
     if(e){
       return;
     }
@@ -852,16 +845,17 @@ openDirectory( 'root' );
 // Para ello primero generamos 5 promesas
 var rootPath   = $.Deferred(); // Para la carpeta del usuario
 var hiddenPath = $.Deferred(); // Para las carpetas escondidas
-var inboxPath  = $.Deferred(); // Para la carpeta de inbox
-var sharedPath = $.Deferred(); // Para la carpeta de compartidos
+//var inboxPath  = $.Deferred(); // Para la carpeta de inbox
+//var sharedPath = $.Deferred(); // Para la carpeta de compartidos
 var customPath = $.Deferred(); // Para las carpetas que haya añadido el usuario
 
 // Y determinamos que pasará cuando se cumplan esas promesas, en este caso, generamos el sidebar
-$.when( rootPath, hiddenPath, inboxPath, sharedPath, customPath ).then( function( rootPath, hiddenPath, inboxPath, sharedPath, customPath ){
+$.when( rootPath, hiddenPath, customPath ).then( function( rootPath, hiddenPath, customPath ){
 
   // AVISO -> hiddenPath es un array
   // Ponemos al principio rootPath, inboxPath y sharedPath
-  hiddenPath.unshift( rootPath, inboxPath, sharedPath );
+  console.log(arguments);
+  hiddenPath.unshift( rootPath );
 
   // Y concatenamos con el listado de carpetas personalizadas
   hiddenPath = hiddenPath.concat( customPath );
@@ -924,19 +918,21 @@ api.fs( 'root', function( error, structure ){
 
 });
 
-api.fs( 'inbox', function( error, structure ){
+/*api.fs( 'received', function( error, structure ){
 
   // Ya tenemos la carpeta de recibidos, cumplimos la promesa
+  console.log(arguments);
   inboxPath.resolve( structure );
 
-});
+});*/
 
-api.fs( 'shared', function( error, structure ){
+/*api.fs( 'shared', function( error, structure ){
 
   // Ya tenemos la carpetas de compartidos, cumplimos la promesa
-  sharedPath.resolve( structure );
+  //sharedPath.resolve( structure );
+  inboxPath.resolve( structure );
 
-});
+});*/
 
 wql.getSidebar( function( error, rows ){
 

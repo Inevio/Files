@@ -38,8 +38,8 @@
 
                     "width"  : {
 
-                        "default" : 692,
-                        "min"     : 552,
+                        "default" : 818,
+                        "min"     : 655,
                         "max"     : 0
 
                     },
@@ -66,7 +66,7 @@
 
                     "width"  : {
 
-                        "default" : 630,
+                        "default" : 765,
                         "min"     : 0,
                         "max"     : 0
 
@@ -74,7 +74,7 @@
 
                     "height" : {
 
-                        "default" : 425,
+                        "default" : 547,
                         "min"     : 0,
                         "max"     : 0
 
@@ -120,7 +120,7 @@
 
                     "width"  : {
 
-                        "default" : 320,
+                        "default" : 376,
                         "min"     : 0,
                         "max"     : 0
 
@@ -128,7 +128,7 @@
 
                     "height" : {
 
-                        "default" : 366,
+                        "default" : 569,
                         "min"     : 0,
                         "max"     : 0
 
@@ -147,7 +147,7 @@
 
                     "width" : {
 
-                        "default" : 538,
+                        "default" : 525,
                         "min"     : 0,
                         "max"     : 0
 
@@ -155,7 +155,7 @@
 
                     "height" : {
 
-                        "default" : 408,
+                        "default" : 369,
                         "min"     : 0,
                         "max"     : 0
 
@@ -174,7 +174,7 @@
 
                     "width"  : {
 
-                        "default" : 450,
+                        "default" : 525,
                         "min"     : 0,
                         "max"     : 0
 
@@ -182,7 +182,7 @@
 
                     "height" : {
 
-                        "default" : 355,
+                        "default" : 156,
                         "min"     : 0,
                         "max"     : 0
 
@@ -220,61 +220,61 @@
 
                 },
 
-                "selectFile" : {
+                "selectSource" : {
 
-                    "template" : "selectFile.html",
+                    "template" : "main.html",
 
-                    "resizable" : false,
-                    "maxizable" : false,
+                    "resizable" : true,
+                    "maxizable" : true,
 
                     "width"  : {
 
-                        "default" : 692,
-                        "min"     : 552,
+                        "default" : 771,
+                        "min"     : 655,
                         "max"     : 0
 
                     },
 
                     "height" : {
 
-                        "default" : 591,
+                        "default" : 534,
                         "min"     : 400,
                         "max"     : 0
 
                     },
 
-                    "css"    : ["selectFile.css"],
-                    "script" : ["selectFile.js"],
-                    "start"  : []
+                    "css"    : ["style.css"],
+                    "script" : ["script.js"],
+                    "start"  : ["start.js"]
 
                 },
 
-                "saveFile" : {
+                "selectDestiny" : {
 
-                    "template" : "saveFile.html",
+                    "template" : "main.html",
 
-                    "resizable" : false,
-                    "maxizable" : false,
+                    "resizable" : true,
+                    "maxizable" : true,
 
                     "width"  : {
 
-                        "default" : 692,
-                        "min"     : 552,
+                        "default" : 771,
+                        "min"     : 655,
                         "max"     : 0
 
                     },
 
                     "height" : {
 
-                        "default" : 591,
+                        "default" : 534,
                         "min"     : 400,
                         "max"     : 0
 
                     },
 
-                    "css"    : ["saveFile.css"],
-                    "script" : ["saveFile.js"],
-                    "start"  : []
+                    "css"    : ["style.css"],
+                    "script" : ["script.js"],
+                    "start"  : ["start.js"]
 
                 }
 

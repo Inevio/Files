@@ -1,80 +1,78 @@
 
-<section class="wz-ui-header wz-dragger">
+<section class="ui-header wz-dragger">
 
-    <span class="wz-dragger link-title"></span>
-    
-    <section class="wz-view-menu-group right wz-dragger">
+  <section class="ui-header-brand wz-dragger">
+    <span class="wz-dragger"></span>
+  </section>
 
-        <figure class="wz-view-minimize">
-            <i></i>
-        </figure>
-        <figure class="wz-view-close">
-            <i></i>
-        </figure>
-
-    </section>
+  <section class="ui-header-buttons wz-dragger">
+    <figure class="ui-minimize"><i></i></figure>
+    <figure class="ui-maximize inactive"><i></i></figure>
+    <figure class="ui-close"><i></i></figure>
+  </section>
 
 </section>
 
-<figure class="file-icon-wrapper">
-    <img class="file-icon" />
-</figure>
+<section class="file-info">
+  <figure class="icon"></figure>
+  <span class="name"></span>
+</section>
 
-<p class="file-name"></p>
+<section class="generate-link">
 
-<section class="options-wrapper">
+  <p class="title"></p>
+  <input class="link" placeholder="" readonly="readonly" />
+  <p class="info"><i></i><span class="public"></span><span class="private"></span></p>
 
-    <section class="options">
+  <section class="options">
 
-        <article class="option link-preview">
-            <input class="wz-ui-input" type="checkbox" checked="checked" /><label><i></i><span></span></label>
-        </article>
+    <article class="option password">
+      <figcaption></figcaption>
+      <figure class="ui-checkbox"><i></i></figure>
+    </article>
 
-        <article class="option link-download">
-            <input class="wz-ui-input" type="checkbox" checked="checked" /><label><i></i><span></span></label>
-        </article>
+    <article class="option preview">
+      <figcaption></figcaption>
+      <figure class="ui-checkbox active"><i></i></figure>
+    </article>
 
-        <p class="note-download"></p>
-        
-        <article class="option link-password">
-            <input class="wz-ui-input" type="checkbox" /><label><i></i><span></span></label>
-        </article>
+    <article class="option download">
+      <figcaption>  </figcaption>
+      <figure class="ui-checkbox active"><i></i></figure>
+    </article>
 
-    </section>
+  </section>
+
+  <input type="password" class="password-input" placeholder="" />
 
 </section>
 
-<section class="generate-wrapper">
-    <input class="link-password-input wz-ui-input" />
-    <button class="link-generate wz-ui-button"></button>
+<section class="button-bar">
+  <figure class="show-links"><i></i><span></span></figure>
+  <figure class="create-link"></figure>
 </section>
 
-<table class="link-table-header">
+<table class="links">
 
-    <tr>
-        <th class="link-table-cell link-table-cell-preview">&nbsp;</th>
-        <th class="link-table-cell link-table-cell-download">&nbsp;</th>
-        <th class="link-table-cell link-table-cell-password">&nbsp;</th>
-        <th class="link-table-cell link-table-cell-url">&nbsp;</th>
-        <th class="link-table-cell link-table-cell-views">&nbsp;</th>
-        <th class="link-table-cell link-table-cell-downloads">&nbsp;</th>
-        <th class="link-table-cell link-table-cell-imports">&nbsp;</th>
-        <th class="link-table-cell link-table-cell-delete">&nbsp;</th>
-    </tr>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
 
-</table>
-
-<table class="link-table-list">
-
-    <tr class="wz-prototype">
-        <td class="link-table-cell link-table-cell-preview"><i></i></td>
-        <td class="link-table-cell link-table-cell-download"><i></i></td>
-        <td class="link-table-cell link-table-cell-password"><i></i></td>
-        <td class="link-table-cell link-table-cell-url wz-selectable"</td>
-        <td class="link-table-cell link-table-cell-views"></td>
-        <td class="link-table-cell link-table-cell-downloads"></td>
-        <td class="link-table-cell link-table-cell-imports"></td>
-        <td class="link-table-cell link-table-cell-delete"><span>Delete</span></td>
-    </tr>
+  <tr class="wz-prototype">
+    <td class="remove-link">
+      <span class="remove-link-button"></span>
+      <i class="icon password"></i>
+      <i class="icon preview"></i>
+      <i class="icon download"></i>
+    </td>
+    <td class="wz-selectable"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
 
 </table>

@@ -138,14 +138,6 @@
   width: 100%;
 }
 
-.directory .weexplorer-element-name{
-  margin-top: 13px;
-}
-
-.directory .weexplorer-element-data{
-  display: none;
-}
-
 .weexplorer-element-data{
   font-size: 13px;
   float: left;

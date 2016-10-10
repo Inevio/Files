@@ -58,8 +58,8 @@
                 $.when.apply( null, promises ).then( function(){
 
                     api.banner()
-                        .setTitle( lang.fileSent )
-                        .setText( structure.name + ' ' + lang.fileSentCorrectly )
+                        .setTitle( lang.send.fileSent )
+                        .setText( structure.name + ' ' + lang.send.fileSentCorrectly )
                         .setIcon( structure.icons.tiny )
                         .render();
 
@@ -89,7 +89,7 @@
 
         }
 
-        $('.empty-list').text( lang.emptyList );
+        $('.empty-list').text( lang.send.emptyList );
 
         if( list.length ){
             sendListUsers.find('.empty-list').css( 'display', 'none' );
@@ -97,10 +97,10 @@
 
     });
 
-    $( '.send-title', win ).text( lang.sendTitle );
-    $( '.send-list-title', win ).text( lang.sendListTitle );
-    $( '.send-chosen-title', win ).text( lang.sendChosenTitle );
-    $( '.send-how-message', win ).text( lang.sendHowMessage );
-    $( '.send-how-explanation', win ).text( lang.sendHowExplanation );
-    $( '.send-how-button', win ).text( lang.sendHowButton );
-    $( '.empty-list', win ).text( lang.loadingList );
+    $( '.send-title', win ).text( lang.send.sendTitle );
+    $( '.send-list-title', win ).text( lang.send.sendListTitle );
+    $( '.send-chosen-title', win ).text( lang.send.sendChosenTitle );
+    $( '.send-how-message', win ).text( lang.send.sendHowMessage );
+    $( '.send-how-explanation', win ).text( lang.send.sendHowExplanation );
+    $( '.send-how-button', win ).text( lang.send.sendHowButton );
+    $( '.empty-list', win ).text( lang.send.loadingList );
