@@ -1,343 +1,302 @@
 
-    var win                = $( this );
-    var shareListUsers     = $('.share-list-users', win);
-    var shareChosenUsers   = $('.share-chosen-users', win);
-    var shareUserPrototype = $('.share-user.wz-prototype', win);
-    var initialUsers       = [];
-    var initialPermissions = {};
-    var state              = $( '.share-how', win );
-    var owner              = 0;
-    var loading            = false;
+// Variables
+var win                               = $(this)
+var visualUsersAreaList               = $('.users-area .users-list');
+var visualUsersAreaListUserPrototype  = $('.users-area .users-list .user.wz-prototype');
+var visualSharedAreaList              = $('.shared-area .users-list');
+var visualSharedAreaListUserPrototype = $('.shared-area .users-list .user.wz-prototype');
 
-    var main = function(){
+// Functions
+var appendUserToUsersList = function( listArea, prototype, user, permissions ){
 
-        shareListUsers.children().not( '.share-chosen-title, .empty-list' ).remove();
-        shareChosenUsers.children().not( '.share-chosen-title, .empty-list' ).remove();
-        state.addClass( 'default' ).find( 'figure' ).removeClass( 'no' ).addClass( 'yes' ).find( 'span' ).text( lang.shareHowYes );
+  var newUser = prototype.clone().removeClass('wz-prototype');
 
-        // Local Functions
-        var getFriendList = function(){
+  newUser.find('.avatar').attr( 'src', user.avatar.small );
+  newUser.find('.name').text( user.fullName );
+  newUser.data( 'user', user );
+  newUser.data( 'permissions', permissions );
+  listArea.append( newUser );
 
-            var deferred = $.Deferred();
+};
 
-            api.user.friendList( false, function( error, list ){
-                deferred.resolve( [ error, list ] );
-            });
+var loadInfo = function( id ){
 
-            return deferred.promise();
+  var users = $.Deferred();
+  var sharedWith = $.Deferred();
 
-        };
+  api.user.friendList( false, function( error, list ){
+    users.resolve( list );
+  });
 
-        var getSharedList = function(){
+  api.fs( id, function( error, fsnode ){
 
-            var deferred = $.Deferred();
+    $('.file-name .icon').css( 'background-image', 'url(' + fsnode.icons.tiny + ')' );
+    $('.file-name .name').text( fsnode.name );
 
-            api.fs( params, function( error, structure ){
+    fsnode.sharedWith( function( error, users ){
 
-                structure.sharedWith( true, function( error, list, permissions ){
-                    deferred.resolve( [ error, structure, list, permissions ] );
-                });
-
-            });
-
-            return deferred.promise();
-
-        };
-
-        $.when( getFriendList(), getSharedList() ).then( function( friendList, sharedList ){
-
-            owner              = sharedList[ 1 ].owner;
-            initialPermissions = sharedList[ 3 ];
-
-            loading = true;
-
-            for( var i in initialPermissions ){
-
-                if( !initialPermissions[ i ] ){
-                    $( '.share-how-' + i, state ).mousedown();
-                }
-
-                if( owner !== api.system.user().id ){
-                    state.addClass( 'blocked' );
-                }
-
-            }
-
-            loading = false;
-
-            friendList = friendList[ 1 ].sort( function( a, b ){
-                return a.fullName.localeCompare( b.fullName );
-            });
-
-            sharedList = sharedList[ 2 ].sort( function( a, b ){
-                return a.fullName.localeCompare( b.fullName );
-            });
-
-            var userCard = null;
-
-            var i = 0;
-            var j = 0;
-
-            for( i = 0; i < sharedList.length; i++ ){
-
-                if( sharedList[ i ].id !== owner ){
-
-                    userCard = shareUserPrototype.clone().removeClass('wz-prototype');
-                    userCard.children( 'img' ).attr( 'src', sharedList[ i ].avatar.tiny );
-                    userCard.data( 'userId', sharedList[ i ].id );
-                    userCard.children( 'span' ).text( sharedList[ i ].fullName );
-                    shareChosenUsers.append( userCard );
-
-                    initialUsers.push( sharedList[ i ].id );
-
-                }
-
-                for( j = 0; j < friendList.length; j++ ){
-
-                    if( friendList[ j ] !== null && friendList[ j ].id === sharedList[ i ].id ){
-                        friendList[ j ] = null;
-                        break;
-                    }
-
-                }
-
-            }
-
-            shareChosenUsers.find('.empty-list').text( lang.emptyList );
-
-            if( sharedList.length ){
-                shareChosenUsers.find('.empty-list').css( 'display', 'none' );
-            }
-
-            for( i = 0; i < friendList.length; i++ ){
-
-                if( friendList[ i ] !== null ){
-
-                    userCard = shareUserPrototype.clone().removeClass('wz-prototype');
-                    userCard.children( 'img' ).attr( 'src', friendList[ i ].avatar.tiny );
-                    userCard.data( 'userId', friendList[ i ].id );
-                    userCard.children( 'span' ).text( friendList[ i ].fullName );
-                    shareListUsers.append( userCard );
-
-                }
-
-            }
-
-            shareListUsers.find('.empty-list').text( lang.emptyList );
-
-            if( friendList.length ){
-                shareListUsers.find('.empty-list').css( 'display', 'none' );
-            }
-
-        });
-
-    };
-
-    var comparePermissions = function( first, second ){
-
-        for( var i in first ){
-
-            if( first[ i ] !== second[ i ] ){
-                return false;
-            }
-
-        }
-
-        return true;
-
-    };
-
-    // WZ Events
-    api.fs.on( 'sharedChanged', main );
-
-    // DOM Events
-    win
-    .on( 'mousedown', '.share-how article', function(){
-
-        if( owner === api.system.user().id || loading ){
-
-            var button = $(this).find( 'figure' );
-
-            if( button.hasClass( 'default' ) ){
-
-                if( button.hasClass('yes') ){
-
-                    state.removeClass( 'default' );
-                    button.removeClass('yes');
-                    button.addClass('no');
-                    button.find('span').text( lang.shareHowNo );
-
-                }else{
-
-                    state.addClass( 'default' );
-                    $( this ).siblings( 'article' ).find( 'figure' ).removeClass('no').addClass( 'yes' ).find( 'span' ).text( lang.shareHowYes );
-                    button.removeClass('no');
-                    button.addClass('yes');
-                    button.find('span').text( lang.shareHowYes );
-
-                }
-
-            }else{
-
-                if( button.hasClass('yes') ){
-
-                    state.removeClass( 'default' );
-                    $( this ).siblings( 'article' ).find( '.default' ).removeClass('yes').addClass('no').find( 'span' ).text( lang.shareHowNo );
-                    button.removeClass('yes');
-                    button.addClass('no');
-                    button.find('span').text( lang.shareHowNo );
-
-                }else{
-
-                    if( !$(this).siblings( 'article' ).find( 'figure' ).not( '.default' ).hasClass( 'no' ) ){
-                        state.addClass( 'default' );
-                        $( this ).siblings( 'article' ).find( '.default' ).removeClass('no').addClass('yes').find( 'span' ).text( lang.shareHowYes );
-                    }
-
-                    button.removeClass('no');
-                    button.addClass('yes');
-                    button.find('span').text( lang.shareHowYes );
-
-                }
-
-            }
-
-        }
-
-    })
-
-    .on( 'mousedown', '.share-user', function(){
-
-        if( $( this ).parent().hasClass('share-list-users') ){
-
-            if( !shareChosenUsers.find('.share-user').length ){
-                shareChosenUsers.find('.empty-list').css( 'display', 'none' );
-            }
-
-            shareChosenUsers.append( this );
-
-            if( !shareListUsers.find('.share-user').length ){
-                shareListUsers.find('.empty-list').css( 'display', 'block' );
-            }
-
-        }else{
-
-            if( !shareListUsers.find('.share-user').length ){
-                shareListUsers.find('.empty-list').css( 'display', 'none' );
-            }
-
-            shareListUsers.append( this );
-
-            if( !shareChosenUsers.find('.share-user').length ){
-                shareChosenUsers.find('.empty-list').css( 'display', 'block' );
-            }
-
-        }
-
-    })
-
-    .on( 'mousedown', 'button', function(){
-
-        var filePermissions = {
-
-            'link'     : ( $( '.share-how-link', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
-            'modify'   : ( $( '.share-how-modify', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
-            'copy'     : ( $( '.share-how-copy', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
-            'download' : ( $( '.share-how-download', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
-            'share'    : ( $( '.share-how-share', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0,
-            'send'     : ( $( '.share-how-send', state ).siblings().hasClass( 'yes' ) ) ? 1 : 0
-
-        };
-
-        api.fs( params, function( error, structure ){
-
-            var promises = [];
-
-            shareChosenUsers.children().not('.empty-list').each( function(){
-
-                var userId = $( this ).data('userId');
-                var index  = initialUsers.indexOf( userId );
-
-                if( index === -1 ){
-
-                    var deferred  = $.Deferred();
-
-                    promises.push( deferred.promise() );
-
-                    structure.addShare( userId, filePermissions, function( error ){
-                        deferred.resolve( error );
-                    });
-
-                }else{
-                    initialUsers[ index ] = null;
-                }
-
-            });
-
-            initialUsers.map( function( userId ){
-
-                if( userId !== null ){
-
-                    var deferred = $.Deferred();
-
-                    promises.push( deferred.promise() );
-
-                    structure.removeShare( userId, function( error ){
-                        deferred.resolve( error );
-                    });
-
-                }
-
-            });
-
-            if( shareChosenUsers.length && !comparePermissions( initialPermissions, filePermissions ) ){
-
-                console.log('compara');
-
-                var deferred = $.Deferred();
-
-                promises.push( deferred.promise() );
-
-                structure.changePermissions( filePermissions, function( error ){
-                    deferred.resolve( error );
-                });
-
-            }
-
-            $.when.apply( null, promises )
-                .then( function(){
-
-                    // To Do -> Hacer cosas con las respuestas de las promesas
-
-                    api.banner()
-                        .setTitle( lang.fileShared )
-                        .setText( lang.fileSharedStart + ' ' + structure.name + ' ' + lang.fileSharedEnd )
-                        .setIcon( structure.icons.tiny )
-                        .render();
-
-                    api.view.remove();
-
-                });
-
-        });
+      sharedWith.resolve( users.filter( function( share ){
+        return !share.isOwner;
+      }))
 
     });
 
-    main();
+  });
 
-    $( '.share-title', win ).text( lang.shareTitle );
-    $( '.share-list-title', win ).text( lang.shareListTitle );
-    $( '.share-chosen-title', win ).text( lang.shareChosenTitle );
-    $( '.share-how-permissions', win ).text( lang.shareHowPermissions );
-    $( '.share-how-explanation', win ).text( lang.shareHowExplanation );
-    $( '.share-how-default', win ).text( lang.shareHowDefault );
-    $( '.share-how-yes', win ).text( lang.shareHowYes );
-    $( '.share-how-no', win ).text( lang.shareHowNo );
-    $( '.share-how-link', win ).text( lang.shareHowLink );
-    $( '.share-how-modify', win ).text( lang.shareHowModify );
-    $( '.share-how-copy', win ).text( lang.shareHowCopy );
-    $( '.share-how-download', win ).text( lang.shareHowDownload );
-    $( '.share-how-share', win ).text( lang.shareHowShare );
-    $( '.share-how-send', win ).text( lang.shareHowSend );
-    $( '.share-save', win ).text( lang.shareSave );
-    $( '.empty-list', win ).text( lang.loadingList );
+  $.when( users, sharedWith ).done( function( users, sharedWith ){
+
+    var currentUser = api.system.user();
+    var usersList = {};
+    var sharedPromises = [];
+
+    users.forEach( function( user ){
+      usersList[ user.id ] = user;
+    });
+
+    sharedWith = sharedWith.filter( function( share ){
+      return !share.isOwner;
+    })
+
+    sharedWith.forEach( function( share ){
+
+      if( usersList[ share.userId ] ){
+        share.user = usersList[ share.userId ];
+      }else if( share.userId === currentUser.id ){
+        share.user = currentUser;
+      }else{
+
+        var promise = $.Deferred();
+
+        sharedPromises.push( promise );
+
+        api.user( share.userId, function( error, user ){
+          share.user = user;
+          promise.resolve();
+        });
+
+      }
+
+    });
+
+    $.when.apply( null, sharedPromises ).done( function(){
+
+      users = users.filter( function( user ){
+        var notFound = true;
+        sharedWith.forEach( function( shared ){
+          if ( user.id === shared.userId ) {
+            notFound =  false;
+          }
+        });
+        return notFound;
+      });
+
+      users = users.sort( function( a, b ){
+        return a.fullName.localeCompare( b.fullName );
+      });
+
+      sharedWith = sharedWith.sort( function( a, b ){
+        return a.user.fullName.localeCompare( b.user.fullName );
+      });
+
+      users.forEach( function( user ){
+        appendUserToUsersList( visualUsersAreaList, visualUsersAreaListUserPrototype, user );
+      });
+
+      sharedWith.forEach( function( share ){
+        appendUserToUsersList( visualSharedAreaList, visualSharedAreaListUserPrototype, share.user, share.permissions );
+      });
+
+      if( sharedWith.length ){
+
+        var permissions = sharedWith[ 0 ].permissions;
+
+        Object.keys( permissions ).forEach( function( permission ){
+
+          if( permissions[ permission ] ){
+            $('.permissions-list .permission.' + permission ).addClass('active')
+          }
+
+        });
+
+      }else{
+        $('.permissions-list .permission').addClass('active')
+      }
+
+      var oldPermissions = $('.permissions-list .permission');
+      oldPermissions = {
+        read     : true,
+        link     : oldPermissions.filter('.link').hasClass('active'),
+        move     : oldPermissions.filter('.modify').hasClass('active'),
+        write    : oldPermissions.filter('.modify').hasClass('active'),
+        copy     : oldPermissions.filter('.copy').hasClass('active'),
+        download : oldPermissions.filter('.download').hasClass('active'),
+        share    : oldPermissions.filter('.share').hasClass('active'),
+        send     : oldPermissions.filter('.send').hasClass('active')
+      }
+
+      $('.save').on( 'click', function(){
+
+        var permissions = $('.permissions-list .permission')
+
+        permissions = {
+          read     : true,
+          link     : permissions.filter('.link').hasClass('active'),
+          move     : permissions.filter('.modify').hasClass('active'),
+          write    : permissions.filter('.modify').hasClass('active'),
+          copy     : permissions.filter('.copy').hasClass('active'),
+          download : permissions.filter('.download').hasClass('active'),
+          share    : permissions.filter('.share').hasClass('active'),
+          send     : permissions.filter('.send').hasClass('active')
+        }
+
+        var promises = [];
+        var usersSharing = [];
+        var sharedWithIds = sharedWith.map( function( item ){ return item.userId })
+
+        $('.shared-area .user:not(.wz-prototype)').each( function( i ){
+          usersSharing.push( $(this).data('user').id )
+        })
+
+        var permissionsChanged = false;
+        if ( JSON.stringify( oldPermissions ) != JSON.stringify( permissions ) ) {
+          permissionsChanged = true;
+        }
+
+        // ADD SHARE
+        // Todo esto teniendo en cuenta que el Array sharedWith sea una lista de id's, si no es asi he de modificarlo
+        var usersToAddShare    = api.tool.arrayDifference( usersSharing, sharedWithIds )
+        var usersToRemoveShare = api.tool.arrayDifference( sharedWithIds, usersSharing )
+        var toAddPromises      = [];
+        var toRemovePromises   = [];
+
+        if( permissionsChanged ){
+          usersToAddShare = usersSharing;
+        }
+
+        usersToAddShare.forEach( function( userId ){
+          toAddPromises.push( $.Deferred() )
+        })
+
+        usersToRemoveShare.forEach( function( userId ){
+          toRemovePromises.push( $.Deferred() )
+        })
+
+        promises = promises.concat( toAddPromises ).concat( toRemovePromises )
+
+        api.fs( id, function( error , fsnode ){
+
+          usersToRemoveShare.forEach( function( userId, i ){
+
+            fsnode.removeShare( userId, function( err ){
+              console.log( 'REM', err )
+              toRemovePromises[ i ].resolve( err )
+            })
+
+          })
+
+          usersToAddShare.forEach( function( userId, i ){
+
+            fsnode.addShare( userId, permissions, function( err ){
+              console.log( 'ADD', err )
+              toAddPromises[ i ].resolve( err )
+            })
+
+          })
+
+        })
+
+        $.when.apply ( null, promises ).done( function(){
+          api.app.removeView( win )
+        })
+
+      });
+
+    });
+
+  });
+
+};
+
+var translate = function(){
+
+  $('.ui-header-brand span').text(lang.share.share);
+  $('.file-name .name').text(lang.share.fileName);
+  $('.users-area .title').text(lang.share.search);
+  $('.users-area .search').attr('placeholder', lang.share.query);
+  $('.shared-area .title').text(lang.share.shareWith);
+  $('.global-permissions .title').text(lang.share.globalPermissions);
+  $('.global-permissions .link .name').text(lang.share.link);
+  $('.global-permissions .modify .name').text(lang.share.modify);
+  $('.global-permissions .copy .name').text(lang.share.copy);
+  $('.global-permissions .download .name').text(lang.share.download);
+  $('.global-permissions .share .name').text(lang.share.share);
+  $('.global-permissions .send .name').text(lang.share.send);
+  $('.global-permissions .save').text(lang.share.save);
+
+};
+
+var containsWord = function( wordToCompare ){
+
+  return function( index , element ) {
+
+    return $( element ).find( '.name' ).text().toLowerCase().indexOf( wordToCompare.toLowerCase() ) !== -1;
+
+  }
+
+}
+
+var appendUserInOrder = function( list , user ){
+
+  var usersInDom = list.find( '.user:not(.wz-prototype)' ).toArray();
+  var nUsersInDom = usersInDom.length;
+  var appended = false;
+
+  if ( nUsersInDom === 0 ) {
+    list.append( user );
+    return;
+  }
+
+  usersInDom.forEach(function( userInDom ){
+
+    var userInDom = $( userInDom );
+
+    if ( !appended && user.find( '.name' ).text().localeCompare( userInDom.find( '.name' ).text() ) === -1 ) {
+      userInDom.before( user );
+      appended = true;
+    }
+
+  });
+
+  if ( !appended ) {
+    $( usersInDom[ nUsersInDom -1 ] ).after( user );
+  }
+
+}
+// Events
+$('.users-area .users-list').on( 'click', '.user', function(){
+  appendUserInOrder( visualSharedAreaList , $(this) );
+});
+
+$('.shared-area .users-list').on( 'click', '.user', function(){
+  appendUserInOrder( visualUsersAreaList , $(this) );
+});
+
+$('.permission .icon').on( 'click', function(){
+  $(this).parent('.permission').toggleClass('active');
+});
+
+$('.users-area .search').on( 'input' , function(){
+
+  var filter = $( this ).val();
+  var users = $( '.user' );
+  var usersToShow = users.filter( containsWord( filter ) );
+
+  users.removeClass( 'covert' );
+  users.not( usersToShow ).addClass( 'covert' );
+
+});
+
+
+// Start the app
+loadInfo( params );
+translate();

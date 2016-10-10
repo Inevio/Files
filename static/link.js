@@ -1,263 +1,234 @@
 
-// Global variables
-var win              = $( this );
-var waitingChange    = false;
-var linksTableHeader = $('.link-table-header');
-var linksTableList   = $('.link-table-list');
+// Contants
+var DEFAULT_HEIGHT = 368;
 
-// Functions
-var appendLink = function( info, search ){
+// Variables
+var win           = $(this);
+var linkOutput    = $('.generate-link .link');
+var passwordInput = $('.generate-link .password-input');
+var linksList     = $('.links');
+var linkPrototype = $('.links .wz-prototype');
+var showLinks     = $('.show-links');
 
-    if( search ){
+// Methods
+var appendLink = function( link ){
 
-        var stop = false;
+  if( linksList.find( '.link-' + link.id ).length ){
+    return;
+  }
 
-        linksTableList.find('tr').each( function(){
+  var newLink = linkPrototype.clone().removeClass('wz-prototype');
 
-            stop = $(this).data('id') === info.id;
+  newLink.addClass( 'link link-' + link.id );
+  newLink.find('td:eq(1)').text( link.url );
+  newLink.find('td:eq(2)').text( link.visitsCounter );
+  newLink.find('td:eq(3)').text( link.downloadsCounter );
+  newLink.find('td:eq(4)').text( link.importsCounter );
 
-            if( stop ){
-                return false;
-            }
+  if( link.password ){
+    newLink.find('td:eq(0) .password').addClass('enabled');
+  }
 
-        });
+  if( link.preview ){
+    newLink.find('td:eq(0) .preview').addClass('enabled');
+  }
 
-        if( stop ){
-            return false;
-        }
+  if( link.download ){
+    newLink.find('td:eq(0) .download').addClass('enabled');
+  }
 
-    }
+  linksList.append( newLink );
 
-    win.addClass('show-list');
+  showLinks.addClass('show');
+  newLink.data( 'id' , link.id );
 
-    var line = linksTableList.find('.wz-prototype').clone().removeClass('wz-prototype');
-
-    line.data( 'id', info.id );
-    line.find('.link-table-cell-url').text( info.url );
-    line.find('.link-table-cell-views').text( info.visitsCounter );
-    line.find('.link-table-cell-downloads').text( info.downloadsCounter );
-    line.find('.link-table-cell-imports').text( info.importsCounter );
-
-    if( info.preview ){
-        line.find('.link-table-cell-preview').addClass('active');
-    }
-
-    if( info.download ){
-        line.find('.link-table-cell-download').addClass('active');
-    }
-
-    if( info.password ){
-        line.find('.link-table-cell-password').addClass('active');
-    }
-
-    linksTableList.append( line );
-
-    return true;
+  if( showLinks.hasClass('opened') ){
+    api.view.setSize( win.width(), DEFAULT_HEIGHT + ( win.hasClass('show-password') ? passwordInput.outerHeight( true ) : 0 ) + linksList.outerHeight( true ) );
+  }
 
 };
 
-var checkViewSize = function(){
+var removeLink = function( link ){
 
-    var height = 0;
+  $( '.link-' + link ).remove();
+  if ( showLinks.hasClass('opened') ) {
 
-    win.children().not('.wz-dialog').each( function(){
-        height += $(this).outerHeight( true );
-    });
+    if ( linksList.find('.link').length === 0 ) {
 
-    if( height !== win.height() ){
-        api.view.setSize( win.width(), height );
-    }
-
-};
-
-var start = function(){
-
-    // Load file information
-    api.fs( params, function( error, node ){
-
-        node.getLinks( function( error, links ){
-
-            if( error || !links.length ){
-                return;
-            }
-
-            for( var i = 0; i < links.length; i++ ){
-                appendLink( links[ i ] );
-            }
-
-            checkViewSize();
-
-        });
-
-        $('.file-icon').attr( 'src', node.icons.normal );
-        $('.file-name').text( node.name );
-
-    });
-
-    // Translate UI
-    $('.link-title').text( lang.linkTitle );
-    $('.link-preview span').text( lang.linkPreview );
-    $('.link-download span').text( lang.linkDownload );
-    $('.link-password span').text( lang.linkPassword );
-    $('.link-password-input').attr( 'placeholder', lang.inputPassword );
-    $('.link-generate').text( lang.linkGenerate );
-    $('.note-download').text( lang.noteDownload );
-    $( '.link-table-cell-url', linksTableHeader ).text( lang.previousUrl );
-    $( '.link-table-cell-views', linksTableHeader ).text( lang.previousViews );
-    $( '.link-table-cell-downloads', linksTableHeader ).text( lang.previousDownloads );
-    $( '.link-table-cell-imports', linksTableHeader ).text( lang.previousImports );
-
-};
-
-// Events
-win
-.on( 'change', '.link-password input', function(){
-
-    waitingChange = true;
-
-    if( $(this).attr('checked') ){
-
-        win.addClass('show-password');
-        $('.link-password-input').focus();
+      showLinks.removeClass('opened show');
+      api.view.setSize( win.width(), DEFAULT_HEIGHT + ( win.hasClass('show-password') ? passwordInput.outerHeight( true ) : 0 ) );
 
     }else{
 
-        win.removeClass('show-password');
-        $('.link-password-input').blur();
+      api.view.setSize( win.width(), DEFAULT_HEIGHT + ( win.hasClass('show-password') ? passwordInput.outerHeight( true ) : 0 ) + linksList.outerHeight( true ) );
 
     }
 
-})
+  }
 
-.on( 'change', '.link-preview input', function(){
-
-    if( $('.link-preview input').attr('checked') ){
-
-        win.find('.link-download').show();
-        win.find('.note-download').hide();
-
-    }else{
-
-        win.find('.link-download').hide();
-        win.find('.note-download').show();
-
-    }
-
-    checkViewSize();
-
-})
-
-.on( 'mousedown', function(){
-    waitingChange = false;
-})
-
-.on( 'mouseup', function(){
-
-    if( waitingChange ){
-
-        waitingChange = false;
-
-        if( win.hasClass('show-password') ){
-            $('.link-password-input').focus();
-        }else{
-            $('.link-password-input').blur();
-        }
-
-    }
-
-})
-
-.on( 'click', '.link-generate', function(){
-
-    // Load file information
-    api.fs( params, function( error, node ){
-
-        var password  = ( $('.link-password input').attr('checked') && $('.link-password-input').val() ) ? $('.link-password-input').val() : null;
-        var preview   = !!$('.link-preview input').attr('checked');
-        var downloads = !!$('.link-download input').attr('checked');
-
-        node.addLink( password, preview, downloads, function( error, link ){
-
-            if( error ){
-                return alert( error );
-            }
-
-            if( appendLink( link, true ) ){
-                checkViewSize();
-            }
-
-            var dialog = api.dialog();
-
-            dialog.setTitle( lang.newLink );
-            dialog.setText( lang.newLinkSteps );
-            dialog.setButton( 0, lang.accept );
-            dialog.setInput( 0, link.url, 'text' );
-
-            dialog.render();
-
-            var input = $('.wz-dialog input');
-
-            input
-                .attr( 'readonly', 'readonly' )
-                .val( link.url );
-
-            input[ 0 ].setSelectionRange( 0, input[ 0 ].value.length );
-
-        });
-
-    });
-
-})
-
-.on( 'click', '.link-table-cell-delete span', function(){
-
-    var id = $(this).closest('tr').data('id');
-
-    api.fs( params, function( error, node ){
-
-        if( error ){
-            return;
-        }
-
-        node.removeLink( id );
-
-    });
-
-});
-
+}
+// API Events
 api.fs
-.on( 'linkAdded', function( link, structure ){
+.on( 'linkAdded', function( link, fsnode ){
 
-    if( params !== structure.id ){
-        return;
-    }
-
-    if( appendLink( link, true ) ){
-        checkViewSize();
-    }
+  if( fsnode.id === params ){
+    appendLink( link );
+  }
 
 })
 
 .on( 'linkRemoved', function( hash ){
 
-    linksTableList.find('tr').each( function(){
-
-        if( $(this).data('id') === hash ){
-
-            $(this).remove();
-
-            if( !linksTableList.find('tr').not('.wz-prototype').length ){
-                win.removeClass('show-list');
-            }
-
-            checkViewSize();
-
-            return false;
-
-        }
-
-    });
+  removeLink( hash );
 
 });
 
-start();
+// DOM Events
+showLinks.on( 'click', function(){
+
+  if( showLinks.hasClass('opened') ){
+
+    showLinks.removeClass('opened');
+    api.view.setSize( win.width(), DEFAULT_HEIGHT + ( win.hasClass('show-password') ? passwordInput.outerHeight( true ) : 0 ) );
+
+  }else{
+
+    showLinks.addClass('opened');
+    api.view.setSize( win.width(), DEFAULT_HEIGHT + ( win.hasClass('show-password') ? passwordInput.outerHeight( true ) : 0 ) + linksList.outerHeight( true ) );
+
+  }
+});
+
+linkOutput.on( 'focus', function(){
+  linkOutput.select();
+});
+
+$('.create-link').on( 'click', function(){
+
+  var password  = !!$('.generate-link .option.password .ui-checkbox.active').length || null;
+  var preview   = !!$('.generate-link .option.preview .ui-checkbox.active').length;
+  var downloads = !!$('.generate-link .option.download .ui-checkbox.active').length;
+
+  if( password ){
+    password = passwordInput.val() || null;
+  }
+
+  api.fs( params, function( error, fsnode ){
+
+    fsnode.addLink( password, preview, downloads, function( error, link ){
+
+      // To Do -> Error
+      console.log( error );
+      linkOutput.val( link.url ).focus();
+
+    });
+
+  });
+
+});
+
+$('.option.password .ui-checkbox').on( 'click', function( e ){
+
+  if( $(this).hasClass('active') ){
+
+    passwordInput.val('').blur();
+    win.removeClass('show-password');
+    api.view.setSize( win.width(), DEFAULT_HEIGHT + ( showLinks.hasClass('opened') ? linksList.outerHeight( true ) : 0 ) );
+
+  }else{
+
+    win.addClass('show-password');
+    passwordInput.val('').focus();
+    api.view.setSize( win.width(), DEFAULT_HEIGHT + passwordInput.outerHeight( true ) + ( showLinks.hasClass('opened') ? linksList.outerHeight( true ) : 0 ) );
+
+  }
+
+});
+
+$('.option.preview .ui-checkbox').on( 'click', function( e ){
+
+  if( $(this).closest('.option').hasClass('disabled') ){
+
+    e.stopImmediatePropagation();
+    return false;
+
+  }else if( $(this).hasClass('active') ){
+    $('.option.download').addClass('disabled').find('.ui-checkbox').addClass('active');
+  }else{
+    $('.option.download').removeClass('disabled');
+  }
+
+});
+
+$('.option.download .ui-checkbox').on( 'click', function( e ){
+
+  if( $(this).closest('.option').hasClass('disabled') ){
+
+    e.stopImmediatePropagation();
+    return false;
+
+  }if( $(this).hasClass('active') ){
+    $('.option.preview').addClass('disabled').find('.ui-checkbox').addClass('active');
+  }else{
+    $('.option.preview').removeClass('disabled');
+  }
+
+});
+
+win.on( 'click' , '.remove-link' , function(){
+
+  var id = $(this).closest('tr').data('id');
+
+  api.fs( params, function( error, node ){
+
+      if( error ){
+          return;
+      }
+
+      node.removeLink( id );
+
+  });
+
+});
+
+var translate = function () {
+
+  $ ('.ui-header-brand').find('span').text(lang.link.createLinkToFile);
+  $ ('.generate-link .title').text(lang.link.linkToFile);
+  $ ('.generate-link .link').attr('placeholder' , lang.link.link);
+  $ ('.generate-link .private').text(lang.link.private);
+  $ ('.generate-link .public').text(lang.link.public);
+  $ ('.password').find('figcaption').text(lang.link.password);
+  $ ('.preview').find('figcaption').text(lang.link.preview);
+  $ ('.download').find('figcaption').text(lang.link.download);
+  $ ('.create-link').text(lang.link.createLink);
+  $ ('.show-links span').text(lang.link.showLinks);
+  $ ('.links').find('th').eq(0).text(lang.link.permissionsTitle);
+  $ ('.links').find('th').eq(1).text(lang.link.permissionLinkTitle);
+  $ ('.links').find('th').eq(2).text(lang.link.visitsTitle);
+  $ ('.links').find('th').eq(3).text(lang.link.downloadTitle);
+  $ ('.links').find('th').eq(4).text(lang.link.importedTitle);
+  $ ('.remove-link-button' ).text(lang.main.remove);
+
+}
+
+// Start
+translate();
+api.fs( params, function( error, fsnode ){
+
+  fsnode.getLinks( function( error, links ){
+
+    if( error || !links.length ){
+      return;
+    }
+
+    for( var i = 0; i < links.length; i++ ){
+      appendLink( links[ i ] );
+    }
+
+  });
+
+  $('.file-info .icon').css( 'background-image', 'url(' + fsnode.icons.tiny + ')' );
+  $('.file-info .name').text( fsnode.name );
+
+});

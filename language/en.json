@@ -1,6 +1,192 @@
 
 {
 
+    "main" : {
+
+      "appName"                   : "Files",
+      "search"                    : "Search",
+      "favourites"                : "Favourites",
+      "uploadXFiles"              : "Uploading X files -",
+      "open"                      : "Open",
+      "select"                    : "Select",
+      "cancel"                    : "Cancel",
+      "folderShareAccepted"       : "Folder accepted",
+      "fileShareAccepted"         : "File accepted",
+      "beenAccepted"              : "has been accepted",
+      "newFolder"                 : "New folder",
+      "noApp"                     : "No associated app could be found",
+      "uploadingNumberFile"       : "Uploading %d file - ",
+      "uploadingNumberFiles"      : "Uploading %d files - ",
+      "uploadingTimeCalculating"  : "Calculating... - %d%",
+      "uploadingTimeSecond"       : "%d second left - %d%",
+      "uploadingTimeSeconds"      : "%d seconds left - %d%",
+      "uploadingTimeMinute"       : "%d minute left - %d%",
+      "uploadingTimeMinutes"      : "%d minutes left - %d%",
+      "uploadingTimeHour"         : "%d hour left - %d%",
+      "uploadingTimeHours"        : "%d hours left - %d%",
+      "upload"                    : "Upload file",
+      "paste"                     : "Paste",
+      "cut"                       : "Cut",
+      "copy"                      : "Copy",
+      "openFile"                  : "Open file",
+      "openFileLocal"             : "Open in local",
+      "rename"                    : "Rename",
+      "createLink"                : "Create link",
+      "sendTo"                    : "Send to...",
+      "shareWith"                 : "Share with...",
+      "download"                  : "Download",
+      "properties"                : "Properties",
+      "remove"                    : "Delete",
+      "openFolder"                : "Open folder",
+      "openInNewWindow"           : "Open in a new window",
+      "confirmDelete"             : "Are you sure, you want to delete the selected element?",
+      "folderTranslations"        : {
+
+        "Documents" : "Documents",
+        "Images" : "Images",
+        "Music" : "Music",
+        "Received" : "Received",
+        "Videos" : "Videos"
+
+      },
+
+      "folderAlias" : {
+
+        "Documents" : "documents",
+        "Images" : "images",
+        "Music" : "music",
+        "Received" : "received",
+        "Videos" : "videos"
+
+      }
+
+    },
+
+    "share" : {
+
+      "share"                     : "Share",
+      "search"                    : "Choose who you want to share it with",
+      "query"                     : "Search",
+      "globalPermissions"         : "Global permissions",
+      "link"                      : "Link",
+      "modify"                    : "Modify",
+      "copy"                      : "Copy",
+      "download"                  : "Download",
+      "send"                      : "Send",
+      "save"                      : "Save",
+      "shareWith"                 : "Sharing with:"
+
+    },
+
+    "send" : {
+
+      "fileSent"                  : "Your file has been sent!",
+      "fileSentCorrectly"         : "has been sent correctly",
+      "emptyList"                 : "Empty list",
+      "sendTitle"                 : "Choose which contacts you want to send your file to",
+      "sendListTitle"             : "Contacts:",
+      "sendChosenTitle"           : "Sent to:",
+      "sendHowMessage"            : "Message:",
+      "sendHowExplanation"        : "Write a message so your contacts can know why you've sent them the file",
+      "sendHowButton"             : "Send!",
+      "loadingList"               : "Loading..."
+
+
+
+    },
+
+    "properties" :{
+
+      "properties"  : "Properties",
+      "size"  : "Size",
+      "type"  : "Type",
+      "special" : "Special",
+      "path"  : "Path",
+      "creation"  : "Creation",
+      "modification"  : "Modification",
+      "permissions" : "Permissions",
+      "link"  : "Link",
+      "modify"  : "Modify",
+      "copy"  : "Copy",
+      "download"  : "Download",
+      "share" : "Share",
+      "send"  : "Send",
+      "whoAccess"  : "Who has access",
+      "metadataDirectory" : "Folder",
+      "metadataFile" : "File",
+      "metadataSpecialImage" : "Image",
+      "metadataSpecialVideo" : "Video",
+      "metadataSpecialAudio" : "Music",
+      "metadataSpecialPdf" : "PDF"
+
+    },
+
+    "link" :{
+      "createLinkToFile"  : "Create link to file",
+      "linkToFile"  : "Link to the file",
+      "link"        : "Link...",
+      "url" : "URL",
+      "public"  : "Public description",
+      "private" : "Private description",
+      "passwordTitle" : "PASSWORD",
+      "password"  : "Password",
+      "preview" : "Preview",
+      "download"  : "Download and import",
+      "createLink"  : "Create link",
+      "showLinks" : "Active links",
+      "permissionsTitle"  : "Permissions",
+      "visitsTitle" : "Visits",
+      "permissionLinkTitle" : "Link",
+      "downloadTitle" : "Downloads",
+      "importedTitle" : "Imports"
+    },
+
+    "received" : {
+
+      "error"                     : "Sorry, an error occurred",
+      "sentBy"                    : "Sent by",
+      "on"                        : "on",
+      "at"                        : "at",
+      "fileAccepted"              : "The file has been accepted",
+      "fileRefused"               : "The file has been refused",
+      "receivedFile"              : "Received file",
+      "contentAccept"             : "Accept",
+      "contentRefuse"             : "Refuse",
+      "fileShareAccepted"         : "File accepted",
+      "beenAccepted"              : "has been accepted",
+      "fileShareRefused"          : "File refused",
+      "beenRefused"               : "has been refused",
+      "hasShared"                 : "has been shared with you",
+      "chooseDestiny"             : "Choose a destiny and accept the file"
+
+    },
+
+    "shared" : {
+      "error"                     : "Sorry, an error occurred",
+      "sharedBy"                  : "Shared by",
+      "sharedFolderTitle"         : "Shared folder",
+      "sharedFile"                : "Shared File",
+      "sharedFolder"              : "Shared Folder",
+      "sharedFileTitle"           : "Shared file",
+      "fileSharedBy"              : "File shared by",
+      "fileShareAccepted"         : "File accepted",
+      "folderShareAccepted"       : "Folder accepted",
+      "beenAccepted"              : "has been accepted",
+      "folderShareRefused"        : "Folder refused",
+      "fileShareRefused"          : "File refused",
+      "beenRefused"               : "has been refused",
+      "attr"                      : "Attributes",
+      "attrLink"                  : "Link",
+      "attrModify"                : "Modify",
+      "attrCopy"                  : "Copy",
+      "attrDownload"              : "Download",
+      "attrShare"                 : "Share",
+      "attrSend"                  : "Send",
+      "contentAccept"             : "Accept",
+      "contentRefuse"             : "Refuse"
+
+    },
+
     "errorOpenDirectory" : "Error opening the directory",
     "deleteFile" : "¿Are you sure you want to delete",
     "deleteFile2" : " the selected file? You'll never de able to recover it.",
@@ -15,23 +201,12 @@
     "sortBySize" : "Sort by Size",
     "sortByCreation" : "Sort by Creation",
     "sortByModif" : "Sort by Modif",
-    "openFile" : "Open file",
-    "openFileLocal" : "Open in local",
-    "createLink" : "Create link",
-    "sendTo" : "Send to...",
-    "shareWith" : "Share with...",
-    "download" : "Download",
-    "rename" : "Rename",
+
     "addToSidebar" : "Add to sidebar",
     "removeFromSidebar" : "Remove from sidebar",
-    "properties" : "Properties",
-    "remove" : "Delete",
-    "openFolder" : "Open folder",
-    "openInNewWindow" : "Open in a new window",
+
     "acceptFile" : "Accept",
     "refuseFile" : "Refuse",
-    "upload" : "Upload file",
-    "newDirectory" : "New directory",
     "modified" : "Modified ",
     "nameExists" : "There is already a file with the selected name. Please choose another one.",
     "directoryLoading" : "Loading...",
@@ -73,41 +248,20 @@
     "propertiesCreated" : "Created",
     "propertiesModified" : "Modified",
     "propertiesOwner" : "Owner",
-    "attr" : "Attributes",
-    "attrLink" : "Link",
-    "attrModify" : "Modify",
-    "attrCopy" : "Copy",
-    "attrDownload" : "Download",
-    "attrShare" : "Share",
-    "attrSend" : "Send",
+
 
     "directory" : "Directory",
     "specialDirectory" : "Special Directory",
     "file" : "File",
     "temporalFile" : "Temporal File",
     "receivedFile" : "Received File",
-    "sharedFile" : "Shared File",
-    "sharedFolder" : "Shared Folder",
+
     "unknown" : "Unknown",
 
-    "error" : "Sorry, an error occurred",
-    "sentBy" : "Sent by",
-    "on" : "on",
-    "at" : "at",
-    "fileAccepted" : "The file has been accepted",
-    "fileRefused" : "The file has been refused",
-    "receivedFile" : "Received file",
-    "contentAccept" : "Accept",
-    "contentRefuse" : "Refuse",
 
-    "fileSent" : "Your file has been sent!",
-    "fileSentCorrectly" : "has been sent correctly",
-    "sendTitle" : "Choose which contacts you want to send your file to",
-    "sendListTitle" : "Contacts:",
-    "sendChosenTitle" : "Sent to:",
-    "sendHowMessage" : "Message:",
-    "sendHowExplanation" : "Write a message so your contacts can know why you've sent them the file",
-    "sendHowButton" : "Send!",
+
+
+
 
     "shareTitle" : "Choose which contacts you want to share the file with",
     "shareListTitle" : "Contacts:",
@@ -124,26 +278,11 @@
     "shareHowShare" : "Share:",
     "shareHowSend" : "Send:",
     "shareSave" : "Save",
-    "emptyList" : "Empty list",
-    "loadingList" : "Loading...",
     "fileShared" : "File shared correctly",
     "fileSharedStart" : "All the changes on",
     "fileSharedEnd" : "have been saved",
 
     "folderSharedBy" : "Folder shared by",
-    "fileSharedBy" : "File shared by",
-    "sharedBy" : "Shared by",
-    "sharedFolderTitle" : "Shared folder",
-    "sharedFileTitle" : "Shared file",
-    "folderShareAccepted" : "Folder accepted",
-    "fileShareAccepted" : "File accepted",
-    "beenAccepted" : "has been accepted",
-    "folderShareRefused" : "Folder refused",
-    "fileShareRefused" : "File refused",
-    "beenRefused" : "has been refused",
-
-    "accept" : "Accept",
-    "noApp" : "No associated app could be found",
 
     "fileTypeTitle" : "File type:",
     "durationTitle" : "Duration:",
@@ -165,7 +304,6 @@
     "imageSize" : "Image size:",
     "colorProfile" : "Color profile:",
     "resolutionPpi" : "Resolution:",
-    "title" : "Title:",
     "artist" : "Artist:",
     "album" : "Album:",
     "codec" : "Codec:",
