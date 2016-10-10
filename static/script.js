@@ -2525,15 +2525,7 @@ visualItemArea
 
   if ( itemClicked.fsnode.pending ) {
 
-    api.fs.selectSource( { title: lang.received.chooseDestiny , mode: 'directory' } , function( e , dir ){
-
-      if (!e) {
-        itemClicked.fsnode.accept( dir[0] , function(){
-          console.log(arguments);
-        });
-      }
-
-    });
+    api.app.createView( itemClicked.fsnode , 'received' );
 
   }else if( itemClicked.fsnode.type === TYPE_ROOT || itemClicked.fsnode.type === TYPE_FOLDER_SPECIAL || itemClicked.fsnode.type === TYPE_FOLDER ){
     openFolder( itemClicked.fsnode.id );
