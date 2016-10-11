@@ -557,6 +557,10 @@ var translate = function (){
   $('.option-section.share .option.create-link div').text( lang.main.createLink );
   $('.option-section.share .option.share-with div').text( lang.main.shareWith );
   $('.option-section.share .option.send-to div').text( lang.main.sendTo );
+  $('.option-section.options .option-title').text( lang.properties.options.toUpperCase() );
+  $('.option-section.options .option.download div').text( lang.properties.download );
+  $('.option-section.options .option.rename div').text( lang.main.rename );
+  $('.option-section.options .option.delete div').text( lang.main.remove );
 
 };
 

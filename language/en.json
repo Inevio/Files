@@ -112,6 +112,7 @@
       "share" : "Share",
       "send"  : "Send",
       "whoAccess"  : "Who has access",
+      "options"    : "Options",
       "metadataDirectory" : "Folder",
       "metadataFile" : "File",
       "metadataSpecialImage" : "Image",
