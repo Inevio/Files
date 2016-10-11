@@ -545,6 +545,21 @@ var cancelRename = function(){
 
 }
 
+var translate = function (){
+
+  $('.file-size-title').text( lang.properties.size.toUpperCase() );
+  $('.file-location-title').text( lang.properties.path.toUpperCase() );
+  $('.file-created-title').text( lang.properties.creation.toUpperCase() );
+  $('.file-modified-title').text( lang.properties.modification.toUpperCase() );
+  $('.file-owners-title').text( lang.properties.permissions.toUpperCase() );
+  $('.file-owners-section .is-owner').text( lang.properties.whoAccess.toUpperCase() );
+  $('.option-section.share .option-title').text( lang.shared.attrShare.toUpperCase() );
+  $('.option-section.share .option.create-link div').text( lang.main.createLink );
+  $('.option-section.share .option.share-with div').text( lang.main.shareWith );
+  $('.option-section.share .option.send-to div').text( lang.main.sendTo );
+
+};
+
 // Events
 $( '#weexplorer-menu-sidebar' ).on( 'click', function(){
   showSidebar();
@@ -988,3 +1003,5 @@ wql.getSidebar( function( error, rows ){
   });
 
 });
+
+translate();
