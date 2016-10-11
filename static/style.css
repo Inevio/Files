@@ -524,8 +524,16 @@
   }
 
   .ui-header-brand{
-    padding: 8px 0 7px 16px;
-    width: auto;
+    width: ~'calc(100% - 32px)';
+    padding: 8px 16px;
+  }
+
+  .ui-header-brand .name, .ui-header-brand .small{
+    display: none;
+  }
+
+  .ui-header-brand .select-title{
+    width: 100%;
   }
 
   .ui-input-search, .ui-header-buttons{
@@ -533,7 +541,7 @@
   }
 
   .ui-navbar, .ui-content{
-    height: ~'calc(100% - 72px)';
+    height: ~'calc(100% - 77px)';
    }
 
   .ui-confirm{
@@ -541,11 +549,11 @@
     float: left;
     text-align: right;
     position: relative;
-    height: 40px;
+    height: 46px;
     width: 100%;
-    border-top: 1px solid #ccd3d5;
-    background: #e9ecef;
-    padding: 5px 12px 6px;
+    border-top: 1px solid #dbe0e2;
+    background: #f9f9fb;
+    padding: 8px 12px 7px;
     box-sizing: border-box;
 
     .ui-input{
@@ -556,6 +564,7 @@
       float: right;
       margin-top: 1px;
       margin-left: 10px;
+      border-radius: 15px;
     }
   }
 

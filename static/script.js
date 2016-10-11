@@ -2766,6 +2766,7 @@ if( params ){
     if( params.command === 'selectDestiny' ){
       setDestinyNameInput()
     }
+    $( '.ui-header-brand .select-title' ).text( params.title );
 
   }else{
     openFolder( typeof params === 'object' ? parseInt( params.data ) || 'root' : params );

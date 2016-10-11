@@ -19,6 +19,8 @@ $( '.accept-file' ).on( 'click' , function(){
       fsnode.accept( dir[0] , function(){
         wz.app.removeView( app );
       });
+    }else{
+      wz.app.removeView( app );
     }
 
   });
