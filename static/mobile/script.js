@@ -545,6 +545,32 @@ var cancelRename = function(){
 
 }
 
+var translate = function (){
+
+  $('.file-size-title').text( lang.properties.size.toUpperCase() );
+  $('.file-location-title').text( lang.properties.path.toUpperCase() );
+  $('.file-created-title').text( lang.properties.creation.toUpperCase() );
+  $('.file-modified-title').text( lang.properties.modification.toUpperCase() );
+  $('.file-owners-title').text( lang.properties.permissions.toUpperCase() );
+  $('.file-owners-section .is-owner').text( lang.properties.whoAccess.toUpperCase() );
+  $('.option-section.share .option-title').text( lang.shared.attrShare.toUpperCase() );
+  $('.option-section.share .option.create-link div').text( lang.main.createLink );
+  $('.option-section.share .option.share-with div').text( lang.main.shareWith );
+  $('.option-section.share .option.send-to div').text( lang.main.sendTo );
+  $('.option-section.options .option-title').text( lang.properties.options.toUpperCase() );
+  $('.option-section.options .option.download div').text( lang.properties.download );
+  $('.option-section.options .option.rename div').text( lang.main.rename );
+  $('.option-section.options .option.delete div').text( lang.main.remove );
+  $('.create-link-container .create-link-title').text( lang.main.createLink );
+  $('.create-link-container .preview div').text( lang.link.preview );
+  $('.create-link-container .download div').text( lang.link.download );
+  $('.create-link-container .password div').text( lang.link.password );
+  $('.create-link-container .generate-btn span').text( lang.linkGenerate );
+  //$('.create-link-container .back-link-btn span').text( lang.linkGenerate );
+  $('#weexplorer-sidebar .weexplorer-sidebar-title').text( lang.favourites );
+
+};
+
 // Events
 $( '#weexplorer-menu-sidebar' ).on( 'click', function(){
   showSidebar();
@@ -988,3 +1014,5 @@ wql.getSidebar( function( error, rows ){
   });
 
 });
+
+translate();
