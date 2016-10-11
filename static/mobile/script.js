@@ -561,6 +561,13 @@ var translate = function (){
   $('.option-section.options .option.download div').text( lang.properties.download );
   $('.option-section.options .option.rename div').text( lang.main.rename );
   $('.option-section.options .option.delete div').text( lang.main.remove );
+  $('.create-link-container .create-link-title').text( lang.main.createLink );
+  $('.create-link-container .preview div').text( lang.link.preview );
+  $('.create-link-container .download div').text( lang.link.download );
+  $('.create-link-container .password div').text( lang.link.password );
+  $('.create-link-container .generate-btn span').text( lang.linkGenerate );
+  //$('.create-link-container .back-link-btn span').text( lang.linkGenerate );
+  $('#weexplorer-sidebar .weexplorer-sidebar-title').text( lang.favourites );
 
 };
 
