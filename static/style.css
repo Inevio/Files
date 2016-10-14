@@ -39,6 +39,10 @@
   text-transform: uppercase;
 }
 
+.ui-navgroup-element-txt{
+  width: 128px;
+}
+
 .ui-navgroup-element{
 
   width: 100%;
