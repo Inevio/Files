@@ -2220,7 +2220,7 @@ win
 
 })
 
-.key( 'ctrl+a, cmd+a', function(){
+.key( 'ctrl+a, cmd+a', function( e ){
 
   if( !$(e.target).is('textarea') ){
     selectAllIcons()
