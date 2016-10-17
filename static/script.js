@@ -72,6 +72,7 @@ var visualUploadButton         = $('.folder-utils .upload');
 var visualAcceptButton         = $('.ui-confirm .accept');
 var visualCancelButton         = $('.ui-confirm .cancel');
 var visualDestinyNameInput     = $('.ui-confirm input');
+var notificationBellButton     = $('.notification-center .notification-icon');
 var ctx                        = visualItemArea[ 0 ].getContext('2d');
 var backingStoreRatio   = ctx.webkitBackingStorePixelRatio ||
                           ctx.mozBackingStorePixelRatio ||
@@ -2737,6 +2738,11 @@ visualAcceptButton
 visualCancelButton
 .on( 'click', cancelButtonHandler );
 
+notificationBellButton.on( 'click' , function(){
+
+  $( '.notification-list-container' ).toggle();
+
+});
 // Load texts
 
 var translate = function(){
