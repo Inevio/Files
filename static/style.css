@@ -43,7 +43,7 @@
 
       position: absolute;
       width: 329px;
-    	height: 347px;
+    	max-height: 347px;
     	background-color: #fff;
     	-webkit-box-shadow: 0 5px 10px rgba(0,0,0,.1);
     	-moz-box-shadow: 0 5px 10px rgba(0,0,0,.1);
@@ -93,9 +93,7 @@
 
         float: left;
         width: 100%;
-        height: ~'calc(100% - 51px)';
-        margin-top: 5px;
-        margin-bottom: 5px;
+        height: ~'calc(100% - 41px)';
 
         .share-notification{
 
@@ -110,9 +108,9 @@
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background-color: red;
             margin-left: 10px;
             margin-top: 10px;
+            background-size: cover;
 
           }
 
@@ -137,11 +135,11 @@
           .file-icon{
 
             float: left;
-            width: 25px;
-            height: 32px;
-            background-color: red;
+            width: 32px;
+            height: 25px;
             margin-top: 12px;
             margin-left: 12px;
+            background-size: cover;
 
           }
 

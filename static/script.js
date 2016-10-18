@@ -73,13 +73,15 @@ var visualAcceptButton         = $('.ui-confirm .accept');
 var visualCancelButton         = $('.ui-confirm .cancel');
 var visualDestinyNameInput     = $('.ui-confirm input');
 var notificationBellButton     = $('.notification-center .notification-icon');
+var notificationList           = $('.notification-list');
+var visualSharingNotificationPrototype = $('.share-notification.wz-prototype');
 var ctx                        = visualItemArea[ 0 ].getContext('2d');
-var backingStoreRatio   = ctx.webkitBackingStorePixelRatio ||
+var backingStoreRatio          = ctx.webkitBackingStorePixelRatio ||
                           ctx.mozBackingStorePixelRatio ||
                           ctx.msBackingStorePixelRatio ||
                           ctx.oBackingStorePixelRatio ||
                           ctx.backingStorePixelRatio || 1;
-var pixelRatio          = api.tool.devicePixelRatio() / backingStoreRatio;
+var pixelRatio                 = api.tool.devicePixelRatio() / backingStoreRatio;
 
 var Icon = function( fsnode ){
 
@@ -285,15 +287,50 @@ var appendItemToList = function( items ){
 
 var appendVisualSidebarItem = function( item ){
 
-  // To Do -> Check if exists
-  var visualItem = visualSidebarItemPrototype.clone();
+  if ( item.alias === 'received' ) {
 
-  visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) ).attr( 'data-id', item.id );
-  visualItem.find('.ui-navgroup-element-txt').text( item.name );
+    item.list( function( e , receivedItems ){
 
-  visualSidebarItemArea.append( visualItem );
+      receivedItems.forEach( function( receivedItem ){
+
+        api.user( receivedItem.owner , function( err , user ){
+
+          appendSharingNotification( receivedItem , user );
+
+        });
+
+      });
+
+    });
+
+  }else{
+
+    var visualItem = visualSidebarItemPrototype.clone();
+
+    visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) ).attr( 'data-id', item.id );
+    visualItem.find('.ui-navgroup-element-txt').text( item.name );
+
+    visualSidebarItemArea.append( visualItem );
+
+  }
 
 };
+
+var appendSharingNotification = function( receivedItem , user ){
+
+  var sharingNotification = visualSharingNotificationPrototype.clone();
+
+  sharingNotification.removeClass( 'wz-prototype' ).addClass( 'sharing-notification-' + receivedItem.id );
+  sharingNotification.find( '.user-avatar' ).css( 'background-image' , 'url(' + user.avatar.tiny + ')' );
+  sharingNotification.find( '.share-action' ).html( '<i>' + user.fullName + '</i> ' + lang.main.sharedYou );
+  sharingNotification.find( '.file-icon' ).css( 'background-image' , 'url(' + receivedItem.icons['32'] + ')' );
+  sharingNotification.find( '.file-title' ).text( receivedItem.name );
+  sharingNotification.find( '.file-desc' ).text( receivedItem.size + ' mb' );
+
+  notificationList.append( sharingNotification );
+  sharingNotification.data( 'fsnode' , receivedItem );
+
+}
 
 var calculateGrid = function(){
 
@@ -1902,6 +1939,11 @@ var getReceivedItems = function(){
 
 }
 
+var updateNotificationCenter = function( fsnode ){
+
+  $( '.sharing-notification-' + fsnode.id ).remove();
+
+}
 // API Events
 api.fs
 .on( 'new', function( fsnode ){
@@ -1913,6 +1955,8 @@ api.fs
 })
 
 .on( 'modified', function( fsnode ){
+
+  updateNotificationCenter( fsNode );
 
   if( fsnode.parent !== currentOpened.id ){
     return;
@@ -1935,6 +1979,8 @@ api.fs
 })
 
 .on( 'rename', function( fsnode ){
+
+  updateNotificationCenter( fsNode );
 
   if( fsnode.parent !== currentOpened.id ){
     return;
@@ -1959,6 +2005,8 @@ api.fs
 })
 
 .on( 'move', function( fsnode, finalDestiny, originalSource ){
+
+  updateNotificationCenter( fsNode );
 
   if( originalSource === currentOpened.id ){
     removeItemFromList( fsnode.id );
@@ -1990,6 +2038,8 @@ api.fs
 })
 
 .on( 'remove', function( fsnodeId, quota, parent ){
+
+  updateNotificationCenter( fsNode );
 
   if( parent === currentOpened.id ){
     removeItemFromList( fsnodeId );
@@ -2729,7 +2779,7 @@ visualRenameTextarea
 
 getSidebarItems().then( function( list ){
   list.forEach( appendVisualSidebarItem );
-  getReceivedItems();
+  //getReceivedItems();
 });
 
 visualAcceptButton
@@ -2743,6 +2793,19 @@ notificationBellButton.on( 'click' , function(){
   $( '.notification-list-container' ).toggle();
 
 });
+
+notificationList.on( 'click' , '.accept-sharing-button' , function(){
+
+  acceptContent( $( this ).closest( '.share-notification' ).data( 'fsnode' ) );
+
+});
+
+notificationList.on( 'click' , '.refuse-sharing-button' , function(){
+
+  refuseContent( $( this ).closest( '.share-notification' ).data( 'fsnode' ) );
+
+});
+
 // Load texts
 
 var translate = function(){
