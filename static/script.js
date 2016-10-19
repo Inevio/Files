@@ -288,7 +288,6 @@ var appendVisualSidebarItem = function( item ){
   var visualItem = visualSidebarItemPrototype.clone();
 
   sidebarFolders.push( item );
-  console.log(sidebarFolders);
 
   visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) ).attr( 'data-id', item.id );
   visualItem.find('.ui-navgroup-element-txt').text( item.name );
@@ -476,6 +475,8 @@ var deleteAllActive = function(){
 
     currentActive.forEach( function( item ){
 
+      checkIsOnSidebar( item.fsnode );
+
       item.fsnode.remove( function( error ){
         console.log( error );
       });
@@ -485,6 +486,16 @@ var deleteAllActive = function(){
   });
 
 };
+
+var checkIsOnSidebar = function( fsnode ){
+
+  var index = sidebarFolders.indexOf( fsnode );
+  if ( index > -1 ) {
+    sidebarFolders.splice(index, 1);
+    removeFromSidebar( fsnode );
+  }
+
+}
 
 var downloadAllActive = function(){
 
@@ -618,7 +629,7 @@ var drawIconsInGrid = function(){
       var centerX = normalized.width + x + ( ICON_WIDTH -  normalized.width ) / 2;
       var centerY = normalized.height + y + ( ICON_IMAGE_HEIGHT_AREA -  normalized.height ) / 2;
 
-      drawSharedCircle( ctx , { x: centerX , y: centerY } );
+      drawSharedCircle( ctx , { x: centerX - 5 , y: centerY - 5 } );
 
     }
 
@@ -1791,7 +1802,7 @@ var addToSidebar = function( fsnode ){
       // To Do -> Error
       if( !error && result.affectedRows ){
 
-          addToSidebarUi( fsnode.id , fsnode.name );
+          addToSidebarUi( fsnode );
 
           if( channel === null ){
 
@@ -1814,19 +1825,18 @@ var addToSidebar = function( fsnode ){
 
 };
 
-var addToSidebarUi = function( id, name ){
+var addToSidebarUi = function( item ){
 
-  if( isInSidebar( id ) ){
+  if( isInSidebar( item.id ) ){
     return false;
   }
 
   var newSidebarElement = visualSidebarItemPrototype.clone().removeClass('wz-prototype');
 
   sidebarFolders.push( item );
-  console.log(sidebarFolders);
 
-  newSidebarElement.addClass( 'item-' + id ).attr( 'data-id', id );
-  newSidebarElement.find('.ui-navgroup-element-txt').text( name );
+  newSidebarElement.addClass( 'item-' + item.id ).attr( 'data-id', item.id );
+  newSidebarElement.find('.ui-navgroup-element-txt').text( item.name );
 
   visualSidebarItemArea.append( newSidebarElement );
 
@@ -1868,7 +1878,6 @@ var removeFromSidebarUi = function( item ){
   var index = sidebarFolders.indexOf( item );
   if (index > -1) {
     sidebarFolders.splice(index, 1);
-    console.log(sidebarFolders);
   }
   return visualSidebarItemArea.find( '.item-' + item.id ).remove();
 };
