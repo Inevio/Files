@@ -12,9 +12,9 @@ var TYPE_FOLDER = 2;
 var TYPE_FILE = 3;
 var PROGRESS_RADIUS = 5;
 var PROGRESS_ICON = new Image();
-PROGRESS_ICON.src = 'https://staticbeta.inevio.com/app/1/img/processing@2x.png';
+PROGRESS_ICON.src = 'https://static.inevio.com/app/1/img/processing@2x.png';
 var SHARING_ICON = new Image();
-SHARING_ICON.src = 'https://staticbeta.inevio.com/app/1/img/sharing@2x.png';
+SHARING_ICON.src = 'https://static.inevio.com/app/1/img/sharing@2x.png';
 
 
 var channel                 = null;
