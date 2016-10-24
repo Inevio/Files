@@ -41,6 +41,7 @@
       "openInNewWindow"           : "Abrir en una nueva ventana",
       "confirmDelete"             : "¿Esta seguro que desea eliminar el archivo seleccionado?",
       "sharedYou"                 : "te ha compartido:",
+      "noNotification"            : "No tienes ninguna notificacion nueva",
       "folderTranslations"        : {
 
         "Documents" : "Documentos",

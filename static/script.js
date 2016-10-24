@@ -285,23 +285,31 @@ var appendItemToList = function( items ){
 
 };
 
-var appendVisualSidebarItem = function( item ){
+var refreshNotificationCenter = function( callback ){
 
-  if ( item.alias === 'received' ) {
+  var receiveFolder = notificationBellButton.data( 'folder' );
+  receiveFolder.list( function( e , receivedItems ){
 
-    item.list( function( e , receivedItems ){
+    receivedItems.forEach( function( receivedItem ){
 
-      receivedItems.forEach( function( receivedItem ){
+      api.user( receivedItem.owner , function( err , user ){
 
-        api.user( receivedItem.owner , function( err , user ){
-
-          appendSharingNotification( receivedItem , user );
-
-        });
+        appendSharingNotification( receivedItem , user );
 
       });
 
     });
+
+  });
+
+}
+
+var appendVisualSidebarItem = function( item ){
+
+  if ( item.alias === 'received' ) {
+
+    notificationBellButton.data( 'folder' , item );
+    refreshNotificationCenter();
 
   }else{
 
@@ -317,6 +325,8 @@ var appendVisualSidebarItem = function( item ){
 };
 
 var appendSharingNotification = function( receivedItem , user ){
+
+  notificationBellButton.addClass( 'not-empty' );
 
   var sharingNotification = visualSharingNotificationPrototype.clone();
 
@@ -1939,14 +1949,47 @@ var getReceivedItems = function(){
 
 }
 
-var updateNotificationCenter = function( fsnode ){
+var updateNotificationCenter = function( fsnode , options ){
 
-  $( '.sharing-notification-' + fsnode.id ).remove();
+  var fsnodeId = options.onlyId ? fsnode : fsnode.id;
+
+  if ( options.isNew ) {
+
+    api.fs( fsnode.parent , function( err , parent ){
+
+      if ( parent.name === 'Received' ) {
+
+        api.user( fsnode.owner , function( err , user ){
+
+          appendSharingNotification( fsnode , user );
+
+        });
+
+      }
+
+    });
+
+  }else{
+
+    if ( $( '.sharing-notification-' + fsnodeId ).length > 0 ) {
+
+      $( '.sharing-notification-' + fsnodeId ).remove();
+
+      if ( $( '.share-notification:not(.wz-prototype)' ).length === 0 ) {
+        $( '.notification-list-container' ).hide();
+        notificationBellButton.removeClass( 'not-empty' );
+      }
+
+    }
+
+  }
 
 }
 // API Events
 api.fs
 .on( 'new', function( fsnode ){
+
+  updateNotificationCenter( fsnode , { isNew: true , onlyId: false } );
 
   if( fsnode.parent === currentOpened.id ){
     appendItemToList( fsnode );
@@ -1955,8 +1998,6 @@ api.fs
 })
 
 .on( 'modified', function( fsnode ){
-
-  updateNotificationCenter( fsNode );
 
   if( fsnode.parent !== currentOpened.id ){
     return;
@@ -1979,8 +2020,6 @@ api.fs
 })
 
 .on( 'rename', function( fsnode ){
-
-  updateNotificationCenter( fsNode );
 
   if( fsnode.parent !== currentOpened.id ){
     return;
@@ -2006,8 +2045,7 @@ api.fs
 
 .on( 'move', function( fsnode, finalDestiny, originalSource ){
 
-  updateNotificationCenter( fsNode );
-
+  updateNotificationCenter( fsnode , { isNew: false , onlyId: false } );
   if( originalSource === currentOpened.id ){
     removeItemFromList( fsnode.id );
   }else if( finalDestiny === currentOpened.id ){
@@ -2039,7 +2077,7 @@ api.fs
 
 .on( 'remove', function( fsnodeId, quota, parent ){
 
-  updateNotificationCenter( fsNode );
+  updateNotificationCenter( fsnodeId , { isNew: true , onlyId: true } );
 
   if( parent === currentOpened.id ){
     removeItemFromList( fsnodeId );
@@ -2790,7 +2828,11 @@ visualCancelButton
 
 notificationBellButton.on( 'click' , function(){
 
-  $( '.notification-list-container' ).toggle();
+  if ( $( '.share-notification:not(.wz-prototype)' ).length > 0 ) {
+    $( '.notification-list-container' ).toggle();
+  }else{
+    alert( lang.main.noNotification );
+  }
 
 });
 

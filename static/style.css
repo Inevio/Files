@@ -34,6 +34,17 @@
         background-color: #e84146;
         border-radius: 50%;
         border: 1px solid #f3f4f6;
+        display: none;
+
+      }
+
+    }
+
+    .notification-icon.not-empty{
+
+      i{
+
+        display: inline-block;
 
       }
 
