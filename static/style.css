@@ -106,6 +106,18 @@
         width: 100%;
         height: ~'calc(100% - 41px)';
 
+        .share-notification.file-type{
+
+          .file-icon{
+
+            width: 25px;
+            height: 32px;
+            margin-top: 15px;
+
+          }
+
+        }
+
         .share-notification{
 
           float: left;
@@ -148,7 +160,7 @@
             float: left;
             width: 32px;
             height: 25px;
-            margin-top: 12px;
+            margin-top: 19px;
             margin-left: 12px;
             background-size: cover;
 
@@ -159,9 +171,9 @@
             float: left;
             color: #545f65;
             font-size: 13px;
-            margin-top: 14px;
+            margin-top: 17px;
             margin-left: 10px;
-            width: 240px;
+            width: 220px;
 
           }
 
@@ -185,7 +197,7 @@
           	-moz-border-radius: 14px;
           	border-radius: 14px;
           	background-color: #e85c5c;
-            margin-top: 17px;
+            margin-top: 12px;
             margin-right: 10px;
 
             span{
@@ -209,7 +221,7 @@
             -moz-border-radius: 14px;
             border-radius: 14px;
             background-color: #60b25e;
-            margin-top: 17px;
+            margin-top: 12px;
             margin-right: 10px;
 
             span{

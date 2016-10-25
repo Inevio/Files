@@ -332,10 +332,16 @@ var appendSharingNotification = function( receivedItem , user ){
 
   sharingNotification.removeClass( 'wz-prototype' ).addClass( 'sharing-notification-' + receivedItem.id );
   sharingNotification.find( '.user-avatar' ).css( 'background-image' , 'url(' + user.avatar.tiny + ')' );
+
   sharingNotification.find( '.share-action' ).html( '<i>' + user.fullName + '</i> ' + lang.main.sharedYou );
-  sharingNotification.find( '.file-icon' ).css( 'background-image' , 'url(' + receivedItem.icons['32'] + ')' );
+  sharingNotification.find( '.file-icon' ).css( 'background-image' , 'url(' + receivedItem.icons.tiny + ')' );
   sharingNotification.find( '.file-title' ).text( receivedItem.name );
-  sharingNotification.find( '.file-desc' ).text( receivedItem.size + ' mb' );
+  sharingNotification.find( '.file-desc' ).text( api.tool.bytesToUnit( receivedItem.size ) );
+
+
+  if ( receivedItem.type === 3 ) {
+    sharingNotification.addClass( 'file-type' );
+  }
 
   notificationList.append( sharingNotification );
   sharingNotification.data( 'fsnode' , receivedItem );
@@ -2859,6 +2865,9 @@ var translate = function(){
   $('.ui-confirm .accept span').text( params && params.command === 'selectSource' ? lang.main.open : lang.main.select );
   $('.ui-confirm .cancel span').text(lang.main.cancel);
   $('.ui-confirm').find('.ui-input').find('input').attr('placeholder', lang.main.fileName);
+  $('.notification-list-title span').text( lang.main.activity );
+  $('.accept-sharing-button span').text( lang.received.contentAccept );
+  $('.refuse-sharing-button span').text( lang.received.contentRefuse );
 
 };
 

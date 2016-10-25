@@ -42,6 +42,7 @@
       "confirmDelete"             : "¿Esta seguro que desea eliminar el archivo seleccionado?",
       "sharedYou"                 : "te ha compartido:",
       "noNotification"            : "No tienes ninguna notificacion nueva",
+      "activity"                  : "Actividad",
       "folderTranslations"        : {
 
         "Documents" : "Documentos",
