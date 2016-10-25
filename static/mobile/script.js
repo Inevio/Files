@@ -168,7 +168,7 @@ var showOptions = function( file ){
   var createdDate  = new Date( file.dateCreated );
   var modifiedDate = new Date( file.dateModified );
   console.log( file );
-  if( file.type == 0 ){
+  if( file.type == 0 || file.type == 1 || file.type == 2 ){
     $('.file-options').addClass('folder');
   }else{
     $('.file-options').removeClass('folder');
@@ -226,60 +226,55 @@ var showOptions = function( file ){
 
   });
 
-  file.sharedWith( true, function( error, owner, permissions, users ){
+  console.log('file', file);
 
-    if( owner.length != 0 ){
+  var toInsert = [];
+  var insertedIds = [];
 
-      var userxNameField;
-      var userxAvatarField;
-      var permissionText;
-      var toInsert = [];
-      var insertedIds = [];
+  file.sharedWith( function( error, users ){
 
-      for ( var i = 0; i < owner.length; i++ ) {
+    console.log( 'users', users );
+    $.each( users, function( index, userInArray ){
 
-        if( insertedIds.indexOf( owner[i].id ) == -1 ){
+      api.user( userInArray.userId, function(error, userI){
 
-          var userx ='.user-'+ owner[i].id;
-          var user = userPrototype.clone().removeClass('wz-prototype').addClass('user-' + owner[i].id);
+        console.log('userI',userI);
+        var userxNameField;
+        var userxAvatarField;
+        var permissionText;
 
-          if( owner[i].id == file.owner ){
+        if( insertedIds.indexOf( userI.id ) == -1 ){
+
+          var userx ='.user-'+ userI.id;
+          var user = userPrototype.clone().removeClass('wz-prototype').addClass('user-' + userI.id);
+
+          if( userI.id == file.owner ){
 
             user.find('.is-owner').text ( lang.propertiesOwner );
             user.toggleClass( 'owner' );
 
           }
 
-          user.find('.username').text( owner[i].fullName );
-          user.find('figure').css( "background-image",'url("'+owner[i].avatar.small+'")' );
+          user.find('.username').text( userI.fullName );
+          user.find('figure').css( "background-image",'url("'+ userI.avatar.small +'")' );
 
-          if( owner[i].id == api.system.user().id ){
+          if( userI.id == api.system.user().id ){
             user.find('.username').text( user.find('.username').text() + ' ' + lang.propertiesFileOwner );
           }
 
-          insertedIds.push( owner[i].id )
+          insertedIds.push( userI.id )
           toInsert.push( user );
 
         }
 
-      }
+        if( index == users.length - 1 ){
+          console.log('toInsert', toInsert);
+          $('.file-owners-container').append( toInsert );
+        }
 
-      $('.file-owners-container').append( toInsert );
+      });
 
-    }else{
-
-      var user = userPrototype.clone().removeClass('wz-prototype').addClass( 'user-' + api.system.user().id ).insertAfter(userPrototype);
-      var userx ='.user-' + api.system.user().id;
-      $( userx ).toggleClass( 'owner' );
-      var userxNameField = $( userx + ' .username',win );
-      var userxAvatarField = $( userx + ' figure',win );
-      userxNameField.text( api.system.user().fullName );
-      userxAvatarField.css( "background-image",'url("'+api.system.user().avatar.small+'")' );
-      permissionText = $( userx + ' .change-permission',win );
-      permissionText.text ( lang.propertiesOwner );
-      userxNameField.text( userxNameField.text() + ' ' + lang.propertiesFileOwner );
-
-    }
+    });
 
   });
 
@@ -679,9 +674,7 @@ $('.option.download').on('click', function(){
       return;
     }
 
-    file.download( function(){
-      console.log(arguments);
-    });
+    file.download();
 
   });
 
