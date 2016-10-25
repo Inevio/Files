@@ -42,6 +42,7 @@
       "confirmDelete"             : "Are you sure, you want to delete the selected element?",
       "sharedYou"                 : "has shared you:",
       "noNotification"            : "You don't have any new notification",
+      "activity"                  : "Activity",
       "folderTranslations"        : {
 
         "Documents" : "Documents",
