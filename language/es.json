@@ -40,6 +40,7 @@
       "openFolder"                : "Abrir carpeta",
       "openInNewWindow"           : "Abrir en una nueva ventana",
       "confirmDelete"             : "¿Esta seguro que desea eliminar el archivo seleccionado?",
+      "fileCanNotOpen"            : "Inevio no puede abrir este fichero en el dispositivo",
       "folderTranslations"        : {
 
         "Documents" : "Documentos",
