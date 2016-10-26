@@ -26,6 +26,18 @@ var addZero = function( value ){
 
 };
 
+var changeName = function( fsnode ){
+
+  if( fsnode.type === 0 && !isNaN( parseInt( fsnode.name ) ) ){
+    fsnode.name = api.system.user().user;
+  }else if( fsnode.type === 1 ){
+    fsnode.name = lang.main.folderTranslations[ fsnode.name ] || fsnode.name
+  }
+
+  return fsnode;
+
+};
+
 var icon = function( data ){
 
   // Clone prototype
@@ -66,8 +78,9 @@ var iconBack = function(){
 
 var openDirectory = function( id, jump, clear ){
 
-  console.log('abro directorio', id);
   api.fs( id, function( error, structure ){
+
+    changeName( structure )
 
     if( !jump ){
 
@@ -96,6 +109,7 @@ var openDirectory = function( id, jump, clear ){
       var icons = $();
 
       for( var i in list ){
+        changeName( list[ i ] )
         icons = icons.add( icon(list[ i ]) );
       }
 
@@ -416,7 +430,7 @@ var createLink = function(){
       structure.addLink( null, preview, downloads, function( error, link ){
 
         if( error ){
-          return alert( error );
+          return navigator.notification.alert( '', function(){}, error );
         }
 
         /*if( appendLink( link, true ) ){
@@ -516,7 +530,7 @@ var acceptRename = function(){
       file.rename( $('.file-options .file-rename').val() ,function( error, o){
 
         if( error ){
-          alert( error );
+          navigator.notification.alert( '', function(){}, error );
         }
 
       });
@@ -590,8 +604,11 @@ $( '#weexplorer-content' )
     }else{
 
       structure.open( content.find('.file').map( function(){ return $(this).data('id') }).get(), function( error ){
-          // To Do -> Error
-          console.log(error);
+
+        if( error ){
+          navigator.notification.alert( '', function(){}, lang.main.fileCanNotOpen )
+        }
+
       });
 
     }
@@ -820,12 +837,10 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 
 .on( 'rename', function( structure ){
 
-  console.log('rename', structure);
-
   $( '.file-' + structure.id + ' .weexplorer-element-name').text( structure.name );
   //sortIcons( fileArea.find('.weexplorer-file') );
 
-  if( mode = 5 ){
+  if( mode === 5 ){
     cancelRename();
     $('.file-options .file-title').text( $('.file-options .file-rename').val() );
   }
@@ -873,7 +888,6 @@ $.when( rootPath, hiddenPath, customPath ).then( function( rootPath, hiddenPath,
 
   // AVISO -> hiddenPath es un array
   // Ponemos al principio rootPath, inboxPath y sharedPath
-  console.log(arguments);
   hiddenPath.unshift( rootPath );
 
   // Y concatenamos con el listado de carpetas personalizadas
@@ -881,6 +895,8 @@ $.when( rootPath, hiddenPath, customPath ).then( function( rootPath, hiddenPath,
 
   // Y generamos el sidebar
   hiddenPath.forEach( function( element ){
+
+    changeName( element )
 
     var controlFolder = sidebarElement.clone().removeClass('wz-prototype');
 

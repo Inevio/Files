@@ -40,6 +40,7 @@
       "openFolder"                : "Open folder",
       "openInNewWindow"           : "Open in a new window",
       "confirmDelete"             : "Are you sure, you want to delete the selected element?",
+      "fileCanNotOpen"            : "Inevio can't open this file currently in the device",
       "folderTranslations"        : {
 
         "Documents" : "Documents",
