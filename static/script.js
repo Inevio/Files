@@ -15,7 +15,7 @@ var PROGRESS_ICON = new Image();
 PROGRESS_ICON.src = 'https://staticbeta.inevio.com/app/1/img/processing@2x.png';
 var SHARING_ICON = new Image();
 SHARING_ICON.src = 'https://staticbeta.inevio.com/app/1/img/sharing@2x.png';
-
+var SHARED_PATH = 0;
 
 var channel                 = null;
 var requestedFrame          = false;
@@ -288,6 +288,7 @@ var appendItemToList = function( items ){
 var refreshNotificationCenter = function( callback ){
 
   var receiveFolder = notificationBellButton.data( 'folder' );
+  SHARED_PATH = receiveFolder.id;
   receiveFolder.list( function( e , receivedItems ){
 
     receivedItems.forEach( function( receivedItem ){
@@ -306,7 +307,7 @@ var refreshNotificationCenter = function( callback ){
 
 var appendVisualSidebarItem = function( item ){
 
-  if ( item.alias === 'received' ) {
+  if ( item.alias === 'received' && item.type === 1 ) {
 
     notificationBellButton.data( 'folder' , item );
     refreshNotificationCenter();
@@ -1959,19 +1960,11 @@ var updateNotificationCenter = function( fsnode , options ){
 
   var fsnodeId = options.onlyId ? fsnode : fsnode.id;
 
-  if ( options.isNew ) {
+  if ( options.isNew && SHARED_PATH === fsnodeId) {
 
-    api.fs( fsnode.parent , function( err , parent ){
+    api.user( fsnode.owner , function( err , user ){
 
-      if ( parent.name === 'Received' ) {
-
-        api.user( fsnode.owner , function( err , user ){
-
-          appendSharingNotification( fsnode , user );
-
-        });
-
-      }
+      appendSharingNotification( fsnode , user );
 
     });
 
@@ -2052,6 +2045,7 @@ api.fs
 .on( 'move', function( fsnode, finalDestiny, originalSource ){
 
   updateNotificationCenter( fsnode , { isNew: false , onlyId: false } );
+
   if( originalSource === currentOpened.id ){
     removeItemFromList( fsnode.id );
   }else if( finalDestiny === currentOpened.id ){
@@ -2083,7 +2077,7 @@ api.fs
 
 .on( 'remove', function( fsnodeId, quota, parent ){
 
-  updateNotificationCenter( fsnodeId , { isNew: true , onlyId: true } );
+  updateNotificationCenter( fsnodeId , { isNew: false , onlyId: true } );
 
   if( parent === currentOpened.id ){
     removeItemFromList( fsnodeId );
