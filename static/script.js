@@ -1981,7 +1981,7 @@ var updateNotificationCenter = function( fsnode , options ){
 
   var fsnodeId = options.onlyId ? fsnode : fsnode.id;
 
-  if ( options.isNew && SHARED_PATH === fsnodeId) {
+  if ( options.isNew && SHARED_PATH === fsnode.parent ) {
 
     api.user( fsnode.owner , function( err , user ){
       appendSharingNotification( fsnode , user );
