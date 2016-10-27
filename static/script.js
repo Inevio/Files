@@ -2858,41 +2858,38 @@ visualRenameTextarea
   visualRenameTextarea.val( visualRenameTextarea.val().replace( /(?:\r\n|\r|\n)/g, ' ' ) );
 });
 
-getSidebarItems().then( function( list ){
-  list.forEach( appendVisualSidebarItem );
-  //getReceivedItems();
-});
-
 visualAcceptButton
 .on( 'click', acceptButtonHandler );
 
 visualCancelButton
 .on( 'click', cancelButtonHandler );
 
-notificationBellButton.on( 'click' , function(){
+notificationBellButton
+.on( 'click' , function(){
 
-  if ( $( '.share-notification:not(.wz-prototype)' ).length > 0 ) {
-    $( '.notification-list-container' ).toggle();
-  }else{
-    alert( lang.main.noNotification );
-  }
+  $( '.notification-list-container' ).css( 'display', 'block' );
+
+  win.one( 'mousedown', function(){
+    $( '.notification-list-container' ).css( 'display', 'none' );
+  })
 
 });
 
-notificationList.on( 'click' , '.accept-sharing-button' , function(){
+$( '.notification-list-container' )
+.on( 'mousedown', function( e ){
+  e.stopPropagation()
+})
 
+notificationList
+.on( 'click' , '.accept-sharing-button' , function( e ){
   acceptContent( $( this ).closest( '.share-notification' ).data( 'fsnode' ) );
+})
 
-});
-
-notificationList.on( 'click' , '.refuse-sharing-button' , function(){
-
+.on( 'click' , '.refuse-sharing-button' , function( e ){
   refuseContent( $( this ).closest( '.share-notification' ).data( 'fsnode' ) );
-
 });
 
 // Load texts
-
 var translate = function(){
 
   $('.ui-header-brand').find('.name').text(lang.main.appName);
@@ -2913,6 +2910,9 @@ currentSort = sortByName;
 translate();
 updateCanvasSize();
 clearCanvas();
+getSidebarItems().then( function( list ){
+  list.forEach( appendVisualSidebarItem );
+});
 
 if( params ){
 
