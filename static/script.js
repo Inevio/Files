@@ -1994,7 +1994,7 @@ var updateNotificationCenter = function( fsnode , options ){
       $( '.sharing-notification-' + fsnodeId ).remove();
 
       if ( $( '.share-notification:not(.wz-prototype)' ).length === 0 ) {
-        $( '.notification-list-container' ).hide();
+        $( '.notification-list-container' ).css( 'display', 'none' );
         notificationBellButton.removeClass( 'not-empty' );
       }
 
@@ -2867,11 +2867,17 @@ visualCancelButton
 notificationBellButton
 .on( 'click' , function(){
 
-  $( '.notification-list-container' ).css( 'display', 'block' );
+  if ( $( '.share-notification:not(.wz-prototype)' ).length > 0 ) {
 
-  win.one( 'mousedown', function(){
-    $( '.notification-list-container' ).css( 'display', 'none' );
-  })
+    $( '.notification-list-container' ).css( 'display', 'block' );
+
+    win.one( 'mousedown', function(){
+      $( '.notification-list-container' ).css( 'display', 'none' );
+    })
+
+  }else{
+    alert( lang.main.noNotification );
+  }
 
 });
 
