@@ -43,6 +43,7 @@
       "sharedYou"                 : "has shared you:",
       "noNotification"            : "You don't have any new notification",
       "activity"                  : "Activity",
+      "fileCanNotOpen"            : "Inevio can't open this file currently in the device",
       "folderTranslations"        : {
 
         "Documents" : "Documents",
