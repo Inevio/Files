@@ -12,9 +12,9 @@ var TYPE_FOLDER = 2;
 var TYPE_FILE = 3;
 var PROGRESS_RADIUS = 5;
 var PROGRESS_ICON = new Image();
-PROGRESS_ICON.src = 'https://staticbeta.inevio.com/app/1/img/processing@2x.png';
+PROGRESS_ICON.src = 'https://static.inevio.com/app/1/img/processing@2x.png';
 var SHARING_ICON = new Image();
-SHARING_ICON.src = 'https://staticbeta.inevio.com/app/1/img/sharing@2x.png';
+SHARING_ICON.src = 'https://static.inevio.com/app/1/img/sharing@2x.png';
 var SHARED_PATH = 0;
 
 var channel                 = null;
@@ -44,6 +44,7 @@ var currentGoToItemString   = '';
 var currentGoToItemTimer    = 0;
 var enabledMultipleSelect   = true;
 var disabledFileIcons       = false;
+var sidebarFolders          = [];
 
 if( params && ( params.command === 'selectSource' ||  params.command === 'selectDestiny' ) ){
   enabledMultipleSelect = params.command === 'selectSource' && params.mode === 'file' && params.multiple;
@@ -528,6 +529,8 @@ var deleteAllActive = function(){
 
     currentActive.forEach( function( item ){
 
+      checkIsOnSidebar( item.fsnode );
+
       item.fsnode.remove( function( error ){
         console.log( error );
       });
@@ -537,6 +540,16 @@ var deleteAllActive = function(){
   });
 
 };
+
+var checkIsOnSidebar = function( fsnode ){
+
+  var index = sidebarFolders.indexOf( fsnode );
+  if ( index > -1 ) {
+    sidebarFolders.splice(index, 1);
+    removeFromSidebar( fsnode );
+  }
+
+}
 
 var downloadAllActive = function(){
 
@@ -670,7 +683,7 @@ var drawIconsInGrid = function(){
       var centerX = normalized.width + x + ( ICON_WIDTH -  normalized.width ) / 2;
       var centerY = normalized.height + y + ( ICON_IMAGE_HEIGHT_AREA -  normalized.height ) / 2;
 
-      drawSharedCircle( ctx , { x: centerX , y: centerY } );
+      drawSharedCircle( ctx , { x: centerX - 5 , y: centerY - 5 } );
 
     }
 
@@ -1628,9 +1641,18 @@ var showRenameTextarea = function( icon ){
     top : areaPosition.top + iconPosition.y + currentScroll + ICON_IMAGE_HEIGHT_AREA,
     left : areaPosition.left + iconPosition.x,
 
-  }).data( 'icon', icon ).addClass('active').focus().select();
+  }).data( 'icon', icon ).addClass('active');
+
+  selectRangeText( visualRenameTextarea[0] , 0 , visualRenameTextarea.val().lastIndexOf('.') );
 
 };
+
+var selectRangeText = function( input , start , end ){
+
+  input.focus();
+  input.setSelectionRange( start , end );
+
+}
 
 var sortByName = function( a, b ){
 
@@ -1843,7 +1865,7 @@ var addToSidebar = function( fsnode ){
       // To Do -> Error
       if( !error && result.affectedRows ){
 
-          addToSidebarUi( fsnode.id , fsnode.name );
+          addToSidebarUi( fsnode );
 
           if( channel === null ){
 
@@ -1866,16 +1888,18 @@ var addToSidebar = function( fsnode ){
 
 };
 
-var addToSidebarUi = function( id, name ){
+var addToSidebarUi = function( item ){
 
-  if( isInSidebar( id ) ){
+  if( isInSidebar( item.id ) ){
     return false;
   }
 
   var newSidebarElement = visualSidebarItemPrototype.clone().removeClass('wz-prototype');
 
-  newSidebarElement.addClass( 'item-' + id ).attr( 'data-id', id );
-  newSidebarElement.find('.ui-navgroup-element-txt').text( name );
+  sidebarFolders.push( item );
+
+  newSidebarElement.addClass( 'item-' + item.id ).attr( 'data-id', item.id );
+  newSidebarElement.find('.ui-navgroup-element-txt').text( item.name );
 
   visualSidebarItemArea.append( newSidebarElement );
 
@@ -1892,7 +1916,7 @@ var removeFromSidebar = function( fsnode ){
       // To Do -> Error
       if( !error && result.affectedRows ){
 
-          removeFromSidebarUi( fsnode.id );
+          removeFromSidebarUi( fsnode );
 
           if( channel === null ){
 
@@ -1913,8 +1937,12 @@ var removeFromSidebar = function( fsnode ){
 
 };
 
-var removeFromSidebarUi = function( id ){
-  return visualSidebarItemArea.find( '.item-' + id ).remove();
+var removeFromSidebarUi = function( item ){
+  var index = sidebarFolders.indexOf( item );
+  if (index > -1) {
+    sidebarFolders.splice(index, 1);
+  }
+  return visualSidebarItemArea.find( '.item-' + item.id ).remove();
 };
 
 var acceptContent = function( fsnode ){
@@ -2309,7 +2337,7 @@ win
 
 })
 
-.key( 'ctrl+a, cmd+a', function(){
+.key( 'ctrl+a, cmd+a', function( e ){
 
   if( !$(e.target).is('textarea') ){
     selectAllIcons()
@@ -2504,9 +2532,11 @@ visualItemArea
       menu.addOption( lang.main.createLink, api.app.createView.bind( null, itemClicked.fsnode.id, 'link') );
     }
 
-    /*if( itemClicked.fsnode.permissions.send ){
+    /* Not supported yet
+    if( itemClicked.fsnode.permissions.send ){
       menu.addOption( lang.main.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
-    }*/
+    }
+    */
 
     if( itemClicked.fsnode.permissions.share ){
       menu.addOption( lang.main.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share') );
@@ -2539,9 +2569,11 @@ visualItemArea
     .addOption( lang.addToSidebar, addToSidebar.bind( null , itemClicked.fsnode ) )
     .addOption( lang.removeFromSidebar, removeFromSidebar.bind( null , itemClicked.fsnode ) );
 
+    /* Not supported yet
     if( itemClicked.fsnode.permissions.send ){
       menu.addOption( lang.main.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
     }
+    */
 
     if( itemClicked.fsnode.permissions.share ){
       menu.addOption( lang.main.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share'));
@@ -2592,9 +2624,28 @@ visualItemArea
     .addOption( lang.main.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') )
     .addOption( lang.main.remove, deleteAllActive, 'warning' );
 
-  }/*else if( icon.hasClass( 'pointer-pending' ) ){
-    // To Do
-  }*/
+  // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
+  }else if( itemClicked.fsnode.type === TYPE_FOLDER_SPECIAL ){
+
+    menu
+    .addOption( lang.main.openFolder, openFolder.bind( null, itemClicked.fsnode.id ) )
+    .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, itemClicked.fsnode.id, 'main') )
+    .addOption( lang.main.copy, clipboardCopy )
+
+    /* Not supported yet
+    if( itemClicked.fsnode.permissions.send ){
+      menu.addOption( lang.main.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
+    }
+    */
+
+    if( itemClicked.fsnode.permissions.download ){
+      menu.addOption( lang.main.download, downloadAllActive );
+    }
+
+    menu
+    .addOption( lang.main.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') )
+
+  }
 
   menu.render();
 
@@ -2729,10 +2780,10 @@ visualItemArea
 
         'display'             : 'inline-block',
         'width'               : '17px',
-        'height'              : '17px',
+        'height'              : '18px',
         'margin-right'        : '10px',
         'background-image'    : 'url(https://staticbeta.inevio.com/app/1/img/sprite.png)',
-        'background-position' : '-385px 0px',
+        'background-position' : '-372px 0',
         'background-size'     : '402px 18px',
         'background-repeat'   : 'no-repeat'
 

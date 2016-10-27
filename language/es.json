@@ -43,6 +43,7 @@
       "sharedYou"                 : "te ha compartido:",
       "noNotification"            : "No tienes ninguna notificacion nueva",
       "activity"                  : "Actividad",
+      "fileCanNotOpen"            : "Inevio no puede abrir este fichero en el dispositivo",
       "folderTranslations"        : {
 
         "Documents" : "Documentos",
