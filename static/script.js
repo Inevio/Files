@@ -286,18 +286,16 @@ var appendItemToList = function( items ){
 
 };
 
-var refreshNotificationCenter = function( callback ){
+var refreshNotificationCenter = function( receivedFolder ){
 
-  var receiveFolder = notificationBellButton.data( 'folder' );
-  SHARED_PATH = receiveFolder.id;
-  receiveFolder.list( function( e , receivedItems ){
+  SHARED_PATH = receivedFolder.id;
 
-    receivedItems.forEach( function( receivedItem ){
+  receivedFolder.list( function( e , list ){
 
-      api.user( receivedItem.owner , function( err , user ){
+    list.forEach( function( item ){
 
-        appendSharingNotification( receivedItem , user );
-
+      api.user( item.owner , function( err , user ){
+        appendSharingNotification( item, user );
       });
 
     });
@@ -308,21 +306,16 @@ var refreshNotificationCenter = function( callback ){
 
 var appendVisualSidebarItem = function( item ){
 
-  if ( item.alias === 'received' && item.type === 1 ) {
-
-    notificationBellButton.data( 'folder' , item );
-    refreshNotificationCenter();
-
-  }else{
-
-    var visualItem = visualSidebarItemPrototype.clone();
-
-    visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) ).attr( 'data-id', item.id );
-    visualItem.find('.ui-navgroup-element-txt').text( item.name );
-
-    visualSidebarItemArea.append( visualItem );
-
+  if ( item.type === 1 && item.alias === 'received' ) {
+    return refreshNotificationCenter( item );
   }
+
+  var visualItem = visualSidebarItemPrototype.clone();
+
+  visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) ).attr( 'data-id', item.id );
+  visualItem.find('.ui-navgroup-element-txt').text( item.name );
+
+  visualSidebarItemArea.append( visualItem );
 
 };
 
@@ -1991,9 +1984,7 @@ var updateNotificationCenter = function( fsnode , options ){
   if ( options.isNew && SHARED_PATH === fsnodeId) {
 
     api.user( fsnode.owner , function( err , user ){
-
       appendSharingNotification( fsnode , user );
-
     });
 
   }else{
@@ -2012,6 +2003,7 @@ var updateNotificationCenter = function( fsnode , options ){
   }
 
 }
+
 // API Events
 api.fs
 .on( 'new', function( fsnode ){
