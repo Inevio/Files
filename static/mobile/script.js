@@ -14,6 +14,7 @@ var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-
 //var optionsDeployed= false;
 var actualPathId   = 0;
 var yDeployed      = '-410px';
+var sharedList = $('.share-details .friend-list');
 
 // Functions
 var addZero = function( value ){
@@ -181,7 +182,6 @@ var showOptions = function( file ){
   var imageUrl;
   var createdDate  = new Date( file.dateCreated );
   var modifiedDate = new Date( file.dateModified );
-  var sharedList = $('.share-details .friend-list');
   var prototype = $('.share-details .friend-list .user.wz-prototype');
   $('.file-owners-container .user').not('.wz-prototype').remove();
   $('.share-with-friends .user').not('.wz-prototype').remove();
@@ -255,6 +255,8 @@ var showOptions = function( file ){
   file.sharedWith( function( error, users ){
 
     console.log( 'users', users );
+    $('.file-owners-container .user').not('.wz-prototype').remove();
+
     $.each( users, function( index, userInArray ){
 
       api.user( userInArray.userId, function(error, userI){
@@ -289,13 +291,15 @@ var showOptions = function( file ){
         }
 
         if( index == users.length - 1 ){
+
           console.log('toInsert', toInsert);
           $('.file-owners-container').append( toInsert );
 
           //Cargamos la lista de amigos y marcamos cuales tienen compartido el fichero
           api.user.friendList( false, function( error, list ){
 
-            console.log(list);
+            $('.share-with-friends .user').not('.wz-prototype').remove();
+
             list.forEach( function( user, index ) {
 
               var newUser = prototype.clone().removeClass('wz-prototype');
