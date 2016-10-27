@@ -810,3 +810,57 @@
 .file-owners-section .user.owner .is-owner{
   display: block;
 }
+
+.share-details{
+  width: 100%;
+  height: ~'calc(100% - 64px)';
+  position: absolute;
+  transform: translate3d(0, 100%, 0);
+  top: 64px;
+  background-color: white;
+  text-align: center;
+  display: none;
+}
+
+.share-details:before{
+  clear: both;
+  content: "";
+  display: block;
+  width: ~'calc(100% - 16px)';
+  height: 1px;
+  margin: 0 auto;
+  background: #e5e9ea;
+}
+
+.share-details .share-title{
+  font-size: 20px;
+  color: #545f65;
+  text-align: center;
+  margin: 25px 0;
+  display: inline-block;
+}
+
+.share-details .share-with-friends{
+  width: 100%;
+  height: ~'calc(100% - 70px)';
+  position: absolute;
+  top: 70px;
+  transform: translate3d(0,0,0);
+}
+
+.share-details .share-with-friends .title{
+  font-size: 13px;
+  text-align: left;
+  color: #889399;
+  margin-left: 20px;
+  margin-bottom: 22px;
+}
+
+.share-details .share-with-permissions{
+  width: 100%;
+  height: ~'calc(100% - 70px)';
+  position: absolute;
+  top: 70px;
+  transform: translate3d(100%,0,0);
+  display: none;
+}

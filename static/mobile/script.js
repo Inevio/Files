@@ -10,7 +10,7 @@ var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
 var userPrototype  = $('.file-options .user.wz-prototype');
 var record         = [];
 var transitionTime = 300;
-var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-link, 4 == more-info, 5 == renaming, 6 == link created
+var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-link, 4 == more-info, 5 == renaming, 6 == link created, 7 == sharing
 //var optionsDeployed= false;
 var actualPathId   = 0;
 var yDeployed      = '-410px';
@@ -181,7 +181,16 @@ var showOptions = function( file ){
   var imageUrl;
   var createdDate  = new Date( file.dateCreated );
   var modifiedDate = new Date( file.dateModified );
+  var sharedList = $('.share-details .friend-list');
+  var prototype = $('.share-details .friend-list .user.wz-prototype');
+  $('.file-owners-container .user').not('.wz-prototype').remove();
+  $('.share-with-friends .user').not('.wz-prototype').remove();
+  $('.file-options .file-title').text( file.name );
+  $('.file-options .file-rename').val( file.name );
+  $('.file-options .options-logo i').css('background-image', 'url("' + imageUrl  + '")');
+  $('.file-options .file-size-value').text( api.tool.bytesToUnit( file.size, 2 ) );
   console.log( file );
+
   if( file.type == 0 || file.type == 1 || file.type == 2 ){
     $('.file-options').addClass('folder');
   }else{
@@ -215,8 +224,6 @@ var showOptions = function( file ){
     addZero( modifiedDate.getSeconds() )
 
   );
-
-  $('.file-owners-container .user').not('.wz-prototype').remove();
 
   file.getPath( function( error, pathList ){
 
@@ -284,6 +291,28 @@ var showOptions = function( file ){
         if( index == users.length - 1 ){
           console.log('toInsert', toInsert);
           $('.file-owners-container').append( toInsert );
+
+          //Cargamos la lista de amigos y marcamos cuales tienen compartido el fichero
+          api.user.friendList( false, function( error, list ){
+
+            console.log(list);
+            list.forEach( function( user, index ) {
+
+              var newUser = prototype.clone().removeClass('wz-prototype');
+              newUser.find('.avatar').attr( 'src', user.avatar.small );
+              newUser.find('.username').text( user.fullName );
+              newUser.data( 'user', user );
+              //newUser.data( 'permissions', permissions );
+              if( insertedIds.indexOf( user.id ) != -1 ){
+                //TODO el usuario ya tiene el fichero compartido
+              }
+              sharedList.append( newUser );
+
+            });
+
+
+          });
+
         }
 
       });
@@ -292,10 +321,7 @@ var showOptions = function( file ){
 
   });
 
-  $('.file-options .file-title').text( file.name );
-  $('.file-options .file-rename').val( file.name );
-  $('.file-options .options-logo i').css('background-image', 'url("' + imageUrl  + '")');
-  $('.file-options .file-size-value').text( api.tool.bytesToUnit( file.size, 2 ) );
+
 
   $( '.file-options' ).show().transition({
     'y' : yDeployed
@@ -346,6 +372,8 @@ var hideOptions = function( fullHide ){
     hideFileInfo();
   }else if( mode == 3 ){
     hideCreateLink();
+  }else if( mode == 7 ){
+    hideShareScreen();
   }
 
   $( '.file-options' ).transition({
@@ -491,6 +519,52 @@ var showFileInfo = function(){
 var hideFileInfo = function(){
 
   $('.file-details').show().transition({
+    'y' : '100%'
+  },transitionTime, function(){
+    $(this).hide();
+  });
+
+  $('.file-options').transition({
+    'y' : '0'
+  },transitionTime, function(){
+    mode = 2;
+  });
+
+  $('.file-options .options-close').hide();
+  $('.file-options .options-more').show();
+
+}
+
+var showShareScreen = function(){
+
+  if( mode == 3 ){
+
+    $( '.create-link-container' ).transition({
+      'x' : '100%'
+    },transitionTime, function(){
+      $(this).hide();
+    });
+
+  }
+
+  $('.share-details').show().transition({
+    'y' : '0%'
+  },transitionTime);
+
+  $('.file-options .options-more').hide();
+  $('.file-options .options-close').show();
+
+  $('.file-options').transition({
+    'y' : '-100%'
+  },transitionTime, function(){
+    mode = 7;
+  });
+
+}
+
+var hideShareScreen = function(){
+
+  $('.share-details').show().transition({
     'y' : '100%'
   },transitionTime, function(){
     $(this).hide();
@@ -724,6 +798,10 @@ $('.option.delete').on('click',function(){
   });
 
 })
+
+$('.option.share-with').on('click', function(){
+  showShareScreen();
+});
 
 $('.option.create-link').on('click', function(){
   showCreateLink();
