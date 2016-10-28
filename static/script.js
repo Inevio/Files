@@ -2735,7 +2735,7 @@ visualItemArea
         'width'               : '16px',
         'height'              : '16px',
         'margin-right'        : '10px',
-        'background-image'    : 'url(' + currentLastPureClicked.fsnode.icons.tiny + ')',
+        'background-image'    : 'url(' + currentLastPureClicked.fsnode.icons.micro + ')',
         'background-position' : 'center center',
         'background-size'     : 'contain',
         'background-repeat'   : 'no-repeat'
