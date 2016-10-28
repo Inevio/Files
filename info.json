@@ -18,7 +18,7 @@
         "desktop" : {
 
             "primary" : "main",
-            "service" : [ "events.js" ],
+            "service" : [ "events.js" , "service.js" ],
             "common"  : {
 
                 "css"    : [],
@@ -315,6 +315,8 @@
     "permission" : {
 
         "channel" : true,
+
+        "service" : true,
 
         "config" : {
 
