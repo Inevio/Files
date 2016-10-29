@@ -673,6 +673,23 @@ $( '#weexplorer-content' )
 
   var structure = $(this).data('fsnode')
 
+  if( structure.pending ){
+
+    return navigator.notification.confirm( lang.main.fileReceivedDialogDescription, function( accepted ){
+
+      accepted = accepted === 1
+
+      if( accepted ){
+
+        structure.accept( 'root', function(){
+          console.log( arguments )
+        })
+
+      }
+
+    }, lang.main.fileReceivedDialogTitle.replace( '%s', structure.name ) )
+
+  }
 
   // Abrir directorios
   if( structure.type <= 2 ){
