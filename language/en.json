@@ -41,6 +41,8 @@
       "openInNewWindow"           : "Open in a new window",
       "confirmDelete"             : "Are you sure, you want to delete the selected element?",
       "fileCanNotOpen"            : "Inevio can't open this file currently in the device",
+      "fileReceivedDialogTitle"   : "%s has been received",
+      "fileReceivedDialogDescription" : "If it's accepted it would be saved in your main folder",
       "folderTranslations"        : {
 
         "Documents" : "Documents",

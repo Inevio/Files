@@ -2576,9 +2576,7 @@ visualItemArea
   }
 
   if ( itemClicked.fsnode.pending ) {
-
     api.app.createView( itemClicked.fsnode , 'received' );
-
   }else if( itemClicked.fsnode.type === TYPE_ROOT || itemClicked.fsnode.type === TYPE_FOLDER_SPECIAL || itemClicked.fsnode.type === TYPE_FOLDER ){
     openFolder( itemClicked.fsnode.id );
   }else if( itemClicked.fsnode.type === TYPE_FILE ){
