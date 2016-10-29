@@ -49,6 +49,7 @@ var icon = function( data ){
   file.find('.weexplorer-element-data').text( api.tool.bytesToUnit( data.size ) );
   file.find('.weexplorer-element-icon').css('background-image', 'url(' + data.icons.small + ')' )
   file.data( 'id', data.id );
+  file.data( 'fsnode', data )
   file.addClass( 'file-' + data.id );
 
   if( data.type < 2 ){
@@ -102,7 +103,7 @@ var openDirectory = function( id, jump, clear ){
         .filter('.folder-' + structure.id )
         .addClass('active');
 
-    structure.list( function( error, list ){
+    structure.list( { withPermissions : true }, function( error, list ){
 
       // To Do -> Error
       content.children().not( itemProto ).not( itemBack ).not('.empty-folder').remove();
@@ -670,25 +671,18 @@ $( '#weexplorer-sidebar' ).on( 'click', function( e ){
 $( '#weexplorer-content' )
 .on( 'click', '.weexplorer-element', function(){
 
-  api.fs( $(this).data('id'), function( error, structure ){
+  var structure = $(this).data('fsnode')
+
+
+  // Abrir directorios
+  if( structure.type <= 2 ){
+    return openDirectory( structure.id );
+  }
+
+  structure.open( content.find('.file').map( function(){ return $(this).data('id') }).get(), function( error ){
 
     if( error ){
-      return false; // To Do -> Error
-    }
-
-    // Abrir directorios
-    if( structure.type <= 2 ){
-      openDirectory( structure.id );
-    }else{
-
-      structure.open( content.find('.file').map( function(){ return $(this).data('id') }).get(), function( error ){
-
-        if( error ){
-          navigator.notification.alert( '', function(){}, lang.main.fileCanNotOpen )
-        }
-
-      });
-
+      navigator.notification.alert( '', function(){}, lang.main.fileCanNotOpen )
     }
 
   });
@@ -1021,7 +1015,7 @@ api.fs( 'root', function( error, structure ){
   // Ya tenemos la carpeta del usuario, cumplimos la promesa
   rootPath.resolve( structure );
 
-  structure.list( true, function( error, list ){
+  structure.list( { withPermissions : true }, function( error, list ){
 
     // Vamos a filtrar la lista para quedarnos solo con las carpetas ocultas, es decir, de tipo 7
     list = list.filter( function( item ){
