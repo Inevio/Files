@@ -1004,13 +1004,13 @@ $.when( rootPath, hiddenPath, customPath ).then( function( rootPath, hiddenPath,
 
     console.log( element.name, element.alias, element )
 
-    if( element.name === 'Documents' ){
+    if( element.type === 1 && element.name === 'Documents' ){
       controlFolder.removeClass( 'folder' ).addClass( 'doc' );
-    }else if( element.name === 'Music' ){
+    }else if( element.type === 1 && element.name === 'Music' ){
       controlFolder.removeClass( 'folder' ).addClass( 'music' );
-    }else if( element.name === 'Images' ){
+    }else if( element.type === 1 && element.name === 'Images' ){
       controlFolder.removeClass( 'folder' ).addClass( 'photo' );
-    }else if( element.name === 'Videos' ){
+    }else if( element.type === 1 && element.name === 'Videos' ){
       controlFolder.removeClass( 'folder' ).addClass( 'video' );
     }
 
