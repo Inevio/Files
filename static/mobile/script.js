@@ -989,15 +989,9 @@ $.when( rootPath, hiddenPath, customPath ).then( function( rootPath, hiddenPath,
   // Y generamos el sidebar
   hiddenPath.forEach( function( element ){
 
-    changeName( element )
-
     var controlFolder = sidebarElement.clone().removeClass('wz-prototype');
 
-    controlFolder
-      .data( 'file-id', element.id )
-      .addClass( 'wz-drop-area folder-' + element.id )
-      .find( 'span' )
-        .text( element.name );
+    controlFolder.data( 'file-id', element.id ).addClass( 'wz-drop-area folder-' + element.id )
 
     if( element.id === api.system.user().rootPath ){
       controlFolder.removeClass( 'folder' ).addClass( 'userFolder user' );
@@ -1008,16 +1002,20 @@ $.when( rootPath, hiddenPath, customPath ).then( function( rootPath, hiddenPath,
       controlFolder.addClass( 'sharedFolder' );
     }
 
-    if( element.name === 'Documents' || element.name === 'Documentos' || element.alias == 'documents' ){
+    console.log( element.name, element.alias, element )
+
+    if( element.name === 'Documents' ){
       controlFolder.removeClass( 'folder' ).addClass( 'doc' );
-    }else if( element.name === 'Music' || element.name === 'Música' || element.alias == 'music' ){
+    }else if( element.name === 'Music' ){
       controlFolder.removeClass( 'folder' ).addClass( 'music' );
-    }else if( element.name === 'Images' || element.name === 'Imágenes' || element.alias == 'images' ){
+    }else if( element.name === 'Images' ){
       controlFolder.removeClass( 'folder' ).addClass( 'photo' );
-    }else if( element.name === 'Video' || element.name === 'Vídeos' || element.alias == 'videos' ){
+    }else if( element.name === 'Videos' ){
       controlFolder.removeClass( 'folder' ).addClass( 'video' );
     }
 
+    changeName( element )
+    controlFolder.find( 'span' ).text( element.name );
     sidebar.append( controlFolder );
 
   });
