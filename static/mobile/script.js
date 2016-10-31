@@ -223,7 +223,6 @@ var showOptions = function( file ){
   $('.file-options .file-rename').val( file.name );
   $('.file-options .options-logo i').css('background-image', 'url("' + imageUrl  + '")');
   $('.file-options .file-size-value').text( api.tool.bytesToUnit( file.size, 2 ) );
-  console.log( file );
 
   if( file.type == 0 || file.type == 1 || file.type == 2 ){
     $('.file-options').addClass('folder');
@@ -280,8 +279,6 @@ var showOptions = function( file ){
     }
 
   });
-
-  console.log('file', file);
 
   var toInsert;
   var insertedIds;
@@ -646,10 +643,9 @@ var acceptRename = function(){
 
       });
 
-    }else{
-      cancelRename();
     }
 
+    cancelRename();
 
   });
 
