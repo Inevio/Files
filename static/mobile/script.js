@@ -844,15 +844,28 @@ $('.option.delete').on('click',function(){
       return;
     }
 
-    file.remove( function( error, o){
+    return navigator.notification.confirm( file.name, function( accepted ){
 
-      if( !error ){
+      accepted = accepted === 1
 
-        hideOptions(true);
+      if( accepted ){
+
+        file.remove( function( error, o){
+
+          if( !error ){
+
+            hideOptions(true);
+
+          }
+
+        });
 
       }
 
-    });
+    }, lang.confirmDelete , [lang.accept,lang.cancel] )
+
+
+
 
   });
 

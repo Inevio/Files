@@ -324,6 +324,7 @@
     "saving" : "Guardando...",
     "accept" : "Aceptar",
     "cancel" : "Cancelar",
-    "replace" : "¿Desea reemplazar el fichero?"
+    "replace" : "¿Desea reemplazar el fichero?",
+    "confirmDelete" : "¿Desea eliminar el fichero?"
 
 }
