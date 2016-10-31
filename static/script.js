@@ -1,21 +1,20 @@
 'use strict';
 
-var ICON_WIDTH = 106;
-var ICON_TEXT_WIDTH = 106 - 6;
-var ICON_IMAGE_HEIGHT_AREA = 80;
-var ICON_RADIUS = 6;
-var ICON_GAP_MIN = 10;
-var ROWS_GAP = 20;
-var TYPE_ROOT = 0;
-var TYPE_FOLDER_SPECIAL = 1;
-var TYPE_FOLDER = 2;
-var TYPE_FILE = 3;
-var PROGRESS_RADIUS = 5;
-var PROGRESS_ICON = new Image();
-PROGRESS_ICON.src = 'https://static.inevio.com/app/1/img/processing@2x.png';
-var SHARING_ICON = new Image();
-SHARING_ICON.src = 'https://static.inevio.com/app/1/img/sharing@2x.png';
-
+var ICON_WIDTH = 106
+var ICON_TEXT_WIDTH = 106 - 6
+var ICON_IMAGE_HEIGHT_AREA = 80
+var ICON_RADIUS = 6
+var ICON_GAP_MIN = 10
+var ROWS_GAP = 20
+var TYPE_ROOT = 0
+var TYPE_FOLDER_SPECIAL = 1
+var TYPE_FOLDER = 2
+var TYPE_FILE = 3
+var PROGRESS_RADIUS = 5
+var PROGRESS_ICON = new Image()
+PROGRESS_ICON.src = 'https://static.inevio.com/app/1/img/processing@2x.png'
+var SHARING_ICON = new Image()
+SHARING_ICON.src = 'https://static.inevio.com/app/1/img/sharing@2x.png'
 
 var channel                 = null;
 var requestedFrame          = false;
