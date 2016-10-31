@@ -234,7 +234,11 @@ var showOptions = function( file ){
     $('.option-section.share').hide();
 
   }else{
+
     $('.file-options').removeClass('folder');
+    //TODO quitar despues de implementar compartir
+    $('.option-section.share').show();
+
   }
 
   $('.file-options .file-created-value').text(
@@ -436,6 +440,8 @@ var showCreateLink = function(){
     });
 
     $('.options-header .options-more').hide();
+    $('.toggles-container .selector').removeClass('active');
+    $('.create-link-title').removeClass('password-mode');
 
   }
 
@@ -486,11 +492,11 @@ var createLink = function(){
 
   api.fs( $('.weexplorer-element.active').data('id'),function( error, structure ){
 
-    //var password  = ( $('.link-password input').attr('checked') && $('.link-password-input').val() ) ? $('.link-password-input').val() : null;
+    var password  = ( $('.toggles-container .preview .selector').hasClass('active') && $('.password-container').val() ) ? $('.password-container').val() : null;
     var preview   = $('.toggles-container .preview .selector').hasClass('active');
     var downloads = $('.toggles-container .download .selector').hasClass('active');
 
-      structure.addLink( null, preview, downloads, function( error, link ){
+      structure.addLink( password, preview, downloads, function( error, link ){
 
         if( error ){
           return navigator.notification.alert( '', function(){}, error );
@@ -683,6 +689,7 @@ var translate = function (){
   $('.create-link-container .download div').text( lang.link.download );
   $('.create-link-container .password div').text( lang.link.password );
   $('.create-link-container .generate-btn span').text( lang.linkGenerate );
+  $('.create-link-container .back-link-btn span').text( lang.back );
   //$('.create-link-container .back-link-btn span').text( lang.linkGenerate );
   $('#weexplorer-sidebar .weexplorer-sidebar-title').text( lang.favourites );
 
@@ -886,7 +893,20 @@ $('.option.create-link').on('click', function(){
 });
 
 $('.create-link-container .selector').on('click', function(){
+
   $(this).toggleClass('active');
+  if( $(this).parent().hasClass('password') ){
+
+    if( $(this).hasClass('active') ){
+      $('.create-link-title').addClass('password-mode');
+      $('.password-container').show();
+    }else{
+      $('.create-link-title').removeClass('password-mode');
+      $('.password-container').hide();
+    }
+
+  }
+
 })
 
 $('.option.rename').on('click', function(){
