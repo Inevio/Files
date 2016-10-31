@@ -39,6 +39,34 @@ var changeName = function( fsnode ){
 
 };
 
+var sortByName = function( a, b ){
+
+  if( a.fsnode.type === b.fsnode.type ){
+
+    var a1, b1, i= 0, n, L,
+    rx=/(\.\d+)|(\d+(\.\d+)?)|([^\d.]+)|(\.\D+)|(\.$)/g;
+    if( a.fsnode.name === b.fsnode.name ) return 0;
+    a= a.fsnode.name.toLowerCase().match(rx);
+    b= b.fsnode.name.toLowerCase().match(rx);
+    L= a.length;
+    while(i<L){
+        if(!b[i]) return 1;
+        a1= a[i],
+        b1= b[i++];
+        if(a1!== b1){
+            n= a1-b1;
+            if(!isNaN(n)) return n;
+            return a1>b1? 1:-1;
+        }
+    }
+    return b[i]? -1:0;
+
+  }
+
+  return a.fsnode.type > b.fsnode.type ? 1 : -1;
+
+};
+
 var icon = function( data ){
 
   // Clone prototype
@@ -107,6 +135,11 @@ var openDirectory = function( id, jump, clear ){
 
       // To Do -> Error
       content.children().not( itemProto ).not( itemBack ).not('.empty-folder').remove();
+
+      list = list.sort( function( a, b ){
+        // TO DO -> Prevent this artifact when use sortByName
+        return sortByName( { fsnode : a }, { fsnode : b } );
+      })
 
       var icons = $();
 
@@ -669,7 +702,7 @@ $( '#weexplorer-sidebar' ).on( 'click', function( e ){
 });
 
 $( '#weexplorer-content' )
-.on( 'click', '.weexplorer-element', function(){
+.on( 'click', '.weexplorer-element:not(.back)', function(){
 
   var structure = $(this).data('fsnode')
 
@@ -725,8 +758,12 @@ $( '#weexplorer-content' )
 
 itemBack.on( 'click', function(){
 
-  record.shift();
-  openDirectory( record[ 0 ].id, true );
+  if( record.length > 1 ){
+
+    record.shift();
+    openDirectory( record[ 0 ].id, true );
+
+  }
 
 });
 
@@ -769,7 +806,14 @@ win.on('swipedown', '.file-owners-section', function(e){
 })
 
 .on('swipeleft', '.sidebar', function(){
-  $('.back').click();
+  itemBack.click();
+})
+
+.on('backbutton', function( e ){
+
+  e.stopPropagation()
+  itemBack.click()
+
 });
 
 $('.option.download').on('click', function(){
@@ -1036,6 +1080,11 @@ api.fs( 'root', function( error, structure ){
     list = list.filter( function( item ){
       return item.type === 1;
     });
+
+    list = list.sort( function( a, b ){
+      // TO DO -> Prevent this artifact when use sortByName
+      return sortByName( { fsnode : a }, { fsnode : b } );
+    })
 
     // Ya tenemos las carpetas ocultas, cumplimos la promesa
     hiddenPath.resolve( list );
