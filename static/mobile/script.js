@@ -213,22 +213,15 @@ var hideCover = function(){
 
 var showOptions = function( file ){
 
-  var imageUrl;
   var createdDate  = new Date( file.dateCreated );
   var modifiedDate = new Date( file.dateModified );
   var prototype = $('.share-details .friend-list .user.wz-prototype');
-
-  if( file.thumbnails['32'] ){
-    imageUrl = file.thumbnails['32'];
-  }else{
-    imageUrl = file.icons['32'];
-  }
 
   $('.file-owners-container .user').not('.wz-prototype').remove();
   $('.share-with-friends .user').not('.wz-prototype').remove();
   $('.file-options .file-title').text( file.name );
   $('.file-options .file-rename').val( file.name );
-  $('.file-options .options-logo i').css('background-image', 'url("' + imageUrl  + '")');
+  $('.file-options .options-logo i').css('background-image', 'url("' + file.icons['tiny']  + '")');
   $('.file-options .file-size-value').text( api.tool.bytesToUnit( file.size, 2 ) );
 
   if( file.type == 0 || file.type == 1 || file.type == 2 ){
