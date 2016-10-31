@@ -1046,8 +1046,6 @@ $.when( rootPath, hiddenPath, customPath ).then( function( rootPath, hiddenPath,
       controlFolder.addClass( 'sharedFolder' );
     }
 
-    console.log( element.name, element.alias, element )
-
     if( element.type === 1 && element.name === 'Documents' ){
       controlFolder.removeClass( 'folder' ).addClass( 'doc' );
     }else if( element.type === 1 && element.name === 'Music' ){
