@@ -217,6 +217,13 @@ var showOptions = function( file ){
   var createdDate  = new Date( file.dateCreated );
   var modifiedDate = new Date( file.dateModified );
   var prototype = $('.share-details .friend-list .user.wz-prototype');
+
+  if( file.thumbnails['32'] ){
+    imageUrl = file.thumbnails['32'];
+  }else{
+    imageUrl = file.icons['32'];
+  }
+
   $('.file-owners-container .user').not('.wz-prototype').remove();
   $('.share-with-friends .user').not('.wz-prototype').remove();
   $('.file-options .file-title').text( file.name );
@@ -228,12 +235,6 @@ var showOptions = function( file ){
     $('.file-options').addClass('folder');
   }else{
     $('.file-options').removeClass('folder');
-  }
-
-  if( file.thumbnails['32'] ){
-    imageUrl = file.thumbnails['32'];
-  }else{
-    imageUrl = file.icons['32'];
   }
 
   $('.file-options .file-created-value').text(
