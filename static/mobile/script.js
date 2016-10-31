@@ -7,7 +7,7 @@ var itemBack       = $( '.weexplorer-element.back', win );
 var title          = $( '#weexplorer-menu-name', win );
 var sidebar        = $( '#weexplorer-sidebar', win );
 var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
-var userPrototype  = $('.file-options .user.wz-prototype');
+var userPrototype  = $('.file-options .file-owners-container .user.wz-prototype');
 var record         = [];
 var transitionTime = 300;
 var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-link, 4 == more-info, 5 == renaming, 6 == link created, 7 == sharing
@@ -283,19 +283,19 @@ var showOptions = function( file ){
 
   console.log('file', file);
 
-  var toInsert = [];
-  var insertedIds = [];
+  var toInsert;
+  var insertedIds;
 
   file.sharedWith( function( error, users ){
 
-    console.log( 'users', users );
+    toInsert = [];
+    insertedIds = [];
     $('.file-owners-container .user').not('.wz-prototype').remove();
 
     $.each( users, function( index, userInArray ){
 
       api.user( userInArray.userId, function(error, userI){
 
-        console.log('userI',userI);
         var userxNameField;
         var userxAvatarField;
         var permissionText;
@@ -326,7 +326,6 @@ var showOptions = function( file ){
 
         if( index == users.length - 1 ){
 
-          console.log('toInsert', toInsert);
           $('.file-owners-container').append( toInsert );
 
           //Cargamos la lista de amigos y marcamos cuales tienen compartido el fichero
