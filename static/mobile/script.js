@@ -409,7 +409,7 @@ var hideOptions = function( fullHide ){
   //optionsDeployed = false;
   if( mode == 4 ){
     hideFileInfo();
-  }else if( mode == 3 ){
+  }else if( mode == 3 || mode == 6 ){
     hideCreateLink();
   }else if( mode == 7 ){
     hideShareScreen();
@@ -442,6 +442,7 @@ var showCreateLink = function(){
     $('.options-header .options-more').hide();
     $('.toggles-container .selector').removeClass('active');
     $('.create-link-title').removeClass('password-mode');
+    $('.password-container').val('').hide();
 
   }
 
