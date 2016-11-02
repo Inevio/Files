@@ -493,6 +493,10 @@
   display: none;
 }
 
+.option-section .option.download{
+  display: none;
+}
+
 .option-section .option.send-to figure{
   width: 15px;
   height: 20px;
