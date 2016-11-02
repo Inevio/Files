@@ -196,7 +196,9 @@ var showCover = function(){
 
   $('.opacity-cover').show().transition({
     'opacity' : 1
-  },transitionTime);
+  },transitionTime, function(){
+    content.addClass('stop-scroll');
+  });
 
 }
 
@@ -206,6 +208,7 @@ var hideCover = function(){
     'opacity' : 0
   },transitionTime,function(){
     $(this).hide();
+    content.removeClass('stop-scroll');
     mode = 0;
   });
 
