@@ -78,6 +78,10 @@
   -webkit-overflow-scrolling: touch;
 }
 
+#weexplorer-content.stop-scroll{
+  -webkit-overflow-scrolling: auto !important;
+}
+
 .weexplorer-element{
   width: 100%;
   height: 48px;
@@ -489,6 +493,10 @@
   display: none;
 }
 
+.option-section .option.download{
+  display: none;
+}
+
 .option-section .option.send-to figure{
   width: 15px;
   height: 20px;
@@ -571,6 +579,11 @@
   margin-bottom: 38px;
 }
 
+.create-link-container .create-link-title.password-mode{
+  margin-top: 20px;
+  margin-bottom: 18px;
+}
+
 .toggles-container{
   width: ~'calc(100% - 40px)';
   padding: 0 20px;
@@ -614,6 +627,19 @@
 .toggle .selector.active i{
   margin-left: 24px;
   background-color: #60b25e;
+}
+
+.password-container{
+  width: ~'calc(100% - 40px)';
+  height: 46px;
+  -webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+	border-radius: 25px;
+  border: solid 1px #60b25e;
+  padding: 0 20px;
+  font-size: 16px;
+  color: #545f65;
+  display: none;
 }
 
 .link-container{
@@ -809,4 +835,58 @@
 
 .file-owners-section .user.owner .is-owner{
   display: block;
+}
+
+.share-details{
+  width: 100%;
+  height: ~'calc(100% - 64px)';
+  position: absolute;
+  transform: translate3d(0, 100%, 0);
+  top: 64px;
+  background-color: white;
+  text-align: center;
+  display: none;
+}
+
+.share-details:before{
+  clear: both;
+  content: "";
+  display: block;
+  width: ~'calc(100% - 16px)';
+  height: 1px;
+  margin: 0 auto;
+  background: #e5e9ea;
+}
+
+.share-details .share-title{
+  font-size: 20px;
+  color: #545f65;
+  text-align: center;
+  margin: 25px 0;
+  display: inline-block;
+}
+
+.share-details .share-with-friends{
+  width: 100%;
+  height: ~'calc(100% - 70px)';
+  position: absolute;
+  top: 70px;
+  transform: translate3d(0,0,0);
+}
+
+.share-details .share-with-friends .title{
+  font-size: 13px;
+  text-align: left;
+  color: #889399;
+  margin-left: 20px;
+  margin-bottom: 22px;
+}
+
+.share-details .share-with-permissions{
+  width: 100%;
+  height: ~'calc(100% - 70px)';
+  position: absolute;
+  top: 70px;
+  transform: translate3d(100%,0,0);
+  display: none;
 }

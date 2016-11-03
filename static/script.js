@@ -1,18 +1,20 @@
 'use strict';
 
-var ICON_WIDTH = 106;
-var ICON_TEXT_WIDTH = 106 - 6;
-var ICON_IMAGE_HEIGHT_AREA = 80;
-var ICON_RADIUS = 6;
-var ICON_GAP_MIN = 10;
-var ROWS_GAP = 20;
-var TYPE_ROOT = 0;
-var TYPE_FOLDER_SPECIAL = 1;
-var TYPE_FOLDER = 2;
-var TYPE_FILE = 3;
-var PROGRESS_RADIUS = 5;
-var PROGRESS_ICON = new Image();
-PROGRESS_ICON.src = 'https://staticbeta.inevio.com/app/1/img/processing@2x.png';
+var ICON_WIDTH = 106
+var ICON_TEXT_WIDTH = 106 - 6
+var ICON_IMAGE_HEIGHT_AREA = 80
+var ICON_RADIUS = 6
+var ICON_GAP_MIN = 10
+var ROWS_GAP = 20
+var TYPE_ROOT = 0
+var TYPE_FOLDER_SPECIAL = 1
+var TYPE_FOLDER = 2
+var TYPE_FILE = 3
+var PROGRESS_RADIUS = 5
+var PROGRESS_ICON = new Image()
+PROGRESS_ICON.src = 'https://static.inevio.com/app/1/img/processing@2x.png'
+var SHARING_ICON = new Image()
+SHARING_ICON.src = 'https://static.inevio.com/app/1/img/sharing@2x.png'
 
 var channel                 = null;
 var requestedFrame          = false;
@@ -41,6 +43,7 @@ var currentGoToItemString   = '';
 var currentGoToItemTimer    = 0;
 var enabledMultipleSelect   = true;
 var disabledFileIcons       = false;
+var sidebarFolders          = [];
 
 if( params && ( params.command === 'selectSource' ||  params.command === 'selectDestiny' ) ){
   enabledMultipleSelect = params.command === 'selectSource' && params.mode === 'file' && params.multiple;
@@ -87,7 +90,16 @@ var Icon = function( fsnode ){
   this.bigIconTextHeight  = 0;
   this.smallIcon          = null;
   this.conversionProgress = -1;
-  this.lines              = getIconLines( fsnode.name );
+
+  this.updateName()
+
+  return this;
+
+};
+
+Icon.prototype.updateName = function(){
+
+  this.lines = getIconLines( this.fsnode.name );
 
   if( this.lines.length > 1 ){
     this.bigIconTextHeight = 4 + 14 + 4 + 14 + 4;
@@ -97,9 +109,9 @@ var Icon = function( fsnode ){
 
   this.bigIconHeight = ICON_IMAGE_HEIGHT_AREA + this.bigIconTextHeight;
 
-  return this;
+  return this
 
-};
+}
 
 var acceptButtonHandler = function(){
 
@@ -272,8 +284,9 @@ var appendItemToList = function( items ){
 
 var appendVisualSidebarItem = function( item ){
 
-  // To Do -> Check if exists
   var visualItem = visualSidebarItemPrototype.clone();
+
+  sidebarFolders.push( item );
 
   visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) ).attr( 'data-id', item.id );
   visualItem.find('.ui-navgroup-element-txt').text( item.name );
@@ -461,6 +474,8 @@ var deleteAllActive = function(){
 
     currentActive.forEach( function( item ){
 
+      checkIsOnSidebar( item.fsnode );
+
       item.fsnode.remove( function( error ){
         console.log( error );
       });
@@ -470,6 +485,16 @@ var deleteAllActive = function(){
   });
 
 };
+
+var checkIsOnSidebar = function( fsnode ){
+
+  var index = sidebarFolders.indexOf( fsnode );
+  if ( index > -1 ) {
+    sidebarFolders.splice(index, 1);
+    removeFromSidebar( fsnode );
+  }
+
+}
 
 var downloadAllActive = function(){
 
@@ -597,6 +622,16 @@ var drawIconsInGrid = function(){
       $( icon.bigIcon ).on( 'load', requestDraw );
     }
 
+    if ( icon.fsnode.isSharedRoot && icon.bigIcon.naturalWidth ) {
+
+      var normalized = normalizeBigIconSize( icon.bigIcon );
+      var centerX = normalized.width + x + ( ICON_WIDTH -  normalized.width ) / 2;
+      var centerY = normalized.height + y + ( ICON_IMAGE_HEIGHT_AREA -  normalized.height ) / 2;
+
+      drawSharedCircle( ctx , { x: centerX - 5 , y: centerY - 5 } );
+
+    }
+
     if( icon.conversionProgress !== -1 ){
 
       if ( icon.bigIcon.naturalWidth ) {
@@ -667,6 +702,24 @@ var drawProgressCircle = function( ctx , center , progress ){
   ctx.stroke();
 
   ctx.drawImage( PROGRESS_ICON , centerX - 7 , centerY - 6 , 14 , 13 );
+
+}
+
+var drawSharedCircle = function( ctx , center ){
+
+  var centerX = center.x;
+  var centerY = center.y;
+
+  ctx.beginPath();
+  ctx.arc( centerX , centerY , 13 , 0 , 2*Math.PI );
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = '#ccd3d5';
+  ctx.fillStyle = '#fff';
+  ctx.fill();
+
+  ctx.stroke();
+
+  ctx.drawImage( SHARING_ICON , centerX - 7 , centerY - 6 , 14 , 13 );
 
 }
 
@@ -1224,8 +1277,10 @@ var hideRenameTextarea = function( cancel ){
 
   var oldName      = icon.fsnode.name;
   icon.fsnode.name = name;
-  icon.lines       = getIconLines( name );
-  currentList      = currentList.sort( currentSort );
+
+  icon.updateName()
+
+  currentList = currentList.sort( currentSort );
 
   makeIconVisible( icon );
   requestDraw();
@@ -1531,9 +1586,18 @@ var showRenameTextarea = function( icon ){
     top : areaPosition.top + iconPosition.y + currentScroll + ICON_IMAGE_HEIGHT_AREA,
     left : areaPosition.left + iconPosition.x,
 
-  }).data( 'icon', icon ).addClass('active').focus().select();
+  }).data( 'icon', icon ).addClass('active');
+
+  selectRangeText( visualRenameTextarea[0] , 0 , visualRenameTextarea.val().lastIndexOf('.') );
 
 };
+
+var selectRangeText = function( input , start , end ){
+
+  input.focus();
+  input.setSelectionRange( start , end );
+
+}
 
 var sortByName = function( a, b ){
 
@@ -1746,7 +1810,7 @@ var addToSidebar = function( fsnode ){
       // To Do -> Error
       if( !error && result.affectedRows ){
 
-          addToSidebarUi( fsnode.id , fsnode.name );
+          addToSidebarUi( fsnode );
 
           if( channel === null ){
 
@@ -1769,16 +1833,18 @@ var addToSidebar = function( fsnode ){
 
 };
 
-var addToSidebarUi = function( id, name ){
+var addToSidebarUi = function( item ){
 
-  if( isInSidebar( id ) ){
+  if( isInSidebar( item.id ) ){
     return false;
   }
 
   var newSidebarElement = visualSidebarItemPrototype.clone().removeClass('wz-prototype');
 
-  newSidebarElement.addClass( 'item-' + id ).attr( 'data-id', id );
-  newSidebarElement.find('.ui-navgroup-element-txt').text( name );
+  sidebarFolders.push( item );
+
+  newSidebarElement.addClass( 'item-' + item.id ).attr( 'data-id', item.id );
+  newSidebarElement.find('.ui-navgroup-element-txt').text( item.name );
 
   visualSidebarItemArea.append( newSidebarElement );
 
@@ -1795,7 +1861,7 @@ var removeFromSidebar = function( fsnode ){
       // To Do -> Error
       if( !error && result.affectedRows ){
 
-          removeFromSidebarUi( fsnode.id );
+          removeFromSidebarUi( fsnode );
 
           if( channel === null ){
 
@@ -1816,12 +1882,26 @@ var removeFromSidebar = function( fsnode ){
 
 };
 
-var removeFromSidebarUi = function( id ){
-  return visualSidebarItemArea.find( '.item-' + id ).remove();
+var removeFromSidebarUi = function( item ){
+  var index = sidebarFolders.indexOf( item );
+  if (index > -1) {
+    sidebarFolders.splice(index, 1);
+  }
+  return visualSidebarItemArea.find( '.item-' + item.id ).remove();
 };
 
 var acceptContent = function( fsnode ){
-  fsnode.accept();
+
+  api.fs.selectSource( { title: lang.received.chooseDestiny , mode: 'directory' } , function( e , dir ){
+
+    if (!e) {
+      fsnode.accept( dir[0] , function(){
+        console.log(arguments);
+      });
+    }
+
+  });
+
 }
 
 var refuseContent = function( fsnode ){
@@ -1839,8 +1919,6 @@ var getReceivedItems = function(){
       if ( list.length ) {
 
         var badge = received.find( '.ui-navgroup-element-badge' );
-
-        badge.show();
         badge.text( list.length );
 
       }
@@ -1878,6 +1956,30 @@ api.fs
     }
 
   }
+
+  requestDraw();
+
+})
+
+.on( 'rename', function( fsnode ){
+
+  if( fsnode.parent !== currentOpened.id ){
+    return;
+  }
+
+  for( var i = 0; i < currentList.length; i++ ){
+
+    if( currentList[ i ].fsnode.id === fsnode.id ){
+
+      currentList[ i ].fsnode  = fsnode;
+      currentList[ i ].updateName()
+      break;
+
+    }
+
+  }
+
+  currentList = currentList.sort( currentSort );
 
   requestDraw();
 
@@ -2101,49 +2203,57 @@ win
 
 .key( 'a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,0,1,2,3,4,5,6,7,8,9,space', function( e ){
 
-  clearTimeout( currentGoToItemTimer );
+  if( !$(e.target).is('textarea') ){
 
-  if( e.metaKey || e.ctrlKey || e.shiftKey ){
-    return;
+    clearTimeout( currentGoToItemTimer );
+
+    if( e.metaKey || e.ctrlKey || e.shiftKey ){
+      return;
+    }
+
+    currentGoToItemString += e.key || String.fromCharCode( ( 96 <= e.which && e.which <= 105 ) ? e.which - 48 : e.which );
+    currentGoToItemTimer   = setTimeout( clearGoToItemString, 1000 );
+    var found              = false;
+
+    if( currentLastPureClicked && currentLastPureClicked.fsnode.type === TYPE_FILE ){
+
+      if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type === TYPE_FILE; }), currentGoToItemString ) ){
+        selectIcon( e, found );
+        return makeIconVisible( found );
+      }
+
+      if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type !== TYPE_FILE; }), currentGoToItemString ) ){
+        selectIcon( e, found );
+        return makeIconVisible( found );
+      }
+
+    }else{
+
+      if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type !== TYPE_FILE; }), currentGoToItemString ) ){
+        selectIcon( e, found );
+        return makeIconVisible( found );
+      }
+
+      if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type === TYPE_FILE; }), currentGoToItemString ) ){
+        selectIcon( e, found );
+        return makeIconVisible( found );
+      }
+
+    }
+
+    selectIcon( e, currentList[ currentList.length - 1 ] );
+    makeIconVisible( currentList[ currentList.length - 1 ] );
+
   }
-
-  currentGoToItemString += e.key || String.fromCharCode( ( 96 <= e.which && e.which <= 105 ) ? e.which - 48 : e.which );
-  currentGoToItemTimer   = setTimeout( clearGoToItemString, 1000 );
-  var found              = false;
-
-  if( currentLastPureClicked && currentLastPureClicked.fsnode.type === TYPE_FILE ){
-
-    if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type === TYPE_FILE; }), currentGoToItemString ) ){
-      selectIcon( e, found );
-      return makeIconVisible( found );
-    }
-
-    if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type !== TYPE_FILE; }), currentGoToItemString ) ){
-      selectIcon( e, found );
-      return makeIconVisible( found );
-    }
-
-  }else{
-
-    if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type !== TYPE_FILE; }), currentGoToItemString ) ){
-      selectIcon( e, found );
-      return makeIconVisible( found );
-    }
-
-    if( found = findIconWithSimilarName( currentList.filter( function( item ){ return item.fsnode.type === TYPE_FILE; }), currentGoToItemString ) ){
-      selectIcon( e, found );
-      return makeIconVisible( found );
-    }
-
-  }
-
-  selectIcon( e, currentList[ currentList.length - 1 ] );
-  makeIconVisible( currentList[ currentList.length - 1 ] );
 
 })
 
-.key( 'ctrl+a, cmd+a', function(){
-  selectAllIcons();
+.key( 'ctrl+a, cmd+a', function( e ){
+
+  if( !$(e.target).is('textarea') ){
+    selectAllIcons()
+  }
+
 });
 
 visualSidebarItemArea
@@ -2320,13 +2430,9 @@ visualItemArea
   // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
   }else if( itemClicked.fsnode.type === TYPE_FILE ){
 
-    menu.addOption( lang.main.openFile, openFile.bind( null, itemClicked.fsnode.id ) );
-
-    if( api.system.user().id === 512 ){
-      menu.addOption( lang.main.openFileLocal, itemClicked.fsnode.openLocal )
-    }
-
-    menu.addOption( lang.main.copy , clipboardCopy )
+    menu.addOption( lang.main.openFile, openFile.bind( null, itemClicked.fsnode.id ) )
+    .addOption( lang.main.openFileLocal, itemClicked.fsnode.openLocal )
+    .addOption( lang.main.copy , clipboardCopy )
     .addOption( lang.main.cut , clipboardCut );
 
     if( itemClicked.fsnode.permissions.write ){
@@ -2337,9 +2443,11 @@ visualItemArea
       menu.addOption( lang.main.createLink, api.app.createView.bind( null, itemClicked.fsnode.id, 'link') );
     }
 
-    /*if( itemClicked.fsnode.permissions.send ){
+    /* Not supported yet
+    if( itemClicked.fsnode.permissions.send ){
       menu.addOption( lang.main.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
-    }*/
+    }
+    */
 
     if( itemClicked.fsnode.permissions.share ){
       menu.addOption( lang.main.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share') );
@@ -2372,9 +2480,11 @@ visualItemArea
     .addOption( lang.addToSidebar, addToSidebar.bind( null , itemClicked.fsnode ) )
     .addOption( lang.removeFromSidebar, removeFromSidebar.bind( null , itemClicked.fsnode ) );
 
+    /* Not supported yet
     if( itemClicked.fsnode.permissions.send ){
       menu.addOption( lang.main.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
     }
+    */
 
     if( itemClicked.fsnode.permissions.share ){
       menu.addOption( lang.main.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share'));
@@ -2425,9 +2535,28 @@ visualItemArea
     .addOption( lang.main.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') )
     .addOption( lang.main.remove, deleteAllActive, 'warning' );
 
-  }/*else if( icon.hasClass( 'pointer-pending' ) ){
-    // To Do
-  }*/
+  // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
+  }else if( itemClicked.fsnode.type === TYPE_FOLDER_SPECIAL ){
+
+    menu
+    .addOption( lang.main.openFolder, openFolder.bind( null, itemClicked.fsnode.id ) )
+    .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, itemClicked.fsnode.id, 'main') )
+    .addOption( lang.main.copy, clipboardCopy )
+
+    /* Not supported yet
+    if( itemClicked.fsnode.permissions.send ){
+      menu.addOption( lang.main.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
+    }
+    */
+
+    if( itemClicked.fsnode.permissions.download ){
+      menu.addOption( lang.main.download, downloadAllActive );
+    }
+
+    menu
+    .addOption( lang.main.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') )
+
+  }
 
   menu.render();
 
@@ -2560,10 +2689,10 @@ visualItemArea
 
         'display'             : 'inline-block',
         'width'               : '17px',
-        'height'              : '17px',
+        'height'              : '18px',
         'margin-right'        : '10px',
         'background-image'    : 'url(https://staticbeta.inevio.com/app/1/img/sprite.png)',
-        'background-position' : '-385px 0px',
+        'background-position' : '-372px 0',
         'background-size'     : '402px 18px',
         'background-repeat'   : 'no-repeat'
 
@@ -2603,7 +2732,7 @@ visualItemArea
         'width'               : '16px',
         'height'              : '16px',
         'margin-right'        : '10px',
-        'background-image'    : 'url(' + currentLastPureClicked.fsnode.icons.tiny + ')',
+        'background-image'    : 'url(' + currentLastPureClicked.fsnode.icons.micro + ')',
         'background-position' : 'center center',
         'background-size'     : 'contain',
         'background-repeat'   : 'no-repeat'
@@ -2686,6 +2815,7 @@ if( params ){
     if( params.command === 'selectDestiny' ){
       setDestinyNameInput()
     }
+    $( '.ui-header-brand .select-title' ).text( params.title );
 
   }else{
     openFolder( typeof params === 'object' ? parseInt( params.data ) || 'root' : params );

@@ -28,7 +28,7 @@
       "paste"                     : "Pegar",
       "cut"                       : "Cortar",
       "copy"                      : "Copiar",
-      "openFile"                  : "Abir archivo",
+      "openFile"                  : "Abrir archivo",
       "openFileLocal"             : "Abrir en local",
       "rename"                    : "Renombrar",
       "createLink"                : "Crear enlace",
@@ -40,6 +40,9 @@
       "openFolder"                : "Abrir carpeta",
       "openInNewWindow"           : "Abrir en una nueva ventana",
       "confirmDelete"             : "¿Esta seguro que desea eliminar el archivo seleccionado?",
+      "fileCanNotOpen"            : "Inevio no puede abrir este fichero en el dispositivo",
+      "fileReceivedDialogTitle"   : "%s ha sido recibido",
+      "fileReceivedDialogDescription" : "Si lo aceptas será guardado en tu carpeta principal",
       "folderTranslations"        : {
 
         "Documents" : "Documentos",
@@ -102,7 +105,7 @@
       "type"                      : "Tipo",
       "special"                   : "Especial",
       "path"                      : "Ruta",
-      "creation"                  : "Creación",
+      "creation"                  : "Creado",
       "modification"              : "Modificado",
       "permissions"               : "Permisos",
       "link"                      : "Enlace",
@@ -112,6 +115,7 @@
       "share"                     : "Compartir",
       "send"                      : "Enviar",
       "whoAccess"                 : "Quien tiene acceso",
+      "options"                   : "Opciones",
       "metadataDirectory" : "Carpeta",
       "metadataFile" : "Archivo",
       "metadataSpecialImage" : "Imagen",
@@ -126,8 +130,8 @@
       "linkToFile"                : "Enlace al archivo",
       "link"                      : "Enlace...",
       "url"                       : "URL",
-      "public"                    : "Descripción pública",
-      "private"                   : "Descripción privada",
+      "public"                    : "Cualquiera que tenga el enlace puede verlo.",
+      "private"                   : "Solo quien tenga la contraseña podrá ver el enlace.",
       "passwordTitle"             : "CONTRASEÑA",
       "password"                  : "Contraseña",
       "preview"                   : "Vista previa",
@@ -156,7 +160,8 @@
       "beenAccepted"              : "ha sido aceptado",
       "fileShareRefused"          : "Archivo rechazado",
       "beenRefused"               : "ha sido rechazado",
-      "hasShared"                 : "ha sido compartido contigo"
+      "hasShared"                 : "ha sido compartido contigo",
+      "chooseDestiny"             : "Elije un destino y acepta el archivo"
 
     },
 
@@ -319,6 +324,8 @@
     "saving" : "Guardando...",
     "accept" : "Aceptar",
     "cancel" : "Cancelar",
-    "replace" : "¿Desea reemplazar el fichero?"
+    "replace" : "¿Desea reemplazar el fichero?",
+    "confirmDelete" : "¿Desea eliminar el fichero?",
+    "back" : "Volver"
 
 }
