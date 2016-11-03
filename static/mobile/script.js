@@ -416,6 +416,8 @@ var hideOptions = function( fullHide ){
     hideCreateLink();
   }else if( mode == 7 ){
     hideShareScreen();
+  }else if( mode == 5 ){
+    cancelRename();
   }
 
   $( '.file-options' ).transition({
