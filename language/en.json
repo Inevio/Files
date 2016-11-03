@@ -40,6 +40,9 @@
       "openFolder"                : "Open folder",
       "openInNewWindow"           : "Open in a new window",
       "confirmDelete"             : "Are you sure, you want to delete the selected element?",
+      "fileCanNotOpen"            : "Inevio can't open this file currently in the device",
+      "fileReceivedDialogTitle"   : "%s has been received",
+      "fileReceivedDialogDescription" : "If it's accepted it would be saved in your main folder",
       "folderTranslations"        : {
 
         "Documents" : "Documents",
@@ -102,8 +105,8 @@
       "type"  : "Type",
       "special" : "Special",
       "path"  : "Path",
-      "creation"  : "Creation",
-      "modification"  : "Modification",
+      "creation"  : "Created",
+      "modification"  : "Modificated",
       "permissions" : "Permissions",
       "link"  : "Link",
       "modify"  : "Modify",
@@ -112,6 +115,7 @@
       "share" : "Share",
       "send"  : "Send",
       "whoAccess"  : "Who has access",
+      "options"    : "Options",
       "metadataDirectory" : "Folder",
       "metadataFile" : "File",
       "metadataSpecialImage" : "Image",
@@ -126,8 +130,8 @@
       "linkToFile"  : "Link to the file",
       "link"        : "Link...",
       "url" : "URL",
-      "public"  : "Public description",
-      "private" : "Private description",
+      "public"  : "Anyone with the link can access the file.",
+      "private" : "You need a password to access de file by the link.",
       "passwordTitle" : "PASSWORD",
       "password"  : "Password",
       "preview" : "Preview",
@@ -156,7 +160,8 @@
       "beenAccepted"              : "has been accepted",
       "fileShareRefused"          : "File refused",
       "beenRefused"               : "has been refused",
-      "hasShared"                 : "has been shared with you"
+      "hasShared"                 : "has been shared with you",
+      "chooseDestiny"             : "Choose a destiny and accept the file"
 
     },
 
@@ -312,6 +317,8 @@
     "saving"  : "Saving...",
     "accept"  : "Accept",
     "cancel"  : "Cancel",
-    "replace" : "Do you want to replace the file?"
+    "replace" : "Do you want to replace the file?",
+    "confirmDelete" : "Do you want to delete the file?",
+    "back" : "Back"
 
 }
