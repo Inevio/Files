@@ -228,19 +228,19 @@ var showOptions = function( file ){
   $('.file-options .file-size-value').text( api.tool.bytesToUnit( file.size, 2 ) );
 
   //TODO quitar despues de implementar compartir
-  $('.option-section.share .share-with').hide();
+  //$('.option-section.share .share-with').hide();
 
   if( file.type == 0 || file.type == 1 || file.type == 2 ){
 
     $('.file-options').addClass('folder');
     //TODO quitar despues de implementar compartir
-    $('.option-section.share').hide();
+    //$('.option-section.share').hide();
 
   }else{
 
     $('.file-options').removeClass('folder');
     //TODO quitar despues de implementar compartir
-    $('.option-section.share').show();
+    //$('.option-section.share').show();
 
   }
 
@@ -329,35 +329,36 @@ var showOptions = function( file ){
 
         }
 
-        if( index == users.length - 1 ){
+      });
 
-          $('.file-owners-container').append( toInsert );
+      if( index == users.length - 1 ){
 
-          //Cargamos la lista de amigos y marcamos cuales tienen compartido el fichero
-          api.user.friendList( false, function( error, list ){
+        $('.file-owners-container').append( toInsert );
 
-            $('.share-with-friends .user').not('.wz-prototype').remove();
+        //Cargamos la lista de amigos y marcamos cuales tienen compartido el fichero
+        api.user.friendList( false, function( error, list ){
 
-            list.forEach( function( user, index ) {
+          $('.share-with-friends .user').not('.wz-prototype').remove();
 
-              var newUser = prototype.clone().removeClass('wz-prototype');
-              newUser.find('.avatar').attr( 'src', user.avatar.small );
-              newUser.find('.username').text( user.fullName );
-              newUser.data( 'user', user );
-              //newUser.data( 'permissions', permissions );
-              if( insertedIds.indexOf( user.id ) != -1 ){
-                //TODO el usuario ya tiene el fichero compartido
-              }
-              sharedList.append( newUser );
+          list.forEach( function( user, index ) {
 
-            });
-
+            var newUser = prototype.clone().removeClass('wz-prototype');
+            newUser.find('.avatar').css( 'background-image', 'url("' + user.avatar.small + '")' );
+            newUser.find('.username').text( user.fullName );
+            newUser.data( 'user', user );
+            //newUser.data( 'permissions', permissions );
+            if( insertedIds.indexOf( user.id ) != -1 ){
+              //TODO el usuario ya tiene el fichero compartido
+              newUser.addClass('active');
+            }
+            sharedList.append( newUser );
 
           });
 
-        }
 
-      });
+        });
+
+      }
 
     });
 
@@ -658,8 +659,6 @@ var acceptRename = function(){
 
     }
 
-    cancelRename();
-
   });
 
 }
@@ -833,6 +832,10 @@ win.on('swipedown', '.file-owners-section', function(e){
   e.stopPropagation()
   itemBack.click()
 
+})
+
+.on('click', '.share-details .user', function(){
+  $(this).toggleClass('active');
 });
 
 $('.option.download').on('click', function(){
@@ -1023,8 +1026,8 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
   //sortIcons( fileArea.find('.weexplorer-file') );
 
   if( mode === 5 ){
-    cancelRename();
     $('.file-options .file-title').text( $('.file-options .file-rename').val() );
+    cancelRename();
   }
 
   if( structure.id === actualPathId ){
