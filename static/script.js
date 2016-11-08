@@ -2418,7 +2418,7 @@ visualItemArea
     }
 
     menu
-    .addOption( lang.main.upload, visualUploadButton.click )
+    .addOption( lang.main.upload, function(){ visualUploadButton.click()  } )
     .addOption( lang.main.newFolder, createFolder )
     .addOption( lang.main.paste, clipboardPaste )
 
