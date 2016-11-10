@@ -15,6 +15,13 @@ var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-
 var actualPathId   = 0;
 var yDeployed      = '-410px';
 var sharedList = $('.share-details .friend-list');
+var toInsert;
+var toInsertS;
+var insertedIds;
+var oldPermissions;
+var newPermissions;
+var usersToAddShare = [];
+var usersToRemoveShare = [];
 
 // Functions
 var addZero = function( value ){
@@ -288,13 +295,24 @@ var showOptions = function( file ){
 
   });
 
-  var toInsert;
-  var insertedIds;
-
   file.sharedWith( function( error, users ){
 
     toInsert = [];
     insertedIds = [];
+    toInsertS = [];
+    oldPermissions = {
+      read     : users[0].permissions.read,
+      link     : users[0].permissions.link,
+      move     : users[0].permissions.move,
+      write    : users[0].permissions.write,
+      copy     : users[0].permissions.copy,
+      download : users[0].permissions.download,
+      share    : users[0].permissions.share,
+      send     : users[0].permissions.send
+    }
+
+    console.log(oldPermissions);
+
     $('.file-owners-container .user').not('.wz-prototype').remove();
 
     $.each( users, function( index, userInArray ){
@@ -309,6 +327,7 @@ var showOptions = function( file ){
 
           var userx ='.user-'+ userI.id;
           var user = userPrototype.clone().removeClass('wz-prototype').addClass('user-' + userI.id);
+          var userS = prototype.clone().removeClass('wz-prototype').addClass('user-' + userI.id);
 
           if( userI.id == file.owner ){
 
@@ -318,6 +337,10 @@ var showOptions = function( file ){
           }
 
           user.find('.username').text( userI.fullName );
+          userS.find('.avatar').css( 'background-image', 'url("' + userI.avatar.small + '")' );
+          userS.find('.username').text( userI.fullName );
+          userS.data( 'user', userI );
+          userS.addClass('active');
           user.find('figure').css( "background-image",'url("'+ userI.avatar.small +'")' );
 
           if( userI.id == api.system.user().id ){
@@ -326,39 +349,39 @@ var showOptions = function( file ){
 
           insertedIds.push( userI.id )
           toInsert.push( user );
+          toInsertS.push( userS );
+
+        }
+
+        if( index == users.length - 1 ){
+
+          $('.file-owners-container').append( toInsert );
+          $('.share-with-friends .user').not('.wz-prototype').remove();
+          sharedList.append( toInsertS );
+
+          //Cargamos la lista de amigos y marcamos cuales tienen compartido el fichero
+          api.user.friendList( false, function( error, list ){
+
+            list.forEach( function( user, index ) {
+
+              if( insertedIds.indexOf( user.id ) == -1 ){
+
+                var newUser = prototype.clone().removeClass('wz-prototype').addClass('user-' + user.id);
+                newUser.find('.avatar').css( 'background-image', 'url("' + user.avatar.small + '")' );
+                newUser.find('.username').text( user.fullName );
+                newUser.data( 'user', user );
+                //newUser.data( 'permissions', permissions );
+                sharedList.append( newUser );
+
+              }
+
+            });
+
+          });
 
         }
 
       });
-
-      if( index == users.length - 1 ){
-
-        $('.file-owners-container').append( toInsert );
-
-        //Cargamos la lista de amigos y marcamos cuales tienen compartido el fichero
-        api.user.friendList( false, function( error, list ){
-
-          $('.share-with-friends .user').not('.wz-prototype').remove();
-
-          list.forEach( function( user, index ) {
-
-            var newUser = prototype.clone().removeClass('wz-prototype');
-            newUser.find('.avatar').css( 'background-image', 'url("' + user.avatar.small + '")' );
-            newUser.find('.username').text( user.fullName );
-            newUser.data( 'user', user );
-            //newUser.data( 'permissions', permissions );
-            if( insertedIds.indexOf( user.id ) != -1 ){
-              //TODO el usuario ya tiene el fichero compartido
-              newUser.addClass('active');
-            }
-            sharedList.append( newUser );
-
-          });
-
-
-        });
-
-      }
 
     });
 
@@ -610,6 +633,33 @@ var showShareScreen = function(){
 
 }
 
+var acceptShare = function(){
+
+  var usersArray = $('.share-with-friends .user').not('.wz-prototype');
+  usersToAddShare = [];
+  usersToRemoveShare = [];
+
+  usersArray.each( function(index){
+
+    if( $(this).hasClass('active') && insertedIds.indexOf( $(this).data('user').id ) == -1 ){
+
+      console.log('añadir compartir', $(this).data('user').id);
+      usersToAddShare.push( $(this).data('user').id );
+
+    }else if( !$(this).hasClass('active') && insertedIds.indexOf( $(this).data('user').id ) != -1 ){
+
+      console.log('eliminar compartir', $(this).data('user').id);
+      usersToRemoveShare.push( $(this).data('user').id )
+
+    }
+
+    //console.log( $(this).data('user') );
+  });
+
+  //console.log( insertedIds );
+
+}
+
 var hideShareScreen = function(){
 
   $('.share-details').show().transition({
@@ -802,8 +852,12 @@ win.on('swipedown', '.file-owners-section', function(e){
 })
 
 .on('swipedown', '.file-options', function(e){
-  hideOptions();
+
+  if( mode != 7 ){
+    hideOptions();
+  }
   e.stopPropagation();
+
 })
 
 .on('swipedown', '.opacity-cover', function(e){
@@ -836,6 +890,10 @@ win.on('swipedown', '.file-owners-section', function(e){
 
 .on('click', '.share-details .user', function(){
   $(this).toggleClass('active');
+})
+
+.on('click', '.accept-share', function(){
+  acceptShare();
 });
 
 $('.option.download').on('click', function(){
