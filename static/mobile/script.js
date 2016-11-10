@@ -649,14 +649,11 @@ var acceptShare = function(){
     }else if( !$(this).hasClass('active') && insertedIds.indexOf( $(this).data('user').id ) != -1 ){
 
       console.log('eliminar compartir', $(this).data('user').id);
-      usersToRemoveShare.push( $(this).data('user').id )
+      usersToRemoveShare.push( $(this).data('user').id );
 
     }
 
-    //console.log( $(this).data('user') );
   });
-
-  //console.log( insertedIds );
 
 }
 
