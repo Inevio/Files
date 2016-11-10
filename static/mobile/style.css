@@ -667,7 +667,7 @@
   color: #545f65;
 }
 
-.generate-btn, .back-link-btn{
+.generate-btn, .back-link-btn, .accept-share{
   margin-top: 25px;
   width: 160px;
   height: 47px;
@@ -684,7 +684,7 @@
   display: none;
 }
 
-.generate-btn.active, .back-link-btn.active{
+.generate-btn.active, .back-link-btn.active, .accept-share.accept{
   display: block;
 }
 
@@ -876,6 +876,12 @@
   position: absolute;
   top: 70px;
   transform: translate3d(0,0,0);
+}
+
+.share-details .friend-list{
+  height: ~'calc(100% - 130px)';
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .share-details .share-with-friends .title{
