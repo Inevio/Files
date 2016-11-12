@@ -1943,9 +1943,11 @@ var acceptContent = function( fsnode ){
   api.fs.selectSource( { title: lang.received.chooseDestiny , mode: 'directory' } , function( e , dir ){
 
     if (!e) {
-      fsnode.accept( dir[0] , function(){
+
+      fsnode.accept( dir[ 0 ], function(){
         console.log(arguments);
-      });
+      })
+
     }
 
   });
@@ -1953,7 +1955,11 @@ var acceptContent = function( fsnode ){
 }
 
 var refuseContent = function( fsnode ){
-  fsnode.refuse();
+
+  fsnode.refuse(function(){
+    console.log(arguments);
+  });
+
 }
 
 var getReceivedItems = function(){
