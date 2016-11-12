@@ -44,6 +44,8 @@
       "noNotification"            : "You don't have any new notification",
       "activity"                  : "Activity",
       "fileCanNotOpen"            : "Inevio can't open this file currently in the device",
+      "fileReceivedDialogTitle"   : "%s has been received",
+      "fileReceivedDialogDescription" : "If it's accepted it would be saved in your main folder",
       "folderTranslations"        : {
 
         "Documents" : "Documents",
@@ -318,6 +320,8 @@
     "saving"  : "Saving...",
     "accept"  : "Accept",
     "cancel"  : "Cancel",
-    "replace" : "Do you want to replace the file?"
+    "replace" : "Do you want to replace the file?",
+    "confirmDelete" : "Do you want to delete the file?",
+    "back" : "Back"
 
 }
