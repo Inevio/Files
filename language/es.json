@@ -44,6 +44,8 @@
       "noNotification"            : "No tienes ninguna notificacion nueva",
       "activity"                  : "Actividad",
       "fileCanNotOpen"            : "Inevio no puede abrir este fichero en el dispositivo",
+      "fileReceivedDialogTitle"   : "%s ha sido recibido",
+      "fileReceivedDialogDescription" : "Si lo aceptas será guardado en tu carpeta principal",
       "folderTranslations"        : {
 
         "Documents" : "Documentos",
@@ -325,6 +327,8 @@
     "saving" : "Guardando...",
     "accept" : "Aceptar",
     "cancel" : "Cancelar",
-    "replace" : "¿Desea reemplazar el fichero?"
+    "replace" : "¿Desea reemplazar el fichero?",
+    "confirmDelete" : "¿Desea eliminar el fichero?",
+    "back" : "Volver"
 
 }

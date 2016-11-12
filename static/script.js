@@ -2499,7 +2499,7 @@ visualItemArea
     }
 
     menu
-    .addOption( lang.main.upload, visualUploadButton.click )
+    .addOption( lang.main.upload, function(){ visualUploadButton.click()  } )
     .addOption( lang.main.newFolder, createFolder )
     .addOption( lang.main.paste, clipboardPaste )
 
@@ -2656,9 +2656,7 @@ visualItemArea
   }
 
   if ( itemClicked.fsnode.pending ) {
-
     api.app.createView( itemClicked.fsnode , 'received' );
-
   }else if( itemClicked.fsnode.type === TYPE_ROOT || itemClicked.fsnode.type === TYPE_FOLDER_SPECIAL || itemClicked.fsnode.type === TYPE_FOLDER ){
     openFolder( itemClicked.fsnode.id );
   }else if( itemClicked.fsnode.type === TYPE_FILE ){
@@ -2815,7 +2813,7 @@ visualItemArea
         'width'               : '16px',
         'height'              : '16px',
         'margin-right'        : '10px',
-        'background-image'    : 'url(' + currentLastPureClicked.fsnode.icons.tiny + ')',
+        'background-image'    : 'url(' + currentLastPureClicked.fsnode.icons.micro + ')',
         'background-position' : 'center center',
         'background-size'     : 'contain',
         'background-repeat'   : 'no-repeat'
