@@ -2780,6 +2780,11 @@ getSidebarItems().then( function( list ){
   getReceivedItems();
 });
 
+visualDestinyNameInput
+.on( 'keydown', function( e ){
+  e.stopPropagation()
+})
+
 visualAcceptButton
 .on( 'click', acceptButtonHandler );
 
