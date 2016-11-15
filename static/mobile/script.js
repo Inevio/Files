@@ -300,18 +300,37 @@ var showOptions = function( file ){
     toInsert = [];
     insertedIds = [];
     toInsertS = [];
-    oldPermissions = {
-      read     : users[0].permissions.read,
-      link     : users[0].permissions.link,
-      move     : users[0].permissions.move,
-      write    : users[0].permissions.write,
-      copy     : users[0].permissions.copy,
-      download : users[0].permissions.download,
-      share    : users[0].permissions.share,
-      send     : users[0].permissions.send
+
+    if( users.length ){
+
+      var permissions = users[ 0 ].permissions;
+
+      Object.keys( permissions ).forEach( function( permission ){
+
+        if( permissions[ permission ] ){
+          $('.permissions-list .permission.' + permission ).addClass('active')
+        }
+
+      });
+
+    }else{
+      $('.permissions-list .permission').addClass('active')
     }
 
-    console.log(oldPermissions);
+    var oldPermissions = $('.permissions-list .permission');
+    oldPermissions = {
+      read     : true,
+      link     : oldPermissions.filter('.link').hasClass('active'),
+      move     : oldPermissions.filter('.modify').hasClass('active'),
+      write    : oldPermissions.filter('.modify').hasClass('active'),
+      copy     : oldPermissions.filter('.copy').hasClass('active'),
+      download : oldPermissions.filter('.download').hasClass('active'),
+      share    : oldPermissions.filter('.share').hasClass('active'),
+      send     : oldPermissions.filter('.send').hasClass('active')
+    }
+
+    //console.log(oldPermissions);
+    console.log('users',users);
 
     $('.file-owners-container .user').not('.wz-prototype').remove();
 
@@ -655,6 +674,16 @@ var acceptShare = function(){
 
   });
 
+  $('.first-step').transition({
+    'x' : '-100%'
+  },transitionTime,function(){
+    $(this).hide();
+  });
+
+  $('.second-step').show().transition({
+    'x' : '0'
+  },transitionTime);
+
 }
 
 var hideShareScreen = function(){
@@ -743,7 +772,14 @@ var translate = function (){
   $('.create-link-container .generate-btn span').text( lang.linkGenerate );
   $('.create-link-container .back-link-btn span').text( lang.back );
   //$('.create-link-container .back-link-btn span').text( lang.linkGenerate );
-  $('#weexplorer-sidebar .weexplorer-sidebar-title').text( lang.favourites );
+  $('.share-details .second-step .title').text(lang.share.globalPermissions.toUpperCase());
+  $('.share-details .second-step .link .name').text(lang.share.link);
+  $('.share-details .second-step .modify .name').text(lang.share.modify);
+  $('.share-details .second-step .copy .name').text(lang.share.copy);
+  $('.share-details .second-step .download .name').text(lang.share.download);
+  $('.share-details .second-step .share .name').text(lang.share.share);
+  $('.share-details .second-step .send .name').text(lang.share.send);
+  $('.share-details .second-step .save').text(lang.share.save);
 
 };
 
@@ -891,6 +927,10 @@ win.on('swipedown', '.file-owners-section', function(e){
 
 .on('click', '.accept-share', function(){
   acceptShare();
+})
+
+.on('click', '.permissions-list .permission', function(){
+  $(this).toggleClass('active');
 });
 
 $('.option.download').on('click', function(){
