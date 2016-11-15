@@ -10,7 +10,9 @@ var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
 var userPrototype  = $('.file-options .file-owners-container .user.wz-prototype');
 var record         = [];
 var transitionTime = 300;
-var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-link, 4 == more-info, 5 == renaming, 6 == link created, 7 == sharing
+var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-link,
+//4 == more-info, 5 == renaming, 6 == link created, 7 == sharing, 8 == sharing step 2
+
 //var optionsDeployed= false;
 var actualPathId   = 0;
 var yDeployed      = '-410px';
@@ -652,7 +654,7 @@ var showShareScreen = function(){
 
 }
 
-var acceptShare = function(){
+var acceptShare1 = function(){
 
   var usersArray = $('.share-with-friends .user').not('.wz-prototype');
   usersToAddShare = [];
@@ -678,11 +680,18 @@ var acceptShare = function(){
     'x' : '-100%'
   },transitionTime,function(){
     $(this).hide();
+    mode = 8;
   });
 
   $('.second-step').show().transition({
     'x' : '0'
   },transitionTime);
+
+}
+
+var acceptShare2 = function(){
+
+
 
 }
 
