@@ -878,8 +878,15 @@
   transform: translate3d(0,0,0);
 }
 
-.share-details .friend-list{
-  height: ~'calc(100% - 130px)';
+.share-details .first-step{
+  width: 100%;
+  height: ~'calc(100% - 100px)';
+  transform: translate3d(0,0,0);
+  position: absolute;
+}
+
+.share-details .first-step .friend-list{
+  height: ~'calc(100% - 35px)';
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 }
@@ -892,13 +899,18 @@
   margin-bottom: 22px;
 }
 
-.share-details .user{
+.share-details .share-with-friends .second-step .title{
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+
+.share-details .first-step .user{
   width: 100%;
   height: 48px;
   display: inline-block;
 }
 
-.share-details .user .avatar{
+.share-details .first-step .user .avatar{
   width: 40px;
   height: 40px;
   background-size: 40px 40px;
@@ -907,7 +919,7 @@
   float: left;
 }
 
-.share-details .user .username{
+.share-details .first-step .user .username{
   max-width: ~'calc(100% - 100px)';
   text-align: left;
   font-family: Lato;
@@ -916,11 +928,11 @@
   float: left;
 }
 
-.share-details .user.active .username{
+.share-details .first-step .user.active .username{
   max-width: ~'calc(100% - 134px)';
 }
 
-.share-details .user .is-shared{
+.share-details .first-step .user .is-shared{
   width: 14px;
   height: 14px;
   margin: 0 22px;
@@ -930,11 +942,11 @@
   display: none;
 }
 
-.share-details .user.active .is-shared{
+.share-details .first-step .user.active .is-shared{
   display: block;
 }
 
-.share-details .user:before{
+.share-details .first-step .user:before{
   clear: both;
   content: "";
   display: block;
@@ -945,11 +957,100 @@
   margin-bottom: 1px;
 }
 
-.share-details .share-with-permissions{
+.share-details .second-step{
   width: 100%;
-  height: ~'calc(100% - 70px)';
+  height: ~'calc(100% - 100px)';
   position: absolute;
-  top: 70px;
   transform: translate3d(100%,0,0);
   display: none;
+}
+
+.permissions-list{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+  align-items: center;
+  align-content: center;
+  height: ~'calc(100% - 50px)';
+
+  .permission{
+    margin-top: 36px;
+    width: 110px;
+    text-align: center;
+
+    .icon{
+      background: url('@static/mobile/sprite-compartir.png');
+      background-size: 420px 139px;
+      width: 70px;
+      height: 70px;
+      border-radius: 35px;
+      display: inline-block;
+    }
+
+    &.link .icon{
+      background-position:  0px 0;
+    }
+
+    &.link.active .icon{
+      background-position: 0px -70px;
+    }
+
+    &.modify .icon{
+      background-position: -70px 0;
+    }
+
+    &.modify.active .icon{
+      background-position: -70px -70px;
+    }
+
+    &.copy .icon{
+      background-position: -350px 0;
+    }
+
+    &.copy.active .icon{
+      background-position: -350px -70px;
+    }
+
+    &.download .icon{
+      background-position: -210px 0;
+    }
+
+    &.download.active .icon{
+      background-position: -210px -70px;
+    }
+
+    &.share .icon{
+      background-position: -280px 0;
+    }
+
+    &.share.active .icon{
+      background-position: -280px -70px;
+    }
+
+    &.send .icon{
+      background-position: -140px 0;
+    }
+
+    &.send.active .icon{
+      background-position: -140px -70px;
+    }
+
+    .name{
+      text-align: center;
+      margin-top: 8px;
+      font-family: Lato;
+      font-size: 16px;
+      color: #545f65;
+      display: inline-block;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+  }
+
 }
