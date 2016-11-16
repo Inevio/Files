@@ -13,10 +13,24 @@
     padding-top: 5px;
   }
 
+  .notification-center:hover{
+
+    -webkit-box-shadow: 0 1px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: 0 1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px rgba(0, 0, 0, 0.05);
+    border: solid 1px #c2cacd;
+    background-color: #fff;
+
+  }
+
   .notification-center{
 
     float: right;
     margin-right: 20px;
+    padding: 4px 5px;
+    margin-top: -5px;
+    border: 1px solid transparent;
+    border-radius: 3px;
 
     .notification-icon{
 
