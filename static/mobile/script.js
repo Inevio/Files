@@ -760,6 +760,7 @@ var cancelRename = function(){
 
 var translate = function (){
 
+  $('.weexplorer-sidebar-header .weexplorer-sidebar-title').text( lang.main.favourites );
   $('.file-size-title').text( lang.properties.size.toUpperCase() );
   $('.file-location-title').text( lang.properties.path.toUpperCase() );
   $('.file-created-title').text( lang.properties.creation.toUpperCase() );
@@ -940,9 +941,9 @@ win.on('swipedown', '.file-owners-section', function(e){
 
 .on('click', '.permissions-list .permission', function(){
   $(this).toggleClass('active');
-});
+})
 
-$('.option.download').on('click', function(){
+.on('click', '.option.download', function(){
 
   api.fs( $('.weexplorer-element.active').data('id') , function( e, file ){
 
@@ -954,15 +955,13 @@ $('.option.download').on('click', function(){
 
   });
 
-});
+})
 
-$('.options-more').on('click', function(){
-
+.on('click', '.options-more', function(){
   showFileInfo();
+})
 
-});
-
-$('.option.delete').on('click',function(){
+.on('click', '.option.delete', function(){
 
   api.fs( $('.weexplorer-element.active').data('id') , function( e, file ){
 
@@ -990,22 +989,19 @@ $('.option.delete').on('click',function(){
 
     }, lang.confirmDelete , [lang.accept,lang.cancel] )
 
-
-
-
   });
 
 })
 
-$('.option.share-with').on('click', function(){
+.on('click', '.option.share-with', function(){
   showShareScreen();
-});
+})
 
-$('.option.create-link').on('click', function(){
+.on('click', '.option.create-link', function(){
   showCreateLink();
-});
+})
 
-$('.create-link-container .selector').on('click', function(){
+.on('click', '.create-link-container .selector', function(){
 
   $(this).toggleClass('active');
   if( $(this).parent().hasClass('password') ){
@@ -1022,23 +1018,23 @@ $('.create-link-container .selector').on('click', function(){
 
 })
 
-$('.option.rename').on('click', function(){
+.on('click', '.option.rename', function(){
   activateRename();
-});
+})
 
-$('.file-options .rename-accept').on('click', function(){
+.on('click', '.file-options .rename-accept', function(){
   acceptRename();
-});
+})
 
-$('.file-options .rename-cancel').on('click', function(){
+.on('click', '.file-options .rename-cancel', function(){
   cancelRename();
-});
+})
 
-$('.create-link-container .generate-btn').on('click', function(){
+.on('click', '.create-link-container .generate-btn', function(){
   createLink();
-});
+})
 
-$('.create-link-container .back-link-btn').on('click', function(){
+.on('click', '.create-link-container .back-link-btn', function(){
   hideCreateLink();
 });
 
