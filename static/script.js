@@ -1588,7 +1588,11 @@ var showRenameTextarea = function( icon ){
 
   }).data( 'icon', icon ).addClass('active');
 
-  selectRangeText( visualRenameTextarea[0] , 0 , visualRenameTextarea.val().lastIndexOf('.') );
+  if ( visualRenameTextarea.val().lastIndexOf('.') < 0 ) {
+    selectRangeText( visualRenameTextarea[0] , 0 , visualRenameTextarea.val().length );
+  }else{
+    selectRangeText( visualRenameTextarea[0] , 0 , visualRenameTextarea.val().lastIndexOf('.') );
+  }
 
 };
 
