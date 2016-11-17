@@ -328,7 +328,7 @@ var appendSharingNotification = function( receivedItem , user ){
   sharingNotification.removeClass( 'wz-prototype' ).addClass( 'sharing-notification-' + receivedItem.id );
   sharingNotification.find( '.user-avatar' ).css( 'background-image' , 'url(' + user.avatar.tiny + ')' );
 
-  sharingNotification.find( '.share-action' ).html( '<i>' + user.fullName + '</i> ' + lang.main.sharedYou );
+  sharingNotification.find( '.share-action' ).html( '<i class="ellipsis">' + user.fullName + '</i> ' + lang.main.sharedYou );
   sharingNotification.find( '.file-icon' ).css( 'background-image' , 'url(' + receivedItem.icons.tiny + ')' );
   sharingNotification.find( '.file-title' ).text( receivedItem.name );
   sharingNotification.find( '.file-desc' ).text( api.tool.bytesToUnit( receivedItem.size ) );
