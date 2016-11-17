@@ -689,7 +689,11 @@ var acceptShare1 = function(){
 
 }
 
-var acceptShare2 = function(){}
+var acceptShare2 = function(){
+
+
+
+}
 
 var hideShareScreen = function(){
 
@@ -701,7 +705,16 @@ var hideShareScreen = function(){
 
   $('.file-options').transition({
     'y' : '0'
-  },transitionTime, function(){
+  },transitionTime);
+
+  $('.first-step').show().transition({
+    'x' : '0'
+  },transitionTime);
+
+  $('.second-step').transition({
+    'x' : '100%'
+  },transitionTime,function(){
+    $(this).hide();
     mode = 2;
   });
 
@@ -944,7 +957,7 @@ win.on('swipedown', '.file-owners-section', function(e){
 })
 
 .on('click', '.accept-share', function(){
-  acceptShare();
+  acceptShare1();
 })
 
 .on('click', '.permissions-list .permission', function(){
