@@ -793,6 +793,18 @@ var translate = function (){
 
 };
 
+var handleBack = function(){
+
+  if( mode == 0 ){
+    itemBack.click();
+  }else if ( mode == 1 ) {
+    hideSidebar();
+  }else{
+    hideOptions();
+  }
+
+}
+
 // Events
 $( '#weexplorer-menu-sidebar' ).on( 'click', function(){
   showSidebar();
@@ -927,7 +939,7 @@ win.on('swipedown', '.file-owners-section', function(e){
 .on('backbutton', function( e ){
 
   e.stopPropagation()
-  itemBack.click()
+  handleBack();
 
 })
 
