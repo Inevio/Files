@@ -689,11 +689,7 @@ var acceptShare1 = function(){
 
 }
 
-var acceptShare2 = function(){
-
-
-
-}
+var acceptShare2 = function(){}
 
 var hideShareScreen = function(){
 
