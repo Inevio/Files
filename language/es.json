@@ -326,6 +326,7 @@
     "cancel" : "Cancelar",
     "replace" : "¿Desea reemplazar el fichero?",
     "confirmDelete" : "¿Desea eliminar el fichero?",
-    "back" : "Volver"
+    "back" : "Volver",
+    "backTo" : "Volver a"
 
 }

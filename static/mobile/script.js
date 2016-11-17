@@ -109,7 +109,7 @@ var iconBack = function(){
     itemBack
       .css( 'display', 'block' )
       .children( '.weexplorer-back-text' )
-      .text( 'Back to ' + record[ 1 ].name );
+      .text( lang.backTo + ' ' + record[ 1 ].name );
 
   }
 
