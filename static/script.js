@@ -1,20 +1,21 @@
 'use strict';
 
-var ICON_WIDTH = 106
-var ICON_TEXT_WIDTH = 106 - 6
-var ICON_IMAGE_HEIGHT_AREA = 80
-var ICON_RADIUS = 6
-var ICON_GAP_MIN = 10
-var ROWS_GAP = 20
-var TYPE_ROOT = 0
-var TYPE_FOLDER_SPECIAL = 1
-var TYPE_FOLDER = 2
-var TYPE_FILE = 3
-var PROGRESS_RADIUS = 5
-var PROGRESS_ICON = new Image()
-PROGRESS_ICON.src = 'https://static.inevio.com/app/1/img/processing@2x.png'
-var SHARING_ICON = new Image()
-SHARING_ICON.src = 'https://static.inevio.com/app/1/img/sharing@2x.png'
+var ICON_WIDTH = 106;
+var ICON_TEXT_WIDTH = 106 - 6;
+var ICON_IMAGE_HEIGHT_AREA = 80;
+var ICON_RADIUS = 6;
+var ICON_GAP_MIN = 10;
+var ROWS_GAP = 20;
+var TYPE_ROOT = 0;
+var TYPE_FOLDER_SPECIAL = 1;
+var TYPE_FOLDER = 2;
+var TYPE_FILE = 3;
+var PROGRESS_RADIUS = 5;
+var PROGRESS_ICON = new Image();
+PROGRESS_ICON.src = 'https://static.inevio.com/app/1/img/processing@2x.png';
+var SHARING_ICON = new Image();
+SHARING_ICON.src = 'https://static.inevio.com/app/1/img/sharing@2x.png';
+var SHARED_PATH = 0;
 
 var channel                 = null;
 var requestedFrame          = false;
@@ -72,13 +73,16 @@ var visualUploadButton         = $('.folder-utils .upload');
 var visualAcceptButton         = $('.ui-confirm .accept');
 var visualCancelButton         = $('.ui-confirm .cancel');
 var visualDestinyNameInput     = $('.ui-confirm input');
+var notificationBellButton     = $('.notification-center .notification-icon');
+var notificationList           = $('.notification-list');
+var visualSharingNotificationPrototype = $('.share-notification.wz-prototype');
 var ctx                        = visualItemArea[ 0 ].getContext('2d');
-var backingStoreRatio   = ctx.webkitBackingStorePixelRatio ||
+var backingStoreRatio          = ctx.webkitBackingStorePixelRatio ||
                           ctx.mozBackingStorePixelRatio ||
                           ctx.msBackingStorePixelRatio ||
                           ctx.oBackingStorePixelRatio ||
                           ctx.backingStorePixelRatio || 1;
-var pixelRatio          = api.tool.devicePixelRatio() / backingStoreRatio;
+var pixelRatio                 = api.tool.devicePixelRatio() / backingStoreRatio;
 
 var Icon = function( fsnode ){
 
@@ -282,11 +286,31 @@ var appendItemToList = function( items ){
 
 };
 
+var refreshNotificationCenter = function( receivedFolder ){
+
+  SHARED_PATH = receivedFolder.id;
+
+  receivedFolder.list( function( e , list ){
+
+    list.forEach( function( item ){
+
+      api.user( item.owner , function( err , user ){
+        appendSharingNotification( item, user );
+      });
+
+    });
+
+  });
+
+}
+
 var appendVisualSidebarItem = function( item ){
 
-  var visualItem = visualSidebarItemPrototype.clone();
+  if ( item.type === 1 && item.alias === 'received' ) {
+    return refreshNotificationCenter( item );
+  }
 
-  sidebarFolders.push( item );
+  var visualItem = visualSidebarItemPrototype.clone();
 
   visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) ).attr( 'data-id', item.id );
   visualItem.find('.ui-navgroup-element-txt').text( item.name );
@@ -294,6 +318,30 @@ var appendVisualSidebarItem = function( item ){
   visualSidebarItemArea.append( visualItem );
 
 };
+
+var appendSharingNotification = function( receivedItem , user ){
+
+  notificationBellButton.addClass( 'not-empty' );
+
+  var sharingNotification = visualSharingNotificationPrototype.clone();
+
+  sharingNotification.removeClass( 'wz-prototype' ).addClass( 'sharing-notification-' + receivedItem.id );
+  sharingNotification.find( '.user-avatar' ).css( 'background-image' , 'url(' + user.avatar.tiny + ')' );
+
+  sharingNotification.find( '.share-action' ).html( '<i class="ellipsis">' + user.fullName + '</i> ' + lang.main.sharedYou );
+  sharingNotification.find( '.file-icon' ).css( 'background-image' , 'url(' + receivedItem.icons.tiny + ')' );
+  sharingNotification.find( '.file-title' ).text( receivedItem.name );
+  sharingNotification.find( '.file-desc' ).text( api.tool.bytesToUnit( receivedItem.size ) );
+
+
+  if ( receivedItem.type === 3 ) {
+    sharingNotification.addClass( 'file-type' );
+  }
+
+  notificationList.append( sharingNotification );
+  sharingNotification.data( 'fsnode' , receivedItem );
+
+}
 
 var calculateGrid = function(){
 
@@ -1899,9 +1947,11 @@ var acceptContent = function( fsnode ){
   api.fs.selectSource( { title: lang.received.chooseDestiny , mode: 'directory' } , function( e , dir ){
 
     if (!e) {
-      fsnode.accept( dir[0] , function(){
+
+      fsnode.accept( dir[ 0 ], function(){
         console.log(arguments);
-      });
+      })
+
     }
 
   });
@@ -1909,33 +1959,45 @@ var acceptContent = function( fsnode ){
 }
 
 var refuseContent = function( fsnode ){
-  fsnode.refuse();
+
+  fsnode.refuse(function(){
+    console.log(arguments);
+  });
+
 }
 
-var getReceivedItems = function(){
+var updateNotificationCenter = function( fsnode , options ){
 
-  var received = $( '.ui-navgroup .received' );
+  var fsnodeId = options.onlyId ? fsnode : fsnode.id;
 
-  api.fs( received.attr( 'data-id' ) , function( e , fsnode ){
+  if ( options.isNew && SHARED_PATH === fsnode.parent ) {
 
-    fsnode.list( null , function( e , list ){
-
-      if ( list.length ) {
-
-        var badge = received.find( '.ui-navgroup-element-badge' );
-        badge.text( list.length );
-
-      }
-
+    api.user( fsnode.owner , function( err , user ){
+      appendSharingNotification( fsnode , user );
     });
 
-  });
+  }else{
+
+    if ( $( '.sharing-notification-' + fsnodeId ).length > 0 ) {
+
+      $( '.sharing-notification-' + fsnodeId ).remove();
+
+      if ( $( '.share-notification:not(.wz-prototype)' ).length === 0 ) {
+        $( '.notification-list-container' ).css( 'display', 'none' );
+        notificationBellButton.removeClass( 'not-empty' );
+      }
+
+    }
+
+  }
 
 }
 
 // API Events
 api.fs
 .on( 'new', function( fsnode ){
+
+  updateNotificationCenter( fsnode , { isNew: true , onlyId: false } );
 
   if( fsnode.parent === currentOpened.id ){
     appendItemToList( fsnode );
@@ -1991,6 +2053,8 @@ api.fs
 
 .on( 'move', function( fsnode, finalDestiny, originalSource ){
 
+  updateNotificationCenter( fsnode , { isNew: false , onlyId: false } );
+
   if( originalSource === currentOpened.id ){
     removeItemFromList( fsnode.id );
   }else if( finalDestiny === currentOpened.id ){
@@ -2021,6 +2085,8 @@ api.fs
 })
 
 .on( 'remove', function( fsnodeId, quota, parent ){
+
+  updateNotificationCenter( fsnodeId , { isNew: false , onlyId: true } );
 
   if( parent === currentOpened.id ){
     removeItemFromList( fsnodeId );
@@ -2779,11 +2845,6 @@ visualRenameTextarea
   visualRenameTextarea.val( visualRenameTextarea.val().replace( /(?:\r\n|\r|\n)/g, ' ' ) );
 });
 
-getSidebarItems().then( function( list ){
-  list.forEach( appendVisualSidebarItem );
-  getReceivedItems();
-});
-
 visualDestinyNameInput
 .on( 'keydown', function( e ){
   e.stopPropagation()
@@ -2795,8 +2856,38 @@ visualAcceptButton
 visualCancelButton
 .on( 'click', cancelButtonHandler );
 
-// Load texts
+notificationBellButton
+.on( 'click' , function(){
 
+  if ( $( '.share-notification:not(.wz-prototype)' ).length > 0 ) {
+
+    $( '.notification-list-container' ).css( 'display', 'block' );
+
+    win.one( 'mousedown', function(){
+      $( '.notification-list-container' ).css( 'display', 'none' );
+    })
+
+  }else{
+    alert( lang.main.noNotification );
+  }
+
+});
+
+$( '.notification-list-container' )
+.on( 'mousedown', function( e ){
+  e.stopPropagation()
+})
+
+notificationList
+.on( 'click' , '.accept-sharing-button' , function( e ){
+  acceptContent( $( this ).closest( '.share-notification' ).data( 'fsnode' ) );
+})
+
+.on( 'click' , '.refuse-sharing-button' , function( e ){
+  refuseContent( $( this ).closest( '.share-notification' ).data( 'fsnode' ) );
+});
+
+// Load texts
 var translate = function(){
 
   $('.ui-header-brand').find('.name').text(lang.main.appName);
@@ -2806,6 +2897,9 @@ var translate = function(){
   $('.ui-confirm .accept span').text( params && params.command === 'selectSource' ? lang.main.open : lang.main.select );
   $('.ui-confirm .cancel span').text(lang.main.cancel);
   $('.ui-confirm').find('.ui-input').find('input').attr('placeholder', lang.main.fileName);
+  $('.notification-list-title span').text( lang.main.activity );
+  $('.accept-sharing-button span').text( lang.received.contentAccept );
+  $('.refuse-sharing-button span').text( lang.received.contentRefuse );
 
 };
 
@@ -2814,6 +2908,9 @@ currentSort = sortByName;
 translate();
 updateCanvasSize();
 clearCanvas();
+getSidebarItems().then( function( list ){
+  list.forEach( appendVisualSidebarItem );
+});
 
 if( params ){
 
