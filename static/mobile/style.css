@@ -242,12 +242,20 @@
 }
 
 .weexplorer-sidebar-icon{
-  width: 21px;
+  width: 25px;
   height: 21px;
   margin: 0 auto;
-  background: url( '@static/mobile/sprite-sidebar.png' ) no-repeat 0px 0;
-  background-size: 298px 26px;
+  background: url( '@static/mobile/sprite-sidebar-files.png' ) no-repeat -296px 0;
+  background-size: 346px 26px;
   display: inline-block;
+}
+
+.active .weexplorer-sidebar-icon{
+	background-position: -321px 0;
+}
+
+.user .weexplorer-sidebar-icon{
+  background-position: 0px 0;
 }
 
 .active.user .weexplorer-sidebar-icon{
@@ -256,32 +264,32 @@
 
 .music .weexplorer-sidebar-icon{
   width: 19px;
-  height: 23px;
-  background-position: -44px 0;
+  height: 22px;
+  background-position: -222px 0;
 }
 
 .active.music .weexplorer-sidebar-icon{
-  background-position: -63px 0;
+  background-position: -240px 0;
 }
 
 .photo .weexplorer-sidebar-icon{
   width: 25px;
   height: 20px;
-  background-position: -82px 0;
+  background-position: -172px 0;
 }
 
 .active.photo .weexplorer-sidebar-icon{
-  background-position: -107px 0;
+  background-position: -197px 0;
 }
 
 .doc .weexplorer-sidebar-icon{
   width: 22px;
   height: 26px;
-  background-position: -132px 0;
+  background-position: -128px 0;
 }
 
 .active.doc .weexplorer-sidebar-icon{
-  background-position: -154px 0;
+  background-position: -150px 0;
 }
 
 .sharedFolder .weexplorer-sidebar-icon{
@@ -297,21 +305,21 @@
 .receivedFolder .weexplorer-sidebar-icon{
   width: 20px;
   height: 22px;
-  background-position: -218px 0;
+  background-position: -44px 0;
 }
 
 .active.receivedFolder .weexplorer-sidebar-icon{
-  background-position: -239px 0;
+  background-position: -65px 0;
 }
 
 .video .weexplorer-sidebar-icon{
   width: 19px;
   height: 22px;
-  background-position: -260px 0;
+  background-position: -258px 0;
 }
 
 .active.video .weexplorer-sidebar-icon{
-  background-position: -279px 0;
+  background-position: -277px 0;
 }
 
 .weexplorer-sidebar-name{
