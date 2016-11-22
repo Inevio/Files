@@ -33,12 +33,22 @@
 
   .icon{
     float: left;
-    width: 32px;
-    height: 32px;
     display: block;
     background-position: center center;
     background-repeat: no-repeat;
     margin: 0 20px 0 20px;
+  }
+
+  .icon.folder{
+    width: 32px;
+    height: 25px;
+    background-size: 32px 25px;
+    margin-top: 4px;
+  }
+
+  .icon.file{
+    width: 32px;
+    height: 32px;
     background-size: 32px 32px;
   }
 

@@ -73,7 +73,7 @@ var visualUploadButton         = $('.folder-utils .upload');
 var visualAcceptButton         = $('.ui-confirm .accept');
 var visualCancelButton         = $('.ui-confirm .cancel');
 var visualDestinyNameInput     = $('.ui-confirm input');
-var notificationBellButton     = $('.notification-center .notification-icon');
+var notificationBellButton     = $('.notification-center');
 var notificationList           = $('.notification-list');
 var visualSharingNotificationPrototype = $('.share-notification.wz-prototype');
 var ctx                        = visualItemArea[ 0 ].getContext('2d');
@@ -315,13 +315,14 @@ var appendVisualSidebarItem = function( item ){
   visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) ).attr( 'data-id', item.id );
   visualItem.find('.ui-navgroup-element-txt').text( item.name );
 
+  sidebarFolders.push( item );
   visualSidebarItemArea.append( visualItem );
 
 };
 
 var appendSharingNotification = function( receivedItem , user ){
 
-  notificationBellButton.addClass( 'not-empty' );
+  notificationBellButton.find( '.notification-icon' ).addClass( 'not-empty' );
 
   var sharingNotification = visualSharingNotificationPrototype.clone();
 
@@ -514,16 +515,15 @@ var createFolder = function(){
 
 var deleteAllActive = function(){
 
-  confirm( lang.main.confirmDelete, function( doIt ){
+  currentActive.forEach( function( item ){
 
-    if( !doIt ){
-      return;
-    }
+    if ( item.fsnode.type === TYPE_FOLDER_SPECIAL ) {return}
 
-    currentActive.forEach( function( item ){
+    confirm( lang.main.confirmDelete, function( doIt ){
+
+      if( !doIt ){return}
 
       checkIsOnSidebar( item.fsnode );
-
       item.fsnode.remove( function( error ){
         console.log( error );
       });
@@ -1984,7 +1984,7 @@ var updateNotificationCenter = function( fsnode , options ){
 
       if ( $( '.share-notification:not(.wz-prototype)' ).length === 0 ) {
         $( '.notification-list-container' ).css( 'display', 'none' );
-        notificationBellButton.removeClass( 'not-empty' );
+        notificationBellButton.find( '.notification-icon' ).removeClass( 'not-empty' );
       }
 
     }
@@ -1993,6 +1993,15 @@ var updateNotificationCenter = function( fsnode , options ){
 
 }
 
+var isOnSidebar = function( fsnode ){
+
+  var res = sidebarFolders.filter( function( item ){
+    return item.id === fsnode.id;
+  });
+
+  return res.length;
+
+}
 // API Events
 api.fs
 .on( 'new', function( fsnode ){
@@ -2546,9 +2555,13 @@ visualItemArea
     .addOption( lang.main.openFolder, openFolder.bind( null, itemClicked.fsnode.id ) )
     .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, itemClicked.fsnode.id, 'main') )
     .addOption( lang.main.copy, clipboardCopy )
-    .addOption( lang.main.cut, clipboardCut )
-    .addOption( lang.addToSidebar, addToSidebar.bind( null , itemClicked.fsnode ) )
-    .addOption( lang.removeFromSidebar, removeFromSidebar.bind( null , itemClicked.fsnode ) );
+    .addOption( lang.main.cut, clipboardCut );
+
+    if ( isOnSidebar( itemClicked.fsnode ) ) {
+      menu.addOption( lang.removeFromSidebar, removeFromSidebar.bind( null , itemClicked.fsnode ) );
+    }else{
+      menu.addOption( lang.addToSidebar, addToSidebar.bind( null , itemClicked.fsnode ) );
+    }
 
     /* Not supported yet
     if( itemClicked.fsnode.permissions.send ){
@@ -2861,11 +2874,25 @@ notificationBellButton
 
   if ( $( '.share-notification:not(.wz-prototype)' ).length > 0 ) {
 
-    $( '.notification-list-container' ).css( 'display', 'block' );
+      if( notificationBellButton.hasClass( 'disabled' ) ){
 
-    win.one( 'mousedown', function(){
-      $( '.notification-list-container' ).css( 'display', 'none' );
-    })
+        notificationBellButton.removeClass( 'disabled' );
+
+      }else{
+
+        $( '.notification-list-container' ).css( 'display', 'block' );
+
+        win.one( 'mousedown', function( e ){
+
+          if ( $( e.target ).hasClass( 'notification-center' ) || $( e.target ).hasClass( 'notification-icon' ) ) {
+            notificationBellButton.addClass( 'disabled' );
+          }
+
+          $( '.notification-list-container' ).css( 'display', 'none' );
+
+        })
+
+      }
 
   }else{
     alert( lang.main.noNotification );
@@ -2873,8 +2900,7 @@ notificationBellButton
 
 });
 
-$( '.notification-list-container' )
-.on( 'mousedown', function( e ){
+$( '.notification-list-container' ).on( 'mousedown', function( e ){
   e.stopPropagation()
 })
 
