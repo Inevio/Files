@@ -515,20 +515,24 @@ var createFolder = function(){
 
 var deleteAllActive = function(){
 
-  currentActive.forEach( function( item ){
+  if ( currentActive.length === 1 && currentActive[0].fsnode.type === TYPE_FOLDER_SPECIAL ) {
+    return;
+  }
 
-    if ( item.fsnode.type === TYPE_FOLDER_SPECIAL ) {return}
+  confirm( lang.main.confirmDelete, function( doIt ){
 
-    confirm( lang.main.confirmDelete, function( doIt ){
+    currentActive.forEach( function( item ){
 
-      if( !doIt ){return}
+      if ( item.fsnode.type === TYPE_FOLDER_SPECIAL ) {return}
 
-      checkIsOnSidebar( item.fsnode );
-      item.fsnode.remove( function( error ){
-        console.log( error );
+        if( !doIt ){return}
+
+        checkIsOnSidebar( item.fsnode );
+        item.fsnode.remove( function( error ){
+          console.log( error );
+        });
+
       });
-
-    });
 
   });
 
