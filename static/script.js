@@ -465,9 +465,11 @@ var clipboardPaste = function(){
 
     storage.cut.forEach( function( item ){
 
-      item.fsnode.move( currentOpened.id, function(){
-        console.log( arguments );
-      });
+      if ( item.fsnode.parent != currentOpened.id ) {
+        item.fsnode.move( currentOpened.id, function(){
+          console.log( arguments );
+        });
+      }
 
     });
 
@@ -2360,9 +2362,11 @@ visualSidebarItemArea
     return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
   }).forEach( function( item ){
 
-    item.fsnode.move( destiny, function( err ){
-      console.log( arguments )
-    });
+    if ( item.fsnode.parent != destiny ) {
+      item.fsnode.move( destiny, function(){
+        console.log( arguments );
+      });
+    }
 
   });
 
@@ -2729,11 +2733,11 @@ visualItemArea
       return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
     }).forEach( function( item ){
 
-      console.log('move',item.fsnode);
-
-      item.fsnode.move( destiny, function( err ){
-        console.log( arguments )
-      });
+      if ( item.fsnode.parent != destiny ) {
+        item.fsnode.move( destiny, function(){
+          console.log( arguments );
+        });
+      }
 
     });
 
