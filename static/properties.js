@@ -22,7 +22,7 @@ var loadInfo = function( id ){
 
   api.fs( id, function( error, fsnode ){
 
-    $('.file-name .icon').css( 'background-image', 'url(' + fsnode.icons.micro + ')' );
+    $('.file-name .icon img').attr( 'src', fsnode.icons.tiny );
     if ( fsnode.type === 3 ) {
       $('.file-name .icon').removeClass( 'folder' );
       $('.file-name .icon').addClass( 'file' );
