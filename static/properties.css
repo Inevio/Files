@@ -33,13 +33,25 @@
 
   .icon{
     float: left;
-    width: 32px;
-    height: 32px;
     display: block;
     background-position: center center;
     background-repeat: no-repeat;
     margin: 0 20px 0 20px;
-    background-size: 32px 32px;
+    width: 32px;
+    height: 32px;
+    background-size: cover;
+
+    img{
+
+      max-width: 32px;
+      max-height: 32px;
+
+    }
+
+  }
+
+  .icon.folder{
+    margin-top: 4px;
   }
 
   .name{
