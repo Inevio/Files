@@ -22,7 +22,14 @@ var loadInfo = function( id ){
 
   api.fs( id, function( error, fsnode ){
 
-    $('.file-name .icon').css( 'background-image', 'url(' + fsnode.icons.tiny + ')' );
+    $('.file-name .icon img').attr( 'src', fsnode.icons.tiny );
+    if ( fsnode.type === 3 ) {
+      $('.file-name .icon').removeClass( 'folder' );
+      $('.file-name .icon').addClass( 'file' );
+    }else{
+      $('.file-name .icon').removeClass( 'file' );
+      $('.file-name .icon').addClass( 'folder' );
+    }
     $('.file-name .name').text( fsnode.name );
     $('.file-info .size-value').text( wz.tool.bytesToUnit( fsnode.size, 1 ) );
     $('.file-date .creation-value').text( ( new Date( fsnode.dateCreated ) ).format('d/m/Y H:i:s') );
