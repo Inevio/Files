@@ -338,6 +338,8 @@ var showOptions = function( file ){
 
     $.each( users, function( index, userInArray ){
 
+      var isOwner = userInArray.isOwner;
+
       api.user( userInArray.userId, function(error, userI){
 
         var userxNameField;
@@ -350,7 +352,7 @@ var showOptions = function( file ){
           var user = userPrototype.clone().removeClass('wz-prototype').addClass('user-' + userI.id);
           var userS = prototype.clone().removeClass('wz-prototype').addClass('user-' + userI.id);
 
-          if( userI.id == file.owner ){
+          if( isOwner ){
 
             user.find('.is-owner').text ( lang.propertiesOwner );
             user.toggleClass( 'owner' );
