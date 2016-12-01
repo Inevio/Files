@@ -322,6 +322,7 @@
     "cancel"  : "Cancel",
     "replace" : "Do you want to replace the file?",
     "confirmDelete" : "Do you want to delete the file?",
-    "back" : "Back"
+    "back" : "Back",
+    "backTo" : "Back to"
 
 }
