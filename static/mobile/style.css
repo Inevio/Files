@@ -1,3 +1,10 @@
+.transform (@translate: 10px, @translate2: 10px, @translate3: 10px, ) {
+	-webkit-transform: translate3d(@translate,@translate2,@translate3);
+	-moz-transform: translate3d(@translate,@translate2,@translate3);
+	-o-transform: translate3d(@translate,@translate2,@translate3);
+	-ms-transform: translate3d(@translate,@translate2,@translate3);
+	transform: translate3d(@translate,@translate2,@translate3);
+}
 
 .wz-view.wz-mobile-view{
   overflow: hidden !important;
@@ -172,7 +179,7 @@
   height: 100%;
   position: absolute;
   top: 0;
-  transform: translate3d(-100%,0,0);
+  .transform(-100%,0,0);
   background: #ffffff;
   z-index: 2;
   overflow-y: scroll;
@@ -235,12 +242,20 @@
 }
 
 .weexplorer-sidebar-icon{
-  width: 21px;
+  width: 25px;
   height: 21px;
   margin: 0 auto;
-  background: url( '@static/mobile/sprite-sidebar.png' ) no-repeat 0px 0;
-  background-size: 298px 26px;
+  background: url( '@static/mobile/sprite-sidebar-files.png' ) no-repeat -296px 0;
+  background-size: 346px 26px;
   display: inline-block;
+}
+
+.active .weexplorer-sidebar-icon{
+	background-position: -321px 0;
+}
+
+.user .weexplorer-sidebar-icon{
+  background-position: 0px 0;
 }
 
 .active.user .weexplorer-sidebar-icon{
@@ -249,32 +264,32 @@
 
 .music .weexplorer-sidebar-icon{
   width: 19px;
-  height: 23px;
-  background-position: -44px 0;
+  height: 22px;
+  background-position: -222px 0;
 }
 
 .active.music .weexplorer-sidebar-icon{
-  background-position: -63px 0;
+  background-position: -240px 0;
 }
 
 .photo .weexplorer-sidebar-icon{
   width: 25px;
   height: 20px;
-  background-position: -82px 0;
+  background-position: -172px 0;
 }
 
 .active.photo .weexplorer-sidebar-icon{
-  background-position: -107px 0;
+  background-position: -197px 0;
 }
 
 .doc .weexplorer-sidebar-icon{
   width: 22px;
   height: 26px;
-  background-position: -132px 0;
+  background-position: -128px 0;
 }
 
 .active.doc .weexplorer-sidebar-icon{
-  background-position: -154px 0;
+  background-position: -150px 0;
 }
 
 .sharedFolder .weexplorer-sidebar-icon{
@@ -290,21 +305,21 @@
 .receivedFolder .weexplorer-sidebar-icon{
   width: 20px;
   height: 22px;
-  background-position: -218px 0;
+  background-position: -44px 0;
 }
 
 .active.receivedFolder .weexplorer-sidebar-icon{
-  background-position: -239px 0;
+  background-position: -65px 0;
 }
 
 .video .weexplorer-sidebar-icon{
   width: 19px;
   height: 22px;
-  background-position: -260px 0;
+  background-position: -258px 0;
 }
 
 .active.video .weexplorer-sidebar-icon{
-  background-position: -279px 0;
+  background-position: -277px 0;
 }
 
 .weexplorer-sidebar-name{
@@ -343,7 +358,7 @@
 .center-vertical{
   position: relative;
   top: 50%;
-  transform: translateY(-50%);
+  .transform(0,-50%,0);
 }
 
 .file-options{
@@ -352,7 +367,7 @@
   background-color: white;
   position: absolute;
   bottom: 0;
-  transform: translate3d(0,0,0);
+  .transform(0,0,0);
   z-index: 3;
   top: 100%;
   display: none;
@@ -444,8 +459,10 @@
   width: 17px;
   height: 14px;
   background-image: url('@static/mobile/aceptar-renombrar.png');
-  background-size: cover;
-  margin: 0 18px 0 13px;
+  background-size: 17px 14px;
+  padding: 5px 18px 5px 13px;
+  background-repeat: no-repeat;
+  background-position: center;
   display: none;
 }
 
@@ -454,8 +471,10 @@
   width: 14px;
   height: 14px;
   background-image: url('@static/mobile/cancelar-renombrar.png');
-  background-size: cover;
-  margin: 0 10px 0 13px;
+  background-size: 14px 14px;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 5px 10px 5px 13px;
   display: none;
 }
 
@@ -553,7 +572,7 @@
   width: 100%;
   height: 350px;
   position: absolute;
-  transform: translate3d(100%, 0, 0);
+  .transform(100%, 0, 0);
   top: 64px;
   background-color: white;
   text-align: center;
@@ -588,7 +607,7 @@
   width: ~'calc(100% - 40px)';
   padding: 0 20px;
   position: absolute;
-  transform: translate3d(0,0,0);
+  .transform(0,0,0);
 }
 
 .toggle{
@@ -647,7 +666,7 @@
   padding: 0 20px;
   position: absolute;
   height: 134px;
-  transform: translate3d(100%,0,0);
+  .transform(100%,0,0);
 }
 
 .generated-link{
@@ -663,7 +682,7 @@
   color: #545f65;
 }
 
-.generate-btn, .back-link-btn{
+.generate-btn, .back-link-btn, .accept-share{
   margin-top: 25px;
   width: 160px;
   height: 47px;
@@ -680,7 +699,7 @@
   display: none;
 }
 
-.generate-btn.active, .back-link-btn.active{
+.generate-btn.active, .back-link-btn.active, .accept-share.accept{
   display: block;
 }
 
@@ -688,7 +707,7 @@
   width: 100%;
   height: ~'calc(100% - 64px)';
   position: absolute;
-  transform: translate3d(0, 100%, 0);
+  .transform(0, 100%, 0);
   top: 64px;
   background-color: white;
   text-align: center;
@@ -841,7 +860,7 @@
   width: 100%;
   height: ~'calc(100% - 64px)';
   position: absolute;
-  transform: translate3d(0, 100%, 0);
+  .transform(0, 100%, 0);
   top: 64px;
   background-color: white;
   text-align: center;
@@ -871,7 +890,20 @@
   height: ~'calc(100% - 70px)';
   position: absolute;
   top: 70px;
-  transform: translate3d(0,0,0);
+  .transform(0,0,0);
+}
+
+.share-details .first-step{
+  width: 100%;
+  height: ~'calc(100% - 100px)';
+  .transform(0,0,0);
+  position: absolute;
+}
+
+.share-details .first-step .friend-list{
+  height: ~'calc(100% - 35px)';
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .share-details .share-with-friends .title{
@@ -882,11 +914,158 @@
   margin-bottom: 22px;
 }
 
-.share-details .share-with-permissions{
+.share-details .share-with-friends .second-step .title{
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+
+.share-details .first-step .user{
   width: 100%;
-  height: ~'calc(100% - 70px)';
-  position: absolute;
-  top: 70px;
-  transform: translate3d(100%,0,0);
+  height: 48px;
+  display: inline-block;
+}
+
+.share-details .first-step .user .avatar{
+  width: 40px;
+  height: 40px;
+  background-size: 40px 40px;
+  border-radius: 50%;
+  margin: 0 14px 0 20px;
+  float: left;
+}
+
+.share-details .first-step .user .username{
+  max-width: ~'calc(100% - 100px)';
+  text-align: left;
+  font-family: Lato;
+  font-size: 16px;
+  color: #545f65;
+  float: left;
+}
+
+.share-details .first-step .user.active .username{
+  max-width: ~'calc(100% - 134px)';
+}
+
+.share-details .first-step .user .is-shared{
+  width: 14px;
+  height: 14px;
+  margin: 0 22px;
+  background-image: url('@static/mobile/tick.png');
+  background-size: 14px 14px;
+  float: right;
   display: none;
+}
+
+.share-details .first-step .user.active .is-shared{
+  display: block;
+}
+
+.share-details .first-step .user:before{
+  clear: both;
+  content: "";
+  display: block;
+  width: ~'calc(100% - 75px)';
+  height: 1px;
+  margin-left: 75px;
+  background: #e5e9ea;
+  margin-bottom: 1px;
+}
+
+.share-details .second-step{
+  width: 100%;
+  height: ~'calc(100% - 100px)';
+  position: absolute;
+  .transform(100%,0,0);
+  display: none;
+}
+
+.permissions-list{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+  align-items: center;
+  align-content: center;
+  height: ~'calc(100% - 50px)';
+
+  .permission{
+    margin-top: 36px;
+    width: 110px;
+    text-align: center;
+
+    .icon{
+      background: url('@static/mobile/sprite-compartir.png');
+      background-size: 420px 139px;
+      width: 70px;
+      height: 70px;
+      border-radius: 35px;
+      display: inline-block;
+    }
+
+    &.link .icon{
+      background-position:  0px 0;
+    }
+
+    &.link.active .icon{
+      background-position: 0px -70px;
+    }
+
+    &.modify .icon{
+      background-position: -70px 0;
+    }
+
+    &.modify.active .icon{
+      background-position: -70px -70px;
+    }
+
+    &.copy .icon{
+      background-position: -350px 0;
+    }
+
+    &.copy.active .icon{
+      background-position: -350px -70px;
+    }
+
+    &.download .icon{
+      background-position: -210px 0;
+    }
+
+    &.download.active .icon{
+      background-position: -210px -70px;
+    }
+
+    &.share .icon{
+      background-position: -280px 0;
+    }
+
+    &.share.active .icon{
+      background-position: -280px -70px;
+    }
+
+    &.send .icon{
+      background-position: -140px 0;
+    }
+
+    &.send.active .icon{
+      background-position: -140px -70px;
+    }
+
+    .name{
+      text-align: center;
+      margin-top: 8px;
+      font-family: Lato;
+      font-size: 16px;
+      color: #545f65;
+      display: inline-block;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+  }
+
 }

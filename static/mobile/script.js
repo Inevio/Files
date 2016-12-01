@@ -10,11 +10,20 @@ var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
 var userPrototype  = $('.file-options .file-owners-container .user.wz-prototype');
 var record         = [];
 var transitionTime = 300;
-var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-link, 4 == more-info, 5 == renaming, 6 == link created, 7 == sharing
+var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-link,
+//4 == more-info, 5 == renaming, 6 == link created, 7 == sharing, 8 == sharing step 2
+
 //var optionsDeployed= false;
 var actualPathId   = 0;
 var yDeployed      = '-410px';
 var sharedList = $('.share-details .friend-list');
+var toInsert;
+var toInsertS;
+var insertedIds;
+var oldPermissions;
+var newPermissions;
+var usersToAddShare = [];
+var usersToRemoveShare = [];
 
 // Functions
 var addZero = function( value ){
@@ -100,7 +109,7 @@ var iconBack = function(){
     itemBack
       .css( 'display', 'block' )
       .children( '.weexplorer-back-text' )
-      .text( 'Back to ' + record[ 1 ].name );
+      .text( lang.backTo + ' ' + record[ 1 ].name );
 
   }
 
@@ -288,13 +297,43 @@ var showOptions = function( file ){
 
   });
 
-  var toInsert;
-  var insertedIds;
-
   file.sharedWith( function( error, users ){
 
     toInsert = [];
     insertedIds = [];
+    toInsertS = [];
+
+    if( users.length ){
+
+      var permissions = users[ 0 ].permissions;
+
+      Object.keys( permissions ).forEach( function( permission ){
+
+        if( permissions[ permission ] ){
+          $('.permissions-list .permission.' + permission ).addClass('active')
+        }
+
+      });
+
+    }else{
+      $('.permissions-list .permission').addClass('active')
+    }
+
+    var oldPermissions = $('.permissions-list .permission');
+    oldPermissions = {
+      read     : true,
+      link     : oldPermissions.filter('.link').hasClass('active'),
+      move     : oldPermissions.filter('.modify').hasClass('active'),
+      write    : oldPermissions.filter('.modify').hasClass('active'),
+      copy     : oldPermissions.filter('.copy').hasClass('active'),
+      download : oldPermissions.filter('.download').hasClass('active'),
+      share    : oldPermissions.filter('.share').hasClass('active'),
+      send     : oldPermissions.filter('.send').hasClass('active')
+    }
+
+    //console.log(oldPermissions);
+    console.log('users',users);
+
     $('.file-owners-container .user').not('.wz-prototype').remove();
 
     $.each( users, function( index, userInArray ){
@@ -309,6 +348,7 @@ var showOptions = function( file ){
 
           var userx ='.user-'+ userI.id;
           var user = userPrototype.clone().removeClass('wz-prototype').addClass('user-' + userI.id);
+          var userS = prototype.clone().removeClass('wz-prototype').addClass('user-' + userI.id);
 
           if( userI.id == file.owner ){
 
@@ -318,6 +358,10 @@ var showOptions = function( file ){
           }
 
           user.find('.username').text( userI.fullName );
+          userS.find('.avatar').css( 'background-image', 'url("' + userI.avatar.small + '")' );
+          userS.find('.username').text( userI.fullName );
+          userS.data( 'user', userI );
+          userS.addClass('active');
           user.find('figure').css( "background-image",'url("'+ userI.avatar.small +'")' );
 
           if( userI.id == api.system.user().id ){
@@ -326,32 +370,33 @@ var showOptions = function( file ){
 
           insertedIds.push( userI.id )
           toInsert.push( user );
+          toInsertS.push( userS );
 
         }
 
         if( index == users.length - 1 ){
 
           $('.file-owners-container').append( toInsert );
+          $('.share-with-friends .user').not('.wz-prototype').remove();
+          sharedList.append( toInsertS );
 
           //Cargamos la lista de amigos y marcamos cuales tienen compartido el fichero
           api.user.friendList( false, function( error, list ){
 
-            $('.share-with-friends .user').not('.wz-prototype').remove();
-
             list.forEach( function( user, index ) {
 
-              var newUser = prototype.clone().removeClass('wz-prototype');
-              newUser.find('.avatar').attr( 'src', user.avatar.small );
-              newUser.find('.username').text( user.fullName );
-              newUser.data( 'user', user );
-              //newUser.data( 'permissions', permissions );
-              if( insertedIds.indexOf( user.id ) != -1 ){
-                //TODO el usuario ya tiene el fichero compartido
+              if( insertedIds.indexOf( user.id ) == -1 ){
+
+                var newUser = prototype.clone().removeClass('wz-prototype').addClass('user-' + user.id);
+                newUser.find('.avatar').css( 'background-image', 'url("' + user.avatar.small + '")' );
+                newUser.find('.username').text( user.fullName );
+                newUser.data( 'user', user );
+                //newUser.data( 'permissions', permissions );
+                sharedList.append( newUser );
+
               }
-              sharedList.append( newUser );
 
             });
-
 
           });
 
@@ -416,6 +461,8 @@ var hideOptions = function( fullHide ){
     hideCreateLink();
   }else if( mode == 7 ){
     hideShareScreen();
+  }else if( mode == 5 ){
+    cancelRename();
   }
 
   $( '.file-options' ).transition({
@@ -607,6 +654,47 @@ var showShareScreen = function(){
 
 }
 
+var acceptShare1 = function(){
+
+  var usersArray = $('.share-with-friends .user').not('.wz-prototype');
+  usersToAddShare = [];
+  usersToRemoveShare = [];
+
+  usersArray.each( function(index){
+
+    if( $(this).hasClass('active') && insertedIds.indexOf( $(this).data('user').id ) == -1 ){
+
+      console.log('añadir compartir', $(this).data('user').id);
+      usersToAddShare.push( $(this).data('user').id );
+
+    }else if( !$(this).hasClass('active') && insertedIds.indexOf( $(this).data('user').id ) != -1 ){
+
+      console.log('eliminar compartir', $(this).data('user').id);
+      usersToRemoveShare.push( $(this).data('user').id );
+
+    }
+
+  });
+
+  $('.first-step').transition({
+    'x' : '-100%'
+  },transitionTime,function(){
+    $(this).hide();
+    mode = 8;
+  });
+
+  $('.second-step').show().transition({
+    'x' : '0'
+  },transitionTime);
+
+}
+
+var acceptShare2 = function(){
+
+
+
+}
+
 var hideShareScreen = function(){
 
   $('.share-details').show().transition({
@@ -617,7 +705,16 @@ var hideShareScreen = function(){
 
   $('.file-options').transition({
     'y' : '0'
-  },transitionTime, function(){
+  },transitionTime);
+
+  $('.first-step').show().transition({
+    'x' : '0'
+  },transitionTime);
+
+  $('.second-step').transition({
+    'x' : '100%'
+  },transitionTime,function(){
+    $(this).hide();
     mode = 2;
   });
 
@@ -656,8 +753,6 @@ var acceptRename = function(){
 
     }
 
-    cancelRename();
-
   });
 
 }
@@ -674,6 +769,7 @@ var cancelRename = function(){
 
 var translate = function (){
 
+  $('.weexplorer-sidebar-header .weexplorer-sidebar-title').text( lang.main.favourites );
   $('.file-size-title').text( lang.properties.size.toUpperCase() );
   $('.file-location-title').text( lang.properties.path.toUpperCase() );
   $('.file-created-title').text( lang.properties.creation.toUpperCase() );
@@ -695,9 +791,28 @@ var translate = function (){
   $('.create-link-container .generate-btn span').text( lang.linkGenerate );
   $('.create-link-container .back-link-btn span').text( lang.back );
   //$('.create-link-container .back-link-btn span').text( lang.linkGenerate );
-  $('#weexplorer-sidebar .weexplorer-sidebar-title').text( lang.favourites );
+  $('.share-details .second-step .title').text(lang.share.globalPermissions.toUpperCase());
+  $('.share-details .second-step .link .name').text(lang.share.link);
+  $('.share-details .second-step .modify .name').text(lang.share.modify);
+  $('.share-details .second-step .copy .name').text(lang.share.copy);
+  $('.share-details .second-step .download .name').text(lang.share.download);
+  $('.share-details .second-step .share .name').text(lang.share.share);
+  $('.share-details .second-step .send .name').text(lang.share.send);
+  $('.share-details .second-step .save').text(lang.share.save);
 
 };
+
+var handleBack = function(){
+
+  if( mode == 0 ){
+    itemBack.click();
+  }else if ( mode == 1 ) {
+    hideSidebar();
+  }else{
+    hideOptions();
+  }
+
+}
 
 // Events
 $( '#weexplorer-menu-sidebar' ).on( 'click', function(){
@@ -801,8 +916,12 @@ win.on('swipedown', '.file-owners-section', function(e){
 })
 
 .on('swipedown', '.file-options', function(e){
-  hideOptions();
+
+  if( mode != 7 ){
+    hideOptions();
+  }
   e.stopPropagation();
+
 })
 
 .on('swipedown', '.opacity-cover', function(e){
@@ -829,11 +948,23 @@ win.on('swipedown', '.file-owners-section', function(e){
 .on('backbutton', function( e ){
 
   e.stopPropagation()
-  itemBack.click()
+  handleBack();
 
-});
+})
 
-$('.option.download').on('click', function(){
+.on('click', '.share-details .user', function(){
+  $(this).toggleClass('active');
+})
+
+.on('click', '.accept-share', function(){
+  acceptShare1();
+})
+
+.on('click', '.permissions-list .permission', function(){
+  $(this).toggleClass('active');
+})
+
+.on('click', '.option.download', function(){
 
   api.fs( $('.weexplorer-element.active').data('id') , function( e, file ){
 
@@ -845,15 +976,13 @@ $('.option.download').on('click', function(){
 
   });
 
-});
+})
 
-$('.options-more').on('click', function(){
-
+.on('click', '.options-more', function(){
   showFileInfo();
+})
 
-});
-
-$('.option.delete').on('click',function(){
+.on('click', '.option.delete', function(){
 
   api.fs( $('.weexplorer-element.active').data('id') , function( e, file ){
 
@@ -881,22 +1010,19 @@ $('.option.delete').on('click',function(){
 
     }, lang.confirmDelete , [lang.accept,lang.cancel] )
 
-
-
-
   });
 
 })
 
-$('.option.share-with').on('click', function(){
+.on('click', '.option.share-with', function(){
   showShareScreen();
-});
+})
 
-$('.option.create-link').on('click', function(){
+.on('click', '.option.create-link', function(){
   showCreateLink();
-});
+})
 
-$('.create-link-container .selector').on('click', function(){
+.on('click', '.create-link-container .selector', function(){
 
   $(this).toggleClass('active');
   if( $(this).parent().hasClass('password') ){
@@ -913,23 +1039,23 @@ $('.create-link-container .selector').on('click', function(){
 
 })
 
-$('.option.rename').on('click', function(){
+.on('click', '.option.rename', function(){
   activateRename();
-});
+})
 
-$('.file-options .rename-accept').on('click', function(){
+.on('click', '.file-options .rename-accept', function(){
   acceptRename();
-});
+})
 
-$('.file-options .rename-cancel').on('click', function(){
+.on('click', '.file-options .rename-cancel', function(){
   cancelRename();
-});
+})
 
-$('.create-link-container .generate-btn').on('click', function(){
+.on('click', '.create-link-container .generate-btn', function(){
   createLink();
-});
+})
 
-$('.create-link-container .back-link-btn').on('click', function(){
+.on('click', '.create-link-container .back-link-btn', function(){
   hideCreateLink();
 });
 
@@ -1021,8 +1147,8 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
   //sortIcons( fileArea.find('.weexplorer-file') );
 
   if( mode === 5 ){
-    cancelRename();
     $('.file-options .file-title').text( $('.file-options .file-rename').val() );
+    cancelRename();
   }
 
   if( structure.id === actualPathId ){
