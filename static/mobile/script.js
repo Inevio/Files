@@ -229,6 +229,8 @@ var showOptions = function( file ){
   var modifiedDate = new Date( file.dateModified );
   var prototype = $('.share-details .friend-list .user.wz-prototype');
 
+  console.log('file', file);
+
   $('.file-owners-container .user').not('.wz-prototype').remove();
   $('.share-with-friends .user').not('.wz-prototype').remove();
   $('.file-options .file-title').text( file.name );
