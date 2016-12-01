@@ -491,7 +491,7 @@
 
 .folder-breadcrumbs{
   float: left;
-  width: ~'calc(100% - 204px)';
+  width: ~'calc(100% - 435px)';
   margin-top: 4px;
   overflow: hidden;
 
@@ -584,7 +584,7 @@
 .folder-utils{
   float: right;
   margin-left: 15px;
-  width: 120px;
+  width: 350px;
 
   .button{
     float: right;
@@ -652,6 +652,56 @@
     height: 18px;
   }
 
+}
+
+.button.sort-preference{
+
+  width: 118px;
+
+  span{
+    font-size: 13px;
+    color: #889399;
+  }
+
+  i{
+    background-image: url( '@static/img/desplegable.png' );
+    background-size: 9px 5px;
+    width: 9px;
+    height: 5px;
+    margin-left: 7px;
+  }
+
+}
+
+.button.sort-preference:hover{
+  span{
+    color: #595f65;
+  }
+}
+
+.sort-options{
+  position: absolute;
+  width: 117px;
+  padding: 5px 0px;
+  border-radius: 6px;
+  border: 1px solid #ccd3d5;
+  background: #fff;
+  z-index: 2;
+  right: 9px;
+  top: 79px;
+  display: none;
+
+  .option{
+    height: 20px;
+    padding-left: 10px;
+    color: #545f65;
+    padding-top: 8px;
+    font-size: 13px;
+  }
+  .option:hover{
+    background-color: #60b25e;
+    color: white;
+  }
 }
 
 .item-area{

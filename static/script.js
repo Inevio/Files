@@ -67,6 +67,7 @@ var visualProgressStatusNumber = $('.uploading-area .status-number');
 var visualProgressStatusTime   = $('.uploading-area .status-time');
 var visualProgressBar          = $('.uploading-area .progress .current');
 var visualCreateFolderButton   = $('.folder-utils .create-folder');
+var visualSortPreferenceButton = $('.folder-utils .sort-preference');
 var visualDeleteButton         = $('.folder-utils .delete');
 var visualDownloadButton       = $('.folder-utils .download');
 var visualUploadButton         = $('.folder-utils .upload');
@@ -75,6 +76,7 @@ var visualCancelButton         = $('.ui-confirm .cancel');
 var visualDestinyNameInput     = $('.ui-confirm input');
 var notificationBellButton     = $('.notification-center');
 var notificationList           = $('.notification-list');
+var sortOptions                = $('.sort-options');
 var visualSharingNotificationPrototype = $('.share-notification.wz-prototype');
 var ctx                        = visualItemArea[ 0 ].getContext('2d');
 var backingStoreRatio          = ctx.webkitBackingStorePixelRatio ||
@@ -1685,6 +1687,24 @@ var sortByName = function( a, b ){
 
 };
 
+var sortBySize = function( a , b ){
+
+  return a.size - b.size;
+
+}
+
+var sortByCreation = function( a , b ){
+
+  return a.dateCreated - b.dateCreated;
+
+}
+
+var sortByModif = function( a , b ){
+
+  return a.dateModified - b.dateModified;
+
+}
+
 var moveListenerMousemove = function( e ){
 
   var offset = visualItemArea.offset();
@@ -2408,6 +2428,26 @@ visualCreateFolderButton.on( 'click', createFolder );
 visualDeleteButton.on( 'click', deleteAllActive );
 visualDownloadButton.on( 'click', downloadAllActive );
 
+visualSortPreferenceButton.on( 'click', function(){
+
+    sortOptions.css( 'display', 'block' );
+
+    win.one( 'mousedown', function( e ){
+      /*
+      if ( $( e.target ).hasClass( 'sort-preference' ) || $( e.target ).parent().hasClass( 'sort-preference' ) ) {
+        visualSortPreferenceButton.addClass( 'disabled' );
+      }
+      */
+      sortOptions.css( 'display', 'none' );
+
+    })
+
+});
+
+sortOptions.on( 'mousedown', function( e ){
+  e.stopPropagation()
+})
+
 visualUploadButton.on( 'click', function(){
 
   $(this).data( 'destiny', currentOpened.id );
@@ -2921,6 +2961,44 @@ notificationList
   refuseContent( $( this ).closest( '.share-notification' ).data( 'fsnode' ) );
 });
 
+sortOptions
+.on( 'click' , '.name' ,function(){
+
+  $('.sort-preference span').text( $(this).text() );
+  currentSort = sortByName;
+  currentList = currentList.sort( currentSort );
+  requestDraw();
+  sortOptions.css( 'display', 'none' );
+
+})
+.on( 'click' , '.size' , function(){
+
+  $('.sort-preference span').text( $(this).text() );
+  currentSort = sortBySize;
+  currentList = currentList.sort( currentSort );
+  requestDraw();
+  sortOptions.css( 'display', 'none' );
+
+})
+.on( 'click' , '.creation' , function(){
+
+  $('.sort-preference span').text( $(this).text() );
+  currentSort = sortByCreation;
+  currentList = currentList.sort( currentSort );
+  requestDraw();
+  sortOptions.css( 'display', 'none' );
+
+})
+.on( 'click' , '.modification' , function(){
+
+  $('.sort-preference span').text( $(this).text() );
+  currentSort = sortByModif;
+  currentList = currentList.sort( currentSort );
+  requestDraw();
+  sortOptions.css( 'display', 'none' );
+
+})
+
 // Load texts
 var translate = function(){
 
@@ -2934,6 +3012,11 @@ var translate = function(){
   $('.notification-list-title span').text( lang.main.activity );
   $('.accept-sharing-button span').text( lang.received.contentAccept );
   $('.refuse-sharing-button span').text( lang.received.contentRefuse );
+  $('.sort-options .name').text( lang.sortByName );
+  $('.sort-options .size').text( lang.sortBySize );
+  $('.sort-options .creation').text( lang.sortByCreation );
+  $('.sort-options .modification').text( lang.sortByModif );
+  $('.sort-preference span').text( lang.sortByName );
 
 };
 
