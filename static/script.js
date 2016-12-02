@@ -457,7 +457,7 @@ var clipboardPaste = function(){
     storage.copy.forEach( function( item ){
 
       console.log( item.fsnode );
-      item.fsnode.copy( currentOpened.id, function(){
+      item.fsnode.copy( currentOpened.id, { fixCollision: true } , function(){
         console.log( arguments );
       });
 
