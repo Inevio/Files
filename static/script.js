@@ -2142,7 +2142,9 @@ api.fs
 });
 
 api.upload
-.on( 'fsnodeEnqueue', function( list ){
+.on( 'fsnodeEnqueue', function( list, queue ){
+
+  console.log( arguments, queue.length() )
 
   if( win.hasClass('uploading') ){
 
@@ -2161,11 +2163,12 @@ api.upload
 
 })
 
-.on( 'fsnodeProgress', function( fsnodeId, progress, queueProgress, time ){
+.on( 'fsnodeProgress', function( fsnodeId, progress, queue ){
 
-  visualProgressBar.width( parseFloat( queueProgress * 100 ).toFixed( 4 ) + '%' );
+  /*
+  visualProgressBar.width( parseFloat( queue.progress() * 100 ).toFixed( 4 ) + '%' );
 
-  var percentage = parseFloat( queueProgress * 100 ).toFixed( 1 );
+  var percentage = parseFloat( queue.progress() * 100 ).toFixed( 1 );
 
   if( !time ){
     visualProgressStatusTime.text( lang.main.uploadingTimeCalculating.replace( '%d', percentage ) );
@@ -2176,6 +2179,7 @@ api.upload
   }else{
     visualProgressStatusTime.text( ( parseInt( time / 3600 ) === 1 ? lang.main.uploadingTimeHour : lang.main.uploadingTimeHours ).replace( '%d', parseInt( time / 3600 ) ).replace( '%d', percentage ) );
   }
+  */
 
 })
 
