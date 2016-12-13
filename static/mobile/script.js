@@ -730,9 +730,7 @@ var acceptShare2 = function(){
   if( JSON.stringify(oldPermissions) === JSON.stringify(newPermissions) ){
 
     //Si los permisos son iguales, aplicamos compartir a los nuevos miembros unicamente
-
     usersToApi = usersToApi.concat(usersToAddShare);
-
 
   }else{
 
@@ -740,8 +738,6 @@ var acceptShare2 = function(){
     usersToApi = usersToApi.concat(usersShared);
 
   }
-
-  console.log(usersToApi);
 
   usersToApi.forEach( function( userId ){
     toAddPromises.push( $.Deferred() )
@@ -756,8 +752,10 @@ var acceptShare2 = function(){
   usersToApi.forEach( function( userId, i ){
 
     fileSelected.addShare( userId, newPermissions, function( err ){
+
       console.log( 'ADD', err )
       toAddPromises[ i ].resolve( err )
+
     })
 
   })
@@ -765,16 +763,19 @@ var acceptShare2 = function(){
   usersToRemoveShare.forEach( function( userId, i ){
 
     fileSelected.removeShare( userId, function( err ){
+
       console.log( 'REM', err )
       toRemovePromises[ i ].resolve( err )
+
     })
 
   })
 
   $.when.apply ( null, promises ).done( function(){
-    //api.app.removeView( win )
+
     console.log('fin de las operaciones');
     hideOptions();
+    
   })
 
 }
