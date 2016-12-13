@@ -22,8 +22,10 @@ var toInsertS;
 var insertedIds;
 var oldPermissions;
 var newPermissions;
+var usersShared = [];
 var usersToAddShare = [];
 var usersToRemoveShare = [];
+var fileSelected;
 
 // Functions
 var addZero = function( value ){
@@ -239,19 +241,19 @@ var showOptions = function( file ){
   $('.file-options .file-size-value').text( api.tool.bytesToUnit( file.size, 2 ) );
 
   //TODO quitar despues de implementar compartir
-  $('.option-section.share .share-with').hide();
+  //$('.option-section.share .share-with').hide();
 
   if( file.type == 0 || file.type == 1 || file.type == 2 ){
 
     $('.file-options').addClass('folder');
     //TODO quitar despues de implementar compartir
-    $('.option-section.share').hide();
+    //$('.option-section.share').hide();
 
   }else{
 
     $('.file-options').removeClass('folder');
     //TODO quitar despues de implementar compartir
-    $('.option-section.share').show();
+    //$('.option-section.share').show();
 
   }
 
@@ -321,7 +323,7 @@ var showOptions = function( file ){
       $('.permissions-list .permission').addClass('active')
     }
 
-    var oldPermissions = $('.permissions-list .permission');
+    oldPermissions = $('.permissions-list .permission');
     oldPermissions = {
       read     : true,
       link     : oldPermissions.filter('.link').hasClass('active'),
@@ -463,7 +465,7 @@ var hideOptions = function( fullHide ){
     hideFileInfo();
   }else if( mode == 3 || mode == 6 ){
     hideCreateLink();
-  }else if( mode == 7 ){
+  }else if( mode == 7 || mode == 8 ){
     hideShareScreen();
   }else if( mode == 5 ){
     cancelRename();
@@ -661,6 +663,8 @@ var showShareScreen = function(){
 var acceptShare1 = function(){
 
   var usersArray = $('.share-with-friends .user').not('.wz-prototype');
+
+  usersShared = [];
   usersToAddShare = [];
   usersToRemoveShare = [];
 
@@ -668,17 +672,26 @@ var acceptShare1 = function(){
 
     if( $(this).hasClass('active') && insertedIds.indexOf( $(this).data('user').id ) == -1 ){
 
-      console.log('añadir compartir', $(this).data('user').id);
+      //console.log('aniadir compartir', $(this).data('user').id);
       usersToAddShare.push( $(this).data('user').id );
 
     }else if( !$(this).hasClass('active') && insertedIds.indexOf( $(this).data('user').id ) != -1 ){
 
-      console.log('eliminar compartir', $(this).data('user').id);
+      //console.log('eliminar compartir', $(this).data('user').id);
       usersToRemoveShare.push( $(this).data('user').id );
+
+    }else if( $(this).hasClass('active') ){
+
+      //console.log('ya estaba compartido', $(this).data('user').id);
+      usersShared.push( $(this).data('user').id );
 
     }
 
   });
+
+  console.log( 'aniadir compartir', usersToAddShare );
+  console.log( 'eliminar compartir', usersToRemoveShare );
+  console.log( 'ya estaba compartido', usersShared );
 
   $('.first-step').transition({
     'x' : '-100%'
@@ -695,7 +708,74 @@ var acceptShare1 = function(){
 
 var acceptShare2 = function(){
 
+  var usersToApi         = [];
+  var promises           = [];
+  var toAddPromises      = [];
+  var toRemovePromises   = [];
 
+  var newPermissions = $('.permissions-list .permission');
+  newPermissions = {
+    read     : true,
+    link     : newPermissions.filter('.link').hasClass('active'),
+    move     : newPermissions.filter('.modify').hasClass('active'),
+    write    : newPermissions.filter('.modify').hasClass('active'),
+    copy     : newPermissions.filter('.copy').hasClass('active'),
+    download : newPermissions.filter('.download').hasClass('active'),
+    share    : newPermissions.filter('.share').hasClass('active'),
+    send     : newPermissions.filter('.send').hasClass('active')
+  }
+
+  console.log( JSON.stringify(oldPermissions) === JSON.stringify(newPermissions)  );
+
+  if( JSON.stringify(oldPermissions) === JSON.stringify(newPermissions) ){
+
+    //Si los permisos son iguales, aplicamos compartir a los nuevos miembros unicamente
+
+    usersToApi = usersToApi.concat(usersToAddShare);
+
+
+  }else{
+
+    //Si no son iguales, aplicamos los permisos a todos los usuarios que tienen el archivo
+    usersToApi = usersToApi.concat(usersShared);
+
+  }
+
+  console.log(usersToApi);
+
+  usersToApi.forEach( function( userId ){
+    toAddPromises.push( $.Deferred() )
+  })
+
+  usersToRemoveShare.forEach( function( userId ){
+    toRemovePromises.push( $.Deferred() )
+  })
+
+  promises = promises.concat( toAddPromises ).concat( toRemovePromises )
+
+  usersToApi.forEach( function( userId, i ){
+
+    fileSelected.addShare( userId, newPermissions, function( err ){
+      console.log( 'ADD', err )
+      toAddPromises[ i ].resolve( err )
+    })
+
+  })
+
+  usersToRemoveShare.forEach( function( userId, i ){
+
+    fileSelected.removeShare( userId, function( err ){
+      console.log( 'REM', err )
+      toRemovePromises[ i ].resolve( err )
+    })
+
+  })
+
+  $.when.apply ( null, promises ).done( function(){
+    //api.app.removeView( win )
+    console.log('fin de las operaciones');
+    hideOptions();
+  })
 
 }
 
@@ -874,6 +954,7 @@ $( '#weexplorer-content' )
 
     if( !error ){
       showOptions( structure );
+      fileSelected = structure;
     }
 
   });
@@ -961,7 +1042,13 @@ win.on('swipedown', '.file-owners-section', function(e){
 })
 
 .on('click', '.accept-share', function(){
-  acceptShare1();
+
+  if( mode == 7 ){
+    acceptShare1();
+  }else if( mode == 8 ){
+    acceptShare2();
+  }
+
 })
 
 .on('click', '.permissions-list .permission', function(){
