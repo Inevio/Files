@@ -672,17 +672,14 @@ var acceptShare1 = function(){
 
     if( $(this).hasClass('active') && insertedIds.indexOf( $(this).data('user').id ) == -1 ){
 
-      //console.log('aniadir compartir', $(this).data('user').id);
       usersToAddShare.push( $(this).data('user').id );
 
     }else if( !$(this).hasClass('active') && insertedIds.indexOf( $(this).data('user').id ) != -1 ){
 
-      //console.log('eliminar compartir', $(this).data('user').id);
       usersToRemoveShare.push( $(this).data('user').id );
 
     }else if( $(this).hasClass('active') ){
 
-      //console.log('ya estaba compartido', $(this).data('user').id);
       usersShared.push( $(this).data('user').id );
 
     }
@@ -725,16 +722,13 @@ var acceptShare2 = function(){
     send     : newPermissions.filter('.send').hasClass('active')
   }
 
-  console.log( JSON.stringify(oldPermissions) === JSON.stringify(newPermissions)  );
+  console.log( JSON.stringify(oldPermissions) === JSON.stringify(newPermissions) );
 
-  if( JSON.stringify(oldPermissions) === JSON.stringify(newPermissions) ){
+  usersToApi = usersToApi.concat(usersToAddShare);
 
-    //Si los permisos son iguales, aplicamos compartir a los nuevos miembros unicamente
-    usersToApi = usersToApi.concat(usersToAddShare);
+  if( JSON.stringify(oldPermissions) != JSON.stringify(newPermissions) ){
 
-  }else{
-
-    //Si no son iguales, aplicamos los permisos a todos los usuarios que tienen el archivo
+    //Si los permisos son distintos, aplicamos a todos los usuarios que tienen el archivo
     usersToApi = usersToApi.concat(usersShared);
 
   }
@@ -775,7 +769,7 @@ var acceptShare2 = function(){
 
     console.log('fin de las operaciones');
     hideOptions();
-    
+
   })
 
 }
