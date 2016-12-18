@@ -2764,7 +2764,7 @@ visualItemArea
   var itemOver = getIconWithMouserOver( e );
 
   if( item === 'fileNative' ){
-    $(this).data( 'wz-uploader-destiny', itemOver ? itemOver.fsnode.id : currentOpened.id );
+    $(this).data( 'wz-uploader-destiny', itemOver && itemOver.fsnode.type !== TYPE_FILE ? itemOver.fsnode.id : currentOpened.id );
   }else{
 
     var destiny = itemOver && itemOver.fsnode.type !== TYPE_FILE ? itemOver.fsnode.id : currentOpened.id;
