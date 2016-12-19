@@ -527,16 +527,14 @@ var deleteAllActive = function(){
 
     currentActive.forEach( function( item ){
 
-      if ( item.fsnode.type === TYPE_FOLDER_SPECIAL ) {return}
+      if( item.fsnode.type === TYPE_FOLDER_SPECIAL|| !doIt ){
+        return
+      }
 
-        if( !doIt ){return}
+      checkIsOnSidebar( item.fsnode );
+      item.fsnode.remove( function( error ){});
 
-        checkIsOnSidebar( item.fsnode );
-        item.fsnode.remove( function( error ){
-          console.log( error );
-        });
-
-      });
+    });
 
   });
 
@@ -2142,32 +2140,46 @@ api.fs
 });
 
 api.upload
-.on( 'fsnodeEnqueue', function( list ){
+.on( 'fileEnqueued', function( file, queue ){
 
-  if( win.hasClass('uploading') ){
+  var queueSize = queue.length()
 
-    var files = parseInt( visualProgressStatusNumber.text().match(/\d+/)[ 0 ] ) + list.length;
-
-    visualProgressStatusNumber.text( ( files === 1 ? lang.main.uploadingNumberFile : lang.main.uploadingNumberFiles ).replace( '%d', files ) );
-
-  }else{
+  if( !win.hasClass('uploading') ){
 
     win.addClass('uploading');
     startUploadingAnimation();
 
-    visualProgressStatusNumber.text( ( list.length === 1 ? lang.main.uploadingNumberFile : lang.main.uploadingNumberFiles ).replace( '%d', list.length ) );
+  }
 
+  if( queueSize === 1 ){
+    visualProgressStatusNumber.text( lang.main.uploadingNumberFile.replace( '%d', queueSize ) )
+  }else{
+    visualProgressStatusNumber.text( lang.main.uploadingNumberFiles.replace( '%d', ( queueSize - queue.pending.length ) || 1 ).replace( '%d', queueSize ) )
   }
 
 })
 
-.on( 'fsnodeProgress', function( fsnodeId, progress, queueProgress, time ){
+.on( 'fsnodeStart', function( fsnode, queue ){
 
-  visualProgressBar.width( parseFloat( queueProgress * 100 ).toFixed( 4 ) + '%' );
+  var queueSize = queue.length()
 
-  var percentage = parseFloat( queueProgress * 100 ).toFixed( 1 );
+  if( queueSize === 1 ){
+    visualProgressStatusNumber.text( lang.main.uploadingNumberFile.replace( '%d', queueSize ) )
+  }else{
+    visualProgressStatusNumber.text( lang.main.uploadingNumberFiles.replace( '%d', ( queueSize - queue.pending.length ) || 1 ).replace( '%d', queueSize ) )
+  }
 
-  if( !time ){
+})
+
+.on( 'fsnodeProgress', function( fsnodeId, progress, queue ){
+
+  var progress = queue.progress()
+  var percentage = parseFloat( progress * 100 ).toFixed( 1 )
+  var time = 100
+
+  visualProgressBar.width( parseFloat( progress * 100 ).toFixed( 4 ) + '%' );
+
+  /*if( !time ){
     visualProgressStatusTime.text( lang.main.uploadingTimeCalculating.replace( '%d', percentage ) );
   }else if( time < 60 ){
     visualProgressStatusTime.text( ( parseInt( time ) === 1 ? lang.main.uploadingTimeSecond : lang.main.uploadingTimeSeconds ).replace( '%d', parseInt( time ) ).replace( '%d', percentage ) );
@@ -2175,7 +2187,9 @@ api.upload
     visualProgressStatusTime.text( ( parseInt( time / 60 ) === 1 ? lang.main.uploadingTimeMinute : lang.main.uploadingTimeMinutes ).replace( '%d', parseInt( time / 60 ) ).replace( '%d', percentage ) );
   }else{
     visualProgressStatusTime.text( ( parseInt( time / 3600 ) === 1 ? lang.main.uploadingTimeHour : lang.main.uploadingTimeHours ).replace( '%d', parseInt( time / 3600 ) ).replace( '%d', percentage ) );
-  }
+  }*/
+
+  visualProgressStatusTime.text( lang.main.uploadingProgress.replace( '%d', percentage ) )
 
 })
 
