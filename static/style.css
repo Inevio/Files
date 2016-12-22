@@ -491,7 +491,7 @@
 
 .folder-breadcrumbs{
   float: left;
-  width: ~'calc(100% - 435px)';
+  width: ~'calc(100% - 335px)';
   margin-top: 4px;
   overflow: hidden;
 
@@ -584,7 +584,7 @@
 .folder-utils{
   float: right;
   margin-left: 15px;
-  width: 350px;
+  width: 250px;
 
   .button{
     float: right;
