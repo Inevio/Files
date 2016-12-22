@@ -2571,7 +2571,7 @@ visualItemArea
   // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
   }else if( itemClicked.fsnode.type === TYPE_FILE ){
 
-    menu.addOption( lang.main.openFile, openFile.bind( null, itemClicked.fsnode.id ) )
+    menu.addOption( lang.main.openFile, openFile.bind( null, itemClicked.fsnode ) )
     .addOption( lang.main.openFileLocal, itemClicked.fsnode.openLocal )
     .addOption( lang.main.copy , clipboardCopy )
     .addOption( lang.main.cut , clipboardCut );
