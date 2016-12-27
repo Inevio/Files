@@ -231,4 +231,7 @@ api.fs( params, function( error, fsnode ){
   $('.file-info .icon').css( 'background-image', 'url(' + fsnode.icons.tiny + ')' );
   $('.file-info .name').text( fsnode.name );
 
+  //Desactivamos la opcion descargar e importar
+  $('.option.download').addClass('disabled');
+
 });
