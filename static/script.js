@@ -1687,19 +1687,19 @@ var sortByName = function( a, b ){
 
 var sortBySize = function( a , b ){
 
-  return a.size - b.size;
+  return - ( a.fsnode.size - b.fsnode.size );
 
 }
 
 var sortByCreation = function( a , b ){
 
-  return a.dateCreated - b.dateCreated;
+  return - (a.fsnode.dateCreated - b.fsnode.dateCreated);
 
 }
 
 var sortByModif = function( a , b ){
 
-  return a.dateModified - b.dateModified;
+  return - (a.fsnode.dateModified - b.fsnode.dateModified);
 
 }
 
