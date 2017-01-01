@@ -1685,22 +1685,16 @@ var sortByName = function( a, b ){
 
 };
 
-var sortBySize = function( a , b ){
-
-  return - ( a.fsnode.size - b.fsnode.size );
-
+var sortBySize = function( a, b ){
+  return b.fsnode.size - a.fsnode.size
 }
 
-var sortByCreation = function( a , b ){
-
-  return - (a.fsnode.dateCreated - b.fsnode.dateCreated);
-
+var sortByCreation = function( a, b ){
+  return b.fsnode.dateCreated - a.fsnode.dateCreated
 }
 
-var sortByModif = function( a , b ){
-
-  return - (a.fsnode.dateModified - b.fsnode.dateModified);
-
+var sortByModif = function( a, b ){
+  return b.fsnode.dateModified - a.fsnode.dateModified
 }
 
 var moveListenerMousemove = function( e ){
