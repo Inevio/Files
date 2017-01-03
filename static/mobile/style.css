@@ -513,7 +513,7 @@
 }
 
 .option-section .option.download{
-  display: none;
+  /*display: none;*/
 }
 
 .option-section .option.send-to figure{

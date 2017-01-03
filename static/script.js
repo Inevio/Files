@@ -2595,7 +2595,7 @@ visualItemArea
     if( [ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ].indexOf( itemClicked.fsnode.mime ) !== -1 ){
 
       menu.addOption( 'Establecer como fondo', function(){
-        api.config.setFSNodeAsWallpaper( icon.data( 'file-id' ) );
+        api.config.setFSNodeAsWallpaper( itemClicked.fsnode.id );
       });
 
     }
