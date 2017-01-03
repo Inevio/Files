@@ -2613,10 +2613,10 @@ visualItemArea
     .addOption( lang.main.copy, clipboardCopy )
     .addOption( lang.main.cut, clipboardCut );
 
-    if ( isOnSidebar( itemClicked.fsnode ) ) {
-      menu.addOption( lang.removeFromSidebar, removeFromSidebar.bind( null , itemClicked.fsnode ) );
+    if( isOnSidebar( itemClicked.fsnode ) ){
+      menu.addOption( lang.removeFromSidebar, removeFromSidebar.bind( null , itemClicked.fsnode ) )
     }else{
-      menu.addOption( lang.addToSidebar, addToSidebar.bind( null , itemClicked.fsnode ) );
+      menu.addOption( lang.addToSidebar, addToSidebar.bind( null , itemClicked.fsnode ) )
     }
 
     /* Not supported yet
@@ -2681,6 +2681,17 @@ visualItemArea
     .addOption( lang.main.openFolder, openFolder.bind( null, itemClicked.fsnode.id ) )
     .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, itemClicked.fsnode.id, 'main') )
     .addOption( lang.main.copy, clipboardCopy )
+
+    // Add to sidebar
+    if( wz.system.user().rootPath !== parseInt( itemClicked.fsnode.parent ) ){
+
+      if( isOnSidebar( itemClicked.fsnode ) ){
+        menu.addOption( lang.removeFromSidebar, removeFromSidebar.bind( null , itemClicked.fsnode ) )
+      }else{
+        menu.addOption( lang.addToSidebar, addToSidebar.bind( null , itemClicked.fsnode ) )
+      }
+
+    }
 
     /* Not supported yet
     if( itemClicked.fsnode.permissions.send ){
