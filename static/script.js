@@ -312,9 +312,13 @@ var appendVisualSidebarItem = function( item ){
     return refreshNotificationCenter( item );
   }
 
-  var visualItem = visualSidebarItemPrototype.clone();
+  if( isInSidebar( item.id ) ){
+    return
+  }
 
-  visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) ).attr( 'data-id', item.id );
+  var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
+
+  visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) ).data( 'fsnode', item );
   visualItem.find('.ui-navgroup-element-txt').text( item.name );
 
   sidebarFolders.push( item );
@@ -1880,7 +1884,7 @@ var addToSidebar = function( fsnode ){
       // To Do -> Error
       if( !error && result.affectedRows ){
 
-          addToSidebarUi( fsnode );
+          appendVisualSidebarItem( fsnode );
 
           if( channel === null ){
 
@@ -1900,23 +1904,6 @@ var addToSidebar = function( fsnode ){
       }
 
   });
-
-};
-
-var addToSidebarUi = function( item ){
-
-  if( isInSidebar( item.id ) ){
-    return false;
-  }
-
-  var newSidebarElement = visualSidebarItemPrototype.clone().removeClass('wz-prototype');
-
-  sidebarFolders.push( item );
-
-  newSidebarElement.addClass( 'item-' + item.id ).attr( 'data-id', item.id );
-  newSidebarElement.find('.ui-navgroup-element-txt').text( item.name );
-
-  visualSidebarItemArea.append( newSidebarElement );
 
 };
 
@@ -2371,7 +2358,7 @@ win
 
 visualSidebarItemArea
 .on( 'click', '.ui-navgroup-element', function(){
-  openFolder( $(this).attr('data-id') );
+  openFolder( $(this).data('fsnode').id );
 })
 
 .on( 'wz-dropenter', '.ui-navgroup-element', function( e, item ){
