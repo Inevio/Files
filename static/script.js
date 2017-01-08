@@ -444,12 +444,12 @@ var clearList = function(){
 
 };
 
-var clipboardCopy = function(){
-  api.app.storage( 'clipboard', { copy : currentActive.map( function( item ){ return item; } ) } );
+var clipboardCopy = function( items ){
+  api.app.storage( 'clipboard', { copy : ( items || currentActive ).map( function( item ){ return item } ) } )
 };
 
-var clipboardCut = function(){
-  api.app.storage( 'clipboard', { cut : currentActive.map( function( item ){ return item; } ) } );
+var clipboardCut = function( items ){
+  api.app.storage( 'clipboard', { cut : ( items || currentActive ).map( function( item ){ return item } ) } )
 };
 
 var clipboardPaste = function(){
@@ -521,15 +521,17 @@ var createFolder = function(){
 
 };
 
-var deleteAllActive = function(){
+var deleteAll = function( items ){
 
-  if ( currentActive.length === 1 && currentActive[0].fsnode.type === TYPE_FOLDER_SPECIAL ) {
-    return;
+  items = items || currentActive
+
+  if ( items.length === 1 && items[ 0 ].fsnode.type === TYPE_FOLDER_SPECIAL ) {
+    return
   }
 
   confirm( lang.main.confirmDelete, function( doIt ){
 
-    currentActive.forEach( function( item ){
+    items.forEach( function( item ){
 
       if( item.fsnode.type === TYPE_FOLDER_SPECIAL|| !doIt ){
         return
@@ -547,20 +549,21 @@ var deleteAllActive = function(){
 var checkIsOnSidebar = function( fsnode ){
 
   var index = sidebarFolders.indexOf( fsnode );
-  if ( index > -1 ) {
-    sidebarFolders.splice(index, 1);
-    removeFromSidebar( fsnode );
+
+  if( index > -1 ){
+    sidebarFolders.splice(index, 1)
+    removeFromSidebar( fsnode )
   }
 
 }
 
-var downloadAllActive = function(){
+var downloadAll = function( items ){
 
-  currentActive.forEach( function( item ){
-    item.fsnode.download();
-  });
+  ( items || currentActive ).forEach( function( item ){
+    item.fsnode.download()
+  })
 
-};
+}
 
 var drawIcons = function(){
 
@@ -2008,12 +2011,12 @@ var isOnSidebar = function( fsnode ){
 
 }
 
-var generateContextMenu = function( itemClicked ){
+var generateContextMenu = function( item ){
 
   var menu = api.menu();
-  console.log('itemClicked', itemClicked?itemClicked.fsnode:'null')
+  console.log('item', item?item.fsnode:'null')
 
-  if( !itemClicked ){
+  if( !item ){
 
     if( currentOpened.type === 1 && currentOpened.name === 'Received' ){
       return
@@ -2024,92 +2027,90 @@ var generateContextMenu = function( itemClicked ){
     .addOption( lang.main.newFolder, createFolder )
     .addOption( lang.main.paste, clipboardPaste )
 
-  }else if( itemClicked.fsnode.pending ){
+  }else if( item.fsnode.pending ){
 
-    menu.addOption( lang.received.contentAccept , acceptContent.bind( null , itemClicked.fsnode ) );
-    menu.addOption( lang.received.contentRefuse , refuseContent.bind( null , itemClicked.fsnode ), 'warning');
+    menu.addOption( lang.received.contentAccept , acceptContent.bind( null , item.fsnode ) );
+    menu.addOption( lang.received.contentRefuse , refuseContent.bind( null , item.fsnode ), 'warning');
 
-  // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
-  }else if( itemClicked.fsnode.type === TYPE_FILE ){
+  }else if( item.fsnode.type === TYPE_FILE ){
 
-    menu.addOption( lang.main.openFile, openFile.bind( null, itemClicked.fsnode ) )
-    .addOption( lang.main.openFileLocal, itemClicked.fsnode.openLocal )
-    .addOption( lang.main.copy , clipboardCopy )
-    .addOption( lang.main.cut , clipboardCut );
+    menu.addOption( lang.main.openFile, openFile.bind( null, item.fsnode ) )
+    .addOption( lang.main.openFileLocal, item.fsnode.openLocal )
+    .addOption( lang.main.copy, clipboardCopy )
+    .addOption( lang.main.cut, clipboardCut )
 
-    if( itemClicked.fsnode.permissions.write ){
-      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, itemClicked ) );
+    if( item.fsnode.permissions.write ){
+      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, item ) );
     }
 
-    if( itemClicked.fsnode.permissions.link ){
-      menu.addOption( lang.main.createLink, api.app.createView.bind( null, itemClicked.fsnode.id, 'link') );
+    if( item.fsnode.permissions.link ){
+      menu.addOption( lang.main.createLink, api.app.createView.bind( null, item.fsnode.id, 'link') );
     }
 
     /* Not supported yet
-    if( itemClicked.fsnode.permissions.send ){
-      menu.addOption( lang.main.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
+    if( item.fsnode.permissions.send ){
+      menu.addOption( lang.main.sendTo, api.app.createView.bind( null, item.fsnode.id, 'send') );
     }
     */
 
-    if( itemClicked.fsnode.permissions.share ){
-      menu.addOption( lang.main.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share') );
+    if( item.fsnode.permissions.share ){
+      menu.addOption( lang.main.shareWith, api.app.createView.bind( null, item.fsnode.id, 'share') );
     }
 
-    if( itemClicked.fsnode.permissions.download ){
-      menu.addOption( lang.main.download, downloadAllActive );
+    if( item.fsnode.permissions.download ){
+      menu.addOption( lang.main.download, downloadAll );
     }
 
-    if( [ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ].indexOf( itemClicked.fsnode.mime ) !== -1 ){
+    if( [ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ].indexOf( item.fsnode.mime ) !== -1 ){
 
       menu.addOption( 'Establecer como fondo', function(){
-        api.config.setFSNodeAsWallpaper( itemClicked.fsnode.id );
+        api.config.setFSNodeAsWallpaper( item.fsnode.id );
       });
 
     }
 
     menu
-    .addOption( lang.main.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') )
-    .addOption( lang.main.remove, deleteAllActive, 'warning' );
+    .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
+    .addOption( lang.main.remove, deleteAll, 'warning' );
 
-  // To Do -> Check all the rules -> else if( icon.hasClass('directory') || ( icon.data( 'filePointerType' ) === 0 && !icon.hasClass('pointer-pending') ) ){
-  }else if( itemClicked.fsnode.type === TYPE_FOLDER ){
+  }else if( item.fsnode.type === TYPE_FOLDER ){
 
     menu
-    .addOption( lang.main.openFolder, openFolder.bind( null, itemClicked.fsnode.id ) )
-    .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, itemClicked.fsnode.id, 'main') )
+    .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id ) )
+    .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, item.fsnode.id, 'main') )
     .addOption( lang.main.copy, clipboardCopy )
     .addOption( lang.main.cut, clipboardCut );
 
-    if( isOnSidebar( itemClicked.fsnode ) ){
-      menu.addOption( lang.removeFromSidebar, removeFromSidebar.bind( null , itemClicked.fsnode ) )
+    if( isOnSidebar( item.fsnode ) ){
+      menu.addOption( lang.removeFromSidebar, removeFromSidebar.bind( null , item.fsnode ) )
     }else{
-      menu.addOption( lang.addToSidebar, addToSidebar.bind( null , itemClicked.fsnode ) )
+      menu.addOption( lang.addToSidebar, addToSidebar.bind( null , item.fsnode ) )
     }
 
     /* Not supported yet
-    if( itemClicked.fsnode.permissions.send ){
-      menu.addOption( lang.main.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
+    if( item.fsnode.permissions.send ){
+      menu.addOption( lang.main.sendTo, api.app.createView.bind( null, item.fsnode.id, 'send') );
     }
     */
 
-    if( itemClicked.fsnode.permissions.share ){
-      menu.addOption( lang.main.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share'));
+    if( item.fsnode.permissions.share ){
+      menu.addOption( lang.main.shareWith, api.app.createView.bind( null, item.fsnode.id, 'share'));
     }
 
-    if( itemClicked.fsnode.permissions.write ){
-      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, itemClicked ) );
+    if( item.fsnode.permissions.write ){
+      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, item ) );
     }
 
-    if( itemClicked.fsnode.permissions.download ){
-      menu.addOption( lang.main.download, downloadAllActive );
+    if( item.fsnode.permissions.download ){
+      menu.addOption( lang.main.download, downloadAll );
     }
 
-    if ( itemClicked.fsnode.pending ) {
-      menu.addOption( lang.received.contentAccept , acceptContent.bind( null , itemClicked.fsnode ) );
-      menu.addOption( lang.received.contentRefuse , refuseContent.bind( null , itemClicked.fsnode ) );
+    if ( item.fsnode.pending ) {
+      menu.addOption( lang.received.contentAccept , acceptContent.bind( null , item.fsnode ) );
+      menu.addOption( lang.received.contentRefuse , refuseContent.bind( null , item.fsnode ) );
     }
 
-    /*if( itemClicked.fsnode.permissions.download ){
+    /*if( item.fsnode.permissions.download ){
 
       menu.addOption( lang.download, function(){
         downloadFiles.mousedown();
@@ -2138,44 +2139,45 @@ var generateContextMenu = function( itemClicked ){
     }*/
 
     menu
-    .addOption( lang.main.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') )
-    .addOption( lang.main.remove, deleteAllActive, 'warning' );
+    .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
+    .addOption( lang.main.remove, deleteAll, 'warning' );
 
   // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
-  }else if( itemClicked.fsnode.type === TYPE_FOLDER_SPECIAL ){
+  }else if( item.fsnode.type === TYPE_FOLDER_SPECIAL ){
 
     menu
-    .addOption( lang.main.openFolder, openFolder.bind( null, itemClicked.fsnode.id ) )
-    .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, itemClicked.fsnode.id, 'main') )
+    .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id ) )
+    .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, item.fsnode.id, 'main') )
     .addOption( lang.main.copy, clipboardCopy )
 
     // Add to sidebar
-    if( wz.system.user().rootPath !== parseInt( itemClicked.fsnode.parent ) ){
+    if( wz.system.user().rootPath !== parseInt( item.fsnode.parent ) ){
 
-      if( isOnSidebar( itemClicked.fsnode ) ){
-        menu.addOption( lang.removeFromSidebar, removeFromSidebar.bind( null , itemClicked.fsnode ) )
+      if( isOnSidebar( item.fsnode ) ){
+        menu.addOption( lang.removeFromSidebar, removeFromSidebar.bind( null , item.fsnode ) )
       }else{
-        menu.addOption( lang.addToSidebar, addToSidebar.bind( null , itemClicked.fsnode ) )
+        menu.addOption( lang.addToSidebar, addToSidebar.bind( null , item.fsnode ) )
       }
 
     }
 
     /* Not supported yet
-    if( itemClicked.fsnode.permissions.send ){
-      menu.addOption( lang.main.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
+    if( item.fsnode.permissions.send ){
+      menu.addOption( lang.main.sendTo, api.app.createView.bind( null, item.fsnode.id, 'send') );
     }
     */
 
-    if( itemClicked.fsnode.permissions.download ){
-      menu.addOption( lang.main.download, downloadAllActive );
+    if( item.fsnode.permissions.download ){
+      menu.addOption( lang.main.download, downloadAll );
     }
 
     menu
-    .addOption( lang.main.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') )
+    .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
 
   }
 
-  menu.render();
+  menu.render()
+
 }
 
 // API Events
@@ -2376,7 +2378,7 @@ win
   if( $(e.target).is('textarea') ){
     e.stopPropagation();
   }else{
-    deleteAllActive();
+    deleteAll();
   }
 
 })
@@ -2595,8 +2597,8 @@ visualBreadcrumbs.on( 'click', '.list-trigger', function(){
 });
 
 visualCreateFolderButton.on( 'click', createFolder );
-visualDeleteButton.on( 'click', deleteAllActive );
-visualDownloadButton.on( 'click', downloadAllActive );
+visualDeleteButton.on( 'click', deleteAll );
+visualDownloadButton.on( 'click', downloadAll );
 
 visualSortPreferenceButton.on( 'click', function(){
 
