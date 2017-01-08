@@ -2021,7 +2021,9 @@ var isOnSidebar = function( fsnode ){
 
 var generateContextMenu = function( item, options ){
 
-  var menu = api.menu();
+  var menu = api.menu()
+  options = options || {}
+
   console.log('item', item?item.fsnode:'null')
 
   if( !item ){
