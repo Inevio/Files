@@ -2046,8 +2046,8 @@ var generateContextMenu = function( item, options ){
 
     menu.addOption( lang.main.openFile, openFile.bind( null, item.fsnode ) )
     .addOption( lang.main.openFileLocal, item.fsnode.openLocal )
-    .addOption( lang.main.copy, clipboardCopy )
-    .addOption( lang.main.cut, clipboardCut )
+    .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+    .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
 
     if( item.fsnode.permissions.write ){
       menu.addOption( lang.main.rename, showRenameTextarea.bind( null, item ) );
@@ -2068,7 +2068,7 @@ var generateContextMenu = function( item, options ){
     }
 
     if( item.fsnode.permissions.download ){
-      menu.addOption( lang.main.download, downloadAll );
+      menu.addOption( lang.main.download, downloadAll.bind( null, null ) );
     }
 
     if( [ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ].indexOf( item.fsnode.mime ) !== -1 ){
@@ -2081,7 +2081,7 @@ var generateContextMenu = function( item, options ){
 
     menu
     .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
-    .addOption( lang.main.remove, deleteAll, 'warning' );
+    .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' );
 
   }else if( item.fsnode.type === TYPE_FOLDER ){
 
@@ -2098,8 +2098,8 @@ var generateContextMenu = function( item, options ){
     }else{
 
       menu
-      .addOption( lang.main.copy, clipboardCopy )
-      .addOption( lang.main.cut, clipboardCut )
+      .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+      .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
 
     }
 
@@ -2128,14 +2128,14 @@ var generateContextMenu = function( item, options ){
       if( options.inSidebar ){
         menu.addOption( lang.main.download, downloadAll.bind( null, [ item ] ) );
       }else{
-        menu.addOption( lang.main.download, downloadAll );
+        menu.addOption( lang.main.download, downloadAll.bind( null, null ) );
       }
 
     }
 
     if ( item.fsnode.pending ) {
-      menu.addOption( lang.received.contentAccept , acceptContent.bind( null , item.fsnode ) );
-      menu.addOption( lang.received.contentRefuse , refuseContent.bind( null , item.fsnode ) );
+      menu.addOption( lang.received.contentAccept, acceptContent.bind( null , item.fsnode ) );
+      menu.addOption( lang.received.contentRefuse, refuseContent.bind( null , item.fsnode ) );
     }
 
     menu
@@ -2144,7 +2144,7 @@ var generateContextMenu = function( item, options ){
     if( options.inSidebar ){
       menu.addOption( lang.main.remove, deleteAll.bind( null, [ item ] ), 'warning' );
     }else{
-      menu.addOption( lang.main.remove, deleteAll.bind( null, item ), 'warning' );
+      menu.addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' );
     }
 
   // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
@@ -2157,7 +2157,7 @@ var generateContextMenu = function( item, options ){
     if( options.inSidebar ){
       menu.addOption( lang.main.copy, clipboardCopy.bind( null, [ item ] ) )
     }else{
-      menu.addOption( lang.main.copy, clipboardCopy )
+      menu.addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
     }
 
     // Add to sidebar
@@ -2182,7 +2182,7 @@ var generateContextMenu = function( item, options ){
       if( options.inSidebar ){
         menu.addOption( lang.main.download, downloadAll.bind( null, [ item ] ) );
       }else{
-        menu.addOption( lang.main.download, downloadAll );
+        menu.addOption( lang.main.download, downloadAll.bind( null, null ) );
       }
 
     }
