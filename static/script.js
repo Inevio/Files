@@ -2613,8 +2613,12 @@ visualBreadcrumbs.on( 'click', '.list-trigger', function(){
 });
 
 visualCreateFolderButton.on( 'click', createFolder );
-visualDeleteButton.on( 'click', deleteAll );
-visualDownloadButton.on( 'click', downloadAll );
+visualDeleteButton.on( 'click', function(){
+  deleteAll()
+});
+visualDownloadButton.on( 'click', function(){
+  downloadAll()
+});
 
 visualSortPreferenceButton.on( 'click', function(){
 
