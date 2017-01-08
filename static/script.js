@@ -2019,7 +2019,7 @@ var isOnSidebar = function( fsnode ){
 
 }
 
-var generateContextMenu = function( item ){
+var generateContextMenu = function( item, options ){
 
   var menu = api.menu();
   console.log('item', item?item.fsnode:'null')
@@ -2086,8 +2086,20 @@ var generateContextMenu = function( item ){
     menu
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id ) )
     .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, item.fsnode.id, 'main') )
-    .addOption( lang.main.copy, clipboardCopy )
-    .addOption( lang.main.cut, clipboardCut );
+
+    if( options.inSidebar ){
+
+      menu
+      .addOption( lang.main.copy, clipboardCopy.bind( null, [ item ] ) )
+      .addOption( lang.main.cut, clipboardCut.bind( null, [ item ] ) )
+
+    }else{
+
+      menu
+      .addOption( lang.main.copy, clipboardCopy )
+      .addOption( lang.main.cut, clipboardCut )
+
+    }
 
     if( isOnSidebar( item.fsnode ) ){
       menu.addOption( lang.removeFromSidebar, removeFromSidebar.bind( null , item.fsnode ) )
@@ -2105,12 +2117,18 @@ var generateContextMenu = function( item ){
       menu.addOption( lang.main.shareWith, api.app.createView.bind( null, item.fsnode.id, 'share'));
     }
 
-    if( item.fsnode.permissions.write ){
+    if( item.fsnode.permissions.write && !options.inSidebar ){
       menu.addOption( lang.main.rename, showRenameTextarea.bind( null, item ) );
     }
 
     if( item.fsnode.permissions.download ){
-      menu.addOption( lang.main.download, downloadAll );
+
+      if( options.inSidebar ){
+        menu.addOption( lang.main.download, downloadAll.bind( null, [ item ] ) );
+      }else{
+        menu.addOption( lang.main.download, downloadAll );
+      }
+
     }
 
     if ( item.fsnode.pending ) {
@@ -2118,37 +2136,14 @@ var generateContextMenu = function( item ){
       menu.addOption( lang.received.contentRefuse , refuseContent.bind( null , item.fsnode ) );
     }
 
-    /*if( item.fsnode.permissions.download ){
-
-      menu.addOption( lang.download, function(){
-        downloadFiles.mousedown();
-      });
-
-    }
-
-    if( isInSidebar( icon.data('file-id') ) ){
-
-      menu.addOption( lang.removeFromSidebar, function(){
-        removeFromSidebar( icon.data( 'file-id' ) );
-      });
-
-    }else{
-
-      menu.addOption( lang.addToSidebar, function(){
-
-        if( icon.data('filePointer') ){
-          addToSidebar( icon.data( 'filePointer' ), icon.find('textarea').val() );
-        }else{
-          addToSidebar( icon.data( 'file-id' ), icon.find('textarea').val() );
-        }
-
-      });
-
-    }*/
-
     menu
     .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
-    .addOption( lang.main.remove, deleteAll, 'warning' );
+
+    if( options.inSidebar ){
+      menu.addOption( lang.main.remove, deleteAll.bind( null, [ item ] ), 'warning' );
+    }else{
+      menu.addOption( lang.main.remove, deleteAll.bind( null, item ), 'warning' );
+    }
 
   // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
   }else if( item.fsnode.type === TYPE_FOLDER_SPECIAL ){
@@ -2156,7 +2151,12 @@ var generateContextMenu = function( item ){
     menu
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id ) )
     .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, item.fsnode.id, 'main') )
-    .addOption( lang.main.copy, clipboardCopy )
+
+    if( options.inSidebar ){
+      menu.addOption( lang.main.copy, clipboardCopy.bind( null, [ item ] ) )
+    }else{
+      menu.addOption( lang.main.copy, clipboardCopy )
+    }
 
     // Add to sidebar
     if( wz.system.user().rootPath !== parseInt( item.fsnode.parent ) ){
@@ -2176,7 +2176,13 @@ var generateContextMenu = function( item ){
     */
 
     if( item.fsnode.permissions.download ){
-      menu.addOption( lang.main.download, downloadAll );
+
+      if( options.inSidebar ){
+        menu.addOption( lang.main.download, downloadAll.bind( null, [ item ] ) );
+      }else{
+        menu.addOption( lang.main.download, downloadAll );
+      }
+
     }
 
     menu
@@ -2543,7 +2549,7 @@ visualSidebarItemArea
 })
 
 .on( 'contextmenu', '.ui-navgroup-element', function(){
-  generateContextMenu({ fsnode : $(this).data('fsnode') })
+  generateContextMenu({ fsnode : $(this).data('fsnode') }, { inSidebar : true })
 })
 
 .on( 'wz-dropenter', '.ui-navgroup-element', function( e, item ){
