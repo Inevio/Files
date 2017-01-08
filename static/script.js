@@ -946,11 +946,19 @@ var getFolderItems = function( fsnode ){
   fsnode.list({ withPermissions: true }, function( error, list ){
 
     // To Do -> Error
-    list.forEach( function( item ){
-        changeName( item )
-      });
+    list = list.filter( function( item ){
 
-    end.resolve( list );
+      if( item.type === TYPE_FOLDER_SPECIAL && item.name === 'Received' ){
+        return false
+      }
+
+      changeName( item )
+
+      return true
+
+    })
+
+    end.resolve( list )
 
   });
 
