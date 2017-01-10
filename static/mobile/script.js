@@ -26,6 +26,7 @@ var usersShared = [];
 var usersToAddShare = [];
 var usersToRemoveShare = [];
 var fileSelected;
+var myId = api.system.user().id;
 
 // Functions
 var addZero = function( value ){
@@ -240,20 +241,25 @@ var showOptions = function( file ){
   $('.file-options .options-logo i').css('background-image', 'url("' + file.icons['tiny']  + '")');
   $('.file-options .file-size-value').text( api.tool.bytesToUnit( file.size, 2 ) );
 
+  //TODO quitar al soportar android 7.0
+  if( device.platform.toLowerCase() === 'android' && parseInt( device.version ) >= 7 ){
+    $('.file-options .option-section .option.download').hide();
+  }
+
   //TODO quitar despues de implementar compartir
-  //$('.option-section.share .share-with').hide();
+  $('.option-section.share .share-with').hide();
 
   if( file.type == 0 || file.type == 1 || file.type == 2 ){
 
     $('.file-options').addClass('folder');
     //TODO quitar despues de implementar compartir
-    //$('.option-section.share').hide();
+    $('.option-section.share').hide();
 
   }else{
 
     $('.file-options').removeClass('folder');
     //TODO quitar despues de implementar compartir
-    //$('.option-section.share').show();
+    $('.option-section.share').show();
 
   }
 
@@ -343,6 +349,10 @@ var showOptions = function( file ){
     $.each( users, function( index, userInArray ){
 
       var isOwner = userInArray.isOwner;
+      console.log(isOwner);
+      console.log(myId);
+      console.log(userInArray.userId);
+      console.log(!(isOwner && ( userInArray.userId == myId )));
 
       api.user( userInArray.userId, function(error, userI){
 
@@ -409,6 +419,8 @@ var showOptions = function( file ){
         }
 
       });
+
+
 
     });
 
