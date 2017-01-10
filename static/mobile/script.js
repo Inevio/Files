@@ -241,19 +241,19 @@ var showOptions = function( file ){
   $('.file-options .file-size-value').text( api.tool.bytesToUnit( file.size, 2 ) );
 
   //TODO quitar despues de implementar compartir
-  //$('.option-section.share .share-with').hide();
+  $('.option-section.share .share-with').hide();
 
   if( file.type == 0 || file.type == 1 || file.type == 2 ){
 
     $('.file-options').addClass('folder');
     //TODO quitar despues de implementar compartir
-    //$('.option-section.share').hide();
+    $('.option-section.share').hide();
 
   }else{
 
     $('.file-options').removeClass('folder');
     //TODO quitar despues de implementar compartir
-    //$('.option-section.share').show();
+    $('.option-section.share').show();
 
   }
 
