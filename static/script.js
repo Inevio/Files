@@ -312,9 +312,13 @@ var appendVisualSidebarItem = function( item ){
     return refreshNotificationCenter( item );
   }
 
-  var visualItem = visualSidebarItemPrototype.clone();
+  if( isInSidebar( item.id ) ){
+    return
+  }
 
-  visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) ).attr( 'data-id', item.id );
+  var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
+
+  visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) ).data( 'fsnode', item );
   visualItem.find('.ui-navgroup-element-txt').text( item.name );
 
   sidebarFolders.push( item );
@@ -440,12 +444,12 @@ var clearList = function(){
 
 };
 
-var clipboardCopy = function(){
-  api.app.storage( 'clipboard', { copy : currentActive.map( function( item ){ return item; } ) } );
+var clipboardCopy = function( items ){
+  api.app.storage( 'clipboard', { copy : ( items || currentActive ).map( function( item ){ return item } ) } )
 };
 
-var clipboardCut = function(){
-  api.app.storage( 'clipboard', { cut : currentActive.map( function( item ){ return item; } ) } );
+var clipboardCut = function( items ){
+  api.app.storage( 'clipboard', { cut : ( items || currentActive ).map( function( item ){ return item } ) } )
 };
 
 var clipboardPaste = function(){
@@ -517,15 +521,17 @@ var createFolder = function(){
 
 };
 
-var deleteAllActive = function(){
+var deleteAll = function( items ){
 
-  if ( currentActive.length === 1 && currentActive[0].fsnode.type === TYPE_FOLDER_SPECIAL ) {
-    return;
+  items = items || currentActive
+
+  if ( items.length === 1 && items[ 0 ].fsnode.type === TYPE_FOLDER_SPECIAL ) {
+    return
   }
 
   confirm( lang.main.confirmDelete, function( doIt ){
 
-    currentActive.forEach( function( item ){
+    items.forEach( function( item ){
 
       if( item.fsnode.type === TYPE_FOLDER_SPECIAL|| !doIt ){
         return
@@ -543,20 +549,21 @@ var deleteAllActive = function(){
 var checkIsOnSidebar = function( fsnode ){
 
   var index = sidebarFolders.indexOf( fsnode );
-  if ( index > -1 ) {
-    sidebarFolders.splice(index, 1);
-    removeFromSidebar( fsnode );
+
+  if( index > -1 ){
+    sidebarFolders.splice(index, 1)
+    removeFromSidebar( fsnode )
   }
 
 }
 
-var downloadAllActive = function(){
+var downloadAll = function( items ){
 
-  currentActive.forEach( function( item ){
-    item.fsnode.download();
-  });
+  ( items || currentActive ).forEach( function( item ){
+    item.fsnode.download()
+  })
 
-};
+}
 
 var drawIcons = function(){
 
@@ -939,11 +946,19 @@ var getFolderItems = function( fsnode ){
   fsnode.list({ withPermissions: true }, function( error, list ){
 
     // To Do -> Error
-    list.forEach( function( item ){
-        changeName( item )
-      });
+    list = list.filter( function( item ){
 
-    end.resolve( list );
+      if( item.type === TYPE_FOLDER_SPECIAL && item.name === 'Received' ){
+        return false
+      }
+
+      changeName( item )
+
+      return true
+
+    })
+
+    end.resolve( list )
 
   });
 
@@ -1245,7 +1260,7 @@ var getSidebarItems = function(){
 
   api.fs( 'root', function( error, fsnode ){
 
-    fsnode.list( function( error, list ){
+    fsnode.list({ withPermissions: true }, function( error, list ){
 
       list = list.filter( function( item ){
         return item.type === 1;
@@ -1685,22 +1700,16 @@ var sortByName = function( a, b ){
 
 };
 
-var sortBySize = function( a , b ){
-
-  return a.size - b.size;
-
+var sortBySize = function( a, b ){
+  return b.fsnode.size - a.fsnode.size
 }
 
-var sortByCreation = function( a , b ){
-
-  return a.dateCreated - b.dateCreated;
-
+var sortByCreation = function( a, b ){
+  return b.fsnode.dateCreated - a.fsnode.dateCreated
 }
 
-var sortByModif = function( a , b ){
-
-  return a.dateModified - b.dateModified;
-
+var sortByModif = function( a, b ){
+  return b.fsnode.dateModified - a.fsnode.dateModified
 }
 
 var moveListenerMousemove = function( e ){
@@ -1886,7 +1895,7 @@ var addToSidebar = function( fsnode ){
       // To Do -> Error
       if( !error && result.affectedRows ){
 
-          addToSidebarUi( fsnode );
+          appendVisualSidebarItem( fsnode );
 
           if( channel === null ){
 
@@ -1906,23 +1915,6 @@ var addToSidebar = function( fsnode ){
       }
 
   });
-
-};
-
-var addToSidebarUi = function( item ){
-
-  if( isInSidebar( item.id ) ){
-    return false;
-  }
-
-  var newSidebarElement = visualSidebarItemPrototype.clone().removeClass('wz-prototype');
-
-  sidebarFolders.push( item );
-
-  newSidebarElement.addClass( 'item-' + item.id ).attr( 'data-id', item.id );
-  newSidebarElement.find('.ui-navgroup-element-txt').text( item.name );
-
-  visualSidebarItemArea.append( newSidebarElement );
 
 };
 
@@ -2026,6 +2018,184 @@ var isOnSidebar = function( fsnode ){
   return res.length;
 
 }
+
+var generateContextMenu = function( item, options ){
+
+  var menu = api.menu()
+  options = options || {}
+
+  console.log('item', item?item.fsnode:'null')
+
+  if( !item ){
+
+    if( currentOpened.type === 1 && currentOpened.name === 'Received' ){
+      return
+    }
+
+    menu
+    .addOption( lang.main.upload, function(){ visualUploadButton.click()  } )
+    .addOption( lang.main.newFolder, createFolder )
+    .addOption( lang.main.paste, clipboardPaste )
+
+  }else if( item.fsnode.pending ){
+
+    menu.addOption( lang.received.contentAccept , acceptContent.bind( null , item.fsnode ) );
+    menu.addOption( lang.received.contentRefuse , refuseContent.bind( null , item.fsnode ), 'warning');
+
+  }else if( item.fsnode.type === TYPE_FILE ){
+
+    menu.addOption( lang.main.openFile, openFile.bind( null, item.fsnode ) )
+    .addOption( lang.main.openFileLocal, item.fsnode.openLocal )
+    .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+    .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
+
+    if( item.fsnode.permissions.write ){
+      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, item ) );
+    }
+
+    if( item.fsnode.permissions.link ){
+      menu.addOption( lang.main.createLink, api.app.createView.bind( null, item.fsnode.id, 'link') );
+    }
+
+    /* Not supported yet
+    if( item.fsnode.permissions.send ){
+      menu.addOption( lang.main.sendTo, api.app.createView.bind( null, item.fsnode.id, 'send') );
+    }
+    */
+
+    if( item.fsnode.permissions.share ){
+      menu.addOption( lang.main.shareWith, api.app.createView.bind( null, item.fsnode.id, 'share') );
+    }
+
+    if( item.fsnode.permissions.download ){
+      menu.addOption( lang.main.download, downloadAll.bind( null, null ) );
+    }
+
+    if( [ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ].indexOf( item.fsnode.mime ) !== -1 ){
+
+      menu.addOption( 'Establecer como fondo', function(){
+        api.config.setFSNodeAsWallpaper( item.fsnode.id );
+      });
+
+    }
+
+    menu
+    .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
+    .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' );
+
+  }else if( item.fsnode.type === TYPE_FOLDER ){
+
+    menu
+    .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id ) )
+    .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, item.fsnode.id, 'main') )
+
+    if( options.inSidebar ){
+
+      menu
+      .addOption( lang.main.copy, clipboardCopy.bind( null, [ item ] ) )
+      .addOption( lang.main.cut, clipboardCut.bind( null, [ item ] ) )
+
+    }else{
+
+      menu
+      .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+      .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
+
+    }
+
+    if( isOnSidebar( item.fsnode ) ){
+      menu.addOption( lang.removeFromSidebar, removeFromSidebar.bind( null , item.fsnode ) )
+    }else{
+      menu.addOption( lang.addToSidebar, addToSidebar.bind( null , item.fsnode ) )
+    }
+
+    /* Not supported yet
+    if( item.fsnode.permissions.send ){
+      menu.addOption( lang.main.sendTo, api.app.createView.bind( null, item.fsnode.id, 'send') );
+    }
+    */
+
+    if( item.fsnode.permissions.share ){
+      menu.addOption( lang.main.shareWith, api.app.createView.bind( null, item.fsnode.id, 'share'));
+    }
+
+    if( item.fsnode.permissions.write && !options.inSidebar ){
+      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, item ) );
+    }
+
+    if( item.fsnode.permissions.download ){
+
+      if( options.inSidebar ){
+        menu.addOption( lang.main.download, downloadAll.bind( null, [ item ] ) );
+      }else{
+        menu.addOption( lang.main.download, downloadAll.bind( null, null ) );
+      }
+
+    }
+
+    if ( item.fsnode.pending ) {
+      menu.addOption( lang.received.contentAccept, acceptContent.bind( null , item.fsnode ) );
+      menu.addOption( lang.received.contentRefuse, refuseContent.bind( null , item.fsnode ) );
+    }
+
+    menu
+    .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
+
+    if( options.inSidebar ){
+      menu.addOption( lang.main.remove, deleteAll.bind( null, [ item ] ), 'warning' );
+    }else{
+      menu.addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' );
+    }
+
+  // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
+  }else if( item.fsnode.type === TYPE_FOLDER_SPECIAL ){
+
+    menu
+    .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id ) )
+    .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, item.fsnode.id, 'main') )
+
+    if( options.inSidebar ){
+      menu.addOption( lang.main.copy, clipboardCopy.bind( null, [ item ] ) )
+    }else{
+      menu.addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+    }
+
+    // Add to sidebar
+    if( wz.system.user().rootPath !== parseInt( item.fsnode.parent ) ){
+
+      if( isOnSidebar( item.fsnode ) ){
+        menu.addOption( lang.removeFromSidebar, removeFromSidebar.bind( null , item.fsnode ) )
+      }else{
+        menu.addOption( lang.addToSidebar, addToSidebar.bind( null , item.fsnode ) )
+      }
+
+    }
+
+    /* Not supported yet
+    if( item.fsnode.permissions.send ){
+      menu.addOption( lang.main.sendTo, api.app.createView.bind( null, item.fsnode.id, 'send') );
+    }
+    */
+
+    if( item.fsnode.permissions.download ){
+
+      if( options.inSidebar ){
+        menu.addOption( lang.main.download, downloadAll.bind( null, [ item ] ) );
+      }else{
+        menu.addOption( lang.main.download, downloadAll.bind( null, null ) );
+      }
+
+    }
+
+    menu
+    .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
+
+  }
+
+  menu.render()
+
+}
+
 // API Events
 api.fs
 .on( 'new', function( fsnode ){
@@ -2224,7 +2394,7 @@ win
   if( $(e.target).is('textarea') ){
     e.stopPropagation();
   }else{
-    deleteAllActive();
+    deleteAll();
   }
 
 })
@@ -2377,7 +2547,11 @@ win
 
 visualSidebarItemArea
 .on( 'click', '.ui-navgroup-element', function(){
-  openFolder( $(this).attr('data-id') );
+  openFolder( $(this).data('fsnode').id );
+})
+
+.on( 'contextmenu', '.ui-navgroup-element', function(){
+  generateContextMenu({ fsnode : $(this).data('fsnode') }, { inSidebar : true })
 })
 
 .on( 'wz-dropenter', '.ui-navgroup-element', function( e, item ){
@@ -2439,8 +2613,12 @@ visualBreadcrumbs.on( 'click', '.list-trigger', function(){
 });
 
 visualCreateFolderButton.on( 'click', createFolder );
-visualDeleteButton.on( 'click', deleteAllActive );
-visualDownloadButton.on( 'click', downloadAllActive );
+visualDeleteButton.on( 'click', function(){
+  deleteAll()
+});
+visualDownloadButton.on( 'click', function(){
+  downloadAll()
+});
 
 visualSortPreferenceButton.on( 'click', function(){
 
@@ -2547,164 +2725,7 @@ visualItemArea
 })
 
 .on( 'contextmenu', function( e ){
-
-  var itemClicked = getIconWithMouserOver( e );
-  var menu = api.menu();
-  console.log('itemClicked', itemClicked?itemClicked.fsnode:'null')
-
-  if( !itemClicked ){
-
-    if( currentOpened.type === 1 && currentOpened.name === 'Received' ){
-      return
-    }
-
-    menu
-    .addOption( lang.main.upload, function(){ visualUploadButton.click()  } )
-    .addOption( lang.main.newFolder, createFolder )
-    .addOption( lang.main.paste, clipboardPaste )
-
-  }else if( itemClicked.fsnode.pending ){
-
-    menu.addOption( lang.received.contentAccept , acceptContent.bind( null , itemClicked.fsnode ) );
-    menu.addOption( lang.received.contentRefuse , refuseContent.bind( null , itemClicked.fsnode ), 'warning');
-
-  // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
-  }else if( itemClicked.fsnode.type === TYPE_FILE ){
-
-    menu.addOption( lang.main.openFile, openFile.bind( null, itemClicked.fsnode ) )
-    .addOption( lang.main.openFileLocal, itemClicked.fsnode.openLocal )
-    .addOption( lang.main.copy , clipboardCopy )
-    .addOption( lang.main.cut , clipboardCut );
-
-    if( itemClicked.fsnode.permissions.write ){
-      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, itemClicked ) );
-    }
-
-    if( itemClicked.fsnode.permissions.link ){
-      menu.addOption( lang.main.createLink, api.app.createView.bind( null, itemClicked.fsnode.id, 'link') );
-    }
-
-    /* Not supported yet
-    if( itemClicked.fsnode.permissions.send ){
-      menu.addOption( lang.main.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
-    }
-    */
-
-    if( itemClicked.fsnode.permissions.share ){
-      menu.addOption( lang.main.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share') );
-    }
-
-    if( itemClicked.fsnode.permissions.download ){
-      menu.addOption( lang.main.download, downloadAllActive );
-    }
-
-    if( [ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ].indexOf( itemClicked.fsnode.mime ) !== -1 ){
-
-      menu.addOption( 'Establecer como fondo', function(){
-        api.config.setFSNodeAsWallpaper( icon.data( 'file-id' ) );
-      });
-
-    }
-
-    menu
-    .addOption( lang.main.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') )
-    .addOption( lang.main.remove, deleteAllActive, 'warning' );
-
-  // To Do -> Check all the rules -> else if( icon.hasClass('directory') || ( icon.data( 'filePointerType' ) === 0 && !icon.hasClass('pointer-pending') ) ){
-  }else if( itemClicked.fsnode.type === TYPE_FOLDER ){
-
-    menu
-    .addOption( lang.main.openFolder, openFolder.bind( null, itemClicked.fsnode.id ) )
-    .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, itemClicked.fsnode.id, 'main') )
-    .addOption( lang.main.copy, clipboardCopy )
-    .addOption( lang.main.cut, clipboardCut );
-
-    if ( isOnSidebar( itemClicked.fsnode ) ) {
-      menu.addOption( lang.removeFromSidebar, removeFromSidebar.bind( null , itemClicked.fsnode ) );
-    }else{
-      menu.addOption( lang.addToSidebar, addToSidebar.bind( null , itemClicked.fsnode ) );
-    }
-
-    /* Not supported yet
-    if( itemClicked.fsnode.permissions.send ){
-      menu.addOption( lang.main.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
-    }
-    */
-
-    if( itemClicked.fsnode.permissions.share ){
-      menu.addOption( lang.main.shareWith, api.app.createView.bind( null, itemClicked.fsnode.id, 'share'));
-    }
-
-    if( itemClicked.fsnode.permissions.write ){
-      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, itemClicked ) );
-    }
-
-    if( itemClicked.fsnode.permissions.download ){
-      menu.addOption( lang.main.download, downloadAllActive );
-    }
-
-    if ( itemClicked.fsnode.pending ) {
-      menu.addOption( lang.received.contentAccept , acceptContent.bind( null , itemClicked.fsnode ) );
-      menu.addOption( lang.received.contentRefuse , refuseContent.bind( null , itemClicked.fsnode ) );
-    }
-
-    /*if( itemClicked.fsnode.permissions.download ){
-
-      menu.addOption( lang.download, function(){
-        downloadFiles.mousedown();
-      });
-
-    }
-
-    if( isInSidebar( icon.data('file-id') ) ){
-
-      menu.addOption( lang.removeFromSidebar, function(){
-        removeFromSidebar( icon.data( 'file-id' ) );
-      });
-
-    }else{
-
-      menu.addOption( lang.addToSidebar, function(){
-
-        if( icon.data('filePointer') ){
-          addToSidebar( icon.data( 'filePointer' ), icon.find('textarea').val() );
-        }else{
-          addToSidebar( icon.data( 'file-id' ), icon.find('textarea').val() );
-        }
-
-      });
-
-    }*/
-
-    menu
-    .addOption( lang.main.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') )
-    .addOption( lang.main.remove, deleteAllActive, 'warning' );
-
-  // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
-  }else if( itemClicked.fsnode.type === TYPE_FOLDER_SPECIAL ){
-
-    menu
-    .addOption( lang.main.openFolder, openFolder.bind( null, itemClicked.fsnode.id ) )
-    .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, itemClicked.fsnode.id, 'main') )
-    .addOption( lang.main.copy, clipboardCopy )
-
-    /* Not supported yet
-    if( itemClicked.fsnode.permissions.send ){
-      menu.addOption( lang.main.sendTo, api.app.createView.bind( null, itemClicked.fsnode.id, 'send') );
-    }
-    */
-
-    if( itemClicked.fsnode.permissions.download ){
-      menu.addOption( lang.main.download, downloadAllActive );
-    }
-
-    menu
-    .addOption( lang.main.properties, api.app.createView.bind( null, itemClicked.fsnode.id, 'properties') )
-
-  }
-
-  menu.render();
-
+  generateContextMenu( getIconWithMouserOver( e ) )
 })
 
 .on( 'dblclick', function( e ){
