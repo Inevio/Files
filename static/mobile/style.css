@@ -512,8 +512,8 @@
   display: none;
 }
 
-.option-section .option.download{
-  /*display: none;*/
+.file-options.folder .option-section .option.download{
+  display: none;
 }
 
 .option-section .option.send-to figure{
