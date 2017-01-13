@@ -349,10 +349,10 @@ var showOptions = function( file ){
     $.each( users, function( index, userInArray ){
 
       var isOwner = userInArray.isOwner;
-      console.log(isOwner);
+      /*console.log(isOwner);
       console.log(myId);
       console.log(userInArray.userId);
-      console.log(!(isOwner && ( userInArray.userId == myId )));
+      console.log(!(isOwner && ( userInArray.userId == myId )));*/
 
       api.user( userInArray.userId, function(error, userI){
 
@@ -386,7 +386,10 @@ var showOptions = function( file ){
 
           insertedIds.push( userI.id )
           toInsert.push( user );
-          toInsertS.push( userS );
+          if( !( isOwner && (userI.id == myId) ) ){
+            toInsertS.push( userS );
+          }
+
 
         }
 
