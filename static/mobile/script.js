@@ -511,7 +511,8 @@ var showCreateLink = function(){
     });
 
     $('.options-header .options-more').hide();
-    $('.toggles-container .selector').removeClass('active');
+    $('.toggles-container .preview .selector,.toggles-container .download .selector').addClass('active');
+    $('.toggles-container .password .selector').removeClass('active');
     $('.create-link-title').removeClass('password-mode');
     $('.password-container').val('').hide();
 
