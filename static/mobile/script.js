@@ -565,7 +565,7 @@ var createLink = function(){
 
   api.fs( $('.weexplorer-element.active').data('id'),function( error, structure ){
 
-    var password  = ( $('.toggles-container .preview .selector').hasClass('active') && $('.password-container').val() ) ? $('.password-container').val() : null;
+    var password  = ( $('.password-container').val().length ) ? $('.password-container').val() : null;
     var preview   = $('.toggles-container .preview .selector').hasClass('active');
     var downloads = $('.toggles-container .download .selector').hasClass('active');
 
