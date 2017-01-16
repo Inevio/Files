@@ -269,8 +269,7 @@ var showOptions = function( file ){
     addZero( createdDate.getDate() ) + '/' +
     createdDate.getFullYear() + ', ' +
     addZero( createdDate.getHours() ) + ':' +
-    addZero( createdDate.getMinutes() ) + ':' +
-    addZero( createdDate.getSeconds() )
+    addZero( createdDate.getMinutes() )
 
   );
 
@@ -280,8 +279,7 @@ var showOptions = function( file ){
     addZero( modifiedDate.getDate() ) + '/' +
     modifiedDate.getFullYear() + ', ' +
     addZero( modifiedDate.getHours() ) + ':' +
-    addZero( modifiedDate.getMinutes() ) + ':' +
-    addZero( modifiedDate.getSeconds() )
+    addZero( modifiedDate.getMinutes() )
 
   );
 
