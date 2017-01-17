@@ -439,19 +439,31 @@
   float: right;
   width: 23px;
   height: 23px;
+  padding: 5px 18px 5px 8px;
+}
+
+.file-options .options-header .options-more i{
+	width: 23px;
+  height: 23px;
   background-image: url('@static/mobile/info.png');
-  background-size: cover;
-  margin: 0 18px 0 8px;
+  background-size: 23px 23px;
+	display: inline-block;
 }
 
 .file-options .options-header .options-close{
   float: right;
   width: 12px;
   height: 12px;
-  background-image: url('@static/mobile/cerrar-info.png');
-  background-size: cover;
-  margin: 0 18px 0 13px;
+  padding: 10px 18px 10px 13px;
   display: none;
+}
+
+.file-options .options-header .options-close i{
+	width: 12px;
+  height: 12px;
+	background-image: url('@static/mobile/cerrar-info.png');
+	background-size: 12px 12px;
+	display: inline-block;
 }
 
 .file-options .options-header .rename-accept{
