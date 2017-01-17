@@ -985,16 +985,15 @@
   flex-wrap: wrap;
   justify-content: space-around;
   width: 100%;
-  padding: 0 16px;
+  padding: 0 10px;
   box-sizing: border-box;
   align-items: center;
-  /*align-content: center;*/
-  height: ~'calc(100% - 50px)';
+  align-content: space-around;
+  height: 250px;
 	overflow-y: scroll;
 
   .permission{
-    margin-top: 36px;
-    width: 110px;
+    width: 90px;
     text-align: center;
 
     .icon{

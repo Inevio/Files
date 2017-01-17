@@ -283,6 +283,10 @@ var showOptions = function( file ){
 
   );
 
+  if( win.height() > 500 ){
+    $('.share-details .share-with-friends .second-step .title').css('margin-bottom','40px');
+  }
+
   file.getPath( function( error, pathList ){
 
     if( !error ){
