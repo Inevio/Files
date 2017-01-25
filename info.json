@@ -18,7 +18,7 @@
         "desktop" : {
 
             "primary" : "main",
-            "service" : [ "events.js" ],
+            "service" : [ "service.js" ],
             "common"  : {
 
                 "css"    : [],
