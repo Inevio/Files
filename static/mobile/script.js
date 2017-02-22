@@ -242,9 +242,9 @@ var showOptions = function( file ){
   $('.file-options .file-size-value').text( api.tool.bytesToUnit( file.size, 2 ) );
 
   //TODO quitar al soportar android 7.0
-  if( device.platform.toLowerCase() === 'android' && parseInt( device.version ) >= 7 ){
+  /*if( device.platform.toLowerCase() === 'android' && parseInt( device.version ) >= 7 ){
     $('.file-options .option-section .option.download').hide();
-  }
+  }*/
 
   //TODO quitar despues de implementar compartir
   //$('.option-section.share .share-with').hide();
