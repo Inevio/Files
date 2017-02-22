@@ -318,7 +318,7 @@ var appendVisualSidebarItem = function( item ){
 
   var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
 
-  visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) ).data( 'fsnode', item );
+  visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) ).data( 'fsnode', item ).data( 'id' , item.id );
   visualItem.find('.ui-navgroup-element-txt').text( item.name );
 
   sidebarFolders.push( item );
@@ -2047,8 +2047,11 @@ var generateContextMenu = function( item, options ){
 
     menu.addOption( lang.main.openFile, openFile.bind( null, item.fsnode ) )
     .addOption( lang.main.openFileLocal, item.fsnode.openLocal )
-    .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
-    .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
+
+    if ( item.fsnode.permissions.copy ) {
+      menu.addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+      .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
+    }
 
     if( item.fsnode.permissions.write ){
       menu.addOption( lang.main.rename, showRenameTextarea.bind( null, item ) );
@@ -2090,18 +2093,16 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id ) )
     .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, item.fsnode.id, 'main') )
 
-    if( options.inSidebar ){
-
-      menu
-      .addOption( lang.main.copy, clipboardCopy.bind( null, [ item ] ) )
-      .addOption( lang.main.cut, clipboardCut.bind( null, [ item ] ) )
-
-    }else{
-
-      menu
-      .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
-      .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
-
+    if ( item.fsnode.permissions.copy ) {
+      if( options.inSidebar ){
+        menu
+        .addOption( lang.main.copy, clipboardCopy.bind( null, [ item ] ) )
+        .addOption( lang.main.cut, clipboardCut.bind( null, [ item ] ) )
+      }else{
+        menu
+        .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+        .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
+      }
     }
 
     if( isOnSidebar( item.fsnode ) ){
@@ -2155,11 +2156,14 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id ) )
     .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, item.fsnode.id, 'main') )
 
-    if( options.inSidebar ){
-      menu.addOption( lang.main.copy, clipboardCopy.bind( null, [ item ] ) )
-    }else{
-      menu.addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+    if ( item.fsnode.permissions.copy ) {
+      if( options.inSidebar ){
+        menu.addOption( lang.main.copy, clipboardCopy.bind( null, [ item ] ) )
+      }else{
+        menu.addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+      }
     }
+
 
     // Add to sidebar
     if( wz.system.user().rootPath !== parseInt( item.fsnode.parent ) ){
