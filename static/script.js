@@ -1457,7 +1457,8 @@ var openFile = function( fsnode ){
   fsnode.open( currentList.filter(function( item ){ return item.fsnode.type === TYPE_FILE; }).map( function( item ){ return item.fsnode.id; }), function( error ){
 
     if( error ){
-      alert( lang.main.noApp );
+      console.log( lang.main.noApp );
+      fsnode.openLocal();
     }
 
   });
