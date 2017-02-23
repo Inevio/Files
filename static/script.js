@@ -2400,6 +2400,21 @@ api.upload
 
 .on( 'fsnodeProgress', function( fsnodeId, progress, queue ){
 
+  if( !win.hasClass('uploading') ){
+
+    var queueSize = queue.length();
+
+    win.addClass('uploading');
+    startUploadingAnimation();
+
+    if( queueSize === 1 ){
+      visualProgressStatusNumber.text( lang.main.uploadingNumberFile.replace( '%d', queueSize ) )
+    }else{
+      visualProgressStatusNumber.text( lang.main.uploadingNumberFiles.replace( '%d', ( queueSize - queue.pending.length ) || 1 ).replace( '%d', queueSize ) )
+    }
+
+  }
+
   var progress = queue.progress()
   var percentage = parseFloat( progress * 100 ).toFixed( 1 )
   var time = 100
