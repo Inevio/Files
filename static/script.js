@@ -1984,7 +1984,8 @@ var removeFromSidebarUi = function( item ){
 
 var acceptContent = function( fsnode ){
 
-  api.fs.selectSource( { title: lang.received.chooseDestiny , mode: 'directory' } , function( e , dir ){
+  api.fs.selectDestiny( { title: lang.received.chooseDestiny , mode: 'directory' , name: fsnode.name } , function( e , dir ){
+
 
     if (!e) {
 
@@ -3115,7 +3116,7 @@ var translate = function(){
   $('.ui-input-search').find('input').attr('placeholder', lang.main.search);
   $('.ui-navgroup-title-txt').text(lang.main.favourites);
   $('.status-number').text(lang.main.uploadXFiles);
-  $('.ui-confirm .accept span').text( params && params.command === 'selectSource' ? lang.main.open : lang.main.select );
+  $('.ui-confirm .accept span').text( params && params.command === 'selectSource' ? lang.main.select : lang.share.save );
   $('.ui-confirm .cancel span').text(lang.main.cancel);
   $('.ui-confirm').find('.ui-input').find('input').attr('placeholder', lang.main.fileName);
   $('.notification-list-title span').text( lang.main.activity );
