@@ -25,6 +25,7 @@ var currentList             = [];
 var currentRows             = [];
 var currentHover            = null;
 var currentActive           = [];
+var currentCutted           = [];
 var currentActiveIcons      = {};
 var currentScroll           = 0;
 var currentMaxScroll        = 0;
@@ -91,6 +92,7 @@ var Icon = function( fsnode ){
   this.fsnode             = fsnode;
   this.active             = false;
   this.hover              = false;
+  this.cutted             = false;
   this.bigIcon            = null;
   this.bigIconHeight      = 0;
   this.bigIconTextHeight  = 0;
@@ -445,11 +447,19 @@ var clearList = function(){
 };
 
 var clipboardCopy = function( items ){
+  cancelCuttedItems();
   api.app.storage( 'clipboard', { copy : ( items || currentActive ).map( function( item ){ return item } ) } )
 };
 
 var clipboardCut = function( items ){
-  api.app.storage( 'clipboard', { cut : ( items || currentActive ).map( function( item ){ return item } ) } )
+  cancelCuttedItems();
+  var itemsCutted = ( items || currentActive ).map( function( item ){ return item } );
+  itemsCutted.forEach(function( itemCutted ){
+    itemCutted.cutted = true;
+  })
+  currentCutted = itemsCutted;
+  requestDraw();
+  api.app.storage( 'clipboard', { cut : itemsCutted });
 };
 
 var clipboardPaste = function(){
@@ -474,6 +484,7 @@ var clipboardPaste = function(){
       if ( item.fsnode.parent != currentOpened.id ) {
         item.fsnode.move( currentOpened.id, function(){
           console.log( arguments );
+          cancelCuttedItems();
         });
       }
 
@@ -567,6 +578,8 @@ var downloadAll = function( items ){
 
 var drawIcons = function(){
 
+  setCuttedIcons();
+
   if( currentList.length ){
     drawIconsInGrid();
     //drawIconsInList()
@@ -635,7 +648,7 @@ var drawIconsInGrid = function(){
 
       }
 
-      if( icon.active ){
+      if( icon.active && !icon.cutted ){
 
         ctx.strokeStyle = '#60b25e';
         ctx.fillStyle = '#60b25e';
@@ -654,7 +667,11 @@ var drawIconsInGrid = function(){
       }
 
     }else{
-      ctx.fillStyle = icon.active ? '#ffffff' : '#545f65';
+      if (icon.cutted) {
+        ctx.fillStyle = '#b6babc';
+      }else{
+        ctx.fillStyle = icon.active ? '#ffffff' : '#545f65';
+      }
     }
 
     ctx.font = '13px Lato';
@@ -676,6 +693,12 @@ var drawIconsInGrid = function(){
     if( icon.bigIcon.naturalWidth ){
 
       var normalized = normalizeBigIconSize( icon.bigIcon );
+
+      if ( icon.cutted ) {
+        ctx.globalAlpha = 0.5;
+      }else{
+        ctx.globalAlpha = 1;
+      }
 
       ctx.drawImage( icon.bigIcon, x + ( ICON_WIDTH -  normalized.width ) / 2, y + ( ICON_IMAGE_HEIGHT_AREA - normalized.height ) / 2, normalized.width, normalized.height );
 
@@ -2050,12 +2073,8 @@ var generateContextMenu = function( item, options ){
 
     if ( item.fsnode.permissions.copy ) {
       menu.addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
-      .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
     }
-
-    if( item.fsnode.permissions.write ){
-      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, item ) );
-    }
+    menu.addOption( lang.main.cut, clipboardCut.bind( null, null ) )
 
     if( item.fsnode.permissions.link ){
       menu.addOption( lang.main.createLink, api.app.createView.bind( null, item.fsnode.id, 'link') );
@@ -2083,6 +2102,11 @@ var generateContextMenu = function( item, options ){
 
     }
 
+
+    if( item.fsnode.permissions.write ){
+      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, item ) );
+    }
+
     menu
     .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
     .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' );
@@ -2093,16 +2117,16 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id ) )
     .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, item.fsnode.id, 'main') )
 
-    if ( item.fsnode.permissions.copy ) {
-      if( options.inSidebar ){
-        menu
-        .addOption( lang.main.copy, clipboardCopy.bind( null, [ item ] ) )
-        .addOption( lang.main.cut, clipboardCut.bind( null, [ item ] ) )
-      }else{
-        menu
-        .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
-        .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
+    if( options.inSidebar ){
+      if ( item.fsnode.permissions.copy ) {
+        menu.addOption( lang.main.copy, clipboardCopy.bind( null, [ item ] ) )
       }
+      menu.addOption( lang.main.cut, clipboardCut.bind( null, [ item ] ) )
+    }else{
+      if ( item.fsnode.permissions.copy ) {
+        menu.addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+      }
+      menu.addOption( lang.main.cut, clipboardCut.bind( null, null ) )
     }
 
     if( isOnSidebar( item.fsnode ) ){
@@ -2121,10 +2145,6 @@ var generateContextMenu = function( item, options ){
       menu.addOption( lang.main.shareWith, api.app.createView.bind( null, item.fsnode.id, 'share'));
     }
 
-    if( item.fsnode.permissions.write && !options.inSidebar ){
-      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, item ) );
-    }
-
     if( item.fsnode.permissions.download ){
 
       if( options.inSidebar ){
@@ -2138,6 +2158,10 @@ var generateContextMenu = function( item, options ){
     if ( item.fsnode.pending ) {
       menu.addOption( lang.received.contentAccept, acceptContent.bind( null , item.fsnode ) );
       menu.addOption( lang.received.contentRefuse, refuseContent.bind( null , item.fsnode ) );
+    }
+
+    if( item.fsnode.permissions.write && !options.inSidebar ){
+      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, item ) );
     }
 
     menu
@@ -2199,6 +2223,34 @@ var generateContextMenu = function( item, options ){
 
   menu.render()
 
+}
+
+var cancelCuttedItems = function(){
+  if ( currentCutted.length > 0 ) {
+    currentList.forEach(function( item ){
+      currentCutted.forEach(function( cuttedItem , i ){
+        if (item.fsnode.id === cuttedItem.fsnode.id) {
+          item.cutted = false;
+          currentCutted.splice(i, 1);
+        }
+      });
+    });
+    api.app.storage( 'clipboard', { cut : '' });
+    requestDraw();
+  }
+}
+
+
+var setCuttedIcons = function(){
+  if ( currentCutted.length > 0 ) {
+    currentList.forEach(function( item ){
+      currentCutted.forEach(function( cuttedItem ){
+        if (item.fsnode.id === cuttedItem.fsnode.id) {
+          item.cutted = true;
+        }
+      });
+    });
+  }
 }
 
 // API Events
@@ -2417,6 +2469,8 @@ win
 })
 
 .key( 'esc', function( e ){
+
+  cancelCuttedItems();
 
   if( $(e.target).is('textarea') ){
     hideRenameTextarea( true );
