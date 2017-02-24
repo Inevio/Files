@@ -465,6 +465,7 @@ var clipboardCut = function( items ){
 var clipboardPaste = function(){
 
   var storage = api.app.storage( 'clipboard');
+  cancelCuttedItems();
 
   if( storage.copy ){
 
@@ -484,7 +485,6 @@ var clipboardPaste = function(){
       if ( item.fsnode.parent != currentOpened.id ) {
         item.fsnode.move( currentOpened.id, function(){
           console.log( arguments );
-          cancelCuttedItems();
         });
       }
 
@@ -2228,14 +2228,10 @@ var generateContextMenu = function( item, options ){
 
 var cancelCuttedItems = function(){
   if ( currentCutted.length > 0 ) {
-    currentList.forEach(function( item ){
-      currentCutted.forEach(function( cuttedItem , i ){
-        if (item.fsnode.id === cuttedItem.fsnode.id) {
-          item.cutted = false;
-          currentCutted.splice(i, 1);
-        }
-      });
+    currentCutted.forEach(function( cuttedItem ){
+      cuttedItem.cutted = false;
     });
+    currentCutted = [];
     api.app.storage( 'clipboard', { cut : '' });
     requestDraw();
   }
