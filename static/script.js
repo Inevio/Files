@@ -25,7 +25,6 @@ var currentList             = [];
 var currentRows             = [];
 var currentHover            = null;
 var currentActive           = [];
-var currentCutted           = [];
 var currentActiveIcons      = {};
 var currentScroll           = 0;
 var currentMaxScroll        = 0;
@@ -92,7 +91,6 @@ var Icon = function( fsnode ){
   this.fsnode             = fsnode;
   this.active             = false;
   this.hover              = false;
-  this.cutted             = false;
   this.bigIcon            = null;
   this.bigIconHeight      = 0;
   this.bigIconTextHeight  = 0;
@@ -453,13 +451,8 @@ var clipboardCopy = function( items ){
 
 var clipboardCut = function( items ){
   cancelCuttedItems();
-  var itemsCutted = ( items || currentActive ).map( function( item ){ return item } );
-  itemsCutted.forEach(function( itemCutted ){
-    itemCutted.cutted = true;
-  })
-  currentCutted = itemsCutted;
+  api.app.storage( 'clipboard', { cut : ( items || currentActive ).map( function( item ){ return item } ) });
   requestDraw();
-  api.app.storage( 'clipboard', { cut : itemsCutted });
 };
 
 var clipboardPaste = function(){
@@ -578,8 +571,6 @@ var downloadAll = function( items ){
 
 var drawIcons = function(){
 
-  setCuttedIcons();
-
   if( currentList.length ){
     drawIconsInGrid();
     //drawIconsInList()
@@ -648,7 +639,7 @@ var drawIconsInGrid = function(){
 
       }
 
-      if( icon.active && !icon.cutted ){
+      if( icon.active && !isCutted(icon) ){
 
         ctx.strokeStyle = '#60b25e';
         ctx.fillStyle = '#60b25e';
@@ -667,7 +658,7 @@ var drawIconsInGrid = function(){
       }
 
     }else{
-      if (icon.cutted) {
+      if (isCutted(icon)) {
         ctx.fillStyle = '#b6babc';
       }else{
         ctx.fillStyle = icon.active ? '#ffffff' : '#545f65';
@@ -693,12 +684,6 @@ var drawIconsInGrid = function(){
     if( icon.bigIcon.naturalWidth ){
 
       var normalized = normalizeBigIconSize( icon.bigIcon );
-
-      if ( icon.cutted ) {
-        ctx.globalAlpha = 0.5;
-      }else{
-        ctx.globalAlpha = 1;
-      }
 
       ctx.drawImage( icon.bigIcon, x + ( ICON_WIDTH -  normalized.width ) / 2, y + ( ICON_IMAGE_HEIGHT_AREA - normalized.height ) / 2, normalized.width, normalized.height );
 
@@ -741,7 +726,7 @@ var drawIconsInGrid = function(){
       ( disabledFileIcons && icon.fsnode.type === TYPE_FILE ) ||
       ( dropActive && icon.fsnode.type === TYPE_FILE ) ||
       dropIgnore.indexOf( icon ) !== -1 ||
-      icon.fsnode.fileId === 'TO_UPDATE'
+      icon.fsnode.fileId === 'TO_UPDATE' || isCutted(icon)
     ){
 
       ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
@@ -2227,27 +2212,20 @@ var generateContextMenu = function( item, options ){
 }
 
 var cancelCuttedItems = function(){
-  if ( currentCutted.length > 0 ) {
-    currentCutted.forEach(function( cuttedItem ){
-      cuttedItem.cutted = false;
-    });
-    currentCutted = [];
-    api.app.storage( 'clipboard', { cut : '' });
-    requestDraw();
-  }
+  api.app.storage( 'clipboard', { cut : '' });
 }
 
+var isCutted = function( icon ){
 
-var setCuttedIcons = function(){
-  if ( currentCutted.length > 0 ) {
-    currentList.forEach(function( item ){
-      currentCutted.forEach(function( cuttedItem ){
-        if (item.fsnode.id === cuttedItem.fsnode.id) {
-          item.cutted = true;
-        }
-      });
+  var cuttedIcons = api.app.storage( 'clipboard' ) ? api.app.storage( 'clipboard' ).cut : false;
+  if (cuttedIcons) {
+    cuttedIcons = cuttedIcons.filter(function( iconCutted ){
+      return iconCutted.fsnode.id === icon.fsnode.id;
     });
+    cuttedIcons = cuttedIcons.length > 0 ? true : false;
   }
+  return cuttedIcons;
+
 }
 
 // API Events
