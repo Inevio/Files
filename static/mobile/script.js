@@ -915,8 +915,14 @@ $( '#weexplorer-sidebar' ).on( 'click', function( e ){
 });
 
 $( '#weexplorer-content' )
-.on( 'click', '.weexplorer-element:not(.back)', function(){
+.on( 'click', '.select-file', function(e){
+  $(this).find('.ui-radio-button').toggleClass('active');
+  e.stopPropagation();
+  e.preventDefault();
+})
+.on( 'click', '.weexplorer-element:not(.back):not(.select-file)', function(e){
 
+  console.log(e);
   var structure = $(this).data('fsnode')
 
   if( structure.pending ){
