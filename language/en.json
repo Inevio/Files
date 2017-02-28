@@ -266,11 +266,6 @@
 
     "unknown" : "Unknown",
 
-
-
-
-
-
     "shareTitle" : "Choose which contacts you want to share the file with",
     "shareListTitle" : "Contacts:",
     "shareChosenTitle" : "Shared with:",
@@ -324,6 +319,10 @@
     "replace" : "Do you want to replace the file?",
     "confirmDelete" : "Do you want to delete the file?",
     "back" : "Back",
-    "backTo" : "Back to"
+    "backTo" : "Back to",
+
+    "attach"        : "Attach",
+    "fileSelected"  : "file selected",
+    "filesSelected" : "files selected"
 
 }
