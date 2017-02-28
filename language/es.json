@@ -331,6 +331,10 @@
     "replace" : "¿Desea reemplazar el fichero?",
     "confirmDelete" : "¿Desea eliminar el fichero?",
     "back" : "Volver",
-    "backTo" : "Volver a"
+    "backTo" : "Volver a",
+
+    "attach"        : "Adjuntar",
+    "fileSelected"  : "archivo seleccionado",
+    "filesSelected" : "archivos seleccionados"
 
 }
