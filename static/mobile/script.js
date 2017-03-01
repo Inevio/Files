@@ -907,6 +907,7 @@ var translate = function (){
   $('.share-details .second-step .save').text(lang.share.save);
   $('.attach-button span').text(lang.attach);
   $('.attach-selected').text( '0 ' + lang.filesSelected);
+  $('.cancel-progress').text( lang.cancel );
 
 };
 
