@@ -45,22 +45,20 @@
   background-size: 18px 12px;
 }
 
-#weexplorer-menu-options{
-  width: 4px;
-  height: 18px;
+#weexplorer-menu-upload{
+  width: 23px;
+  height: 19px;
   float: right;
-  padding: 21px 16px 15px 0;
-  margin-left: 34px;
+  padding: 21px 16px 15px 15px;
   text-align: center;
 }
 
-#weexplorer-menu-options-icon{
-  width: 3px;
-  height: 18px;
-  background: url( '@static/mobile/more.png' ) -3px 0px no-repeat;
-  background-size: 6px 18px;
-  /*display: inline-block;*/
-  display: none;
+#weexplorer-menu-upload-icon{
+  width: 23px;
+  height: 19px;
+  background: url( '@static/mobile/subida.png' ) no-repeat;
+  background-size: 23px 19px;
+  display: inline-block;
 }
 
 #weexplorer-menu-name{
