@@ -298,11 +298,21 @@
 
                 "main" : {
 
-                    "template" : "mainMobile.html",
+                  "template" : "mainMobile.html",
 
-                    "css"    : ["mobile/style.css"],
-                    "script" : ["mobile/script.js"],
-                    "start"  : []
+                  "css"    : ["mobile/style.css"],
+                  "script" : ["mobile/script.js"],
+                  "start"  : []
+
+                },
+
+                "selectSource"  : {
+
+                  "template" : "mainMobile.html",
+
+                  "css"    : ["mobile/style.css"],
+                  "script" : ["mobile/script.js"],
+                  "start"  : []
 
                 }
 
