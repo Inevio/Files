@@ -1188,7 +1188,8 @@
 	color: #fe1843;
 	font-size: 18px;
 	font-weight: bold;
-	padding-right: 30px;
-	text-align: right;
-	padding-top: 35px;
+	padding: 10px 30px 10px;
+	float: right;
+	display: inline-block;
+	margin-top: 25px;
 }
