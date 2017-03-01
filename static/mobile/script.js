@@ -1112,7 +1112,30 @@ win.on('swipedown', '.file-owners-section', function(e){
       return;
     }
 
-    file.download();
+    var backWidth;
+    var percentage;
+
+    file.download( function(event){
+
+      percentage = ( event.loaded / event.total );
+
+      if( percentage < 0.01 ){
+
+        $('.progress-container').addClass('active');
+        backWidth = $('.progress-bar').width();
+
+      }else if( percentage === 1 ){
+
+        $('.progress-container').removeClass('active');
+        $('.progress-bar-loaded').width( 0 );
+
+      }else{
+
+        $('.progress-bar-loaded').width( backWidth * percentage );
+
+      }
+
+    });
 
   });
 
