@@ -323,6 +323,7 @@
 
     "attach"        : "Attach",
     "fileSelected"  : "file selected",
-    "filesSelected" : "files selected"
+    "filesSelected" : "files selected",
+    "downloading"  : "Downloading"
 
 }
