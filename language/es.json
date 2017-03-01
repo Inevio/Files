@@ -30,7 +30,7 @@
       "cut"                       : "Cortar",
       "copy"                      : "Copiar",
       "openFile"                  : "Abrir archivo",
-      "openFileLocal"             : "Abrir en local",
+      "openFileLocal"             : "Abrir en PC",
       "rename"                    : "Renombrar",
       "createLink"                : "Crear enlace",
       "sendTo"                    : "Enviar a...",
@@ -331,6 +331,10 @@
     "replace" : "¿Desea reemplazar el fichero?",
     "confirmDelete" : "¿Desea eliminar el fichero?",
     "back" : "Volver",
-    "backTo" : "Volver a"
+    "backTo" : "Volver a",
+
+    "attach"        : "Adjuntar",
+    "fileSelected"  : "archivo seleccionado",
+    "filesSelected" : "archivos seleccionados"
 
 }

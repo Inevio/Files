@@ -85,6 +85,10 @@
   -webkit-overflow-scrolling: touch;
 }
 
+#weexplorer-content.select-source-mode{
+	height: ~'calc(100% - 49px)';
+}
+
 #weexplorer-content.stop-scroll{
   -webkit-overflow-scrolling: auto !important;
 }
@@ -172,6 +176,21 @@
   float: left;
   background: url( '@static/mobile/moreinfo.png' ) 0px 0px no-repeat;
   background-size: 22px 22px;
+}
+
+.weexplorer-element .select-file{
+	display: none;
+	position: absolute;
+	padding: 10px;
+	margin-top: 6px;
+}
+
+.select-source-mode .weexplorer-element.file .select-file{
+	display: inline-block;
+}
+
+.select-source-mode .weexplorer-element .weexplorer-element-options{
+	display: none;
 }
 
 #weexplorer-sidebar{
@@ -1080,4 +1099,46 @@
 
   }
 
+}
+
+.attach-footer{
+	position: absolute;
+	width: 100%;
+	height: 49px;
+	bottom: 0;
+	z-index: 3;
+	transform: translateY(49px);
+	background-color: #f0f0f0;
+
+	.attach-selected{
+		float: left;
+		font-size: 18px;
+		color: #889399;
+		padding: 15px 20px;
+	}
+
+	.attach-button{
+		width: 95px;
+		height: 39px;
+		background-color: #60b25e;
+		float: right;
+		margin: 5px 7px;
+		border-radius: 6px;
+
+		span{
+			width: 100%;
+			font-size: 17px;
+			font-weight: bold;
+			color: #fff;
+			text-align: center;
+			float: left;
+			margin: 10px 0;
+		}
+	}
+
+}
+
+.attach-footer.select-source-mode{
+	position: inline-block;
+	transform: translateY(0px);
 }

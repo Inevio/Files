@@ -318,7 +318,7 @@ var appendVisualSidebarItem = function( item ){
 
   var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
 
-  visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) ).data( 'fsnode', item );
+  visualItem.removeClass('wz-prototype').addClass( 'item-' + item.id + ( item.alias ? ' ' + item.alias : '' ) ).data( 'fsnode', item ).data( 'id' , item.id );
   visualItem.find('.ui-navgroup-element-txt').text( item.name );
 
   sidebarFolders.push( item );
@@ -445,16 +445,20 @@ var clearList = function(){
 };
 
 var clipboardCopy = function( items ){
+  cancelCuttedItems();
   api.app.storage( 'clipboard', { copy : ( items || currentActive ).map( function( item ){ return item } ) } )
 };
 
 var clipboardCut = function( items ){
-  api.app.storage( 'clipboard', { cut : ( items || currentActive ).map( function( item ){ return item } ) } )
+  cancelCuttedItems();
+  api.app.storage( 'clipboard', { cut : ( items || currentActive ).map( function( item ){ return item } ) });
+  requestDraw();
 };
 
 var clipboardPaste = function(){
 
   var storage = api.app.storage( 'clipboard');
+  cancelCuttedItems();
 
   if( storage.copy ){
 
@@ -635,7 +639,7 @@ var drawIconsInGrid = function(){
 
       }
 
-      if( icon.active ){
+      if( icon.active && !isCutted(icon) ){
 
         ctx.strokeStyle = '#60b25e';
         ctx.fillStyle = '#60b25e';
@@ -654,7 +658,11 @@ var drawIconsInGrid = function(){
       }
 
     }else{
-      ctx.fillStyle = icon.active ? '#ffffff' : '#545f65';
+      if (isCutted(icon)) {
+        ctx.fillStyle = '#b6babc';
+      }else{
+        ctx.fillStyle = icon.active ? '#ffffff' : '#545f65';
+      }
     }
 
     ctx.font = '13px Lato';
@@ -718,7 +726,7 @@ var drawIconsInGrid = function(){
       ( disabledFileIcons && icon.fsnode.type === TYPE_FILE ) ||
       ( dropActive && icon.fsnode.type === TYPE_FILE ) ||
       dropIgnore.indexOf( icon ) !== -1 ||
-      icon.fsnode.fileId === 'TO_UPDATE'
+      icon.fsnode.fileId === 'TO_UPDATE' || isCutted(icon)
     ){
 
       ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
@@ -1961,7 +1969,8 @@ var removeFromSidebarUi = function( item ){
 
 var acceptContent = function( fsnode ){
 
-  api.fs.selectSource( { title: lang.received.chooseDestiny , mode: 'directory' } , function( e , dir ){
+  api.fs.selectDestiny( { title: lang.received.chooseDestiny , mode: 'directory' , name: fsnode.name } , function( e , dir ){
+
 
     if (!e) {
 
@@ -2047,12 +2056,11 @@ var generateContextMenu = function( item, options ){
 
     menu.addOption( lang.main.openFile, openFile.bind( null, item.fsnode ) )
     .addOption( lang.main.openFileLocal, item.fsnode.openLocal )
-    .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
-    .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
 
-    if( item.fsnode.permissions.write ){
-      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, item ) );
+    if ( item.fsnode.permissions.copy ) {
+      menu.addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
     }
+    menu.addOption( lang.main.cut, clipboardCut.bind( null, null ) )
 
     if( item.fsnode.permissions.link ){
       menu.addOption( lang.main.createLink, api.app.createView.bind( null, item.fsnode.id, 'link') );
@@ -2080,6 +2088,11 @@ var generateContextMenu = function( item, options ){
 
     }
 
+
+    if( item.fsnode.permissions.write ){
+      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, item ) );
+    }
+
     menu
     .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
     .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' );
@@ -2091,17 +2104,15 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, item.fsnode.id, 'main') )
 
     if( options.inSidebar ){
-
-      menu
-      .addOption( lang.main.copy, clipboardCopy.bind( null, [ item ] ) )
-      .addOption( lang.main.cut, clipboardCut.bind( null, [ item ] ) )
-
+      if ( item.fsnode.permissions.copy ) {
+        menu.addOption( lang.main.copy, clipboardCopy.bind( null, [ item ] ) )
+      }
+      menu.addOption( lang.main.cut, clipboardCut.bind( null, [ item ] ) )
     }else{
-
-      menu
-      .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
-      .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
-
+      if ( item.fsnode.permissions.copy ) {
+        menu.addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+      }
+      menu.addOption( lang.main.cut, clipboardCut.bind( null, null ) )
     }
 
     if( isOnSidebar( item.fsnode ) ){
@@ -2120,10 +2131,6 @@ var generateContextMenu = function( item, options ){
       menu.addOption( lang.main.shareWith, api.app.createView.bind( null, item.fsnode.id, 'share'));
     }
 
-    if( item.fsnode.permissions.write && !options.inSidebar ){
-      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, item ) );
-    }
-
     if( item.fsnode.permissions.download ){
 
       if( options.inSidebar ){
@@ -2137,6 +2144,10 @@ var generateContextMenu = function( item, options ){
     if ( item.fsnode.pending ) {
       menu.addOption( lang.received.contentAccept, acceptContent.bind( null , item.fsnode ) );
       menu.addOption( lang.received.contentRefuse, refuseContent.bind( null , item.fsnode ) );
+    }
+
+    if( item.fsnode.permissions.write && !options.inSidebar ){
+      menu.addOption( lang.main.rename, showRenameTextarea.bind( null, item ) );
     }
 
     menu
@@ -2155,11 +2166,14 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id ) )
     .addOption( lang.main.openInNewWindow, api.app.createView.bind( null, item.fsnode.id, 'main') )
 
-    if( options.inSidebar ){
-      menu.addOption( lang.main.copy, clipboardCopy.bind( null, [ item ] ) )
-    }else{
-      menu.addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+    if ( item.fsnode.permissions.copy ) {
+      if( options.inSidebar ){
+        menu.addOption( lang.main.copy, clipboardCopy.bind( null, [ item ] ) )
+      }else{
+        menu.addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+      }
     }
+
 
     // Add to sidebar
     if( wz.system.user().rootPath !== parseInt( item.fsnode.parent ) ){
@@ -2194,6 +2208,23 @@ var generateContextMenu = function( item, options ){
   }
 
   menu.render()
+
+}
+
+var cancelCuttedItems = function(){
+  api.app.storage( 'clipboard', { cut : '' });
+}
+
+var isCutted = function( icon ){
+
+  var cuttedIcons = api.app.storage( 'clipboard' ) ? api.app.storage( 'clipboard' ).cut : false;
+  if (cuttedIcons) {
+    cuttedIcons = cuttedIcons.filter(function( iconCutted ){
+      return iconCutted.fsnode.id === icon.fsnode.id;
+    });
+    cuttedIcons = cuttedIcons.length > 0 ? true : false;
+  }
+  return cuttedIcons;
 
 }
 
@@ -2344,6 +2375,21 @@ api.upload
 
 .on( 'fsnodeProgress', function( fsnodeId, progress, queue ){
 
+  if( !win.hasClass('uploading') ){
+
+    var queueSize = queue.length();
+
+    win.addClass('uploading');
+    startUploadingAnimation();
+
+    if( queueSize === 1 ){
+      visualProgressStatusNumber.text( lang.main.uploadingNumberFile.replace( '%d', queueSize ) )
+    }else{
+      visualProgressStatusNumber.text( lang.main.uploadingNumberFiles.replace( '%d', ( queueSize - queue.pending.length ) || 1 ).replace( '%d', queueSize ) )
+    }
+
+  }
+
   var progress = queue.progress()
   var percentage = parseFloat( progress * 100 ).toFixed( 1 )
   var time = 100
@@ -2413,6 +2459,8 @@ win
 })
 
 .key( 'esc', function( e ){
+
+  cancelCuttedItems();
 
   if( $(e.target).is('textarea') ){
     hideRenameTextarea( true );
@@ -3042,7 +3090,7 @@ var translate = function(){
   $('.ui-input-search').find('input').attr('placeholder', lang.main.search);
   $('.ui-navgroup-title-txt').text(lang.main.favourites);
   $('.status-number').text(lang.main.uploadXFiles);
-  $('.ui-confirm .accept span').text( params && params.command === 'selectSource' ? lang.main.open : lang.main.select );
+  $('.ui-confirm .accept span').text( params && params.command === 'selectSource' ? lang.main.select : lang.share.save );
   $('.ui-confirm .cancel span').text(lang.main.cancel);
   $('.ui-confirm').find('.ui-input').find('input').attr('placeholder', lang.main.fileName);
   $('.notification-list-title span').text( lang.main.activity );

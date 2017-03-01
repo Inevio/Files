@@ -8,6 +8,7 @@ var title          = $( '#weexplorer-menu-name', win );
 var sidebar        = $( '#weexplorer-sidebar', win );
 var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
 var userPrototype  = $('.file-options .file-owners-container .user.wz-prototype');
+var attachButton   = $('.attach-button');
 var record         = [];
 var transitionTime = 300;
 var mode           = 0; //0 == none, 1 == sidebar, 2==file-options, 3==creating-link,
@@ -29,6 +30,14 @@ var fileSelected;
 var myId = api.system.user().id;
 
 // Functions
+var initFiles = function(){
+  translate();
+  if (params && params[0] === 'select-source') {
+    $('#weexplorer-content').addClass('select-source-mode');
+    $('.attach-footer').addClass('select-source-mode');
+  }
+}
+
 var addZero = function( value ){
 
   if( value < 10 ){
@@ -92,7 +101,7 @@ var icon = function( data ){
   file.data( 'fsnode', data )
   file.addClass( 'file-' + data.id );
 
-  if( data.type < 2 ){
+  if( data.type <= 2 ){
     file.addClass('directory');
   }else{
     file.addClass('file');
@@ -896,6 +905,8 @@ var translate = function (){
   $('.share-details .second-step .share .name').text(lang.share.share);
   $('.share-details .second-step .send .name').text(lang.share.send);
   $('.share-details .second-step .save').text(lang.share.save);
+  $('.attach-button span').text(lang.attach);
+  $('.attach-selected').text( '0 ' + lang.filesSelected);
 
 };
 
@@ -921,8 +932,9 @@ $( '#weexplorer-sidebar' ).on( 'click', function( e ){
 });
 
 $( '#weexplorer-content' )
-.on( 'click', '.weexplorer-element:not(.back)', function(){
+.on( 'click', '.weexplorer-element:not(.back):not(.select-file)', function(e){
 
+  console.log(e);
   var structure = $(this).data('fsnode')
 
   if( structure.pending ){
@@ -945,16 +957,30 @@ $( '#weexplorer-content' )
 
   // Abrir directorios
   if( structure.type <= 2 ){
+    if ( $('#weexplorer-content').hasClass('select-source-mode') ) {
+      $('.attach-selected').text( '0 ' + lang.filesSelected);
+    }
     return openDirectory( structure.id );
   }
 
-  structure.open( content.find('.file').map( function(){ return $(this).data('id') }).get(), function( error ){
 
-    if( error ){
-      navigator.notification.alert( '', function(){}, lang.main.fileCanNotOpen )
+  if ( $('#weexplorer-content').hasClass('select-source-mode') ) {
+    $(this).find('.ui-radio-button').toggleClass('active');
+    var nSelected = $('.ui-radio-button.active');
+    if (nSelected.length === 1) {
+      $('.attach-selected').text( '1 ' + lang.fileSelected);
+    }else{
+      $('.attach-selected').text( nSelected.length + ' ' + lang.filesSelected);
     }
+  }else{
+    structure.open( content.find('.file').map( function(){ return $(this).data('id') }).get(), function( error ){
 
-  });
+      if( error ){
+        navigator.notification.alert( '', function(){}, lang.main.fileCanNotOpen )
+      }
+
+    });
+  }
 
 })
 
@@ -995,6 +1021,15 @@ sidebar.on( 'click', '.weexplorer-sidebar-element', function(){
 
   hideSidebar();
 
+});
+
+attachButton.on( 'click' , function(){
+  var fsnodeSelected = [];
+  $.each( $('.ui-radio-button.active') , function( i , element ){
+      fsnodeSelected.push( $(element).closest('.weexplorer-element').data('fsnode') )
+  });
+  params[1]( fsnodeSelected );
+  api.app.removeView( win );
 });
 
 $('.opacity-cover').on('click', function(e){
@@ -1435,4 +1470,4 @@ wql.getSidebar( function( error, rows ){
 
 });
 
-translate();
+initFiles();
