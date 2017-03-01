@@ -335,6 +335,7 @@
 
     "attach"        : "Adjuntar",
     "fileSelected"  : "archivo seleccionado",
-    "filesSelected" : "archivos seleccionados"
+    "filesSelected" : "archivos seleccionados",
+    "downloading"  : "Descargando"
 
 }

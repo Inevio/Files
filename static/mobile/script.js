@@ -908,6 +908,7 @@ var translate = function (){
   $('.attach-button span').text(lang.attach);
   $('.attach-selected').text( '0 ' + lang.filesSelected);
   $('.cancel-progress').text( lang.cancel );
+  $('.progress-text').text( lang.downloading );
 
 };
 
