@@ -767,7 +767,7 @@
   text-align: left;
 }
 
-.file-options.folder .file-size-section, .file-options.folder .option.create-link{
+.file-options.folder .option.create-link{
   display: none;
 }
 
