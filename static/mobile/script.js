@@ -28,6 +28,7 @@ var usersToAddShare = [];
 var usersToRemoveShare = [];
 var fileSelected;
 var myId = api.system.user().id;
+var cancelProgress;
 
 // Functions
 var initFiles = function(){
@@ -1116,7 +1117,7 @@ win.on('swipedown', '.file-owners-section', function(e){
     var backWidth;
     var percentage;
 
-    file.download( function(event){
+    cancelProgress = file.download( function(event){
 
       percentage = ( event.loaded / event.total );
 
@@ -1221,6 +1222,16 @@ win.on('swipedown', '.file-owners-section', function(e){
 
 .on('click', '.create-link-container .back-link-btn', function(){
   hideCreateLink();
+})
+
+.on('click', '.cancel-progress', function(){
+
+  console.log('cancelo', cancelProgress);
+  if( cancelProgress !== undefined ){
+    console.log('cancelo de verdad');
+    cancelProgress();
+  }
+
 });
 
 api.fs.on( 'move', function( structure, destinyID, originID ){
