@@ -1126,16 +1126,16 @@ win.on('swipedown', '.file-owners-section', function(e){
         $('.progress-container').addClass('active');
         backWidth = $('.progress-bar').width();
 
-      }else if( percentage === 1 ){
-
-        $('.progress-container').removeClass('active');
-        $('.progress-bar-loaded').width( 0 );
-
       }else{
 
         $('.progress-bar-loaded').width( backWidth * percentage );
 
       }
+
+    }, function( error ){
+
+      $('.progress-container').removeClass('active');
+      $('.progress-bar-loaded').width( 0 );
 
     });
 
@@ -1226,9 +1226,7 @@ win.on('swipedown', '.file-owners-section', function(e){
 
 .on('click', '.cancel-progress', function(){
 
-  console.log('cancelo', cancelProgress);
   if( cancelProgress !== undefined ){
-    console.log('cancelo de verdad');
     cancelProgress();
   }
 
