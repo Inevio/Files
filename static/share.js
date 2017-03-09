@@ -5,6 +5,7 @@ var visualUsersAreaList               = $('.users-area .users-list');
 var visualUsersAreaListUserPrototype  = $('.users-area .users-list .user.wz-prototype');
 var visualSharedAreaList              = $('.shared-area .users-list');
 var visualSharedAreaListUserPrototype = $('.shared-area .users-list .user.wz-prototype');
+var inviteByMail                      = $( '.invite-by-mail' );
 
 // Functions
 var appendUserToUsersList = function( listArea, prototype, user, permissions ){
@@ -232,6 +233,7 @@ var translate = function(){
   $('.global-permissions .share .name').text(lang.share.share);
   $('.global-permissions .send .name').text(lang.share.send);
   $('.global-permissions .save').text(lang.share.save);
+  $('.invite-by-mail .name').text(lang.inviteByMail);
 
 };
 
@@ -296,6 +298,9 @@ $('.users-area .search').on( 'input' , function(){
 
 });
 
+inviteByMail.on( 'click' , function(){
+  api.app.createView( {} , 'inviteByMail' );
+});
 
 // Start the app
 loadInfo( params );
