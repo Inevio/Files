@@ -335,6 +335,11 @@
 
     "attach"        : "Adjuntar",
     "fileSelected"  : "archivo seleccionado",
-    "filesSelected" : "archivos seleccionados"
+    "filesSelected" : "archivos seleccionados",
+
+    "inviteByMail"        : "Invitar por correo",
+    "inviteByMailDesc"    : "Introduce el email de todas las personas que quieras que se unan a horbito como tus amigos.",
+    "addMail"             : "+ Añadir más correos",
+    "mailExample"         : "ejemplo@mail.com"
 
 }

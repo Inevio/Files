@@ -323,6 +323,11 @@
 
     "attach"        : "Attach",
     "fileSelected"  : "file selected",
-    "filesSelected" : "files selected"
+    "filesSelected" : "files selected",
+
+    "inviteByMail"        : "Invite by mail",
+    "inviteByMailDesc"    : "Enter the email of all the people you want to join horbito as your friends.",
+    "addMail"             : "+ Add more mails",
+    "mailExample"         : "example@mail.com"
 
 }
