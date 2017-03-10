@@ -326,8 +326,9 @@
     "filesSelected" : "files selected",
 
     "inviteByMail"        : "Invite by mail",
-    "inviteByMailDesc"    : "Enter the email of all the people you want to join horbito as your friends.",
+    "inviteByMailDesc"    : "Introduce the email of all the people you want to invite to join horbito with you so you can start sharing files with them.",
     "addMail"             : "+ Add more mails",
-    "mailExample"         : "example@mail.com"
+    "mailExample"         : "example@mail.com",
+    "sendInvitations"     : "Send"
 
 }

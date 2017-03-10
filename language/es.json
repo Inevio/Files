@@ -337,9 +337,10 @@
     "fileSelected"  : "archivo seleccionado",
     "filesSelected" : "archivos seleccionados",
 
-    "inviteByMail"        : "Invitar por correo",
-    "inviteByMailDesc"    : "Introduce el email de todas las personas que quieras que se unan a horbito como tus amigos.",
+    "inviteByMail"        : "Invitar contacto",
+    "inviteByMailDesc"    : "Introduce el email de todas las personas que quieras que se unan a horbito para poder compartir archivos con ellos.",
     "addMail"             : "+ Añadir más correos",
-    "mailExample"         : "ejemplo@mail.com"
+    "mailExample"         : "ejemplo@mail.com",
+    "sendInvitations"     : "Send"
 
 }
