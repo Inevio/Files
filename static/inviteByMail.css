@@ -4,6 +4,9 @@
 @greenHorbito: #60b25e;
 @greenHorbitoHover: #60b25e;
 @greenHorbitoActive: #60b25e;
+@blueHorbito: #0071f6;
+@blueHorbitoHover: #0071f6;
+@blueHorbitoActive: #0071f6;
 
 .title{
   float: left;
@@ -56,14 +59,19 @@
 
 .mail{
   float: left;
-  width: ~'calc(100% - 20px)';
-  height: 42px;
+  width: ~'calc(100% - 18px)';
+  height: 40px;
   border-radius: 6px;
   margin-bottom: 15px;
   background-color: #f0f0f0;
   font-size: 17px;
   color: #252525;
   padding-left: 20px;
+  border: 1px solid transparent;
+}
+
+.wrong.mail{
+  border: 1px solid red;
 }
 
 .add-mail{
@@ -87,6 +95,7 @@
   position: absolute;
   bottom: 30px;
   right: 30px;
+  opacity: 0.5;
 
   .share-text{
     color: #fff;
@@ -97,6 +106,10 @@
     float: left;
     margin-top: 12px;
   }
+}
+
+.share-button.valid{
+  opacity: 1;
 }
 
 .share-button:hover{
