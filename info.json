@@ -276,7 +276,37 @@
                     "script" : ["script.js"],
                     "start"  : ["start.js"]
 
+                },
+
+                "inviteByMail" : {
+
+                  "template" : "inviteByMail.html",
+
+                  "maxizable" : false,
+                  "resizable" : false,
+
+                  "width"  : {
+
+                      "default" : 408,
+                      "min"     : 408,
+                      "max"     : 0
+
+                  },
+
+                  "height" : {
+
+                      "default" : 438,
+                      "min"     : 438,
+                      "max"     : 0
+
+                  },
+
+                  "css"    : [ "inviteByMail.css" ],
+                  "script" : [ "inviteByMail.js" ],
+                  "start"  : []
+
                 }
+
 
             }
 

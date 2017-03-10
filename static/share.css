@@ -132,6 +132,37 @@
 
     }
 
+    .invite-by-mail{
+      float: left;
+      margin: 18px 4px 0;
+      width: 110px;
+      text-align: center;
+
+      .avatar{
+        width: 58px;
+        height: 58px;
+        border-radius: 29px;
+        display: inline-block;
+        background-image: url('@static/inviteByMail.png');
+        background-size: 58px 58px;
+      }
+
+      .name{
+        text-align: center;
+        margin-top: 8px;
+        font-family: Lato;
+        font-size: 15px;
+        font-weight: bold;
+        color: #545f65;
+        display: inline-block;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+    }
+
   }
 
 }
