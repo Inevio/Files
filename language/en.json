@@ -329,6 +329,8 @@
     "inviteByMailDesc"    : "Introduce the email of all the people you want to invite to join horbito with you so you can start sharing files with them.",
     "addMail"             : "+ Add more mails",
     "mailExample"         : "example@mail.com",
-    "sendInvitations"     : "Send"
+    "sendInvitations"     : "Send",
+    "invitationSentTitle"    : "Invitations sent",
+    "invitationSentSubtitle" : "Your invitations are on their way!"
 
 }
