@@ -21,7 +21,7 @@ var initText = function(){
   $('.title').text(lang.inviteByMail);
   $('.description').text(lang.inviteByMailDesc);
   $('.add-mail-text').text(lang.addMail);
-  $('.share-text').text(lang.share.share);
+  $('.share-text').text(lang.sendInvitations);
   $('.mail').attr('placeholder' , lang.mailExample);
 }
 
