@@ -1974,7 +1974,7 @@ var acceptContent = function( fsnode ){
 
     if (!e) {
 
-      fsnode.accept( dir[ 0 ], function(){
+      fsnode.accept( dir.destiny , function(){
         console.log(arguments);
       })
 
