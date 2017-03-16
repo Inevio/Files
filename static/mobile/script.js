@@ -28,6 +28,7 @@ var usersToAddShare = [];
 var usersToRemoveShare = [];
 var fileSelected;
 var myId = api.system.user().id;
+var cancelProgress;
 
 // Functions
 var initFiles = function(){
@@ -251,24 +252,24 @@ var showOptions = function( file ){
   $('.file-options .file-size-value').text( api.tool.bytesToUnit( file.size, 2 ) );
 
   //TODO quitar al soportar android 7.0
-  if( device.platform.toLowerCase() === 'android' && parseInt( device.version ) >= 7 ){
+  /*if( device.platform.toLowerCase() === 'android' && parseInt( device.version ) >= 7 ){
     $('.file-options .option-section .option.download').hide();
-  }
+  }*/
 
   //TODO quitar despues de implementar compartir
-  $('.option-section.share .share-with').hide();
+  //$('.option-section.share .share-with').hide();
 
   if( file.type == 0 || file.type == 1 || file.type == 2 ){
 
     $('.file-options').addClass('folder');
     //TODO quitar despues de implementar compartir
-    $('.option-section.share').hide();
+    //$('.option-section.share').hide();
 
   }else{
 
     $('.file-options').removeClass('folder');
     //TODO quitar despues de implementar compartir
-    $('.option-section.share').show();
+    //$('.option-section.share').show();
 
   }
 
@@ -278,8 +279,7 @@ var showOptions = function( file ){
     addZero( createdDate.getDate() ) + '/' +
     createdDate.getFullYear() + ', ' +
     addZero( createdDate.getHours() ) + ':' +
-    addZero( createdDate.getMinutes() ) + ':' +
-    addZero( createdDate.getSeconds() )
+    addZero( createdDate.getMinutes() )
 
   );
 
@@ -289,10 +289,13 @@ var showOptions = function( file ){
     addZero( modifiedDate.getDate() ) + '/' +
     modifiedDate.getFullYear() + ', ' +
     addZero( modifiedDate.getHours() ) + ':' +
-    addZero( modifiedDate.getMinutes() ) + ':' +
-    addZero( modifiedDate.getSeconds() )
+    addZero( modifiedDate.getMinutes() )
 
   );
+
+  if( win.height() > 500 ){
+    $('.share-details .share-with-friends .second-step .title').css('margin-bottom','40px');
+  }
 
   file.getPath( function( error, pathList ){
 
@@ -358,10 +361,10 @@ var showOptions = function( file ){
     $.each( users, function( index, userInArray ){
 
       var isOwner = userInArray.isOwner;
-      console.log(isOwner);
+      /*console.log(isOwner);
       console.log(myId);
       console.log(userInArray.userId);
-      console.log(!(isOwner && ( userInArray.userId == myId )));
+      console.log(!(isOwner && ( userInArray.userId == myId )));*/
 
       api.user( userInArray.userId, function(error, userI){
 
@@ -395,7 +398,10 @@ var showOptions = function( file ){
 
           insertedIds.push( userI.id )
           toInsert.push( user );
-          toInsertS.push( userS );
+          if( !( isOwner && (userI.id == myId) ) ){
+            toInsertS.push( userS );
+          }
+
 
         }
 
@@ -517,7 +523,8 @@ var showCreateLink = function(){
     });
 
     $('.options-header .options-more').hide();
-    $('.toggles-container .selector').removeClass('active');
+    $('.toggles-container .preview .selector,.toggles-container .download .selector').addClass('active');
+    $('.toggles-container .password .selector').removeClass('active');
     $('.create-link-title').removeClass('password-mode');
     $('.password-container').val('').hide();
 
@@ -570,7 +577,7 @@ var createLink = function(){
 
   api.fs( $('.weexplorer-element.active').data('id'),function( error, structure ){
 
-    var password  = ( $('.toggles-container .preview .selector').hasClass('active') && $('.password-container').val() ) ? $('.password-container').val() : null;
+    var password  = ( $('.password-container').val().length ) ? $('.password-container').val() : null;
     var preview   = $('.toggles-container .preview .selector').hasClass('active');
     var downloads = $('.toggles-container .download .selector').hasClass('active');
 
@@ -901,6 +908,8 @@ var translate = function (){
   $('.share-details .second-step .save').text(lang.share.save);
   $('.attach-button span').text(lang.attach);
   $('.attach-selected').text( '0 ' + lang.filesSelected);
+  $('.cancel-progress').text( lang.cancel );
+  $('.progress-text').text( lang.downloading );
 
 };
 
@@ -1105,7 +1114,30 @@ win.on('swipedown', '.file-owners-section', function(e){
       return;
     }
 
-    file.download();
+    var backWidth;
+    var percentage;
+
+    cancelProgress = file.download( function(event){
+
+      percentage = ( event.loaded / event.total );
+
+      if( percentage < 0.01 ){
+
+        $('.progress-container').addClass('active');
+        backWidth = $('.progress-bar').width();
+
+      }else{
+
+        $('.progress-bar-loaded').width( backWidth * percentage );
+
+      }
+
+    }, function( error ){
+
+      $('.progress-container').removeClass('active');
+      $('.progress-bar-loaded').width( 0 );
+
+    });
 
   });
 
@@ -1190,6 +1222,14 @@ win.on('swipedown', '.file-owners-section', function(e){
 
 .on('click', '.create-link-container .back-link-btn', function(){
   hideCreateLink();
+})
+
+.on('click', '.cancel-progress', function(){
+
+  if( cancelProgress !== undefined ){
+    cancelProgress();
+  }
+
 });
 
 api.fs.on( 'move', function( structure, destinyID, originID ){
