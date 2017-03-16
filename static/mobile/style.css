@@ -45,22 +45,20 @@
   background-size: 18px 12px;
 }
 
-#weexplorer-menu-options{
-  width: 4px;
-  height: 18px;
+#weexplorer-menu-upload{
+  width: 23px;
+  height: 19px;
   float: right;
-  padding: 21px 16px 15px 0;
-  margin-left: 34px;
+  padding: 21px 16px 15px 15px;
   text-align: center;
 }
 
-#weexplorer-menu-options-icon{
-  width: 3px;
-  height: 18px;
-  background: url( '@static/mobile/more.png' ) -3px 0px no-repeat;
-  background-size: 6px 18px;
-  /*display: inline-block;*/
-  display: none;
+#weexplorer-menu-upload-icon{
+  width: 23px;
+  height: 19px;
+  background: url( '@static/mobile/subida.png' ) no-repeat;
+  background-size: 23px 19px;
+  display: inline-block;
 }
 
 #weexplorer-menu-name{
@@ -458,19 +456,31 @@
   float: right;
   width: 23px;
   height: 23px;
+  padding: 5px 18px 5px 8px;
+}
+
+.file-options .options-header .options-more i{
+	width: 23px;
+  height: 23px;
   background-image: url('@static/mobile/info.png');
-  background-size: cover;
-  margin: 0 18px 0 8px;
+  background-size: 23px 23px;
+	display: inline-block;
 }
 
 .file-options .options-header .options-close{
   float: right;
   width: 12px;
   height: 12px;
-  background-image: url('@static/mobile/cerrar-info.png');
-  background-size: cover;
-  margin: 0 18px 0 13px;
+  padding: 10px 18px 10px 13px;
   display: none;
+}
+
+.file-options .options-header .options-close i{
+	width: 12px;
+  height: 12px;
+	background-image: url('@static/mobile/cerrar-info.png');
+	background-size: 12px 12px;
+	display: inline-block;
 }
 
 .file-options .options-header .rename-accept{
@@ -757,7 +767,7 @@
   text-align: left;
 }
 
-.file-options.folder .file-size-section, .file-options.folder .option.create-link{
+.file-options.folder .option.create-link{
   display: none;
 }
 
@@ -1002,17 +1012,17 @@
 .permissions-list{
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
   width: 100%;
-  padding: 0 16px;
+  padding: 0 10px;
   box-sizing: border-box;
   align-items: center;
-  align-content: center;
-  height: ~'calc(100% - 50px)';
+  align-content: space-around;
+  height: 250px;
+	overflow-y: scroll;
 
   .permission{
-    margin-top: 36px;
-    width: 110px;
+    width: 90px;
     text-align: center;
 
     .icon{
@@ -1129,4 +1139,70 @@
 .attach-footer.select-source-mode{
 	position: inline-block;
 	transform: translateY(0px);
+}
+
+.progress-container{
+	background-color: rgba(0, 0, 0, 0.5);
+	/*opacity: 0.5;*/
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 4;
+	display: none;
+}
+
+.progress-container.active{
+	display: block;
+}
+
+.progress-window{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	width: 300px;
+	height: 168px;
+	background-color: #fff;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+}
+
+.progress-text{
+	margin-left: 30px;
+	margin-top: 30px;
+	font-size: 22px;
+	color: black;
+}
+
+.progress-bar{
+	width: ~'calc(100% - 60px)';
+	height: 6px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background-color: #ececee;
+	margin: 35px auto 0 auto;
+}
+
+.progress-bar-loaded{
+	width: 0px;
+	height: 6px;
+	background: #60b25e;
+	position: relative;
+	top: 0;
+	left: 0;
+	border-radius: 3px;
+}
+
+.cancel-progress{
+	color: #fe1843;
+	font-size: 18px;
+	font-weight: bold;
+	padding: 10px 30px 10px;
+	float: right;
+	display: inline-block;
+	margin-top: 25px;
 }
