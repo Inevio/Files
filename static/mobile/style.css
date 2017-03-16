@@ -45,7 +45,7 @@
   background-size: 18px 12px;
 }
 
-#weexplorer-menu-upload{
+.weexplorer-menu-upload{
   width: 23px;
   height: 19px;
   float: right;
@@ -53,12 +53,12 @@
   text-align: center;
 }
 
-#weexplorer-menu-upload-icon{
+.weexplorer-menu-upload-icon{
   width: 23px;
   height: 19px;
   background: url( '@static/mobile/subida.png' ) no-repeat;
   background-size: 23px 19px;
-  display: inline-block;
+  display: none;
 }
 
 #weexplorer-menu-name{
