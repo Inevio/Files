@@ -43,7 +43,7 @@ var appendLink = function( link ){
   newLink.data( 'id' , link.id );
 
   if( showLinks.hasClass('opened') ){
-    api.view.setSize( win.width(), DEFAULT_HEIGHT + ( win.hasClass('show-password') ? passwordInput.outerHeight( true ) : 0 ) + linksList.outerHeight( true ) );
+    $('.links').show();
   }
 
 };
@@ -56,11 +56,12 @@ var removeLink = function( link ){
     if ( linksList.find('.link').length === 0 ) {
 
       showLinks.removeClass('opened show');
-      api.view.setSize( win.width(), DEFAULT_HEIGHT + ( win.hasClass('show-password') ? passwordInput.outerHeight( true ) : 0 ) );
+      $('.links').hide();
 
     }else{
 
-      api.view.setSize( win.width(), DEFAULT_HEIGHT + ( win.hasClass('show-password') ? passwordInput.outerHeight( true ) : 0 ) + linksList.outerHeight( true ) );
+      $('.links').show();
+
 
     }
 
@@ -89,12 +90,12 @@ showLinks.on( 'click', function(){
   if( showLinks.hasClass('opened') ){
 
     showLinks.removeClass('opened');
-    api.view.setSize( win.width(), DEFAULT_HEIGHT + ( win.hasClass('show-password') ? passwordInput.outerHeight( true ) : 0 ) );
+    $('.links').hide();
 
   }else{
 
     showLinks.addClass('opened');
-    api.view.setSize( win.width(), DEFAULT_HEIGHT + ( win.hasClass('show-password') ? passwordInput.outerHeight( true ) : 0 ) + linksList.outerHeight( true ) );
+    $('.links').show();
 
   }
 });
@@ -113,6 +114,8 @@ $('.create-link').on( 'click', function(){
     password = passwordInput.val() || null;
   }
 
+  $('.links').show();
+
   api.fs( params, function( error, fsnode ){
 
     fsnode.addLink( password, preview, downloads, function( error, link ){
@@ -120,6 +123,7 @@ $('.create-link').on( 'click', function(){
       // To Do -> Error
       console.log( error );
       linkOutput.val( link.url ).focus();
+
 
     });
 
