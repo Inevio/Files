@@ -2010,7 +2010,7 @@ var EXTENSIONS_SHOW   = 1;
 
                         banner
                             .setText( structure.name + ' ' + lang.beenAccepted )
-                            .setIcon( 'https://static.inevio.com/app/1/file_accepted.png' )
+                            .setIcon( 'https://static.horbito.com/app/1/file_accepted.png' )
                             .render();
 
                     });
@@ -2044,7 +2044,7 @@ var EXTENSIONS_SHOW   = 1;
 
                         banner
                             .setText( structure.name + ' ' + lang.beenRefused )
-                            .setIcon( 'https://static.inevio.com/app/1/file_denied.png' )
+                            .setIcon( 'https://static.horbito.com/app/1/file_denied.png' )
                             .render();
 
                     });
@@ -2069,7 +2069,7 @@ var EXTENSIONS_SHOW   = 1;
                                 api.banner()
                                     .setTitle( lang.fileShareAccepted )
                                     .setText( structure.name + ' ' + lang.beenAccepted )
-                                    .setIcon( 'https://static.inevio.com/app/1/file_accepted.png' )
+                                    .setIcon( 'https://static.horbito.com/app/1/file_accepted.png' )
                                     .render();
 
                             }
@@ -2097,7 +2097,7 @@ var EXTENSIONS_SHOW   = 1;
                                 api.banner()
                                     .setTitle( lang.fileShareRefused )
                                     .setText( structure.name + ' ' + lang.beenRefused )
-                                    .setIcon( 'https://static.inevio.com/app/1/file_denied.png' )
+                                    .setIcon( 'https://static.horbito.com/app/1/file_denied.png' )
                                     .render();
 
                             }

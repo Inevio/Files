@@ -44,7 +44,7 @@ var share = function(){
     api.banner()
       .setTitle( lang.invitationSentTitle )
       .setText( lang.invitationSentSubtitle )
-      .setIcon( 'https://static.inevio.com/app/1/icon.png' )
+      .setIcon( 'https://static.horbito.com/app/1/icon.png' )
       .render();
     wz.app.removeView( app );
   }
