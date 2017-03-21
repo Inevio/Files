@@ -8,13 +8,17 @@
 @blueHorbitoHover: #0071f6;
 @blueHorbitoActive: #0071f6;
 
+*{
+  font-family: 'Lato';
+}
+
 .title{
   float: left;
   font-size: 21px;
   color: #252525;
   font-weight: 900;
   padding-left: 30px;
-  padding-top: 28px;
+  padding-top: 24px;
   width: ~'calc(100% - 54px)';
 }
 
@@ -45,16 +49,17 @@
   float: left;
   font-size: 15px;
   color: #717171;
-  padding: 26px 30px 0 30px;
+  padding: 17px 30px 0 30px;
   width: ~'calc(100% - 60px)';
+  line-height: 19px;
 }
 
 .mail-list{
   float: left;
   width: ~'calc(100% - 60px)';
   padding: 0 30px;
-  max-height: 180px;
-  margin-top: 28px;
+  max-height: 171px;
+  margin-top: 30px;
 }
 
 .mail{
@@ -77,7 +82,7 @@
 .add-mail{
   float: left;
   width: ~'calc(100% - 60px)';
-  margin: 10px 30px 0 30px;
+  margin: 0px 30px 0 30px;
   .add-mail-text{
     float: right;
     color: #889399;
@@ -87,13 +92,13 @@
 }
 
 .share-button{
-  width: 126px;
+  width: 122px;
   height: 40px;
   border-radius: 6px;
   background-color: @greenHorbito;
   transition: all ease 0.19s;
   position: absolute;
-  bottom: 30px;
+  bottom: 27px;
   right: 30px;
   opacity: 0.5;
 
@@ -104,7 +109,7 @@
     width: 100%;
     text-align: center;
     float: left;
-    margin-top: 12px;
+    margin-top: 14px;
   }
 }
 
