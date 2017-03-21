@@ -39,7 +39,7 @@
                     api.banner()
                         .setTitle( lang.received.fileShareAccepted )
                         .setText( structure.name + ' ' + lang.received.beenAccepted )
-                        .setIcon( 'https://static.inevio.com/app/1/file_accepted.png' )
+                        .setIcon( 'https://static.horbito.com/app/1/file_accepted.png' )
                         .render();
 
                     api.view.remove();
@@ -61,7 +61,7 @@
                     api.banner()
                         .setTitle( lang.received.fileShareRefused )
                         .setText( structure.name + ' ' + lang.received.beenRefused )
-                        .setIcon( 'https://static.inevio.com/app/1/file_denied.png' )
+                        .setIcon( 'https://static.horbito.com/app/1/file_denied.png' )
                         .render();
 
                     api.view.remove();

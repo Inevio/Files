@@ -100,7 +100,7 @@
 
                             banner
                                 .setText( structure.name + ' ' + lang.shared.beenAccepted )
-                                .setIcon( 'https://static.inevio.com/app/1/file_accepted.png' )
+                                .setIcon( 'https://static.horbito.com/app/1/file_accepted.png' )
                                 .render();
 
                             api.view.remove();
@@ -131,7 +131,7 @@
 
                             banner
                                 .setText( structure.name + ' ' + lang.shared.beenRefused )
-                                .setIcon( 'https://static.inevio.com/app/1/file_denied.png' )
+                                .setIcon( 'https://static.horbito.com/app/1/file_denied.png' )
                                 .render();
 
                                 api.view.remove();
