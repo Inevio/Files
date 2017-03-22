@@ -533,7 +533,14 @@ var deleteAll = function( items ){
     return
   }
 
-  confirm( lang.main.confirmDelete, function( doIt ){
+  var dialog = api.dialog();
+
+  dialog.setTitle( lang.main.remove );
+  dialog.setText( lang.main.confirmDelete );
+  dialog.setButton( 0, wzLang.core.dialogCancel, 'black' );
+  dialog.setButton( 1, wzLang.core.dialogAccept, 'green' );
+
+  dialog.render(function( doIt ){
 
     items.forEach( function( item ){
 
