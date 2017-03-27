@@ -53,6 +53,7 @@ var share = function(){
 var checkMails = function(){
   $('.wrong').removeClass('wrong');
   shareButton.removeClass('valid');
+  validMails = []
   mailList.find('.mail:not(.wz-prototype)').each( function(){
     if ( $(this).val() != '' ) {
       if( $(this).val().length && MAIL_REGEXP.test( $(this).val() ) ){
