@@ -834,9 +834,14 @@ var activateRename = function(){
 
   mode = 5;
   $('.file-options .file-title').hide();
-  $('.file-options .file-rename').show().focus();
+  $('.file-options .file-rename').show();
   $('.file-options .options-more').hide();
   $('.file-options .rename-accept, .file-options .rename-cancel').show();
+  if ( $('.file-options .file-rename').val().lastIndexOf('.') < 0 ) {
+    selectRangeText( $('.file-options .file-rename')[0] , 0 , $('.file-options .file-rename').val().length );
+  }else{
+    selectRangeText( $('.file-options .file-rename')[0] , 0 , $('.file-options .file-rename').val().lastIndexOf('.') );
+  }
 
 }
 
@@ -922,6 +927,13 @@ var handleBack = function(){
   }else{
     hideOptions();
   }
+
+}
+
+var selectRangeText = function( input , start , end ){
+
+  input.focus();
+  input.setSelectionRange( start , end );
 
 }
 
