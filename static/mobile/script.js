@@ -861,6 +861,8 @@ var acceptRename = function(){
           navigator.notification.alert( '', function(){}, error );
         }
 
+        $('.file-options .file-rename').blur();
+
       });
 
     }
@@ -871,7 +873,7 @@ var acceptRename = function(){
 
 var cancelRename = function(){
 
-  $('.file-options .file-rename').hide();
+  $('.file-options .file-rename').hide().blur();
   $('.file-options .file-title').show();
   $('.file-options .rename-accept, .file-options .rename-cancel').hide();
   $('.file-options .options-more').show();
@@ -1225,6 +1227,7 @@ win.on('swipedown', '.file-owners-section', function(e){
 })
 
 .on('click', '.file-options .rename-cancel', function(){
+  console.log('cancelo renombrar');
   cancelRename();
 })
 
@@ -1242,6 +1245,14 @@ win.on('swipedown', '.file-owners-section', function(e){
     cancelProgress();
   }
 
+})
+
+.on('focus', 'input.file-rename', function(){
+  $('.file-options').addClass('renaming');
+})
+
+.on('blur', 'input.file-rename', function(){
+  $('.file-options').removeClass('renaming');
 });
 
 api.fs.on( 'move', function( structure, destinyID, originID ){
