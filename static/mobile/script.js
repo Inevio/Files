@@ -1,4 +1,5 @@
 
+
 // Local variables
 var win            = $( this );
 var content        = $( '#weexplorer-content', win );
@@ -1065,6 +1066,16 @@ win.on('swipedown', '.file-owners-section', function(e){
   e.stopPropagation();
 })
 
+.on( 'app-param', function( e, params ){
+
+  if( params.command === 'selectSource' ||  params.command === 'selectDestiny' ){
+    warn('selectSource/selectDestiny not implemented yet')
+  }else{
+    openDirectory( typeof params === 'object' ? parseInt( params.data ) || 'root' : params );
+  }
+
+})
+
 .on('swipedown', '.file-options', function(e){
 
   if( mode != 7 ){
@@ -1526,5 +1537,13 @@ wql.getSidebar( function( error, rows ){
   });
 
 });
+
+if( params ){
+  if( params.command === 'selectSource' ||  params.command === 'selectDestiny' ){
+    warn('selectSource/selectDestiny not implemented yet')
+  }else{
+    openDirectory( typeof params === 'object' ? parseInt( params.data ) || 'root' : params );
+  }
+}
 
 initFiles();
