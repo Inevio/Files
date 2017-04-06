@@ -622,8 +622,8 @@ var drawIconsInGrid = function(){
 
         if( icon === dropActive ){
 
-          ctx.strokeStyle = '#60b25e';
-          ctx.fillStyle = '#60b25e';
+          ctx.strokeStyle = '#e5e9ea';
+          ctx.fillStyle = '#e5e9ea';
           drawRoundRect( ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true );
 
         }else{
@@ -659,8 +659,6 @@ var drawIconsInGrid = function(){
     if( dropActive ){
 
       if( ( icon.fsnode.type !== TYPE_FILE && icon === dropActive ) || dropIgnore.indexOf( icon ) !== -1 ){
-        ctx.fillStyle = '#ffffff';
-      }else{
         ctx.fillStyle = '#545f65';
       }
 

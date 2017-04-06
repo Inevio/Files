@@ -295,6 +295,12 @@
   width: 113px;
 }
 
+.ui-navgroup-element:hover {
+  background-color: #e1e4e7;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+}
+
 .ui-navgroup-element{
 
   width: 100%;
