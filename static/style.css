@@ -294,7 +294,11 @@
 .ui-navgroup-element-txt{
   width: 113px;
 }
-
+.ui-navgroup-element.active:hover{
+  background-color: #60b25e;
+  border-top: 1px solid #60b25e;
+  border-bottom: 1px solid #60b25e;
+}
 .ui-navgroup-element:hover {
   background-color: #e1e4e7;
   border-top: 1px solid transparent;
