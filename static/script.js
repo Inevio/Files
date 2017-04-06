@@ -660,6 +660,8 @@ var drawIconsInGrid = function(){
 
       if( ( icon.fsnode.type !== TYPE_FILE && icon === dropActive ) || dropIgnore.indexOf( icon ) !== -1 ){
         ctx.fillStyle = '#545f65';
+      }else{
+        ctx.fillStyle = '#545f65';
       }
 
     }else{
