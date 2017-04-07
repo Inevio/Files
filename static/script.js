@@ -35,6 +35,8 @@ var historyBackward         = [];
 var historyForward          = [];
 var dropActive              = false;
 var dropIgnore              = [];
+var setBorder               = false;
+ver borderDate              = null;
 var selectDragOrigin        = null;
 var selectDragCurrent       = null;
 var automaticScroll         = 0;
@@ -576,17 +578,27 @@ var downloadAll = function( items ){
 
 }
 
-var drawBorder = function ( context , duration , size , sizeMax ) {
+var drawBorder = function ( context , sizeMax ) {
 
-  context.fillStyle = '#8fc98e';
-  context.fillRect( 0, 0, context.width, (size + sizeMax/duration) );
-  context.fillRect( 0, 0, (size + sizeMax/duration), context.height );
-  context.fillRect( 0, context.height - (size + sizeMax/duration), context.width, (size + sizeMax/duration) );
-  context.fillRect( context.width - (size + sizeMax/duration), 0, (size + sizeMax/duration), context.height );
-  size = size + sizeMax/duration
-  if(size < sizeMax){
-    requestAnimationFrame(drawBorder.bind( null , context , duration , size , sizeMax));
-  }
+    var variation = ( ( new Date().getTime() - borderDate ) / 1000 ) * 3;
+    context.fillStyle = '#8fc98e';
+    if(variation =< sizeMax){
+
+      context.fillRect( 0, 0, context.width, variation );
+      context.fillRect( 0, 0, variation, context.height );
+      context.fillRect( 0, context.height - variation, context.width, variation );
+      context.fillRect( context.width - variation, 0, variation, context.height );
+      requestDraw();
+
+    }
+    else{
+      context.fillRect( 0, 0, context.width, sizeMax );
+      context.fillRect( 0, 0, sizeMax, context.height );
+      context.fillRect( 0, context.height - sizeMax, context.width, sizeMax );
+      context.fillRect( context.width - sizeMax, 0, sizeMax, context.height );
+    }
+
+
 
 };
 
@@ -599,8 +611,18 @@ var drawIcons = function(){
 
   if( dropActive === true || dropIgnore.indexOf( dropActive ) !== -1 ){
 
-    requestAnimationFrame(drawBorder.bind( null , ctx , 200 , 0 , 3 ));
-    
+    ctx.fillStyle = '#8fc98e';
+    ctx.fillRect( 0, 0, ctx.width, 3 );
+    ctx.fillRect( 0, 0, 3, ctx.height );
+    ctx.fillRect( 0, ctx.height - 3, ctx.width, 3 );
+    ctx.fillRect( ctx.width - 3, 0, 3, ctx.height );
+
+
+    //if(setBorder){
+      //drawBorder( context, sizeMax );
+    //}
+
+
   }
 
 };
@@ -2844,6 +2866,8 @@ visualItemArea
   if( dropActive !== itemOver ){
 
     dropActive = itemOver || true;
+    setBorder = true;
+    borderDate = new Date().getTime();
 
     requestDraw();
 
