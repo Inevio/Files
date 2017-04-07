@@ -35,8 +35,6 @@ var historyBackward         = [];
 var historyForward          = [];
 var dropActive              = false;
 var dropIgnore              = [];
-var setBorder               = false;
-var borderDate              = null;
 var selectDragOrigin        = null;
 var selectDragCurrent       = null;
 var automaticScroll         = 0;
@@ -578,30 +576,6 @@ var downloadAll = function( items ){
 
 }
 
-var drawBorder = function ( context , sizeMax ) {
-
-    var variation = ( ( new Date().getTime() - borderDate ) / 1000 ) * 3;
-    context.fillStyle = '#8fc98e';
-    if(variation =< sizeMax){
-
-      context.fillRect( 0, 0, context.width, variation );
-      context.fillRect( 0, 0, variation, context.height );
-      context.fillRect( 0, context.height - variation, context.width, variation );
-      context.fillRect( context.width - variation, 0, variation, context.height );
-      requestDraw();
-
-    }
-    else{
-      context.fillRect( 0, 0, context.width, sizeMax );
-      context.fillRect( 0, 0, sizeMax, context.height );
-      context.fillRect( 0, context.height - sizeMax, context.width, sizeMax );
-      context.fillRect( context.width - sizeMax, 0, sizeMax, context.height );
-    }
-
-
-
-};
-
 var drawIcons = function(){
 
   if( currentList.length ){
@@ -616,11 +590,6 @@ var drawIcons = function(){
     ctx.fillRect( 0, 0, 3, ctx.height );
     ctx.fillRect( 0, ctx.height - 3, ctx.width, 3 );
     ctx.fillRect( ctx.width - 3, 0, 3, ctx.height );
-
-
-    //if(setBorder){
-      //drawBorder( context, sizeMax );
-    //}
 
 
   }
@@ -2866,8 +2835,6 @@ visualItemArea
   if( dropActive !== itemOver ){
 
     dropActive = itemOver || true;
-    setBorder = true;
-    borderDate = new Date().getTime();
 
     requestDraw();
 
