@@ -576,6 +576,20 @@ var downloadAll = function( items ){
 
 }
 
+var drawBorder = function ( context , duration , size , sizeMax ) {
+
+  context.fillStyle = '#8fc98e';
+  context.fillRect( 0, 0, context.width, (size + sizeMax/duration) );
+  context.fillRect( 0, 0, (size + sizeMax/duration), context.height );
+  context.fillRect( 0, context.height - (size + sizeMax/duration), context.width, (size + sizeMax/duration) );
+  context.fillRect( context.width - (size + sizeMax/duration), 0, (size + sizeMax/duration), context.height );
+  size = size + sizeMax/duration
+  if(size < sizeMax){
+    requestAnimationFrame(drawBorder.bind( null , context , duration , size , sizeMax));
+  }
+
+};
+
 var drawIcons = function(){
 
   if( currentList.length ){
@@ -585,12 +599,8 @@ var drawIcons = function(){
 
   if( dropActive === true || dropIgnore.indexOf( dropActive ) !== -1 ){
 
-    ctx.fillStyle = '#8fc98e';
-    ctx.fillRect( 0, 0, ctx.width, 3 );
-    ctx.fillRect( 0, 0, 3, ctx.height );
-    ctx.fillRect( 0, ctx.height - 3, ctx.width, 3 );
-    ctx.fillRect( ctx.width - 3, 0, 3, ctx.height );
-
+    requestAnimationFrame(drawBorder.bind( null , ctx , 200 , 0 , 3 ));
+    
   }
 
 };
