@@ -45,10 +45,13 @@ var currentGoToItemTimer    = 0;
 var enabledMultipleSelect   = true;
 var disabledFileIcons       = false;
 var sidebarFolders          = [];
+var notificationBellButton     = $('.notification-center');
+var notificationList           = $('.notification-list');
 
 if( params && ( params.command === 'selectSource' ||  params.command === 'selectDestiny' ) ){
   enabledMultipleSelect = params.command === 'selectSource' && params.mode === 'file' && params.multiple;
   disabledFileIcons = params.command === 'selectSource' && params.mode === 'directory';
+  notificationBellButton.hide();
 }
 
 var win                        = $(this);
@@ -74,8 +77,6 @@ var visualUploadButton         = $('.folder-utils .upload');
 var visualAcceptButton         = $('.ui-confirm .accept');
 var visualCancelButton         = $('.ui-confirm .cancel');
 var visualDestinyNameInput     = $('.ui-confirm input');
-var notificationBellButton     = $('.notification-center');
-var notificationList           = $('.notification-list');
 var sortOptions                = $('.sort-options');
 var visualSharingNotificationPrototype = $('.share-notification.wz-prototype');
 var ctx                        = visualItemArea[ 0 ].getContext('2d');
