@@ -5,6 +5,13 @@
 .wz-app{
   border-radius: 6px;
 }
+
+.selectDestiny .notification-center, .selectSource .notification-center{
+  display: none;
+  
+}
+
+
 .ui-header-brand{
   width: 164px;
 
@@ -847,6 +854,7 @@
 
   .ui-header-brand .select-title{
     width: 100%;
+    font-size: 16px;
   }
 
   .ui-input-search, .ui-header-buttons{
