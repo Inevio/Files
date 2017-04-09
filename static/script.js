@@ -35,7 +35,6 @@ var historyBackward         = [];
 var historyForward          = [];
 var dropActive              = false;
 var dropIgnore              = [];
-var isBorder = false;
 var selectDragOrigin        = null;
 var selectDragCurrent       = null;
 var automaticScroll         = 0;
@@ -578,32 +577,6 @@ var downloadAll = function( items ){
 
 }
 
-var drawBorder = function ( context , sizeMax , variation ) {
-    isBorder = true;
-    context.fillStyle = '#8fc98e';
-
-    if(variation =< sizeMax){
-
-      context.fillRect( 0, 0, context.width, variation );
-      context.fillRect( 0, 0, variation, context.height );
-      context.fillRect( 0, context.height - variation, context.width, variation );
-      context.fillRect( context.width - variation, 0, variation, context.height );
-      variation = variation + variation;
-      drawBorder( context , sizeMax , variation );
-
-    }
-    else{
-      context.fillRect( 0, 0, context.width, sizeMax );
-      context.fillRect( 0, 0, sizeMax, context.height );
-      context.fillRect( 0, context.height - sizeMax, context.width, sizeMax );
-      context.fillRect( context.width - sizeMax, 0, sizeMax, context.height );
-      variation = variation + variation;
-      drawBorder( context , sizeMax , variation );
-    }
-
-
-};
-
 var drawIcons = function(){
 
   if( currentList.length ){
@@ -613,9 +586,11 @@ var drawIcons = function(){
 
   if( dropActive === true || dropIgnore.indexOf( dropActive ) !== -1 ){
 
-    if (!isBorder) {
-      drawBorder ( ctx , 3 , 3/200 );
-    }
+    ctx.fillStyle = '#8fc98e';
+    ctx.fillRect( 0, 0, ctx.width, 3 );
+    ctx.fillRect( 0, 0, 3, ctx.height );
+    ctx.fillRect( 0, ctx.height - 3, ctx.width, 3 );
+    ctx.fillRect( ctx.width - 3, 0, 3, ctx.height );
 
 
   }
@@ -2871,7 +2846,6 @@ visualItemArea
 .on( 'wz-dropleave', function( e, item ){
 
   dropActive = false;
-  isBorder = false;
   dropIgnore = [];
 
   requestDraw();
@@ -2903,7 +2877,7 @@ visualItemArea
   }
 
   dropActive = false;
-  isBorder = false;
+
   requestDraw();
 
 })
