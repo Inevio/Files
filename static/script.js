@@ -486,7 +486,7 @@ var clipboardPaste = function(){
 
   }
 
-  console.log( '###PASTE###', storage.copy, storage.cut );
+  requestDraw();
 
 };
 
