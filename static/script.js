@@ -17,6 +17,12 @@ var SHARING_ICON = new Image();
 SHARING_ICON.src = 'https://static.horbito.com/app/1/img/sharing@2x.png';
 var SHARED_PATH = 0;
 
+/* COLORS */
+var BLUEUI = '#0071f6';
+var TRANSPARENTBLUEUI = 'rgba(0, 113, 246, 0.3)'
+var DARKTEXTS = '#252525'
+var WHITE = '#fff'
+
 var channel                 = null;
 var requestedFrame          = false;
 var currentOpened           = null;
@@ -539,7 +545,7 @@ var deleteAll = function( items ){
   dialog.setTitle( lang.main.remove );
   dialog.setText( lang.main.confirmDelete );
   dialog.setButton( 0, wzLang.core.dialogCancel, 'black' );
-  dialog.setButton( 1, wzLang.core.dialogAccept, 'green' );
+  dialog.setButton( 1, wzLang.core.dialogAccept, 'blue' );
 
   dialog.render(function( doIt ){
 
@@ -586,7 +592,7 @@ var drawIcons = function(){
 
   if( dropActive === true || dropIgnore.indexOf( dropActive ) !== -1 ){
 
-    ctx.fillStyle = '#8fc98e';
+    ctx.fillStyle = BLUEUI;
     ctx.fillRect( 0, 0, ctx.width, 3 );
     ctx.fillRect( 0, 0, 3, ctx.height );
     ctx.fillRect( 0, ctx.height - 3, ctx.width, 3 );
@@ -650,8 +656,8 @@ var drawIconsInGrid = function(){
 
       if( icon.active && !isCutted(icon) ){
 
-        ctx.strokeStyle = '#60b25e';
-        ctx.fillStyle = '#60b25e';
+        ctx.strokeStyle = BLUEUI;
+        ctx.fillStyle = BLUEUI;
         drawRoundRect( ctx, x, y + ICON_IMAGE_HEIGHT_AREA, ICON_WIDTH, icon.bigIconTextHeight, { bl : ICON_RADIUS, br : ICON_RADIUS }, true, false );
 
       }
@@ -661,18 +667,19 @@ var drawIconsInGrid = function(){
     if( dropActive ){
 
       if( ( icon.fsnode.type !== TYPE_FILE && icon === dropActive ) || dropIgnore.indexOf( icon ) !== -1 ){
-        ctx.fillStyle = '#545f65';
+        ctx.fillStyle = '#252525';
       }else{
-        ctx.fillStyle = '#545f65';
+        ctx.fillStyle = '#252525';
       }
 
     }else{
       if (isCutted(icon)) {
         ctx.fillStyle = '#b6babc';
       }else{
-        ctx.fillStyle = icon.active ? '#ffffff' : '#545f65';
+        ctx.fillStyle = icon.active ? '#ffffff' : '#252525';
       }
     }
+
 
     ctx.font = '13px Lato';
     ctx.textAlign = 'center';
@@ -749,7 +756,7 @@ var drawIconsInGrid = function(){
 
   if( selectDragCurrent ){
 
-    ctx.fillStyle = 'rgba(96, 178, 94, 0.3)';
+    ctx.fillStyle = TRANSPARENTBLUEUI;
     ctx.fillRect( selectDragOrigin.x, selectDragOrigin.y + currentScroll, selectDragCurrent.x - selectDragOrigin.x, selectDragCurrent.y - selectDragOrigin.y );
 
   }
@@ -775,7 +782,7 @@ var drawProgressCircle = function( ctx , center , progress ){
   var endAngle = startAngle + 2 * progress;
   ctx.arc( centerX , centerY , 12 , startAngle*Math.PI , endAngle*Math.PI );
   ctx.lineWidth = 2;
-  ctx.strokeStyle = '#60b25e';
+  ctx.strokeStyle = BLUEUI;
 
   ctx.stroke();
 
@@ -805,9 +812,6 @@ var drawIconsInList = function(){
 
   currentList.forEach( function( icon, currentRow ){
 
-    /*ctx.fillStyle = '#60b25e';
-    ctx.fillRect( 0, currentRow * 32, ctx.width, 32 );*/
-
     ctx.fillStyle = '#ccd3d5';
     ctx.fillRect( ICON_GAP_MIN, ( currentRow + 1 ) * 34, ctx.width - ( ICON_GAP_MIN * 2 ), 1 );
 
@@ -815,7 +819,7 @@ var drawIconsInList = function(){
     ctx.fillRect( ICON_GAP_MIN * 2, currentRow * 34 + 9, 16, 16 );
 
     ctx.font = '13px Lato';
-    ctx.fillStyle = '#545f65';
+    ctx.fillStyle = '#252525';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
     ctx.fillText( icon.fsnode.name, ICON_GAP_MIN * 2 + 16 + ICON_GAP_MIN, currentRow * 34 + 11 );
@@ -2894,7 +2898,7 @@ visualItemArea
       'padding'       : '10px 9px 9px',
       'height'        : '16px',
       'line-height'   : '16px',
-      'background'    : '#60b25e',
+      'background'    : BLUEUI,
       'border-radius' : '3px',
       'text-align'    : 'left',
       'box-shadow'    : '0px 2px 5px rgba(0,0,0,.25)',
@@ -2913,11 +2917,11 @@ visualItemArea
 
         'display'             : 'inline-block',
         'width'               : '17px',
-        'height'              : '18px',
+        'height'              : '17px',
         'margin-right'        : '10px',
-        'background-image'    : 'url(https://staticbeta.horbito.com/app/1/img/sprite.png)',
-        'background-position' : '-372px 0',
-        'background-size'     : '402px 18px',
+        'background-image'    : 'url(https://static.horbito.com/app/1/img/sprite.png)',
+        'background-position' : '-32px 0',
+        'background-size'     : '67px 18px',
         'background-repeat'   : 'no-repeat'
 
       })
@@ -3036,7 +3040,17 @@ notificationBellButton
       }
 
   }else{
-    alert( lang.main.noNotification );
+
+      var dialog = api.dialog();
+
+      dialog.setTitle( lang.main.notifications );
+      dialog.setText( lang.main.noNotification );
+      dialog.setButton( 1, wzLang.core.dialogAccept, 'blue' );
+
+      dialog.render(function( doIt ){
+        
+      });
+
   }
 
 });
