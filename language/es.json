@@ -63,7 +63,8 @@
         "Images" : "images",
         "Music" : "music",
         "Received" : "received",
-        "Videos" : "videos"
+        "Videos" : "videos",
+        "Cosmos" : "cosmos"
 
       }
 
