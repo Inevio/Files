@@ -1,3 +1,26 @@
+/* COLORS */
+@colorMain: #7ebe30;
+
+@grayHorbito: #51575f;
+@grayHorbitoHover: #474d54;
+@grayHorbitoActive: #42464d;
+@grayHorbitoDisabled: #c3c9cc;
+
+@greenHorbito: #60b25e;
+@greenHorbitoHover: #4ea34b;
+@greenHorbitoActive: #3d903b;
+@greenHorbitoDisabled: #c3c9cc;
+
+@blueHorbito: #0071f6;
+@blueHorbitoHover: #006ae6;
+@blueHorbitoActive: #0062d6;
+@blueHorbitoDisabled: #c3c9cc;
+
+@redHorbito: #ff2153;
+@redHorbitoHover: #f81d4e;
+@redHorbitoActive: #e51846;
+@redHorbitoDisabled: #c3c9cc;
+
 .users-area .covert{
   display: none;
 }
@@ -94,7 +117,7 @@
     background-position: 14px 11px;
 
     &:focus{
-      border: solid 2px #60b25e;
+      border: solid 2px @blueHorbito;
     }
 
   }
@@ -337,11 +360,20 @@
     margin: 16px 14px 0 0;
     float: right;
     padding: 11px 20px;
-    border-radius: 18px;
-    background-color: #60b25e;
+    border-radius: 6px;
+    background-color: @blueHorbito;
     font-family: Lato;
     height: 15px;
     font-size: 15px;
     color: #feffff;
   }
+
+  .save:active{
+    background-color: @blueHorbitoActive !important;
+  }
+
+  .save:hover{
+    background-color: @blueHorbitoHover;
+  }
+
 }
