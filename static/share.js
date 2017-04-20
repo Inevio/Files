@@ -287,7 +287,7 @@ $('.permission .icon').on( 'click', function(){
   $(this).parent('.permission').toggleClass('active');
 });
 
-$('.users-area .search').on( 'input' , function(){
+$('.users-area .search input').on( 'input' , function(){
 
   var filter = $( this ).val();
   var users = $( '.user' );
