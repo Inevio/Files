@@ -1,4 +1,6 @@
-@border-color: #e5e9ea;
+@text-light: #9a9aa2;
+@text-dark: #252525;
+@border-color: #eeeeee;
 
 .ui-header{
   height: 34px;
@@ -14,13 +16,14 @@
 
 }
 
+
 .title{
   display: block;
   font-family: Lato;
   font-size: 13px;
   font-weight: bold;
   text-transform: uppercase;
-  color: #889399;
+  color: @text-light;
 }
 
 .file-name{
@@ -59,7 +62,7 @@
     display: block;
     font-family: Lato;
     font-size: 17px;
-    color: #545f65;
+    color: @text-dark;
     height: 17px;
     padding: 8px 0 7px 0;
     width: 213px;
@@ -75,7 +78,7 @@
   float: left;
   width: 100%;
   border-bottom: 1px solid @border-color;
-  background: #f9f9fb;
+  background: #f9f9fe;
 
   .size{
     float: left;
@@ -90,7 +93,7 @@
     	font-size: 31px;
     	font-weight: bold;
     	text-transform: uppercase;
-    	color: #545f65;
+    	color: @text-dark;
     }
 
   }
@@ -114,7 +117,7 @@
       margin: 10px 0 16px;
       font-family: Lato;
     	font-size: 15px;
-    	color: #545f65;
+    	color: @text-dark;
     }
 
   }
@@ -141,7 +144,7 @@
     span{
       font-family: Lato;
     	font-size: 15px;
-    	color: #545f65;
+    	color: @text-dark;
     }
 
     i{
@@ -167,7 +170,7 @@
     & > .entry{
       font-family: Lato;
       font-size: 14px;
-      color: #545f65;
+      color: @text-dark;
       white-space: nowrap;
     }
 
@@ -224,7 +227,7 @@
         display: block;
         font-family: Lato;
         font-size: 13px;
-        color: #545f65;
+        color: @text-dark;
         margin-bottom: 12px;
 
         &:last-child{
@@ -243,7 +246,8 @@
   float: left;
   width: 100%;
   border-bottom: 1px solid @border-color;
-  background: #f9f9fb;
+  background: #f9f9fe;
+
 
   .creation{
     float: left;
@@ -272,7 +276,7 @@
     margin: 18px 0 16px;
     font-family: Lato;
     font-size: 15px;
-    color: #545f65;
+    color: @text-dark;
   }
 
 }
@@ -320,7 +324,7 @@
     span{
       font-family: Lato;
     	font-size: 15px;
-    	color: #545f65;
+    	color: @text-dark;
       line-height: 21px;
     }
 
@@ -332,7 +336,7 @@
   float: left;
   width: 100%;
   padding: 16px 0;
-  background-color: #f9f9fb;
+  background-color: #f9f9fe;
 
   .title{
     margin-left: 21px;
@@ -372,7 +376,7 @@
     .name{
       font-family: Lato;
     	font-size: 15px;
-    	color: #545f65;
+    	color: @text-dark;
     }
 
     .rol{
@@ -380,7 +384,7 @@
       right: 0px;
       font-family: Lato;
 	    font-size: 13px;
-	    color: #889399;
+	    color: @text-light;
     }
 
   }

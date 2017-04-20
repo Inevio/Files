@@ -21,6 +21,10 @@
 @redHorbitoActive: #e51846;
 @redHorbitoDisabled: #c3c9cc;
 
+@text-light: #9a9aa2;
+@text-dark: #252525;
+@border-color: #eeeeee;
+
 .users-area .covert{
   display: none;
 }
@@ -42,8 +46,8 @@
 .left-column{
   width: 399px;
   height: 512px;
-  border-right: 1px solid #ccd3d5;
-  background: #f9f9fb;
+  border-right: 1px solid @border-color;
+  background: #fff;
   float: left;
 }
 
@@ -53,7 +57,7 @@
   height: 32px;
   padding: 16px 0;
   background-color: #fff;
-  border-bottom: 1px solid #ccd3d5;
+  border-bottom: 1px solid @border-color;
 
   .icon{
     float: left;
@@ -71,7 +75,7 @@
     display: block;
     font-family: Lato;
     font-size: 17px;
-    color: #545f65;
+    color: @text-dark;
     height: 17px;
     padding: 8px 0 7px 0;
     width: 213px;
@@ -96,30 +100,11 @@
     font-family: Lato;
     font-size: 15px;
     font-weight: bold;
-    color: #545f65;
+    color: @text-dark;
   }
 
   .search{
     margin: 15px 7px 0;
-    padding: 0 13px 0px 47px;
-    height: 46px;
-    border-radius: 6px;
-    background-color: #fff;
-    border: solid 2px #c0c6ca;
-    font-family: Lato;
-    font-size: 19px;
-    color: #545f65;
-    line-height: 48px;
-    width: ~'calc( 100% - 14px )';
-    box-sizing: border-box;
-    background: url('@static/img/share/search.png') no-repeat;
-    background-size: 20px 20px;
-    background-position: 14px 11px;
-
-    &:focus{
-      border: solid 2px @blueHorbito;
-    }
-
   }
 
   .users-list{
@@ -145,7 +130,7 @@
         font-family: Lato;
         font-size: 15px;
         font-weight: bold;
-        color: #545f65;
+        color: @text-dark;
         display: inline-block;
         width: 100%;
         white-space: nowrap;
@@ -177,7 +162,7 @@
         font-family: Lato;
         font-size: 15px;
         font-weight: bold;
-        color: #545f65;
+        color: @text-dark;
         display: inline-block;
         width: 100%;
         white-space: nowrap;
@@ -206,7 +191,7 @@
 
   padding: 18px 10px 0px;
   margin-bottom: 18px;
-  border-bottom: 1px solid #ccd3d5;
+  border-bottom: 1px solid @border-color;
   height: 212px;
   width: 345px;
   overflow-y: scroll;
@@ -215,7 +200,7 @@
     font-family: Lato;
     font-size: 17px;
     font-weight: bold;
-    color: #545f65;
+    color: @text-dark;
     margin-left: 10px;
   }
 
@@ -244,7 +229,7 @@
         font-family: Lato;
         font-size: 13px;
         font-weight: bold;
-        color: #545f65;
+        color: @text-dark;
         display: inline-block;
         width: 100%;
         white-space: nowrap;
@@ -264,7 +249,7 @@
     font-family: Lato;
     font-size: 17px;
     font-weight: bold;
-    color: #545f65;
+    color: @text-dark;
     margin-left: 21px;
   }
 
@@ -344,7 +329,7 @@
         font-family: Lato;
         font-size: 13px;
         font-weight: bold;
-        color: #545f65;
+        color: @text-dark;
         display: inline-block;
         width: 100%;
         white-space: nowrap;
