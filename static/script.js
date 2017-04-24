@@ -41,6 +41,8 @@ var historyBackward         = [];
 var historyForward          = [];
 var dropActive              = false;
 var dropIgnore              = [];
+var border                  = 0;
+var borderAnimation         = null;
 var selectDragOrigin        = null;
 var selectDragCurrent       = null;
 var automaticScroll         = 0;
@@ -593,14 +595,36 @@ var drawIcons = function(){
   if( dropActive === true || dropIgnore.indexOf( dropActive ) !== -1 ){
 
     ctx.fillStyle = BLUEUI;
-    ctx.fillRect( 0, 0, ctx.width, 3 );
-    ctx.fillRect( 0, 0, 3, ctx.height );
-    ctx.fillRect( 0, ctx.height - 3, ctx.width, 3 );
-    ctx.fillRect( ctx.width - 3, 0, 3, ctx.height );
-
-
+    drawBorder ( 3 );
   }
 
+};
+
+
+var drawBorder = function ( size ) {
+
+    if(border < size){
+      border = border + 0.1;
+      ctx.fillRect( 0, 0, ctx.width, border );
+      ctx.fillRect( 0, 0, border, ctx.height );
+      ctx.fillRect( 0, ctx.height - border, ctx.width, border );
+      ctx.fillRect( ctx.width - border, 0, border, ctx.height );
+      for(var i = 0; i< 5; i++ && border < size){
+        border = border + 0.1;
+        ctx.fillRect( 0, 0, ctx.width, border );
+        ctx.fillRect( 0, 0, border, ctx.height );
+        ctx.fillRect( 0, ctx.height - border, ctx.width, border );
+        ctx.fillRect( ctx.width - border, 0, border, ctx.height );
+      }
+    }
+
+    else{
+      ctx.fillRect( 0, 0, ctx.width, size );
+      ctx.fillRect( 0, 0, size, ctx.height );
+      ctx.fillRect( 0, ctx.height - size, ctx.width, size );
+      ctx.fillRect( ctx.width - size, 0, size, ctx.height );
+
+    }
 };
 
 var drawIconsInGrid = function(){
@@ -629,16 +653,17 @@ var drawIconsInGrid = function(){
       if( icon.fsnode.type !== TYPE_FILE ){
 
         if( icon === dropActive ){
-
           ctx.strokeStyle = '#e5e9ea';
           ctx.fillStyle = '#e5e9ea';
           drawRoundRect( ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true );
+          border = 0;
+
 
         }else{
-
           ctx.strokeStyle = '#ccd3d5';
           ctx.fillStyle = '#f9fafb';
           drawRoundRect( ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true );
+
 
         }
 
@@ -2618,10 +2643,12 @@ visualSidebarItemArea
 
 .on( 'wz-dropenter', '.ui-navgroup-element', function( e, item ){
   $(this).addClass('dropover');
+  border = 0;
 })
 
 .on( 'wz-dropleave', '.ui-navgroup-element', function( e, item ){
   $(this).removeClass('dropover');
+  border = 0;
 })
 
 .on( 'wz-drop', '.ui-navgroup-element', function( e, item, list ){
@@ -2823,7 +2850,7 @@ visualItemArea
   var itemOver = getIconWithMouserOver( e );
 
   dropActive = itemOver || true;
-
+  border = 0;
   requestDraw();
 
 })
@@ -2851,7 +2878,7 @@ visualItemArea
 
   dropActive = false;
   dropIgnore = [];
-
+  border = 0;
   requestDraw();
 
 })
@@ -2881,7 +2908,7 @@ visualItemArea
   }
 
   dropActive = false;
-
+  border = 0;
   requestDraw();
 
 })
@@ -3048,7 +3075,7 @@ notificationBellButton
       dialog.setButton( 1, wzLang.core.dialogAccept, 'blue' );
 
       dialog.render(function( doIt ){
-        
+
       });
 
   }
