@@ -964,7 +964,7 @@
     .ui-input{
       display: block;
       float: right;
-      width: ~'calc( 100% - 208px )';
+      width: ~'calc( 100% - 220px )';
     }
   }
 
