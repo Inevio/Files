@@ -196,7 +196,7 @@ var acceptButtonHandler = function(){
 
     if( found ){
 
-      confirm( '###REPLACE###', function( accepted ){
+      confirm( lang.replace, function( accepted ){
 
         if( accepted ){
 
