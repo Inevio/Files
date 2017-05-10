@@ -538,6 +538,10 @@ var deleteAll = function( items ){
 
   items = items || currentActive
 
+  if ( items.length === 0 ) {
+    return
+  }
+
   if ( items.length === 1 && items[ 0 ].fsnode.type === TYPE_FOLDER_SPECIAL ) {
     return
   }
