@@ -877,9 +877,9 @@
   width: 106px;
   padding: 2px;
   border-radius: 0 0 3px 3px;
-  border: 1px solid #60b25e;
+  border: 1px solid @blueHorbito;
   box-sizing: border-box;
-  box-shadow: 0px 0px 4px #60b25e inset;
+  box-shadow: 0px 0px 4px @blueHorbito inset;
   height: 40px;
   line-height: 17px;
 
