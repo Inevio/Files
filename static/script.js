@@ -63,7 +63,9 @@ var animationEmptyActive = false;
 var animationEmptyImages = [];
 var animationEmptyPosition = [];
 var proportionEmpty = 1;
-//var emptyradiusmodificated;
+var animationOpacity = 0;
+var initialColor = [ 187 , 187 , 193 ];
+
 
 if( params && ( params.command === 'selectSource' ||  params.command === 'selectDestiny' ) ){
   enabledMultipleSelect = params.command === 'selectSource' && params.mode === 'file' && params.multiple;
@@ -606,7 +608,7 @@ var drawIcons = function(){
     drawEmptyBackground();
   }
 
-  if( currentList.length === 0 && dropActive === true){
+  if( currentList.length === 0 && dropActive === true && !animationEmptyActive ){
     backgroundHover();
   }
 
@@ -616,7 +618,7 @@ var drawIcons = function(){
       if ( currentList.length === 0 ) {
 
         animationEmptyActive = true;
-        animationEmptyFolder( );
+        animationEmptyFolder();
 
       }else{
         ctx.fillStyle = BLUEUI;
@@ -626,6 +628,7 @@ var drawIcons = function(){
 
   }else{
     animationEmptyActive = false;
+    animationOpacity = 0;
   }
 
 };
@@ -677,8 +680,10 @@ var drawEmptyBackground = function(){
 }
 
 var animationEmptyFolder = function (){
-  //console.log(animationEmptyPosition);
   if (animationEmptyActive){
+
+    ctx.globalAlpha = animationOpacity;
+
     ctx.clearRect(0, 0, ctx.width, ctx.height);
 
     for (var i = 0; i < animationEmptyImages.length; i++){
@@ -696,14 +701,28 @@ var animationEmptyFolder = function (){
     ctx.fill();
     ctx.stroke();
     backgroundHover();
-  requestAnimationFrame(animationEmptyFolder);
+
+    if ( animationOpacity < 1) {
+      animationOpacity += 0.02;
+    }
+
+    requestAnimationFrame(animationEmptyFolder);
   }
 }
 
 var backgroundHover = function(){
 
+  var finalColor = [ 0 , 113 , 246 ];
+
+  initialColor.forEach(function( color , i ){
+    initialColor[i] += (finalColor[i] - color) * (animationOpacity / 10);
+  }); 
+
+  var colorOnTransition = 'rgb('+initialColor[0]+', '+initialColor[1]+', '+initialColor[2]+')';
+  console.log(initialColor,animationOpacity);
+
   ctx.beginPath();
-  ctx.strokeStyle = BLUEUI;
+  ctx.strokeStyle = colorOnTransition;
   ctx.fillStyle = CIRCLE;
   ctx.lineWidth = 4*proportionEmpty;
   ctx.lineCap = 'round';
@@ -714,7 +733,7 @@ var backgroundHover = function(){
   ctx.closePath();
 
   ctx.beginPath();
-  ctx.strokeStyle = BLUEUI;
+  ctx.strokeStyle = colorOnTransition;
   ctx.lineWidth = 10*proportionEmpty;
   ctx.lineCap = 'round';
   ctx.setLineDash([]);
@@ -724,7 +743,7 @@ var backgroundHover = function(){
   ctx.closePath();
 
   //ctx.beginPath();
-  ctx.strokeStyle = BLUEUI;
+  ctx.strokeStyle = colorOnTransition;
   ctx.lineWidth = 10*proportionEmpty;
   ctx.lineCap = 'round';
   ctx.setLineDash([]);
@@ -2459,12 +2478,6 @@ var loadEmptyAnimationImg = function(){
   animationEmptyImages[12].src = "https://static.horbito.com/app/377/img/emptyAnimation/eps.png";
   animationEmptyImages[13] = new Image();
   animationEmptyImages[13].src = "https://static.horbito.com/app/377/img/emptyAnimation/premiere.png";
-  if ( pixelRatio > 0 ){
-    for (var i = 0; i < animationEmptyImages.length; i++){
-      animationEmptyImages[i].src = animationEmptyImages[i].src.slice(0,animationEmptyImages[i].src.length-4) + '@2x' + animationEmptyImages[i].src.slice(animationEmptyImages[i].src.length-4, animationEmptyImages[i].src.length);
-    }
-  }
-
 
   for (var i = 0; i < animationEmptyImages.length; i++){
     animationEmptyPosition[i] = [ctx.width * Math.random(), Math.random() * (visualItemArea[ 0 ].height + 300), 0.5 + dy * Math.random()];
