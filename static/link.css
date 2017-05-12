@@ -1,3 +1,30 @@
+/* COLORS */
+@colorMain: #7ebe30;
+
+@grayHorbito: #51575f;
+@grayHorbitoHover: #474d54;
+@grayHorbitoActive: #42464d;
+@grayHorbitoDisabled: #c3c9cc;
+
+@greenHorbito: #60b25e;
+@greenHorbitoHover: #4ea34b;
+@greenHorbitoActive: #3d903b;
+@greenHorbitoDisabled: #c3c9cc;
+
+@blueHorbito: #0071f6;
+@blueHorbitoHover: #006ae6;
+@blueHorbitoActive: #0062d6;
+@blueHorbitoDisabled: #c3c9cc;
+
+@redHorbito: #ff2153;
+@redHorbitoHover: #f81d4e;
+@redHorbitoActive: #e51846;
+@redHorbitoDisabled: #c3c9cc;
+
+@text-light: #9a9aa2;
+@text-dark: #252525;
+@border-color: #eeeeee;
+
 .links-container{
   float: left;
   width: 100%;
@@ -5,7 +32,7 @@
 }
 
 .wz-view{
-  background-color: #f9f9fb;
+  background-color: #fff;
   border-radius: 6px;
 
   .password-input{
@@ -59,11 +86,12 @@
 
 .file-info{
   float: left;
-  width: 100%;
+  width: ~'calc(100% - 20px)';
   height: 33px;
   padding: 15px 0;
+  margin: 0 10px;
   background-color: #fff;
-  border-bottom: 1px solid #e2e6e8;
+  border-bottom: 1px solid @border-color;
 
   .icon{
     float: left;
@@ -80,11 +108,10 @@
     display: block;
     font-family: Lato;
     font-size: 17px;
-    color: #545f65;
+    color: @text-dark;
     height: 17px;
     padding: 8px 0 7px 0;
     width: 403px;
-    margin-right: 35px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -101,7 +128,7 @@
     font-family: Lato;
     font-size: 15px;
     font-weight: bold;
-    color: #545f65;
+    color: @text-dark;
   }
 
   .link, .password-input{
@@ -110,15 +137,15 @@
     width: 455px;
     height: 46px;
     border-radius: 6px;
-    background-color: #fff;
-    border: solid 2px #c0c6ca;
+    background-color: #f0f0f0;
+    border: solid 2px transparent;
     font-family: Lato;
     font-size: 19px;
-    color: #545f65;
+    color: @text-dark;
     line-height: 48px;
 
     &:focus{
-      border: solid 2px #60b25e;
+      border: solid 2px @blueHorbito;
     }
 
   }
@@ -151,7 +178,7 @@
       position: relative;
       font-family: Lato;
       font-size: 15px;
-      color: #889399;
+      color: @text-light;
       vertical-align: text-top;
     }
 
@@ -178,7 +205,7 @@
         font-family: Lato;
         font-size: 15px;
         font-weight: bold;
-        color: #545f65;
+        color: @text-dark;
         letter-spacing: 0.02em;
       }
 
@@ -210,7 +237,7 @@
     float: left;
     margin-top: 11px;
     display: none;
-    color: #889399;
+    color: @text-light;
 
     &.show{
       display: block;
@@ -241,7 +268,7 @@
       font-family: Lato;
       font-size: 15px;
       font-weight: bold;
-      color: #889399;
+      color: @text-light;
       letter-spacing: 0.02em;
     }
 
@@ -250,12 +277,20 @@
   .create-link{
     float: right;
     padding: 11px 20px;
-    border-radius: 18px;
-    background-color: #60b25e;
+    border-radius: 6px;
+    background-color: @blueHorbito;
     font-family: Lato;
     height: 15px;
     font-size: 15px;
     color: #feffff;
+  }
+
+  .create-link:active{
+    background-color: @blueHorbitoActive !important;
+  }
+
+    .create-link:hover{
+    background-color: @blueHorbitoHover;
   }
 
 }
@@ -271,7 +306,7 @@
     vertical-align: middle;
     font-family: Lato;
     font-size: 13px;
-    color: #545f65;
+    color: @text-dark;
     padding: 1px 14px 0;
     background: #fff;
     height: 34px;
