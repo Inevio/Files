@@ -233,7 +233,7 @@
 .weexplorer-sidebar-element.active{
   border-top: 1px solid rgba( 0, 0, 0, 0.1 );
   border-bottom: 1px solid rgba( 0, 0, 0, 0.1 );
-  background: #60b25e;
+  background: #0071f6;
 }
 
 .weexplorer-sidebar-container{
@@ -685,7 +685,7 @@
 
 .toggle .selector.active i{
   margin-left: 24px;
-  background-color: #60b25e;
+  background-color: #0071f6;
 }
 
 .password-container{
@@ -694,7 +694,7 @@
   -webkit-border-radius: 25px;
 	-moz-border-radius: 25px;
 	border-radius: 25px;
-  border: solid 1px #60b25e;
+  border: solid 1px #0071f6;
   padding: 0 20px;
   font-size: 16px;
   color: #252525;
@@ -715,7 +715,7 @@
   -webkit-border-radius: 25px;
 	-moz-border-radius: 25px;
 	border-radius: 25px;
-  border: solid 2px #60b25e;
+  border: solid 2px #0071f6;
   margin-top: 45px;
   padding: 0 20px;
   font-size: 18px;
@@ -729,7 +729,7 @@
   -webkit-border-radius: 24px;
   -moz-border-radius: 24px;
   border-radius: 24px;
-  background-color: #60b25e;
+  background-color: #0071f6;
   background-image: none;
   margin: 0 auto;
   position: absolute;
@@ -1129,7 +1129,7 @@
 	.attach-button{
 		width: 95px;
 		height: 39px;
-		background-color: #60b25e;
+		background-color: #0071f6;
 		float: right;
 		margin: 5px 7px;
 		border-radius: 6px;
@@ -1201,7 +1201,7 @@
 .progress-bar-loaded{
 	width: 0px;
 	height: 6px;
-	background: #60b25e;
+	background: #0071f6;
 	position: relative;
 	top: 0;
 	left: 0;
