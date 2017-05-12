@@ -43,6 +43,7 @@
       "confirmDelete"             : "Are you sure, you want to delete the selected element?",
       "sharedYou"                 : "has shared you:",
       "noNotification"            : "You don't have any new notification",
+      "notifications"             : "Notifications",
       "activity"                  : "Activity",
       "fileCanNotOpen"            : "horbito can't open this file currently in the device",
       "fileReceivedDialogTitle"   : "%s has been received",
@@ -53,7 +54,8 @@
         "Images" : "Images",
         "Music" : "Music",
         "Received" : "Received",
-        "Videos" : "Videos"
+        "Videos" : "Videos",
+        "Cosmos"  : "Cosmos"
 
       },
 
@@ -63,7 +65,8 @@
         "Images" : "images",
         "Music" : "music",
         "Received" : "received",
-        "Videos" : "videos"
+        "Videos" : "videos",
+        "Cosmos" : "cosmos"
 
       }
 
@@ -205,10 +208,10 @@
     "minutes" : " minutes",
     "seconds" : " seconds",
     "left"    : "left",
-    "sortByName" : "Sort by Name",
-    "sortBySize" : "Sort by Size",
-    "sortByCreation" : "Sort by Creation",
-    "sortByModif" : "Sort by Modif",
+    "sortByName" : "Name",
+    "sortBySize" : "Size",
+    "sortByCreation" : "Creation",
+    "sortByModif" : "Modification",
 
     "addToSidebar" : "Add to sidebar",
     "removeFromSidebar" : "Remove from sidebar",
