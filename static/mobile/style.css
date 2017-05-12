@@ -117,7 +117,7 @@
   float: left;
   margin-top: 16px;
   font-size: 17px;
-  color: #545f65;
+  color: #252525;
 }
 
 .weexplorer-element-icon{
@@ -212,7 +212,7 @@
   margin-top: 40px;
   font-size: 20px;
   font-weight: bold;
-  color: #545f65;
+  color: #252525;
   float: left;
   margin-left: 19px;
   font-family: Lato;
@@ -343,7 +343,7 @@
   margin-top: 4px;
   font-size: 17px;
   font-weight: bold;
-  color: #545f65;
+  color: #252525;
   float: left;
   margin-left: 17px;
   font-family: Lato;
@@ -364,7 +364,7 @@
   font-size: 36px;
   font-family: Lato;
   line-height: 1.5em;
-  color: #889399;
+  color: #717171;
   display: none;
 }
 
@@ -419,7 +419,7 @@
   width: ~'calc(100% - 16px)';
   height: 1px;
   margin: 0 auto;
-  background: #e5e9ea;
+  background: #eeeeee;
 }
 
 .file-options .options-header{
@@ -451,14 +451,14 @@
   font-family: Lato;
   font-size: 17px;
   line-height: 1.1em;
-  color: #545f65;
+  color: #252525;
   max-width: ~'calc(100% - 140px)';
 }
 
 .file-options .file-rename{
   font-size: 17px;
   line-height: 1.1em;
-  color: #545f65;
+  color: #252525;
   max-width: ~'calc(100% - 180px)';
   display: none;
 }
@@ -522,7 +522,7 @@
   font-size: 13px;
   font-weight: bold;
   font-family: Lato;
-  color: #889399;
+  color: #717171;
   margin: 15px 20px 12px;
 }
 
@@ -604,7 +604,7 @@
 .option-section .option div{
   font-family: Lato;
   font-size: 15px;
-  color: #545f65;
+  color: #252525;
   float: left;
 }
 
@@ -626,14 +626,14 @@
   width: ~'calc(100% - 16px)';
   height: 1px;
   margin: 0 auto;
-  background: #e5e9ea;
+  background: #eeeeee;
 }
 
 .create-link-container .create-link-title{
   font-family: Lato;
   font-size: 21px;
   margin-top: 30px;
-  color: #545f65;
+  color: #252525;
   text-align: center;
   margin-bottom: 38px;
 }
@@ -658,7 +658,7 @@
 .toggle .toggle-name{
   font-family: Lato;
   font-size: 15px;
-  color: #545f65;
+  color: #252525;
   float: left;
 }
 
@@ -677,7 +677,7 @@
   float: left;
   width: 25px;
   height: 25px;
-  background-color: #889399;
+  background-color: #717171;
   border-radius: 50%;
   margin-top: 2px;
   margin-left: 2px;
@@ -697,7 +697,7 @@
   border: solid 1px #60b25e;
   padding: 0 20px;
   font-size: 16px;
-  color: #545f65;
+  color: #252525;
   display: none;
 }
 
@@ -719,7 +719,7 @@
   margin-top: 45px;
   padding: 0 20px;
   font-size: 18px;
-  color: #545f65;
+  color: #252525;
 }
 
 .generate-btn, .back-link-btn, .accept-share{
@@ -759,7 +759,7 @@
   font-family: Lato;
   font-size: 13px;
   font-weight: bold;
-  color: #889399;
+  color: #717171;
 }
 
 .file-section:before{
@@ -769,7 +769,7 @@
   width: ~'calc(100% - 16px)';
   height: 1px;
   margin: 0 auto;
-  background: #e5e9ea;
+  background: #eeeeee;
 }
 
 .file-size-section{
@@ -783,7 +783,7 @@
 }
 
 .file-size-section .file-size-value{
-  color: #545f65;
+  color: #252525;
   font-size: 29px;
   font-family: Lato;
   font-weight: bold;
@@ -801,7 +801,7 @@
 }
 
 .file-location-section .file-location-value{
-  color: #545f65;
+  color: #252525;
   font-size: 15px;
   font-family: Lato;
   margin-left: 20px;
@@ -835,7 +835,7 @@
 }
 
 .file-created-value, .file-modified-value{
-  color: #545f65;
+  color: #252525;
   font-size: 15px;
   font-family: Lato;
   margin-left: 20px;
@@ -879,7 +879,7 @@
 .file-owners-section .username{
   font-family: Lato;
   font-size: 15px;
-  color: #545f65;
+  color: #252525;
   margin-left: 15px;
   float: left;
 }
@@ -888,7 +888,7 @@
   font-family: Lato;
   font-size: 12px;
   float: right;
-  color: #889399;
+  color: #717171;
   display: none;
 }
 
@@ -914,12 +914,12 @@
   width: ~'calc(100% - 16px)';
   height: 1px;
   margin: 0 auto;
-  background: #e5e9ea;
+  background: #eeeeee;
 }
 
 .share-details .share-title{
   font-size: 20px;
-  color: #545f65;
+  color: #252525;
   text-align: center;
   margin: 25px 0;
   display: inline-block;
@@ -949,7 +949,7 @@
 .share-details .share-with-friends .title{
   font-size: 13px;
   text-align: left;
-  color: #889399;
+  color: #717171;
   margin-left: 20px;
   margin-bottom: 22px;
 }
@@ -979,7 +979,7 @@
   text-align: left;
   font-family: Lato;
   font-size: 16px;
-  color: #545f65;
+  color: #252525;
   float: left;
 }
 
@@ -1008,7 +1008,7 @@
   width: ~'calc(100% - 75px)';
   height: 1px;
   margin-left: 75px;
-  background: #e5e9ea;
+  background: #eeeeee;
   margin-bottom: 1px;
 }
 
@@ -1098,7 +1098,7 @@
       margin-top: 8px;
       font-family: Lato;
       font-size: 16px;
-      color: #545f65;
+      color: #252525;
       display: inline-block;
       width: 100%;
       white-space: nowrap;
@@ -1122,7 +1122,7 @@
 	.attach-selected{
 		float: left;
 		font-size: 18px;
-		color: #889399;
+		color: #717171;
 		padding: 15px 20px;
 	}
 
