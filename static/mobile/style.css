@@ -26,8 +26,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  background-color: #60b25e;
-  border-bottom: 2px solid #56a054;
+  background-color: #ffffff;
+  border-bottom: 2px solid #eeeeee;
   text-align: center;
   z-index: 1;
 }
@@ -67,7 +67,7 @@
   font-size: 20px;
   font-family: Lato;
   font-weight: bold;
-  color: #ffffff;
+  color: #252525;
   max-width: ~'calc(100% - 118px)';
 }
 
@@ -96,7 +96,7 @@
   height: 48px;
   padding: 7px 0;
   float: left;
-  border-bottom: 1px solid #e5e9ea;
+  border-bottom: 1px solid #eeeeee;
   position: relative;
 }
 
@@ -147,7 +147,7 @@
   font-family: Lato;
   float: left;
   margin-top: 4px;
-  color: #545f65;
+  color: #252525;
   width: 100%;
 }
 
@@ -156,7 +156,7 @@
   float: left;
   margin-top: 8px;
   clear: both;
-  color: #889399;
+  color: #717171;
 }
 
 .weexplorer-element-options{
