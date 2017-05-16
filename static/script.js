@@ -605,6 +605,7 @@ var drawIcons = function(){
 
   if( currentList.length === 0 && dropActive === false){
     clearCanvas();
+    initialColor = [ 187 , 187 , 193 ];
     drawEmptyBackground();
   }
 
@@ -671,12 +672,12 @@ var drawEmptyBackground = function(){
     ctx.fillStyle= COLOR_INACTIVE;
     ctx.font= 'bold '+ 38 *proportionEmpty+'px Lato';
     ctx.textAlign = 'center';
-    ctx.fillText('Carpeta vacía', ctx.width/2,  2*ctx.height/5 + 5 * RADIUS/3);
+    ctx.fillText(lang.emptyFolder, ctx.width/2,  2*ctx.height/5 + 5 * RADIUS/3);
 
     ctx.fillStyle= COLOR_INACTIVE;
     ctx.font= 21 * proportionEmpty + 'px Lato';
     ctx.textAlign = 'center';
-    ctx.fillText('Arrastra o sube algún archivo desde tu pc', ctx.width/2,  2*ctx.height/5 + 6.5* RADIUS /3 - 10);
+    ctx.fillText(lang.dragIt, ctx.width/2,  2*ctx.height/5 + 6.5* RADIUS /3 - 10);
 }
 
 var animationEmptyFolder = function (){
@@ -695,15 +696,15 @@ var animationEmptyFolder = function (){
       if (animationEmptyPosition[i][1] > ctx.height + animationEmptyImages[i].height)
         reset(i);
     }
-    //console.log(animationEmptyPosition);
-    //console.log("Fin pintado ficheros");
 
     ctx.fill();
     ctx.stroke();
     backgroundHover();
 
     if ( animationOpacity < 1) {
-      animationOpacity += 0.02;
+      animationOpacity += 0.005;
+    }else{
+      animationOpacity = 1;
     }
 
     requestAnimationFrame(animationEmptyFolder);
@@ -718,8 +719,8 @@ var backgroundHover = function(){
     initialColor[i] += (finalColor[i] - color) * (animationOpacity / 10);
   }); 
 
-  var colorOnTransition = 'rgb('+initialColor[0]+', '+initialColor[1]+', '+initialColor[2]+')';
-  console.log(initialColor,animationOpacity);
+  var colorOnTransition = 'rgba('+Math.floor(initialColor[0])+', '+Math.floor(initialColor[1])+', '+Math.floor(initialColor[2])+', 1)';
+  console.log(colorOnTransition,animationOpacity);
 
   ctx.beginPath();
   ctx.strokeStyle = colorOnTransition;
@@ -755,10 +756,9 @@ var backgroundHover = function(){
   ctx.fillStyle = "#252525";
   ctx.font= 'bold '+ 38 *proportionEmpty+'px Lato';
   ctx.textAlign = 'center';
-  ctx.fillText('Suelta los archivos', ctx.width/2,  2*ctx.height/5 + 5 * RADIUS/3);
-  ctx.fillText('para subirlos', ctx.width/2,  2*ctx.height/5 + 5 * RADIUS/3 + 43);
+  ctx.fillText(lang.dropIt, ctx.width/2,  2*ctx.height/5 + 5 * RADIUS/3);
+  ctx.fillText(lang.toUpload, ctx.width/2,  2*ctx.height/5 + 5 * RADIUS/3 + 43);
 
-  //console.log("Fin pintado fondo");
 
 }
 
