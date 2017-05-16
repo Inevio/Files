@@ -348,6 +348,11 @@
     "sendInvitations"     : "Send",
 
     "invitationSentTitle"    : "Invitaciones enviadas",
-    "invitationSentSubtitle" : "Tus invitaciones están de camino!"
+    "invitationSentSubtitle" : "Tus invitaciones están de camino!",
+
+    "emptyFolder" : "Carpeta vacia",
+    "dragIt"      : "Arrastra o sube algún archivo desde tu pc",
+    "dropIt"      : "Suelta los archivos",
+    "toUpload"    : "para subirlos"
 
 }
