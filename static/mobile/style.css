@@ -262,16 +262,17 @@
   width: 25px;
   height: 21px;
   margin: 0 auto;
-  background: url( '@static/mobile/sprite-sidebar-files.png' ) no-repeat -296px 0;
-  background-size: 346px 26px;
+  background: url( '@static/mobile/sprite-sidebar-files.png' ) no-repeat -294px 0;
+  background-size: 344px 26px;
   display: inline-block;
 }
 
 .active .weexplorer-sidebar-icon{
-	background-position: -321px 0;
+	background-position: -319px 0;
 }
 
 .user .weexplorer-sidebar-icon{
+	width: 21px;
   background-position: 0px 0;
 }
 
@@ -280,13 +281,13 @@
 }
 
 .music .weexplorer-sidebar-icon{
-  width: 19px;
+  width: 17px;
   height: 22px;
-  background-position: -222px 0;
+  background-position: -223px 0;
 }
 
 .active.music .weexplorer-sidebar-icon{
-  background-position: -240px 0;
+  background-position: -239px 0;
 }
 
 .photo .weexplorer-sidebar-icon{
@@ -332,11 +333,11 @@
 .video .weexplorer-sidebar-icon{
   width: 19px;
   height: 22px;
-  background-position: -258px 0;
+  background-position: -256px 0;
 }
 
 .active.video .weexplorer-sidebar-icon{
-  background-position: -277px 0;
+  background-position: -275px 0;
 }
 
 .weexplorer-sidebar-name{
