@@ -556,7 +556,13 @@ var deleteAll = function( items ){
   var dialog = api.dialog();
 
   dialog.setTitle( lang.main.remove );
-  dialog.setText( lang.main.confirmDelete );
+
+  if( items.length > 1 ){
+    dialog.setText( lang.main.confirmDelete2 );
+  }else{
+    dialog.setText( lang.main.confirmDelete );
+  }
+  
   dialog.setButton( 0, wzLang.core.dialogCancel, 'black' );
   dialog.setButton( 1, wzLang.core.dialogAccept, 'blue' );
 
@@ -717,7 +723,7 @@ var backgroundHover = function(){
 
   initialColor.forEach(function( color , i ){
     initialColor[i] += (finalColor[i] - color) * (animationOpacity / 10);
-  }); 
+  });
 
   var colorOnTransition = 'rgba('+Math.floor(initialColor[0])+', '+Math.floor(initialColor[1])+', '+Math.floor(initialColor[2])+', 1)';
   console.log(colorOnTransition,animationOpacity);
