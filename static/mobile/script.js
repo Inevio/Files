@@ -258,13 +258,13 @@ var showOptions = function( file ){
   }*/
 
   //TODO quitar despues de implementar compartir
-  //$('.option-section.share .share-with').hide();
+  $('.option-section.share .share-with').hide();
 
   if( file.type == 0 || file.type == 1 || file.type == 2 ){
 
     $('.file-options').addClass('folder');
     //TODO quitar despues de implementar compartir
-    //$('.option-section.share').hide();
+    $('.option-section.share').hide();
 
   }else{
 
@@ -1034,7 +1034,7 @@ itemBack.on( 'click', function(){
 sidebar.on( 'click', '.weexplorer-sidebar-element', function(){
 
   if( !$(this).hasClass('active') ){
-    openDirectory( $(this).data('fileId'), false, true );
+    openDirectory( $(this).data('fileId'), false, false );
   }
 
   hideSidebar();
@@ -1413,7 +1413,9 @@ $.when( rootPath, hiddenPath, customPath ).then( function( rootPath, hiddenPath,
 
     controlFolder.data( 'file-id', element.id ).addClass( 'wz-drop-area folder-' + element.id )
 
-    if( element.id === api.system.user().rootPath ){
+    element.id = parseInt(element.id);
+
+    if( element.id == api.system.user().rootPath ){
       controlFolder.removeClass( 'folder' ).addClass( 'userFolder user' );
     }else if( element.id === api.system.user().inboxPath ){
       controlFolder.addClass( 'receivedFolder' );
