@@ -34,13 +34,13 @@ var cancelProgress;
 // Functions
 var initFiles = function(){
 
-  StatusBar.backgroundColorByHexString("#ffffff");
+  StatusBar.backgroundColorByHexString("#999999");
   translate();
   if (params && params[0] === 'select-source') {
     $('#weexplorer-content').addClass('select-source-mode');
     $('.attach-footer').addClass('select-source-mode');
   }
-  
+
 }
 
 var addZero = function( value ){
@@ -101,7 +101,7 @@ var icon = function( data ){
   // Insert data
   file.find('.weexplorer-element-name').text( data.name );
   file.find('.weexplorer-element-data').text( api.tool.bytesToUnit( data.size ) );
-  file.find('.weexplorer-element-icon').css('background-image', 'url(' + data.icons.small + ')' )
+  file.find('.weexplorer-element-icon').css('background-image', 'url(' + data.icons.normal + ')' )
   file.data( 'id', data.id );
   file.data( 'fsnode', data )
   file.addClass( 'file-' + data.id );
@@ -252,7 +252,7 @@ var showOptions = function( file ){
   $('.share-with-friends .user').not('.wz-prototype').remove();
   $('.file-options .file-title').text( file.name );
   $('.file-options .file-rename').val( file.name );
-  $('.file-options .options-logo i').css('background-image', 'url("' + file.icons['tiny']  + '")');
+  $('.file-options .options-logo i').css('background-image', 'url("' + file.icons['small']  + '")');
   $('.file-options .file-size-value').text( api.tool.bytesToUnit( file.size, 2 ) );
 
   //TODO quitar al soportar android 7.0
@@ -390,11 +390,11 @@ var showOptions = function( file ){
           }
 
           user.find('.username').text( userI.fullName );
-          userS.find('.avatar').css( 'background-image', 'url("' + userI.avatar.small + '")' );
+          userS.find('.avatar').css( 'background-image', 'url("' + userI.avatar.normal + '")' );
           userS.find('.username').text( userI.fullName );
           userS.data( 'user', userI );
           userS.addClass('active');
-          user.find('figure').css( "background-image",'url("'+ userI.avatar.small +'")' );
+          user.find('figure').css( "background-image",'url("'+ userI.avatar.normal +'")' );
 
           if( userI.id == api.system.user().id ){
             user.find('.username').text( user.find('.username').text() + ' ' + lang.propertiesFileOwner );
@@ -423,7 +423,7 @@ var showOptions = function( file ){
               if( insertedIds.indexOf( user.id ) == -1 ){
 
                 var newUser = prototype.clone().removeClass('wz-prototype').addClass('user-' + user.id);
-                newUser.find('.avatar').css( 'background-image', 'url("' + user.avatar.small + '")' );
+                newUser.find('.avatar').css( 'background-image', 'url("' + user.avatar.normal + '")' );
                 newUser.find('.username').text( user.fullName );
                 newUser.data( 'user', user );
                 //newUser.data( 'permissions', permissions );
@@ -1382,7 +1382,7 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 })*/
 
 .on( 'thumbnail', function( structure ){
-  $( '.file-' + structure.id ).find('.weexplorer-element-icon').css('background-image', 'url(' + structure.icons.small + ')' )
+  $( '.file-' + structure.id ).find('.weexplorer-element-icon').css('background-image', 'url(' + structure.icons.normal + ')' )
 });
 
 // Start app
