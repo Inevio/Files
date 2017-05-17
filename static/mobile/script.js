@@ -33,11 +33,14 @@ var cancelProgress;
 
 // Functions
 var initFiles = function(){
+
+  StatusBar.backgroundColorByHexString("#ffffff");
   translate();
   if (params && params[0] === 'select-source') {
     $('#weexplorer-content').addClass('select-source-mode');
     $('.attach-footer').addClass('select-source-mode');
   }
+  
 }
 
 var addZero = function( value ){
