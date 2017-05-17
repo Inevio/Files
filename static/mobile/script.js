@@ -273,7 +273,7 @@ var showOptions = function( file ){
 
     $('.file-options').removeClass('folder');
     //TODO quitar despues de implementar compartir
-    //$('.option-section.share').show();
+    $('.option-section.share').show();
 
   }
 
