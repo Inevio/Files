@@ -335,6 +335,11 @@
     "mailExample"         : "example@mail.com",
     "sendInvitations"     : "Send",
     "invitationSentTitle"    : "Invitations sent",
-    "invitationSentSubtitle" : "Your invitations are on their way!"
+    "invitationSentSubtitle" : "Your invitations are on their way!",
+
+    "emptyFolder" : "Empty folder",
+    "dragIt"      : "Drag or upload any file from your pc",
+    "dropIt"      : "Drop the files",
+    "toUpload"    : "to upload them"
 
 }

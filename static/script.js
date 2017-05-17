@@ -12,16 +12,20 @@ var TYPE_FOLDER = 2;
 var TYPE_FILE = 3;
 var PROGRESS_RADIUS = 5;
 var PROGRESS_ICON = new Image();
-PROGRESS_ICON.src = 'https://static.horbito.com/app/1/img/processing@2x.png';
+PROGRESS_ICON.src = 'https://static.horbito.com/app/377/img/processing@2x.png';
 var SHARING_ICON = new Image();
-SHARING_ICON.src = 'https://static.horbito.com/app/1/img/sharing@2x.png';
+SHARING_ICON.src = 'https://static.horbito.com/app/377/img/sharing@2x.png';
 var SHARED_PATH = 0;
+var RADIUS = 90;
+var dy = 1;
 
 /* COLORS */
 var BLUEUI = '#0071f6';
-var TRANSPARENTBLUEUI = 'rgba(0, 113, 246, 0.3)'
-var DARKTEXTS = '#252525'
-var WHITE = '#fff'
+var COLOR_INACTIVE = "#bbbbc1";
+var CIRCLE = "#f9f9fe";
+var TRANSPARENTBLUEUI = 'rgba(0, 113, 246, 0.3)';
+var DARKTEXTS = '#252525';
+var WHITE = '#fff';
 
 var channel                 = null;
 var requestedFrame          = false;
@@ -55,6 +59,13 @@ var disabledFileIcons       = false;
 var sidebarFolders          = [];
 var notificationBellButton     = $('.notification-center');
 var notificationList           = $('.notification-list');
+var animationEmptyActive = false;
+var animationEmptyImages = [];
+var animationEmptyPosition = [];
+var proportionEmpty = 1;
+var animationOpacity = 0;
+var initialColor = [ 187 , 187 , 193 ];
+
 
 if( params && ( params.command === 'selectSource' ||  params.command === 'selectDestiny' ) ){
   enabledMultipleSelect = params.command === 'selectSource' && params.mode === 'file' && params.multiple;
@@ -516,7 +527,7 @@ var contextmenuAcceptFile = function( fsnode ){
 
     banner
     .setText( fsnode.name + ' ' + lang.main.beenAccepted )
-    .setIcon( 'https://static.horbito.com/app/1/file_accepted.png' )
+    .setIcon( 'https://static.horbito.com/app/377/file_accepted.png' )
     .render();
 
   });
@@ -537,10 +548,6 @@ var createFolder = function(){
 var deleteAll = function( items ){
 
   items = items || currentActive
-
-  if ( items.length === 0 ) {
-    return
-  }
 
   if ( items.length === 1 && items[ 0 ].fsnode.type === TYPE_FOLDER_SPECIAL ) {
     return
@@ -596,14 +603,168 @@ var drawIcons = function(){
     //drawIconsInList()
   }
 
+  if( currentList.length === 0 && dropActive === false){
+    clearCanvas();
+    initialColor = [ 187 , 187 , 193 ];
+    drawEmptyBackground();
+  }
+
+  if( currentList.length === 0 && dropActive === true && !animationEmptyActive ){
+    backgroundHover();
+  }
+
   if( dropActive === true || dropIgnore.indexOf( dropActive ) !== -1 ){
 
-    ctx.fillStyle = BLUEUI;
-    drawBorder ( 3 );
+    if ( !animationEmptyActive ) {
+      if ( currentList.length === 0 ) {
+
+        animationEmptyActive = true;
+        animationEmptyFolder();
+
+      }else{
+        ctx.fillStyle = BLUEUI;
+        drawBorder ( 3 );
+      }
+    }
+
+  }else{
+    animationEmptyActive = false;
+    animationOpacity = 0;
   }
 
 };
 
+var drawEmptyBackground = function(){
+
+    animationEmptyActive = false;
+
+    ctx.beginPath();
+    ctx.strokeStyle = COLOR_INACTIVE;
+    ctx.fillStyle = CIRCLE;
+    ctx.lineWidth = 4*proportionEmpty;
+    ctx.lineCap = 'round';
+    ctx.setLineDash([10*proportionEmpty]);
+    ctx.arc(ctx.width/2, 2*ctx.height/5, RADIUS, 0, 2*Math.PI, false);
+    ctx.fill();
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.strokeStyle= COLOR_INACTIVE;
+    ctx.lineWidth = 10*proportionEmpty;
+    ctx.lineCap = 'round';
+    ctx.setLineDash([]);
+    ctx.moveTo(ctx.width/2 - RADIUS/3,  2*ctx.height/5);
+    ctx.lineTo(ctx.width/2 + RADIUS/3,  2*ctx.height/5);
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.strokeStyle= COLOR_INACTIVE;
+    ctx.lineWidth = 10*proportionEmpty;
+    ctx.lineCap = 'round';
+    ctx.setLineDash([]);
+    ctx.moveTo(ctx.width/2,  2*ctx.height/5 + RADIUS/3);
+    ctx.lineTo(ctx.width/2,  2*ctx.height/5 - RADIUS/3);
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.fillStyle= COLOR_INACTIVE;
+    ctx.font= 'bold '+ 38 *proportionEmpty+'px Lato';
+    ctx.textAlign = 'center';
+    ctx.fillText(lang.emptyFolder, ctx.width/2,  2*ctx.height/5 + 5 * RADIUS/3);
+
+    ctx.fillStyle= COLOR_INACTIVE;
+    ctx.font= 21 * proportionEmpty + 'px Lato';
+    ctx.textAlign = 'center';
+    ctx.fillText(lang.dragIt, ctx.width/2,  2*ctx.height/5 + 6.5* RADIUS /3 - 10);
+}
+
+var animationEmptyFolder = function (){
+  if (animationEmptyActive){
+
+    ctx.globalAlpha = animationOpacity;
+
+    ctx.clearRect(0, 0, ctx.width, ctx.height);
+
+    for (var i = 0; i < animationEmptyImages.length; i++){
+
+      var normalized = normalizeBigIconSize( animationEmptyImages[i] );
+
+      ctx.drawImage(animationEmptyImages[i], animationEmptyPosition[i][0]-animationEmptyImages[i].width/2, animationEmptyPosition[i][1]-animationEmptyImages[i].height/2, normalized.width, normalized.height);
+      animationEmptyPosition[i][1] += animationEmptyPosition[i][2];
+      if (animationEmptyPosition[i][1] > ctx.height + animationEmptyImages[i].height)
+        reset(i);
+    }
+
+    ctx.fill();
+    ctx.stroke();
+    backgroundHover();
+
+    if ( animationOpacity < 1) {
+      animationOpacity += 0.005;
+    }else{
+      animationOpacity = 1;
+    }
+
+    requestAnimationFrame(animationEmptyFolder);
+  }
+}
+
+var backgroundHover = function(){
+
+  var finalColor = [ 0 , 113 , 246 ];
+
+  initialColor.forEach(function( color , i ){
+    initialColor[i] += (finalColor[i] - color) * (animationOpacity / 10);
+  }); 
+
+  var colorOnTransition = 'rgba('+Math.floor(initialColor[0])+', '+Math.floor(initialColor[1])+', '+Math.floor(initialColor[2])+', 1)';
+  console.log(colorOnTransition,animationOpacity);
+
+  ctx.beginPath();
+  ctx.strokeStyle = colorOnTransition;
+  ctx.fillStyle = CIRCLE;
+  ctx.lineWidth = 4*proportionEmpty;
+  ctx.lineCap = 'round';
+  ctx.setLineDash([10*proportionEmpty]);
+  ctx.arc(ctx.width/2,  2*ctx.height/5, RADIUS, 0, 2*Math.PI, false);
+  ctx.fill();
+  ctx.stroke();
+  ctx.closePath();
+
+  ctx.beginPath();
+  ctx.strokeStyle = colorOnTransition;
+  ctx.lineWidth = 10*proportionEmpty;
+  ctx.lineCap = 'round';
+  ctx.setLineDash([]);
+  ctx.moveTo(ctx.width/2-RADIUS/3,  2*ctx.height/5);
+  ctx.lineTo(ctx.width/2+RADIUS/3,  2*ctx.height/5);
+  ctx.stroke();
+  ctx.closePath();
+
+  //ctx.beginPath();
+  ctx.strokeStyle = colorOnTransition;
+  ctx.lineWidth = 10*proportionEmpty;
+  ctx.lineCap = 'round';
+  ctx.setLineDash([]);
+  ctx.moveTo(ctx.width/2,  2*ctx.height/5 + RADIUS/3);
+  ctx.lineTo(ctx.width/2,  2*ctx.height/5 - RADIUS/3);
+  ctx.stroke();
+  //ctx.closePath();
+
+  ctx.fillStyle = "#252525";
+  ctx.font= 'bold '+ 38 *proportionEmpty+'px Lato';
+  ctx.textAlign = 'center';
+  ctx.fillText(lang.dropIt, ctx.width/2,  2*ctx.height/5 + 5 * RADIUS/3);
+  ctx.fillText(lang.toUpload, ctx.width/2,  2*ctx.height/5 + 5 * RADIUS/3 + 43);
+
+
+}
+
+var reset = function (i){
+  animationEmptyPosition[i]= [ctx.width * Math.random(),  - 100, Math.random()*dy]
+}
 
 var drawBorder = function ( size ) {
 
@@ -1600,7 +1761,10 @@ var requestDraw = function(){
 
   requestAnimationFrame( function(){
 
-    clearCanvas();
+    if( !animationEmptyActive ){
+      clearCanvas();
+    }
+
     drawIcons();
 
     requestedFrame = false;
@@ -1936,7 +2100,20 @@ var updateCanvasSize = function(){
 
   ctx.width  = visualItemArea.width();
   ctx.height = visualItemArea.height();
+  /*
+  var proportionEmptyWidth = ctx.width /700;
+  var proportionEmptyHeight = ctx.height / 700;
 
+  //if ( (proportionEmptyWidth / proportionEmptyHeight < 1.5 ) && (proportionEmptyHeight / proportionEmptyWidth < 1.5 )){
+    proportionEmpty = (proportionEmptyHeight + proportionEmptyWidth) / 2;
+    //console.log("Modificated proportion")
+  //}
+  emptyradiusmodificated = RADIUS * proportionEmpty;
+    if ( ctx.height/2+6.5* emptyradiusmodificated /3 > ctx.height){
+      proportionEmpty =  ((ctx.height -ctx.height/2) * 3/6.5) / RADIUS;
+    }
+    //console.log(" ESTOOOO" ,emptyradiusmodificated, proportionEmptyWidth / proportionEmptyHeight, proportionEmptyHeight / proportionEmptyWidth, proportionEmpty);
+*/
 };
 
 var addToSidebar = function( fsnode ){
@@ -2267,6 +2444,44 @@ var isCutted = function( icon ){
     cuttedIcons = cuttedIcons.length > 0 ? true : false;
   }
   return cuttedIcons;
+
+}
+
+var loadEmptyAnimationImg = function(){
+
+  animationEmptyImages[0] = new Image();
+  animationEmptyImages[0].src = "https://static.horbito.com/app/377/img/emptyAnimation/jpg.png";
+  animationEmptyImages[1] = new Image();
+  animationEmptyImages[1].src = "https://static.horbito.com/app/377/img/emptyAnimation/mp3.png";
+  animationEmptyImages[2] = new Image();
+  animationEmptyImages[2].src = "https://static.horbito.com/app/377/img/emptyAnimation/mp4.png";
+  animationEmptyImages[3] = new Image();
+  animationEmptyImages[3].src = "https://static.horbito.com/app/377/img/emptyAnimation/docx.png";
+  animationEmptyImages[4] = new Image();
+  animationEmptyImages[4].src = "https://static.horbito.com/app/377/img/emptyAnimation/pptx.png";
+  animationEmptyImages[5] = new Image();
+  animationEmptyImages[5].src = "https://static.horbito.com/app/377/img/emptyAnimation/xlsx.png";
+  animationEmptyImages[6] = new Image();
+  animationEmptyImages[6].src = "https://static.horbito.com/app/377/img/emptyAnimation/jpg.png";
+  animationEmptyImages[7] = new Image();
+  animationEmptyImages[7].src = "https://static.horbito.com/app/377/img/emptyAnimation/mp3.png";
+
+  animationEmptyImages[8] = new Image();
+  animationEmptyImages[8].src = "https://static.horbito.com/app/377/img/emptyAnimation/photoshop.png";
+  animationEmptyImages[9] = new Image();
+  animationEmptyImages[9].src = "https://static.horbito.com/app/377/img/emptyAnimation/afterEffects.png";
+  animationEmptyImages[10] = new Image();
+  animationEmptyImages[10].src = "https://static.horbito.com/app/377/img/emptyAnimation/Illustrator.png";
+  animationEmptyImages[11] = new Image();
+  animationEmptyImages[11].src = "https://static.horbito.com/app/377/img/emptyAnimation/lightroom.png";
+  animationEmptyImages[12] = new Image();
+  animationEmptyImages[12].src = "https://static.horbito.com/app/377/img/emptyAnimation/eps.png";
+  animationEmptyImages[13] = new Image();
+  animationEmptyImages[13].src = "https://static.horbito.com/app/377/img/emptyAnimation/premiere.png";
+
+  for (var i = 0; i < animationEmptyImages.length; i++){
+    animationEmptyPosition[i] = [ctx.width * Math.random(), Math.random() * (visualItemArea[ 0 ].height + 300), 0.5 + dy * Math.random()];
+  }
 
 }
 
@@ -2950,7 +3165,7 @@ visualItemArea
         'width'               : '17px',
         'height'              : '17px',
         'margin-right'        : '10px',
-        'background-image'    : 'url(https://static.horbito.com/app/1/img/sprite.png)',
+        'background-image'    : 'url(https://static.horbito.com/app/377/img/sprite.png)',
         'background-position' : '-32px 0',
         'background-size'     : '67px 18px',
         'background-repeat'   : 'no-repeat'
@@ -3163,6 +3378,7 @@ currentSort = sortByName;
 translate();
 updateCanvasSize();
 clearCanvas();
+loadEmptyAnimationImg();
 getSidebarItems().then( function( list ){
   list.forEach( appendVisualSidebarItem );
 });
