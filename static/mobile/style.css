@@ -630,7 +630,8 @@
 
 .create-link-container .create-link-title{
   font-family: Lato;
-  font-size: 21px;
+  font-size: 20px;
+	font-weight: bolder;
   margin-top: 30px;
   color: #252525;
   text-align: center;
@@ -720,6 +721,7 @@
   font-size: 18px;
   color: #252525;
 	background: #f0f0f0;
+	-webkit-appearance: none;
 }
 
 .generate-btn, .back-link-btn, .accept-share{
