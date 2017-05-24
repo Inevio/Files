@@ -562,7 +562,7 @@ var deleteAll = function( items ){
   }else{
     dialog.setText( lang.main.confirmDelete );
   }
-  
+
   dialog.setButton( 0, wzLang.core.dialogCancel, 'black' );
   dialog.setButton( 1, wzLang.core.dialogAccept, 'blue' );
 
@@ -1684,34 +1684,38 @@ var openFile = function( fsnode ){
 
 var openFolder = function( id, isBack, isForward ){
 
-  api.fs( id, function( error, fsnode ){
+  if( !currentOpened || id !== currentOpened.id ){
 
-    $.when( getFolderItems( fsnode ), getItemPath( fsnode ) ).done( function( list, path ){
+    api.fs( id, function( error, fsnode ){
 
-      visualSidebarItemArea.find('.active').removeClass('active');
-      visualSidebarItemArea.find( '.item-' + fsnode.id ).addClass('active');
+      $.when( getFolderItems( fsnode ), getItemPath( fsnode ) ).done( function( list, path ){
 
-      if( !isBack && !isForward && currentOpened ){
-        addToHistoryBackward( currentOpened );
-        clearHistoryForward();
-      }else if( isBack ){
-        addToHistoryForward( currentOpened );
-      }else if( isForward ){
-        addToHistoryBackward( currentOpened );
-      }
+        visualSidebarItemArea.find('.active').removeClass('active');
+        visualSidebarItemArea.find( '.item-' + fsnode.id ).addClass('active');
 
-      currentScroll = 0;
-      currentOpened = fsnode;
-      currentLastPureClicked = null;
+        if( !isBack && !isForward && currentOpened ){
+          addToHistoryBackward( currentOpened );
+          clearHistoryForward();
+        }else if( isBack ){
+          addToHistoryForward( currentOpened );
+        }else if( isForward ){
+          addToHistoryBackward( currentOpened );
+        }
 
-      clearList();
-      appendItemToList( list );
-      generateBreadcrumbs( path );
-      requestDraw();
+        currentScroll = 0;
+        currentOpened = fsnode;
+        currentLastPureClicked = null;
+
+        clearList();
+        appendItemToList( list );
+        generateBreadcrumbs( path );
+        requestDraw();
+
+      });
 
     });
 
-  });
+  }
 
 };
 
