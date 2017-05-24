@@ -319,3 +319,4 @@ inviteByMail.on( 'click' , function(){
 // Start the app
 loadInfo( params );
 translate();
+$('.users-area .search input').focus();
