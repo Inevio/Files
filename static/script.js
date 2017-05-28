@@ -57,8 +57,8 @@ var currentGoToItemTimer    = 0;
 var enabledMultipleSelect   = true;
 var disabledFileIcons       = false;
 var sidebarFolders          = [];
-var notificationBellButton     = $('.notification-center');
-var notificationList           = $('.notification-list');
+var notificationBellButton  = $('.notification-center');
+var notificationList        = $('.notification-list');
 var animationEmptyActive = false;
 var animationEmptyImages = [];
 var animationEmptyPosition = [];
@@ -1720,6 +1720,24 @@ var openFolder = function( id, isBack, isForward ){
 
 };
 
+var openItem = function( item ){
+
+  if ( item.fsnode.pending ) {
+    api.app.createView( item.fsnode , 'received' );
+  }else if( item.fsnode.type === TYPE_ROOT || item.fsnode.type === TYPE_FOLDER_SPECIAL || item.fsnode.type === TYPE_FOLDER ){
+    openFolder( item.fsnode.id );
+  }else if( item.fsnode.type === TYPE_FILE ){
+
+    if( params && ( params.command === 'selectSource' || params.command === 'selectDestiny' ) ){
+      acceptButtonHandler()
+    }else{
+      openFile( item.fsnode );
+    }
+
+  }
+
+}
+
 var removeFromCollection = function( collection, item ){
 
   if( collection.indexOf( item ) !== -1 ){
@@ -2719,10 +2737,16 @@ win
   e.preventDefault();
 
   if( $(e.target).is('textarea') ){
-    hideRenameTextarea();
-  }else{
-    console.log('TO DO');
+    return hideRenameTextarea()
   }
+
+  var pending = currentActive.filter( function( item ){ return item.fsnode.pending })
+  var folder = currentActive.filter( function( item ){ return pending.indexOf( item ) === -1 && ( item.fsnode.type === TYPE_ROOT || item.fsnode.type === TYPE_FOLDER_SPECIAL || item.fsnode.type === TYPE_FOLDER ) }).slice( -1 )[ 0 ]
+  var files = currentActive.filter( function( item ){ return pending.indexOf( item ) === -1 && folder !== item })
+
+  pending.forEach( openItem )
+  openItem( folder )
+  files.forEach( openItem )
 
 })
 
@@ -3050,28 +3074,16 @@ visualItemArea
 .on( 'dblclick', function( e ){
 
   if( !currentList.length ){
-    return;
+    return
   }
 
   var itemClicked = getIconWithMouserOver( e );
 
   if( !itemClicked || ( disabledFileIcons && itemClicked.fsnode.type === TYPE_FILE ) ){
-    return;
+    return
   }
 
-  if ( itemClicked.fsnode.pending ) {
-    api.app.createView( itemClicked.fsnode , 'received' );
-  }else if( itemClicked.fsnode.type === TYPE_ROOT || itemClicked.fsnode.type === TYPE_FOLDER_SPECIAL || itemClicked.fsnode.type === TYPE_FOLDER ){
-    openFolder( itemClicked.fsnode.id );
-  }else if( itemClicked.fsnode.type === TYPE_FILE ){
-
-    if( params && ( params.command === 'selectSource' || params.command === 'selectDestiny' ) ){
-      acceptButtonHandler()
-    }else{
-      openFile( itemClicked.fsnode );
-    }
-
-  }
+  openItem( itemClicked )
 
 })
 
