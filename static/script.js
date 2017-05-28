@@ -548,8 +548,9 @@ var createFolder = function(){
 var deleteAll = function( items ){
 
   items = items || currentActive
+  items = items.filter( function( item ){ return item.fsnode.type !== TYPE_FOLDER_SPECIAL })
 
-  if ( items.length === 1 && items[ 0 ].fsnode.type === TYPE_FOLDER_SPECIAL ) {
+  if( !items.length ){
     return
   }
 
