@@ -639,52 +639,53 @@ var drawIcons = function(){
     animationOpacity = 0;
   }
 
-};
+}
 
 var drawEmptyBackground = function(){
 
-    animationEmptyActive = false;
+  animationEmptyActive = false;
 
-    ctx.beginPath();
-    ctx.strokeStyle = COLOR_INACTIVE;
-    ctx.fillStyle = CIRCLE;
-    ctx.lineWidth = 4*proportionEmpty;
-    ctx.lineCap = 'round';
-    ctx.setLineDash([10*proportionEmpty]);
-    ctx.arc(ctx.width/2, 2*ctx.height/5, RADIUS, 0, 2*Math.PI, false);
-    ctx.fill();
-    ctx.stroke();
-    ctx.closePath();
+  ctx.beginPath();
+  ctx.strokeStyle = COLOR_INACTIVE;
+  ctx.fillStyle = CIRCLE;
+  ctx.lineWidth = 4*proportionEmpty;
+  ctx.lineCap = 'round';
+  ctx.setLineDash([10*proportionEmpty]);
+  ctx.arc(ctx.width/2, 2*ctx.height/5, RADIUS, 0, 2*Math.PI, false);
+  ctx.fill();
+  ctx.stroke();
+  ctx.closePath();
 
-    ctx.beginPath();
-    ctx.strokeStyle= COLOR_INACTIVE;
-    ctx.lineWidth = 10*proportionEmpty;
-    ctx.lineCap = 'round';
-    ctx.setLineDash([]);
-    ctx.moveTo(ctx.width/2 - RADIUS/3,  2*ctx.height/5);
-    ctx.lineTo(ctx.width/2 + RADIUS/3,  2*ctx.height/5);
-    ctx.stroke();
-    ctx.closePath();
+  ctx.beginPath();
+  ctx.strokeStyle= COLOR_INACTIVE;
+  ctx.lineWidth = 10*proportionEmpty;
+  ctx.lineCap = 'round';
+  ctx.setLineDash([]);
+  ctx.moveTo(ctx.width/2 - RADIUS/3,  2*ctx.height/5);
+  ctx.lineTo(ctx.width/2 + RADIUS/3,  2*ctx.height/5);
+  ctx.stroke();
+  ctx.closePath();
 
-    ctx.beginPath();
-    ctx.strokeStyle= COLOR_INACTIVE;
-    ctx.lineWidth = 10*proportionEmpty;
-    ctx.lineCap = 'round';
-    ctx.setLineDash([]);
-    ctx.moveTo(ctx.width/2,  2*ctx.height/5 + RADIUS/3);
-    ctx.lineTo(ctx.width/2,  2*ctx.height/5 - RADIUS/3);
-    ctx.stroke();
-    ctx.closePath();
+  ctx.beginPath();
+  ctx.strokeStyle= COLOR_INACTIVE;
+  ctx.lineWidth = 10*proportionEmpty;
+  ctx.lineCap = 'round';
+  ctx.setLineDash([]);
+  ctx.moveTo(ctx.width/2,  2*ctx.height/5 + RADIUS/3);
+  ctx.lineTo(ctx.width/2,  2*ctx.height/5 - RADIUS/3);
+  ctx.stroke();
+  ctx.closePath();
 
-    ctx.fillStyle= COLOR_INACTIVE;
-    ctx.font= 'bold '+ 38 *proportionEmpty+'px Lato';
-    ctx.textAlign = 'center';
-    ctx.fillText(lang.emptyFolder, ctx.width/2,  2*ctx.height/5 + 5 * RADIUS/3);
+  ctx.fillStyle= COLOR_INACTIVE;
+  ctx.font= 'bold '+ 38 *proportionEmpty+'px Lato';
+  ctx.textAlign = 'center';
+  ctx.fillText(lang.emptyFolder, ctx.width/2,  2*ctx.height/5 + 5 * RADIUS/3);
 
-    ctx.fillStyle= COLOR_INACTIVE;
-    ctx.font= 21 * proportionEmpty + 'px Lato';
-    ctx.textAlign = 'center';
-    ctx.fillText(lang.dragIt, ctx.width/2,  2*ctx.height/5 + 6.5* RADIUS /3 - 10);
+  ctx.fillStyle= COLOR_INACTIVE;
+  ctx.font= 21 * proportionEmpty + 'px Lato';
+  ctx.textAlign = 'center';
+  ctx.fillText(lang.dragIt, ctx.width/2,  2*ctx.height/5 + 6.5* RADIUS /3 - 10);
+
 }
 
 var animationEmptyFolder = function (){
@@ -775,29 +776,30 @@ var reset = function (i){
 
 var drawBorder = function ( size ) {
 
-    if(border < size){
+  if(border < size){
+    border = border + 0.1;
+    ctx.fillRect( 0, 0, ctx.width, border );
+    ctx.fillRect( 0, 0, border, ctx.height );
+    ctx.fillRect( 0, ctx.height - border, ctx.width, border );
+    ctx.fillRect( ctx.width - border, 0, border, ctx.height );
+    for(var i = 0; i< 5; i++ && border < size){
       border = border + 0.1;
       ctx.fillRect( 0, 0, ctx.width, border );
       ctx.fillRect( 0, 0, border, ctx.height );
       ctx.fillRect( 0, ctx.height - border, ctx.width, border );
       ctx.fillRect( ctx.width - border, 0, border, ctx.height );
-      for(var i = 0; i< 5; i++ && border < size){
-        border = border + 0.1;
-        ctx.fillRect( 0, 0, ctx.width, border );
-        ctx.fillRect( 0, 0, border, ctx.height );
-        ctx.fillRect( 0, ctx.height - border, ctx.width, border );
-        ctx.fillRect( ctx.width - border, 0, border, ctx.height );
-      }
     }
+  }
 
-    else{
-      ctx.fillRect( 0, 0, ctx.width, size );
-      ctx.fillRect( 0, 0, size, ctx.height );
-      ctx.fillRect( 0, ctx.height - size, ctx.width, size );
-      ctx.fillRect( ctx.width - size, 0, size, ctx.height );
+  else{
+    ctx.fillRect( 0, 0, ctx.width, size );
+    ctx.fillRect( 0, 0, size, ctx.height );
+    ctx.fillRect( 0, ctx.height - size, ctx.width, size );
+    ctx.fillRect( ctx.width - size, 0, size, ctx.height );
 
-    }
-};
+  }
+  
+}
 
 var drawIconsInGrid = function(){
 
