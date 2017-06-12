@@ -798,7 +798,7 @@ var drawBorder = function ( size ) {
     ctx.fillRect( ctx.width - size, 0, size, ctx.height );
 
   }
-  
+
 }
 
 var drawIconsInGrid = function(){
@@ -2958,26 +2958,28 @@ visualBreadcrumbs.on( 'click', '.list-trigger', function(){
 });
 
 visualCreateFolderButton.on( 'click', createFolder );
+
 visualDeleteButton.on( 'click', function(){
   deleteAll()
 });
+
 visualDownloadButton.on( 'click', function(){
   downloadAll()
 });
 
 visualSortPreferenceButton.on( 'click', function(){
 
-    sortOptions.css( 'display', 'block' );
+  sortOptions.css( 'display', 'block' );
 
-    win.one( 'mousedown', function( e ){
-      /*
-      if ( $( e.target ).hasClass( 'sort-preference' ) || $( e.target ).parent().hasClass( 'sort-preference' ) ) {
-        visualSortPreferenceButton.addClass( 'disabled' );
-      }
-      */
-      sortOptions.css( 'display', 'none' );
+  win.one( 'mousedown', function( e ){
+    /*
+    if ( $( e.target ).hasClass( 'sort-preference' ) || $( e.target ).parent().hasClass( 'sort-preference' ) ) {
+      visualSortPreferenceButton.addClass( 'disabled' );
+    }
+    */
+    sortOptions.css( 'display', 'none' );
 
-    })
+  })
 
 });
 
