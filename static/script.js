@@ -312,11 +312,11 @@ var refreshNotificationCenter = function( receivedFolder ){
 
   SHARED_PATH = receivedFolder.id;
 
-  receivedFolder.list( function( e , list ){
+  receivedFolder.list( { withPermissions: true }, function( e , list ){
 
     list.forEach( function( item ){
 
-      api.user( item.owner , function( err , user ){
+      api.user( item.permissions.sharedBy, function( err , user ){
         appendSharingNotification( item, user );
       });
 
@@ -2248,7 +2248,7 @@ var updateNotificationCenter = function( fsnode , options ){
 
   if ( options.isNew && SHARED_PATH === fsnode.parent ) {
 
-    api.user( fsnode.owner , function( err , user ){
+    api.user( item.permissions.sharedBy, function( err , user ){
       appendSharingNotification( fsnode , user );
     });
 
