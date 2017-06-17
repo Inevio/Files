@@ -82,6 +82,7 @@ var visualBreadcrumbsEntryPrototype = $('.folder-breadcrumbs > .entry.wz-prototy
 var visualBreadcrumbsList      = $('.folder-breadcrumbs .list');
 var visualSidebarItemArea      = $('.ui-navgroup');
 var visualSidebarItemPrototype = $('.ui-navgroup-element.wz-prototype');
+var visualSpaceInUseAmount     = $('.space-in-use .amount')
 var visualItemArea             = $('.item-area');
 var visualRenameTextarea       = $('.rename');
 var visualUploadingArea        = $('.uploading-area');
@@ -2923,7 +2924,12 @@ visualSidebarItemArea
 
   });
 
-});
+})
+
+$('.space-in-use')
+.on( 'click', function(){
+  api.app.openApp( 3 )
+})
 
 visualHistoryBack.on( 'click', historyGoBack );
 visualHistoryForward.on( 'click', historyGoForward );
@@ -3385,6 +3391,8 @@ var translate = function(){
   $('.ui-header-brand').find('.name').text(lang.main.appName);
   $('.ui-input-search').find('input').attr('placeholder', lang.main.search);
   $('.ui-navgroup-title-txt').text(lang.main.favourites);
+  $('.space-in-use .amount').text(lang.main.amount);
+  $('.space-in-use .need-more').text(lang.main.needMore);
   $('.status-number').text(lang.main.uploadXFiles);
   $('.ui-confirm .accept span').text( params && params.command === 'selectSource' ? lang.main.select : lang.share.save );
   $('.ui-confirm .cancel span').text(lang.main.cancel);
@@ -3400,9 +3408,23 @@ var translate = function(){
 
 };
 
+var updateQuota = function(){
+
+  api.system.updateQuota( function( error, quota ){
+
+    visualSpaceInUseAmount.text(
+      lang.main.amount
+      .replace( "%s", api.tool.bytesToUnit( api.system.quota().used, 2 ) )
+      .replace( "%s", api.tool.bytesToUnit( api.system.quota().total ) )
+    )
+
+  })
+
+}
 // Start the app
 currentSort = sortByName;
 translate();
+updateQuota()
 updateCanvasSize();
 clearCanvas();
 loadEmptyAnimationImg();

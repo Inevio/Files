@@ -6,6 +6,8 @@
       "appName"                   : "Files",
       "search"                    : "Search",
       "favourites"                : "Favourites",
+      "amount"                    : "%s of %s used",
+      "needMore"                  : "Need more space?",
       "uploadXFiles"              : "Uploading X files -",
       "open"                      : "Open",
       "select"                    : "Select",

@@ -32,7 +32,7 @@
 
 .selectDestiny .notification-center, .selectSource .notification-center{
   display: none;
-  
+
 }
 
 
@@ -325,6 +325,34 @@
   overflow-y: auto;
   background: #f7f7f7;
   width: 220px;
+  position: relative;
+
+  .space-in-use{
+    position: absolute;
+    bottom: 0;
+    margin: 0 0 12px 18px;
+    box-sizing: border-box;
+    color: #717171;
+    font-size: 13px;
+
+    &:hover{
+      color: #0071f6;
+    }
+
+    .amount{
+      color: inherit;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .need-more{
+      color: inherit;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+
+  }
+
 }
 
 .ui-navgroup{
@@ -695,7 +723,7 @@
 
   .button:hover i{
     opacity: 1;
-  }  
+  }
 
   .upload i{
     background-position: -18px 0;
