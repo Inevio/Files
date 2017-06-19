@@ -12,9 +12,9 @@ var TYPE_FOLDER = 2;
 var TYPE_FILE = 3;
 var PROGRESS_RADIUS = 5;
 var PROGRESS_ICON = new Image();
-PROGRESS_ICON.src = 'https://static.horbito.com/app/377/img/processing@2x.png';
+PROGRESS_ICON.src = 'https://static.horbito.com/app/1/img/processing@2x.png';
 var SHARING_ICON = new Image();
-SHARING_ICON.src = 'https://static.horbito.com/app/377/img/sharing@2x.png';
+SHARING_ICON.src = 'https://static.horbito.com/app/1/img/sharing@2x.png';
 var SHARED_PATH = 0;
 var RADIUS = 90;
 var dy = 1;
@@ -528,7 +528,7 @@ var contextmenuAcceptFile = function( fsnode ){
 
     banner
     .setText( fsnode.name + ' ' + lang.main.beenAccepted )
-    .setIcon( 'https://static.horbito.com/app/377/file_accepted.png' )
+    .setIcon( 'https://static.horbito.com/app/1/file_accepted.png' )
     .render();
 
   });
@@ -2482,34 +2482,34 @@ var isCutted = function( icon ){
 var loadEmptyAnimationImg = function(){
 
   animationEmptyImages[0] = new Image();
-  animationEmptyImages[0].src = "https://static.horbito.com/app/377/img/emptyAnimation/jpg.png";
+  animationEmptyImages[0].src = "https://static.horbito.com/app/1/img/emptyAnimation/jpg.png";
   animationEmptyImages[1] = new Image();
-  animationEmptyImages[1].src = "https://static.horbito.com/app/377/img/emptyAnimation/mp3.png";
+  animationEmptyImages[1].src = "https://static.horbito.com/app/1/img/emptyAnimation/mp3.png";
   animationEmptyImages[2] = new Image();
-  animationEmptyImages[2].src = "https://static.horbito.com/app/377/img/emptyAnimation/mp4.png";
+  animationEmptyImages[2].src = "https://static.horbito.com/app/1/img/emptyAnimation/mp4.png";
   animationEmptyImages[3] = new Image();
-  animationEmptyImages[3].src = "https://static.horbito.com/app/377/img/emptyAnimation/docx.png";
+  animationEmptyImages[3].src = "https://static.horbito.com/app/1/img/emptyAnimation/docx.png";
   animationEmptyImages[4] = new Image();
-  animationEmptyImages[4].src = "https://static.horbito.com/app/377/img/emptyAnimation/pptx.png";
+  animationEmptyImages[4].src = "https://static.horbito.com/app/1/img/emptyAnimation/pptx.png";
   animationEmptyImages[5] = new Image();
-  animationEmptyImages[5].src = "https://static.horbito.com/app/377/img/emptyAnimation/xlsx.png";
+  animationEmptyImages[5].src = "https://static.horbito.com/app/1/img/emptyAnimation/xlsx.png";
   animationEmptyImages[6] = new Image();
-  animationEmptyImages[6].src = "https://static.horbito.com/app/377/img/emptyAnimation/jpg.png";
+  animationEmptyImages[6].src = "https://static.horbito.com/app/1/img/emptyAnimation/jpg.png";
   animationEmptyImages[7] = new Image();
-  animationEmptyImages[7].src = "https://static.horbito.com/app/377/img/emptyAnimation/mp3.png";
+  animationEmptyImages[7].src = "https://static.horbito.com/app/1/img/emptyAnimation/mp3.png";
 
   animationEmptyImages[8] = new Image();
-  animationEmptyImages[8].src = "https://static.horbito.com/app/377/img/emptyAnimation/photoshop.png";
+  animationEmptyImages[8].src = "https://static.horbito.com/app/1/img/emptyAnimation/photoshop.png";
   animationEmptyImages[9] = new Image();
-  animationEmptyImages[9].src = "https://static.horbito.com/app/377/img/emptyAnimation/afterEffects.png";
+  animationEmptyImages[9].src = "https://static.horbito.com/app/1/img/emptyAnimation/afterEffects.png";
   animationEmptyImages[10] = new Image();
-  animationEmptyImages[10].src = "https://static.horbito.com/app/377/img/emptyAnimation/Illustrator.png";
+  animationEmptyImages[10].src = "https://static.horbito.com/app/1/img/emptyAnimation/Illustrator.png";
   animationEmptyImages[11] = new Image();
-  animationEmptyImages[11].src = "https://static.horbito.com/app/377/img/emptyAnimation/lightroom.png";
+  animationEmptyImages[11].src = "https://static.horbito.com/app/1/img/emptyAnimation/lightroom.png";
   animationEmptyImages[12] = new Image();
-  animationEmptyImages[12].src = "https://static.horbito.com/app/377/img/emptyAnimation/eps.png";
+  animationEmptyImages[12].src = "https://static.horbito.com/app/1/img/emptyAnimation/eps.png";
   animationEmptyImages[13] = new Image();
-  animationEmptyImages[13].src = "https://static.horbito.com/app/377/img/emptyAnimation/premiere.png";
+  animationEmptyImages[13].src = "https://static.horbito.com/app/1/img/emptyAnimation/premiere.png";
 
   for (var i = 0; i < animationEmptyImages.length; i++){
     animationEmptyPosition[i] = [ctx.width * Math.random(), Math.random() * (visualItemArea[ 0 ].height + 300), 0.5 + dy * Math.random()];
@@ -3198,7 +3198,7 @@ visualItemArea
         'width'               : '17px',
         'height'              : '17px',
         'margin-right'        : '10px',
-        'background-image'    : 'url(https://static.horbito.com/app/377/img/sprite.png)',
+        'background-image'    : 'url(https://static.horbito.com/app/1/img/sprite.png)',
         'background-position' : '-32px 0',
         'background-size'     : '67px 18px',
         'background-repeat'   : 'no-repeat'
