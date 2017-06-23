@@ -495,6 +495,39 @@
   background: #fff;
 }
 
+.welcome-tip{
+  width: 365px;
+  height: 117px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  background-color: #fff;
+  -webkit-box-shadow: 0 10px 20px rgba(34,31,26,.3);
+  -moz-box-shadow: 0 10px 20px rgba(34,31,26,.3);
+  box-shadow: 0 10px 20px rgba(34,31,26,.3);
+  position: absolute;
+  bottom: 17px;
+  right: 16px;
+  z-index: 3;
+  padding: 21px 31px 0 31px;
+  box-sizing: border-box;
+
+  .title{
+    font-size: 20px;
+    color: #252525;
+    font-weight: bold;
+  }
+
+  .subtitle{
+    font-size: 15px;
+    color: #252525;
+    margin-top: 17px;
+    line-height: 1.2em;
+  }
+
+}
+
+
 .folder-tools{
   padding: 9px 9px 10px;
   height: 44px;

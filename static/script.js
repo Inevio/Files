@@ -2517,6 +2517,12 @@ var loadEmptyAnimationImg = function(){
 
 }
 
+var startOnboarding = function(){
+
+  $('.ui-content .welcome-tip').show();
+
+}
+
 // API Events
 api.fs
 .on( 'new', function( fsnode ){
