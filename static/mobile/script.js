@@ -34,7 +34,8 @@ var cancelProgress;
 // Functions
 var initFiles = function(){
 
-  StatusBar.backgroundColorByHexString("#999999");
+  StatusBar.backgroundColorByHexString("#fff");
+  StatusBar.styleDefault();
   translate();
   if (params && params[0] === 'select-source') {
     $('#weexplorer-content').addClass('select-source-mode');
