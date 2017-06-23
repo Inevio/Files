@@ -7,6 +7,10 @@ var visualSharedAreaList              = $('.shared-area .users-list');
 var visualSharedAreaListUserPrototype = $('.shared-area .users-list .user.wz-prototype');
 var inviteByMail                      = $( '.invite-by-mail' );
 
+var accentMap = {
+  'á':'a', 'é':'e', 'í':'i','ó':'o','ú':'u'
+};
+
 // Functions
 var appendUserToUsersList = function( listArea, prototype, user, permissions ){
 
@@ -241,7 +245,7 @@ var containsWord = function( wordToCompare ){
 
   return function( index , element ) {
 
-    return $( element ).find( '.name' ).text().toLowerCase().indexOf( wordToCompare.toLowerCase() ) !== -1;
+    return accent_fold( $( element ).find( '.name' ).text().toLowerCase() ).indexOf( accent_fold( wordToCompare.toLowerCase() ) ) !== -1;
 
   }
 
@@ -262,7 +266,7 @@ var appendUserInOrder = function( list , user ){
 
     var userInDom = $( userInDom );
 
-    if ( !appended && user.find( '.name' ).text().localeCompare( userInDom.find( '.name' ).text() ) === -1 ) {
+    if ( !appended && user.find( '.name' ).text().localeCompare( userInDom.find( '.name' ).text() ) === -1  ) {
       userInDom.before( user );
       appended = true;
     }
@@ -274,6 +278,16 @@ var appendUserInOrder = function( list , user ){
   }
 
 }
+
+var accent_fold = function(s) {
+  if (!s) { return ''; }
+  var ret = '';
+  for (var i = 0; i < s.length; i++) {
+    ret += accentMap[s.charAt(i)] || s.charAt(i);
+  }
+  return ret;
+};
+
 // Events
 $('.users-area .users-list').on( 'click', '.user', function(){
   appendUserInOrder( visualSharedAreaList , $(this) );
@@ -305,3 +319,4 @@ inviteByMail.on( 'click' , function(){
 // Start the app
 loadInfo( params );
 translate();
+$('.users-area .search input').focus();

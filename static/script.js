@@ -16,12 +16,16 @@ PROGRESS_ICON.src = 'https://static.horbito.com/app/1/img/processing@2x.png';
 var SHARING_ICON = new Image();
 SHARING_ICON.src = 'https://static.horbito.com/app/1/img/sharing@2x.png';
 var SHARED_PATH = 0;
+var RADIUS = 90;
+var dy = 1;
 
 /* COLORS */
 var BLUEUI = '#0071f6';
-var TRANSPARENTBLUEUI = 'rgba(0, 113, 246, 0.3)'
-var DARKTEXTS = '#252525'
-var WHITE = '#fff'
+var COLOR_INACTIVE = "#bbbbc1";
+var CIRCLE = "#f9f9fe";
+var TRANSPARENTBLUEUI = 'rgba(0, 113, 246, 0.3)';
+var DARKTEXTS = '#252525';
+var WHITE = '#fff';
 
 var channel                 = null;
 var requestedFrame          = false;
@@ -53,8 +57,15 @@ var currentGoToItemTimer    = 0;
 var enabledMultipleSelect   = true;
 var disabledFileIcons       = false;
 var sidebarFolders          = [];
-var notificationBellButton     = $('.notification-center');
-var notificationList           = $('.notification-list');
+var notificationBellButton  = $('.notification-center');
+var notificationList        = $('.notification-list');
+var animationEmptyActive = false;
+var animationEmptyImages = [];
+var animationEmptyPosition = [];
+var proportionEmpty = 1;
+var animationOpacity = 0;
+var initialColor = [ 187 , 187 , 193 ];
+
 
 if( params && ( params.command === 'selectSource' ||  params.command === 'selectDestiny' ) ){
   enabledMultipleSelect = params.command === 'selectSource' && params.mode === 'file' && params.multiple;
@@ -71,6 +82,7 @@ var visualBreadcrumbsEntryPrototype = $('.folder-breadcrumbs > .entry.wz-prototy
 var visualBreadcrumbsList      = $('.folder-breadcrumbs .list');
 var visualSidebarItemArea      = $('.ui-navgroup');
 var visualSidebarItemPrototype = $('.ui-navgroup-element.wz-prototype');
+var visualSpaceInUseAmount     = $('.space-in-use .amount')
 var visualItemArea             = $('.item-area');
 var visualRenameTextarea       = $('.rename');
 var visualUploadingArea        = $('.uploading-area');
@@ -301,11 +313,11 @@ var refreshNotificationCenter = function( receivedFolder ){
 
   SHARED_PATH = receivedFolder.id;
 
-  receivedFolder.list( function( e , list ){
+  receivedFolder.list( { withPermissions: true }, function( e , list ){
 
     list.forEach( function( item ){
 
-      api.user( item.owner , function( err , user ){
+      api.user( item.permissions.sharedBy, function( err , user ){
         appendSharingNotification( item, user );
       });
 
@@ -537,19 +549,22 @@ var createFolder = function(){
 var deleteAll = function( items ){
 
   items = items || currentActive
+  items = items.filter( function( item ){ return item.fsnode.type !== TYPE_FOLDER_SPECIAL })
 
-  if ( items.length === 0 ) {
-    return
-  }
-
-  if ( items.length === 1 && items[ 0 ].fsnode.type === TYPE_FOLDER_SPECIAL ) {
+  if( !items.length ){
     return
   }
 
   var dialog = api.dialog();
 
   dialog.setTitle( lang.main.remove );
-  dialog.setText( lang.main.confirmDelete );
+
+  if( items.length > 1 ){
+    dialog.setText( lang.main.confirmDelete2 );
+  }else{
+    dialog.setText( lang.main.confirmDelete );
+  }
+
   dialog.setButton( 0, wzLang.core.dialogCancel, 'black' );
   dialog.setButton( 1, wzLang.core.dialogAccept, 'blue' );
 
@@ -596,40 +611,196 @@ var drawIcons = function(){
     //drawIconsInList()
   }
 
-  if( dropActive === true || dropIgnore.indexOf( dropActive ) !== -1 ){
-
-    ctx.fillStyle = BLUEUI;
-    drawBorder ( 3 );
+  if( currentList.length === 0 && dropActive === false){
+    clearCanvas();
+    initialColor = [ 187 , 187 , 193 ];
+    drawEmptyBackground();
   }
 
-};
+  if( currentList.length === 0 && dropActive === true && !animationEmptyActive ){
+    backgroundHover();
+  }
 
+  if( dropActive === true || dropIgnore.indexOf( dropActive ) !== -1 ){
+
+    if ( !animationEmptyActive ) {
+      if ( currentList.length === 0 ) {
+
+        animationEmptyActive = true;
+        animationEmptyFolder();
+
+      }else{
+        ctx.fillStyle = BLUEUI;
+        drawBorder ( 3 );
+      }
+    }
+
+  }else{
+    animationEmptyActive = false;
+    animationOpacity = 0;
+  }
+
+}
+
+var drawEmptyBackground = function(){
+
+  animationEmptyActive = false;
+
+  ctx.beginPath();
+  ctx.strokeStyle = COLOR_INACTIVE;
+  ctx.fillStyle = CIRCLE;
+  ctx.lineWidth = 4*proportionEmpty;
+  ctx.lineCap = 'round';
+  ctx.setLineDash([10*proportionEmpty]);
+  ctx.arc(ctx.width/2, 2*ctx.height/5, RADIUS, 0, 2*Math.PI, false);
+  ctx.fill();
+  ctx.stroke();
+  ctx.closePath();
+
+  ctx.beginPath();
+  ctx.strokeStyle= COLOR_INACTIVE;
+  ctx.lineWidth = 10*proportionEmpty;
+  ctx.lineCap = 'round';
+  ctx.setLineDash([]);
+  ctx.moveTo(ctx.width/2 - RADIUS/3,  2*ctx.height/5);
+  ctx.lineTo(ctx.width/2 + RADIUS/3,  2*ctx.height/5);
+  ctx.stroke();
+  ctx.closePath();
+
+  ctx.beginPath();
+  ctx.strokeStyle= COLOR_INACTIVE;
+  ctx.lineWidth = 10*proportionEmpty;
+  ctx.lineCap = 'round';
+  ctx.setLineDash([]);
+  ctx.moveTo(ctx.width/2,  2*ctx.height/5 + RADIUS/3);
+  ctx.lineTo(ctx.width/2,  2*ctx.height/5 - RADIUS/3);
+  ctx.stroke();
+  ctx.closePath();
+
+  ctx.fillStyle= COLOR_INACTIVE;
+  ctx.font= 'bold '+ 38 *proportionEmpty+'px Lato';
+  ctx.textAlign = 'center';
+  ctx.fillText(lang.emptyFolder, ctx.width/2,  2*ctx.height/5 + 5 * RADIUS/3);
+
+  ctx.fillStyle= COLOR_INACTIVE;
+  ctx.font= 21 * proportionEmpty + 'px Lato';
+  ctx.textAlign = 'center';
+  ctx.fillText(lang.dragIt, ctx.width/2,  2*ctx.height/5 + 6.5* RADIUS /3 - 10);
+
+}
+
+var animationEmptyFolder = function (){
+  if (animationEmptyActive){
+
+    ctx.globalAlpha = animationOpacity;
+
+    ctx.clearRect(0, 0, ctx.width, ctx.height);
+
+    for (var i = 0; i < animationEmptyImages.length; i++){
+
+      var normalized = normalizeBigIconSize( animationEmptyImages[i] );
+
+      ctx.drawImage(animationEmptyImages[i], animationEmptyPosition[i][0]-animationEmptyImages[i].width/2, animationEmptyPosition[i][1]-animationEmptyImages[i].height/2, normalized.width, normalized.height);
+      animationEmptyPosition[i][1] += animationEmptyPosition[i][2];
+      if (animationEmptyPosition[i][1] > ctx.height + animationEmptyImages[i].height)
+        reset(i);
+    }
+
+    ctx.fill();
+    ctx.stroke();
+    backgroundHover();
+
+    if ( animationOpacity < 1) {
+      animationOpacity += 0.005;
+    }else{
+      animationOpacity = 1;
+    }
+
+    requestAnimationFrame(animationEmptyFolder);
+  }
+}
+
+var backgroundHover = function(){
+
+  var finalColor = [ 0 , 113 , 246 ];
+
+  initialColor.forEach(function( color , i ){
+    initialColor[i] += (finalColor[i] - color) * (animationOpacity / 10);
+  });
+
+  var colorOnTransition = 'rgba('+Math.floor(initialColor[0])+', '+Math.floor(initialColor[1])+', '+Math.floor(initialColor[2])+', 1)';
+  console.log(colorOnTransition,animationOpacity);
+
+  ctx.beginPath();
+  ctx.strokeStyle = colorOnTransition;
+  ctx.fillStyle = CIRCLE;
+  ctx.lineWidth = 4*proportionEmpty;
+  ctx.lineCap = 'round';
+  ctx.setLineDash([10*proportionEmpty]);
+  ctx.arc(ctx.width/2,  2*ctx.height/5, RADIUS, 0, 2*Math.PI, false);
+  ctx.fill();
+  ctx.stroke();
+  ctx.closePath();
+
+  ctx.beginPath();
+  ctx.strokeStyle = colorOnTransition;
+  ctx.lineWidth = 10*proportionEmpty;
+  ctx.lineCap = 'round';
+  ctx.setLineDash([]);
+  ctx.moveTo(ctx.width/2-RADIUS/3,  2*ctx.height/5);
+  ctx.lineTo(ctx.width/2+RADIUS/3,  2*ctx.height/5);
+  ctx.stroke();
+  ctx.closePath();
+
+  //ctx.beginPath();
+  ctx.strokeStyle = colorOnTransition;
+  ctx.lineWidth = 10*proportionEmpty;
+  ctx.lineCap = 'round';
+  ctx.setLineDash([]);
+  ctx.moveTo(ctx.width/2,  2*ctx.height/5 + RADIUS/3);
+  ctx.lineTo(ctx.width/2,  2*ctx.height/5 - RADIUS/3);
+  ctx.stroke();
+  //ctx.closePath();
+
+  ctx.fillStyle = "#252525";
+  ctx.font= 'bold '+ 38 *proportionEmpty+'px Lato';
+  ctx.textAlign = 'center';
+  ctx.fillText(lang.dropIt, ctx.width/2,  2*ctx.height/5 + 5 * RADIUS/3);
+  ctx.fillText(lang.toUpload, ctx.width/2,  2*ctx.height/5 + 5 * RADIUS/3 + 43);
+
+
+}
+
+var reset = function (i){
+  animationEmptyPosition[i]= [ctx.width * Math.random(),  - 100, Math.random()*dy]
+}
 
 var drawBorder = function ( size ) {
 
-    if(border < size){
+  if(border < size){
+    border = border + 0.1;
+    ctx.fillRect( 0, 0, ctx.width, border );
+    ctx.fillRect( 0, 0, border, ctx.height );
+    ctx.fillRect( 0, ctx.height - border, ctx.width, border );
+    ctx.fillRect( ctx.width - border, 0, border, ctx.height );
+    for(var i = 0; i< 5; i++ && border < size){
       border = border + 0.1;
       ctx.fillRect( 0, 0, ctx.width, border );
       ctx.fillRect( 0, 0, border, ctx.height );
       ctx.fillRect( 0, ctx.height - border, ctx.width, border );
       ctx.fillRect( ctx.width - border, 0, border, ctx.height );
-      for(var i = 0; i< 5; i++ && border < size){
-        border = border + 0.1;
-        ctx.fillRect( 0, 0, ctx.width, border );
-        ctx.fillRect( 0, 0, border, ctx.height );
-        ctx.fillRect( 0, ctx.height - border, ctx.width, border );
-        ctx.fillRect( ctx.width - border, 0, border, ctx.height );
-      }
     }
+  }
 
-    else{
-      ctx.fillRect( 0, 0, ctx.width, size );
-      ctx.fillRect( 0, 0, size, ctx.height );
-      ctx.fillRect( 0, ctx.height - size, ctx.width, size );
-      ctx.fillRect( ctx.width - size, 0, size, ctx.height );
+  else{
+    ctx.fillRect( 0, 0, ctx.width, size );
+    ctx.fillRect( 0, 0, size, ctx.height );
+    ctx.fillRect( 0, ctx.height - size, ctx.width, size );
+    ctx.fillRect( ctx.width - size, 0, size, ctx.height );
 
-    }
-};
+  }
+
+}
 
 var drawIconsInGrid = function(){
 
@@ -1517,36 +1688,58 @@ var openFile = function( fsnode ){
 
 var openFolder = function( id, isBack, isForward ){
 
-  api.fs( id, function( error, fsnode ){
+  if( !currentOpened || id !== currentOpened.id ){
 
-    $.when( getFolderItems( fsnode ), getItemPath( fsnode ) ).done( function( list, path ){
+    api.fs( id, function( error, fsnode ){
 
-      visualSidebarItemArea.find('.active').removeClass('active');
-      visualSidebarItemArea.find( '.item-' + fsnode.id ).addClass('active');
+      $.when( getFolderItems( fsnode ), getItemPath( fsnode ) ).done( function( list, path ){
 
-      if( !isBack && !isForward && currentOpened ){
-        addToHistoryBackward( currentOpened );
-        clearHistoryForward();
-      }else if( isBack ){
-        addToHistoryForward( currentOpened );
-      }else if( isForward ){
-        addToHistoryBackward( currentOpened );
-      }
+        visualSidebarItemArea.find('.active').removeClass('active');
+        visualSidebarItemArea.find( '.item-' + fsnode.id ).addClass('active');
 
-      currentScroll = 0;
-      currentOpened = fsnode;
-      currentLastPureClicked = null;
+        if( !isBack && !isForward && currentOpened ){
+          addToHistoryBackward( currentOpened );
+          clearHistoryForward();
+        }else if( isBack ){
+          addToHistoryForward( currentOpened );
+        }else if( isForward ){
+          addToHistoryBackward( currentOpened );
+        }
 
-      clearList();
-      appendItemToList( list );
-      generateBreadcrumbs( path );
-      requestDraw();
+        currentScroll = 0;
+        currentOpened = fsnode;
+        currentLastPureClicked = null;
+
+        clearList();
+        appendItemToList( list );
+        generateBreadcrumbs( path );
+        requestDraw();
+
+      });
 
     });
 
-  });
+  }
 
 };
+
+var openItem = function( item ){
+
+  if ( item.fsnode.pending ) {
+    api.app.createView( item.fsnode , 'received' );
+  }else if( item.fsnode.type === TYPE_ROOT || item.fsnode.type === TYPE_FOLDER_SPECIAL || item.fsnode.type === TYPE_FOLDER ){
+    openFolder( item.fsnode.id );
+  }else if( item.fsnode.type === TYPE_FILE ){
+
+    if( params && ( params.command === 'selectSource' || params.command === 'selectDestiny' ) ){
+      acceptButtonHandler()
+    }else{
+      openFile( item.fsnode );
+    }
+
+  }
+
+}
 
 var removeFromCollection = function( collection, item ){
 
@@ -1600,7 +1793,10 @@ var requestDraw = function(){
 
   requestAnimationFrame( function(){
 
-    clearCanvas();
+    if( !animationEmptyActive ){
+      clearCanvas();
+    }
+
     drawIcons();
 
     requestedFrame = false;
@@ -1936,7 +2132,20 @@ var updateCanvasSize = function(){
 
   ctx.width  = visualItemArea.width();
   ctx.height = visualItemArea.height();
+  /*
+  var proportionEmptyWidth = ctx.width /700;
+  var proportionEmptyHeight = ctx.height / 700;
 
+  //if ( (proportionEmptyWidth / proportionEmptyHeight < 1.5 ) && (proportionEmptyHeight / proportionEmptyWidth < 1.5 )){
+    proportionEmpty = (proportionEmptyHeight + proportionEmptyWidth) / 2;
+    //console.log("Modificated proportion")
+  //}
+  emptyradiusmodificated = RADIUS * proportionEmpty;
+    if ( ctx.height/2+6.5* emptyradiusmodificated /3 > ctx.height){
+      proportionEmpty =  ((ctx.height -ctx.height/2) * 3/6.5) / RADIUS;
+    }
+    //console.log(" ESTOOOO" ,emptyradiusmodificated, proportionEmptyWidth / proportionEmptyHeight, proportionEmptyHeight / proportionEmptyWidth, proportionEmpty);
+*/
 };
 
 var addToSidebar = function( fsnode ){
@@ -2040,7 +2249,7 @@ var updateNotificationCenter = function( fsnode , options ){
 
   if ( options.isNew && SHARED_PATH === fsnode.parent ) {
 
-    api.user( fsnode.owner , function( err , user ){
+    api.user( item.permissions.sharedBy, function( err , user ){
       appendSharingNotification( fsnode , user );
     });
 
@@ -2270,6 +2479,44 @@ var isCutted = function( icon ){
 
 }
 
+var loadEmptyAnimationImg = function(){
+
+  animationEmptyImages[0] = new Image();
+  animationEmptyImages[0].src = "https://static.horbito.com/app/1/img/emptyAnimation/jpg.png";
+  animationEmptyImages[1] = new Image();
+  animationEmptyImages[1].src = "https://static.horbito.com/app/1/img/emptyAnimation/mp3.png";
+  animationEmptyImages[2] = new Image();
+  animationEmptyImages[2].src = "https://static.horbito.com/app/1/img/emptyAnimation/mp4.png";
+  animationEmptyImages[3] = new Image();
+  animationEmptyImages[3].src = "https://static.horbito.com/app/1/img/emptyAnimation/docx.png";
+  animationEmptyImages[4] = new Image();
+  animationEmptyImages[4].src = "https://static.horbito.com/app/1/img/emptyAnimation/pptx.png";
+  animationEmptyImages[5] = new Image();
+  animationEmptyImages[5].src = "https://static.horbito.com/app/1/img/emptyAnimation/xlsx.png";
+  animationEmptyImages[6] = new Image();
+  animationEmptyImages[6].src = "https://static.horbito.com/app/1/img/emptyAnimation/jpg.png";
+  animationEmptyImages[7] = new Image();
+  animationEmptyImages[7].src = "https://static.horbito.com/app/1/img/emptyAnimation/mp3.png";
+
+  animationEmptyImages[8] = new Image();
+  animationEmptyImages[8].src = "https://static.horbito.com/app/1/img/emptyAnimation/photoshop.png";
+  animationEmptyImages[9] = new Image();
+  animationEmptyImages[9].src = "https://static.horbito.com/app/1/img/emptyAnimation/afterEffects.png";
+  animationEmptyImages[10] = new Image();
+  animationEmptyImages[10].src = "https://static.horbito.com/app/1/img/emptyAnimation/Illustrator.png";
+  animationEmptyImages[11] = new Image();
+  animationEmptyImages[11].src = "https://static.horbito.com/app/1/img/emptyAnimation/lightroom.png";
+  animationEmptyImages[12] = new Image();
+  animationEmptyImages[12].src = "https://static.horbito.com/app/1/img/emptyAnimation/eps.png";
+  animationEmptyImages[13] = new Image();
+  animationEmptyImages[13].src = "https://static.horbito.com/app/1/img/emptyAnimation/premiere.png";
+
+  for (var i = 0; i < animationEmptyImages.length; i++){
+    animationEmptyPosition[i] = [ctx.width * Math.random(), Math.random() * (visualItemArea[ 0 ].height + 300), 0.5 + dy * Math.random()];
+  }
+
+}
+
 // API Events
 api.fs
 .on( 'new', function( fsnode ){
@@ -2493,10 +2740,16 @@ win
   e.preventDefault();
 
   if( $(e.target).is('textarea') ){
-    hideRenameTextarea();
-  }else{
-    console.log('TO DO');
+    return hideRenameTextarea()
   }
+
+  var pending = currentActive.filter( function( item ){ return item.fsnode.pending })
+  var folder = currentActive.filter( function( item ){ return pending.indexOf( item ) === -1 && ( item.fsnode.type === TYPE_ROOT || item.fsnode.type === TYPE_FOLDER_SPECIAL || item.fsnode.type === TYPE_FOLDER ) }).slice( -1 )[ 0 ]
+  var files = currentActive.filter( function( item ){ return pending.indexOf( item ) === -1 && folder !== item })
+
+  pending.forEach( openItem )
+  openItem( folder )
+  files.forEach( openItem )
 
 })
 
@@ -2671,7 +2924,12 @@ visualSidebarItemArea
 
   });
 
-});
+})
+
+$('.space-in-use')
+.on( 'click', function(){
+  api.app.openApp( 3 )
+})
 
 visualHistoryBack.on( 'click', historyGoBack );
 visualHistoryForward.on( 'click', historyGoForward );
@@ -2706,26 +2964,28 @@ visualBreadcrumbs.on( 'click', '.list-trigger', function(){
 });
 
 visualCreateFolderButton.on( 'click', createFolder );
+
 visualDeleteButton.on( 'click', function(){
   deleteAll()
 });
+
 visualDownloadButton.on( 'click', function(){
   downloadAll()
 });
 
 visualSortPreferenceButton.on( 'click', function(){
 
-    sortOptions.css( 'display', 'block' );
+  sortOptions.css( 'display', 'block' );
 
-    win.one( 'mousedown', function( e ){
-      /*
-      if ( $( e.target ).hasClass( 'sort-preference' ) || $( e.target ).parent().hasClass( 'sort-preference' ) ) {
-        visualSortPreferenceButton.addClass( 'disabled' );
-      }
-      */
-      sortOptions.css( 'display', 'none' );
+  win.one( 'mousedown', function( e ){
+    /*
+    if ( $( e.target ).hasClass( 'sort-preference' ) || $( e.target ).parent().hasClass( 'sort-preference' ) ) {
+      visualSortPreferenceButton.addClass( 'disabled' );
+    }
+    */
+    sortOptions.css( 'display', 'none' );
 
-    })
+  })
 
 });
 
@@ -2824,28 +3084,16 @@ visualItemArea
 .on( 'dblclick', function( e ){
 
   if( !currentList.length ){
-    return;
+    return
   }
 
   var itemClicked = getIconWithMouserOver( e );
 
   if( !itemClicked || ( disabledFileIcons && itemClicked.fsnode.type === TYPE_FILE ) ){
-    return;
+    return
   }
 
-  if ( itemClicked.fsnode.pending ) {
-    api.app.createView( itemClicked.fsnode , 'received' );
-  }else if( itemClicked.fsnode.type === TYPE_ROOT || itemClicked.fsnode.type === TYPE_FOLDER_SPECIAL || itemClicked.fsnode.type === TYPE_FOLDER ){
-    openFolder( itemClicked.fsnode.id );
-  }else if( itemClicked.fsnode.type === TYPE_FILE ){
-
-    if( params && ( params.command === 'selectSource' || params.command === 'selectDestiny' ) ){
-      acceptButtonHandler()
-    }else{
-      openFile( itemClicked.fsnode );
-    }
-
-  }
+  openItem( itemClicked )
 
 })
 
@@ -3143,6 +3391,8 @@ var translate = function(){
   $('.ui-header-brand').find('.name').text(lang.main.appName);
   $('.ui-input-search').find('input').attr('placeholder', lang.main.search);
   $('.ui-navgroup-title-txt').text(lang.main.favourites);
+  $('.space-in-use .amount').text(lang.main.amount);
+  $('.space-in-use .need-more').text(lang.main.needMore);
   $('.status-number').text(lang.main.uploadXFiles);
   $('.ui-confirm .accept span').text( params && params.command === 'selectSource' ? lang.main.select : lang.share.save );
   $('.ui-confirm .cancel span').text(lang.main.cancel);
@@ -3158,11 +3408,26 @@ var translate = function(){
 
 };
 
+var updateQuota = function(){
+
+  api.system.updateQuota( function( error, quota ){
+
+    visualSpaceInUseAmount.text(
+      lang.main.amount
+      .replace( "%s", api.tool.bytesToUnit( api.system.quota().used, 2 ) )
+      .replace( "%s", api.tool.bytesToUnit( api.system.quota().total ) )
+    )
+
+  })
+
+}
 // Start the app
 currentSort = sortByName;
 translate();
+updateQuota()
 updateCanvasSize();
 clearCanvas();
+loadEmptyAnimationImg();
 getSidebarItems().then( function( list ){
   list.forEach( appendVisualSidebarItem );
 });
