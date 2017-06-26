@@ -8,6 +8,7 @@ var itemBack       = $( '.weexplorer-element.back', win );
 var title          = $( '#weexplorer-menu-name', win );
 var sidebar        = $( '#weexplorer-sidebar', win );
 var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
+var uploadButton   = $('.weexplorer-menu-upload')
 var userPrototype  = $('.file-options .file-owners-container .user.wz-prototype');
 var attachButton   = $('.attach-button');
 var record         = [];
@@ -187,6 +188,7 @@ var openDirectory = function( id, jump, clear ){
       }
 
       $('#weexplorer-content').scrollTop(0);
+      uploadButton.data( 'data-wz-uploader-destiny', actualPathId )
       content.append( icons );
 
     });
