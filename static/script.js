@@ -2520,7 +2520,7 @@ var loadEmptyAnimationImg = function(){
 var startOnboarding = function(){
 
   $('.ui-content .welcome-tip').show();
-  var contextTimeout = setTimeout( function(){ $('.context-menu-reminder').show(); }, 300000 );//5 min
+  var contextTimeout = setTimeout( function(){ $('.context-menu-reminder').show(); }, 3000 );//5 min
   $( '.onboarding-arrow.arrow-files' , window.document ).remove();
 
 }
@@ -2731,6 +2731,12 @@ win
 
 .on( 'transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function(){
   stopUploadingAnimation();
+})
+
+.on( 'click', '.welcome-tip .close, .context-menu-reminder .close', function(){
+
+  $(this).parent().hide();
+
 })
 
 .key( 'delete', function(e){
@@ -3458,8 +3464,8 @@ if( params ){
 }else{
 
   openFolder('root');
-  if( win.hasClass( 'first-open' ) ){
-    startOnboarding();
-  }
 
+}
+if( win.hasClass( 'first-open' ) ){
+  startOnboarding();
 }
