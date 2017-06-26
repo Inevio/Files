@@ -46,18 +46,14 @@
 }
 
 .weexplorer-menu-upload{
-  width: 23px;
-  height: 19px;
+  width: 0px;
+  height: 0px;
   float: right;
-  padding: 21px 16px 15px 15px;
+  padding: 55px 0 0 54px;
   text-align: center;
-}
-
-.weexplorer-menu-upload-icon{
-  width: 23px;
-  height: 19px;
   background: url( '@static/mobile/subida.png' ) no-repeat;
   background-size: 23px 19px;
+  background-position: 16px 19px;
   display: none;
 }
 
