@@ -12,6 +12,9 @@
     "changeView"    : "UPDATE config SET view = ? WHERE user = @userId LIMIT 1",
     "addFolder"     : "INSERT INTO sidebar SET user = @userId, folder = ?, `order` = ?",
     "removeFolder"  : "DELETE FROM sidebar WHERE user = @userId AND folder = ? LIMIT 1",
-    "changeOrder"   : "UPDATE sidebar SET `order` = ? WHERE user = @userId AND folder = ? LIMIT 1"
+    "changeOrder"   : "UPDATE sidebar SET `order` = ? WHERE user = @userId AND folder = ? LIMIT 1",
+
+    "firstOpenDone"  : "INSERT INTO first_open (user) VALUES (?)",
+    "isFirstOpen"    : "SELECT * FROM first_open WHERE user = ?"
 
 }
