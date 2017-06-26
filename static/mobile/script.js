@@ -1306,6 +1306,10 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 .on( 'modified', function( structure ){
 
   console.log('modified', structure);
+  
+  if( structure.parent === actualPathId ){
+    openDirectory( actualPathId, true );
+  }
 
   /*if( structure.parent === current.id ){
 
