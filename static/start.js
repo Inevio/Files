@@ -1,3 +1,5 @@
+var win = $(this);
+
 
 if( params ){
 
@@ -9,19 +11,17 @@ if( params ){
 
 }
 
-/*wql.isFirstOpen( [ api.system.user().id; ] , function( e , o ){
+wql.isFirstOpen( [ api.system.user().id ] , function( e , o ){
 
   if ( o.length === 0 ){
 
-    $(this).addClass('first-open');
+    win.addClass('first-open');
 
-    wql.firstOpenDone( [ api.system.user().id; ] , function( e , o ){
+    wql.firstOpenDone( [ api.system.user().id ] , function( e , o ){
       if(e) console.log(e);
     });
 
   }
+  start();
 
-});*/
-
-$(this).addClass('first-open');
-start();
+});
