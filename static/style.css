@@ -495,7 +495,7 @@
   background: #fff;
 }
 
-.welcome-tip{
+.welcome-tip, .context-menu-reminder{
   width: 365px;
   height: 117px;
   -webkit-border-radius: 6px;
@@ -511,6 +511,7 @@
   z-index: 3;
   padding: 21px 31px 0 31px;
   box-sizing: border-box;
+  display: none;
 
   .title{
     font-size: 20px;
@@ -523,6 +524,20 @@
     color: #252525;
     margin-top: 17px;
     line-height: 1.2em;
+  }
+
+  figure{
+    width: 10px;
+    height: 10px;
+    background-image: url('@static/close-popup.png');
+    background-size: 10px 10px;
+    display: inline-block;
+    position: absolute;
+    right: 10px;
+    padding: 10px;
+    top: 10px;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
 }

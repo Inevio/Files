@@ -2520,6 +2520,7 @@ var loadEmptyAnimationImg = function(){
 var startOnboarding = function(){
 
   $('.ui-content .welcome-tip').show();
+  var contextTimeout = setTimeout( function(){ $('.context-menu-reminder').show(); }, 300000 );//5 min
 
 }
 
@@ -3454,5 +3455,10 @@ if( params ){
   }
 
 }else{
+
   openFolder('root');
+  if( win.hasClass( 'first-open' ) ){
+    startOnboarding();
+  }
+
 }

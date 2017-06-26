@@ -9,4 +9,19 @@ if( params ){
 
 }
 
+/*wql.isFirstOpen( [ api.system.user().id; ] , function( e , o ){
+
+  if ( o.length === 0 ){
+
+    $(this).addClass('first-open');
+
+    wql.firstOpenDone( [ api.system.user().id; ] , function( e , o ){
+      if(e) console.log(e);
+    });
+
+  }
+
+});*/
+
+$(this).addClass('first-open');
 start();
