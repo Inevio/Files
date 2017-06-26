@@ -2521,7 +2521,7 @@ var startOnboarding = function(){
 
   $('.ui-content .welcome-tip').show();
   var contextTimeout = setTimeout( function(){ $('.context-menu-reminder').show(); }, 300000 );//5 min
-  $( '.onboarding-arrow.files' , window.document ).remove();
+  $( '.onboarding-arrow.arrow-files' , window.document ).remove();
 
 }
 
