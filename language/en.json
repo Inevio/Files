@@ -330,7 +330,8 @@
     "attach"        : "Attach",
     "fileSelected"  : "file selected",
     "filesSelected" : "files selected",
-    "downloading"  : "Downloading",
+    "downloading"   : "Downloading",
+    "uploading"     : "Uploading",
 
     "inviteByMail"        : "Invite by mail",
     "inviteByMailDesc"    : "Introduce the email of all the people you want to invite to join horbito with you so you can start sharing files with them.",
