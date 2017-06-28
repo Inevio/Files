@@ -51,6 +51,7 @@
       "fileCanNotOpen"            : "horbito can't open this file currently in the device",
       "fileReceivedDialogTitle"   : "%s has been received",
       "fileReceivedDialogDescription" : "If it's accepted it would be saved in your main folder",
+      "arrow" : "Here you can open your files",
       "folderTranslations"        : {
 
         "Documents" : "Documents",
