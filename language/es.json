@@ -51,6 +51,7 @@
       "fileCanNotOpen"            : "horbito no puede abrir este fichero en el dispositivo",
       "fileReceivedDialogTitle"   : "%s ha sido recibido",
       "fileReceivedDialogDescription" : "Si lo aceptas será guardado en tu carpeta principal",
+      "arrow" : "Aquí están tus archivos",
       "folderTranslations"        : {
 
         "Documents" : "Documentos",
