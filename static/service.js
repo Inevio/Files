@@ -107,4 +107,3 @@ api.fs
 })
 
 checkRecieved();
-console.log( $, window, document);
