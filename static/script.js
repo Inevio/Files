@@ -3419,6 +3419,10 @@ var translate = function(){
   $('.sort-options .creation').text( lang.sortByCreation );
   $('.sort-options .modification').text( lang.sortByModif );
   $('.sort-preference span').text( lang.sortByName );
+  $('.welcome-tip .title').text( lang.onboarding.welcome.title );
+  $('.welcome-tip .subtitle').text( lang.onboarding.welcome.subtitle );
+  $('.context-menu-reminder .title').text( lang.onboarding.contextReminder.title );
+  $('.context-menu-reminder .subtitle').text( lang.onboarding.contextReminder.subtitle );  
 
 };
 
