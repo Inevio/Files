@@ -344,6 +344,24 @@
     "emptyFolder" : "Empty folder",
     "dragIt"      : "Drag or upload any file from your pc",
     "dropIt"      : "Drop the files",
-    "toUpload"    : "to upload them"
+    "toUpload"    : "to upload them",
+
+    "onboarding" : {
+
+      "welcome" : {
+
+        "title" : "No more downloads",
+        "subtitle" : "When you double click any file it opens inside the website."
+
+      },
+
+      "contextReminder" : {
+
+        "title" : "Rediscover right click",
+        "subtitle" : "Right click your folders and files to open, copy, paste, Open on Pc, rename etc. Just as you do it on your computer."
+
+      }
+
+    }
 
 }
