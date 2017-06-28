@@ -106,6 +106,7 @@ var backingStoreRatio          = ctx.webkitBackingStorePixelRatio ||
                           ctx.oBackingStorePixelRatio ||
                           ctx.backingStorePixelRatio || 1;
 var pixelRatio                 = api.tool.devicePixelRatio() / backingStoreRatio;
+var contextTimeout;
 
 var Icon = function( fsnode ){
 
@@ -2520,7 +2521,7 @@ var loadEmptyAnimationImg = function(){
 var startOnboarding = function(){
 
   $('.ui-content .welcome-tip').show();
-  var contextTimeout = setTimeout( function(){ $('.context-menu-reminder').show(); }, 3000 );//5 min
+  contextTimeout = setTimeout( function(){ $('.context-menu-reminder').show(); }, 300000 );//5 min
   $( '.onboarding-arrow.arrow-files' , window.document ).remove();
 
 }
@@ -3092,7 +3093,10 @@ visualItemArea
 })
 
 .on( 'contextmenu', function( e ){
+
+  clearTimeout( contextTimeout );
   generateContextMenu( getIconWithMouserOver( e ) )
+  
 })
 
 .on( 'dblclick', function( e ){
