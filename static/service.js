@@ -56,7 +56,7 @@ var addArrow = function( appName, text, position ){
 
     'width': '55px',
     'height' : '43px',
-    'background-image' : 'url("https://static.horbito.com/app/228/flecha-dock.png")',
+    'background-image' : 'url("https://static.horbito.com/app/357/flecha-dock.png")',
     'background-size' : '55px 43px',
     'float' : 'left'
 
