@@ -51,6 +51,7 @@
       "fileCanNotOpen"            : "horbito can't open this file currently in the device",
       "fileReceivedDialogTitle"   : "%s has been received",
       "fileReceivedDialogDescription" : "If it's accepted it would be saved in your main folder",
+      "arrow" : "Here you can open your files",
       "folderTranslations"        : {
 
         "Documents" : "Documents",
@@ -330,7 +331,8 @@
     "attach"        : "Attach",
     "fileSelected"  : "file selected",
     "filesSelected" : "files selected",
-    "downloading"  : "Downloading",
+    "downloading"   : "Downloading",
+    "uploading"     : "Uploading",
 
     "inviteByMail"        : "Invite by mail",
     "inviteByMailDesc"    : "Introduce the email of all the people you want to invite to join horbito with you so you can start sharing files with them.",
@@ -343,6 +345,24 @@
     "emptyFolder" : "Empty folder",
     "dragIt"      : "Drag or upload any file from your pc",
     "dropIt"      : "Drop the files",
-    "toUpload"    : "to upload them"
+    "toUpload"    : "to upload them",
+
+    "onboarding" : {
+
+      "welcome" : {
+
+        "title" : "No more downloads",
+        "subtitle" : "When you double click any file it opens inside the website."
+
+      },
+
+      "contextReminder" : {
+
+        "title" : "Rediscover right click",
+        "subtitle" : "Right click your folders and files to open, copy, paste, Open on Pc, rename etc. Just as you do it on your computer."
+
+      }
+
+    }
 
 }

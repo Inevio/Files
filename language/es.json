@@ -51,6 +51,7 @@
       "fileCanNotOpen"            : "horbito no puede abrir este fichero en el dispositivo",
       "fileReceivedDialogTitle"   : "%s ha sido recibido",
       "fileReceivedDialogDescription" : "Si lo aceptas será guardado en tu carpeta principal",
+      "arrow" : "Aquí están tus archivos",
       "folderTranslations"        : {
 
         "Documents" : "Documentos",
@@ -343,6 +344,7 @@
     "fileSelected"  : "archivo seleccionado",
     "filesSelected" : "archivos seleccionados",
     "downloading"   : "Descargando",
+    "uploading"     : "Subiendo",
 
     "inviteByMail"        : "Invitar contacto",
     "inviteByMailDesc"    : "Introduce el email de todas las personas que quieras que se unan a horbito para poder compartir archivos con ellos.",
@@ -356,6 +358,24 @@
     "emptyFolder" : "Carpeta vacia",
     "dragIt"      : "Arrastra o sube algún archivo desde tu pc",
     "dropIt"      : "Suelta los archivos",
-    "toUpload"    : "para subirlos"
+    "toUpload"    : "para subirlos",
+
+    "onboarding" : {
+
+      "welcome" : {
+
+        "title" : "Olvídate de descargar",
+        "subtitle" : "Al hacer doble click sobre los archivos se abren dentro de la web."
+
+      },
+
+      "contextReminder" : {
+
+        "title" : "Redescubre el botón derecho",
+        "subtitle" : "Haz click derecho en tus carpetas y archivos para abrir, copiar, pegar, abrir en PC, renombrar etc. Igual que en tu ordenador."
+
+      }
+
+    }
 
 }

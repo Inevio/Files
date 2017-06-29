@@ -106,6 +106,7 @@ var backingStoreRatio          = ctx.webkitBackingStorePixelRatio ||
                           ctx.oBackingStorePixelRatio ||
                           ctx.backingStorePixelRatio || 1;
 var pixelRatio                 = api.tool.devicePixelRatio() / backingStoreRatio;
+var contextTimeout;
 
 var Icon = function( fsnode ){
 
@@ -2517,6 +2518,14 @@ var loadEmptyAnimationImg = function(){
 
 }
 
+var startOnboarding = function(){
+
+  $('.ui-content .welcome-tip').show();
+  contextTimeout = setTimeout( function(){ $('.context-menu-reminder').show(); }, 300000 );//5 min
+  $( '.onboarding-arrow.arrow-files' , window.document ).remove();
+
+}
+
 // API Events
 api.fs
 .on( 'new', function( fsnode ){
@@ -2723,6 +2732,12 @@ win
 
 .on( 'transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function(){
   stopUploadingAnimation();
+})
+
+.on( 'click', '.welcome-tip .close, .context-menu-reminder .close', function(){
+
+  $(this).parent().hide();
+
 })
 
 .key( 'delete', function(e){
@@ -3078,7 +3093,10 @@ visualItemArea
 })
 
 .on( 'contextmenu', function( e ){
+
+  clearTimeout( contextTimeout );
   generateContextMenu( getIconWithMouserOver( e ) )
+  
 })
 
 .on( 'dblclick', function( e ){
@@ -3405,6 +3423,10 @@ var translate = function(){
   $('.sort-options .creation').text( lang.sortByCreation );
   $('.sort-options .modification').text( lang.sortByModif );
   $('.sort-preference span').text( lang.sortByName );
+  $('.welcome-tip .title').text( lang.onboarding.welcome.title );
+  $('.welcome-tip .subtitle').text( lang.onboarding.welcome.subtitle );
+  $('.context-menu-reminder .title').text( lang.onboarding.contextReminder.title );
+  $('.context-menu-reminder .subtitle').text( lang.onboarding.contextReminder.subtitle );  
 
 };
 
@@ -3448,5 +3470,10 @@ if( params ){
   }
 
 }else{
+
   openFolder('root');
+
+}
+if( win.hasClass( 'first-open' ) ){
+  startOnboarding();
 }
