@@ -31,6 +31,8 @@ var usersToRemoveShare = [];
 var fileSelected;
 var myId = api.system.user().id;
 var cancelProgress;
+var backWidth;
+var percentage;
 
 // Functions
 var initFiles = function(){
@@ -1145,15 +1147,13 @@ win.on('swipedown', '.file-owners-section', function(e){
       return;
     }
 
-    var backWidth;
-    var percentage;
-
     cancelProgress = file.download( function(event){
 
       percentage = ( event.loaded / event.total );
 
       if( percentage < 0.01 ){
 
+        $('.progress-text').text( lang.downloading );
         $('.progress-container').addClass('active');
         backWidth = $('.progress-bar').width();
 
@@ -1306,6 +1306,10 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 .on( 'modified', function( structure ){
 
   console.log('modified', structure);
+  
+  if( structure.parent === actualPathId ){
+    openDirectory( actualPathId, true );
+  }
 
   /*if( structure.parent === current.id ){
 
@@ -1372,6 +1376,23 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 
 })
 
+.on( 'conversionEnd', function( fsnodeId ){
+
+  console.log( 'conversionEnd', arguments );
+  api.fs( fsnodeId, function( error, fsnode ){
+
+    if( error ){
+      return;
+    }
+
+    if( fsnode.parent === actualPathId ){
+      openDirectory( actualPathId, true );
+    }
+
+  });
+
+})
+
 /*.on( 'sharedStart', function( structure ){
 
    $( '.weexplorer-file-' + structure.id, win ).addClass( 'shared' );
@@ -1386,6 +1407,32 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 
 .on( 'thumbnail', function( structure ){
   $( '.file-' + structure.id ).find('.weexplorer-element-icon').css('background-image', 'url(' + structure.icons.normal + ')' )
+});
+
+api.upload
+.on( 'fsnodeStart', function( fsnode, queue ){
+
+  console.log( 'fsnodeStart', arguments );
+  $('.progress-text').text( lang.uploading );
+  $('.progress-container').addClass('active');
+  backWidth = $('.progress-bar').width();
+
+})
+
+.on( 'fsnodeProgress', function( fsnodeId, progress, queue ){
+
+  console.log( 'fsnodeProgress', arguments );
+  $('.progress-bar-loaded').width( backWidth * progress );
+
+})
+
+.on( 'fsnodeQueueEnd', function(){
+
+  console.log( 'fsnodeQueueEnd', arguments );
+  $('.progress-container').removeClass('active');
+  $('.progress-bar-loaded').width( 0 );
+  openDirectory( actualPathId );
+
 });
 
 // Start app
