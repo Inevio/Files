@@ -305,6 +305,35 @@
                   "script" : [ "inviteByMail.js" ],
                   "start"  : []
 
+                },
+
+                "linkByMail" : {
+
+                  "template" : "linkByMail.html",
+
+                  "maxizable" : false,
+                  "resizable" : false,
+
+                  "width"  : {
+
+                      "default" : 408,
+                      "min"     : 408,
+                      "max"     : 0
+
+                  },
+
+                  "height" : {
+
+                      "default" : 438,
+                      "min"     : 438,
+                      "max"     : 0
+
+                  },
+
+                  "css"    : [ "linkByMail.css" ],
+                  "script" : [ "linkByMail.js" ],
+                  "start"  : []
+
                 }
 
 
