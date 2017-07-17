@@ -1,5 +1,5 @@
 var win = $(this);
-
+var mobile = win.hasClass('wz-mobile-view');
 
 if( params ){
 
@@ -11,17 +11,23 @@ if( params ){
 
 }
 
-wql.isFirstOpen( [ api.system.user().id ] , function( e , o ){
 
-  if ( o.length === 0 ){
+if( !mobile ){
 
-    win.addClass('first-open');
+  wql.isFirstOpen( [ api.system.user().id ] , function( e , o ){
 
-    wql.firstOpenDone( [ api.system.user().id ] , function( e , o ){
-      if(e) console.log(e);
-    });
+    if ( o.length === 0 ){
 
-  }
-  start();
+      win.addClass('first-open');
 
-});
+      wql.firstOpenDone( [ api.system.user().id ] , function( e , o ){
+        if(e) console.log(e);
+      });
+
+    }
+    start();
+
+  });
+  
+}
+
