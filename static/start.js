@@ -12,7 +12,7 @@ if( params ){
 }
 
 
-if( !mobile ){
+if( typeof cordova == 'undefined' ){
 
   wql.isFirstOpen( [ api.system.user().id ] , function( e , o ){
 
@@ -28,6 +28,6 @@ if( !mobile ){
     start();
 
   });
-  
+
 }
 
