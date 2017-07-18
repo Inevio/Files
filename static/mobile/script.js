@@ -1146,6 +1146,7 @@ win.on('swipedown', '.file-owners-section', function(e){
     if(e){
       return;
     }
+    $( '.actual-file,.total-file' ).text( 1 );
 
     cancelProgress = file.download( function(event){
 
