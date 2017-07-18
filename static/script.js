@@ -2315,7 +2315,10 @@ var generateContextMenu = function( item, options ){
     menu.addOption( lang.main.cut, clipboardCut.bind( null, null ) )
 
     if( item.fsnode.permissions.link ){
+
       menu.addOption( lang.main.createLink, api.app.createView.bind( null, item.fsnode.id, 'link') );
+      menu.addOption( lang.linkByMail, api.app.createView.bind( null, item.fsnode.id, 'linkByMail') );
+
     }
 
     /* Not supported yet
@@ -3096,7 +3099,7 @@ visualItemArea
 
   clearTimeout( contextTimeout );
   generateContextMenu( getIconWithMouserOver( e ) )
-  
+
 })
 
 .on( 'dblclick', function( e ){
@@ -3426,7 +3429,7 @@ var translate = function(){
   $('.welcome-tip .title').text( lang.onboarding.welcome.title );
   $('.welcome-tip .subtitle').text( lang.onboarding.welcome.subtitle );
   $('.context-menu-reminder .title').text( lang.onboarding.contextReminder.title );
-  $('.context-menu-reminder .subtitle').text( lang.onboarding.contextReminder.subtitle );  
+  $('.context-menu-reminder .subtitle').text( lang.onboarding.contextReminder.subtitle );
 
 };
 
