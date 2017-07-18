@@ -1146,6 +1146,7 @@ win.on('swipedown', '.file-owners-section', function(e){
     if(e){
       return;
     }
+    $( '.actual-file,.total-file' ).text( 1 );
 
     cancelProgress = file.download( function(event){
 
@@ -1410,19 +1411,58 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 });
 
 api.upload
+.on( 'fileEnqueued', function( file, queue ){
+
+  console.log( 'fileEnqueued', arguments );
+  $('.progress-text').text( lang.uploading );
+  $('.progress-container').addClass('active');
+  backWidth = $('.progress-bar').width();
+  var queueSize = queue.length();
+
+  if( queueSize === 1 ){
+    $( '.actual-file,.total-file' ).text( 1 )
+  }else{
+
+    $( '.actual-file' ).text( (queueSize - queue.pending.length) || 1 );
+    $( '.total-file' ).text( queueSize )
+
+  }
+
+})
+
 .on( 'fsnodeStart', function( fsnode, queue ){
 
   console.log( 'fsnodeStart', arguments );
   $('.progress-text').text( lang.uploading );
   $('.progress-container').addClass('active');
   backWidth = $('.progress-bar').width();
+  var queueSize = queue.length();
+
+  if( queueSize === 1 ){
+    $( '.actual-file,.total-file' ).text( 1 )
+  }else{
+
+    $( '.actual-file' ).text( (queueSize - queue.pending.length) || 1 );
+    $( '.total-file' ).text( queueSize )
+
+  }
 
 })
 
 .on( 'fsnodeProgress', function( fsnodeId, progress, queue ){
 
   console.log( 'fsnodeProgress', arguments );
-  $('.progress-bar-loaded').width( backWidth * progress );
+  $('.progress-bar-loaded').width( backWidth * queue.progress() );
+  var queueSize = queue.length();
+
+  if( queueSize === 1 ){
+    $( '.actual-file,.total-file' ).text( 1 )
+  }else{
+
+    $( '.actual-file' ).text( (queueSize - queue.pending.length) || 1 );
+    $( '.total-file' ).text( queueSize )
+
+  }
 
 })
 

@@ -1183,6 +1183,14 @@
 	margin-top: 30px;
 	font-size: 22px;
 	color: black;
+  display: inline-block;
+}
+
+.queue-status{
+  font-size: 20px;
+  color: black;
+  margin-right: 30px;
+  display: inline-block;
 }
 
 .progress-bar{
