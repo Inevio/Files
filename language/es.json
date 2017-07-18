@@ -105,8 +105,6 @@
       "sendHowButton"             : "Enviado!",
       "loadingList"               : "Cargando..."
 
-
-
     },
 
     "properties" :{
@@ -222,16 +220,18 @@
 
     "acceptFile" : "Aceptar",
     "refuseFile" : "Rechazar",
-    "upload" : "Subir archivo",
-    "newFolder" : "Nueva carpeta",
     "modified" : "Modif. ",
     "nameExists" : "Ya existe un archivo llamado así. Por favor elige otro nombre.",
     "directoryLoading" : "Cargando...",
     "directoryEmpty" : "Directorio vacío",
     "inboxEmpty" : "No has recibido ningún fichero",
     "inboxEmptyExplain" : "",
+    "sharedEmpty" : "Sin ficheros compartidos",
+    "sharedEmptyExplain" : "",
 
-
+    "favourites" : "Favoritos",
+    "uploading" : "Subiendo",
+    "of"        : "de",
 
     "linkTitle" : "Haz click en Generar para crear un enlace",
     "linkQuestion" : "¿Quieres ponerle una contraseña al enlace?",
@@ -243,13 +243,6 @@
     "noteDownload" : "Los enlaces sin vista previa tienen activada la descarga e importación",
     "inputPassword" : "Contraseña...",
     "previousTitle" : "Enlaces creados",
-    "sharedEmpty" : "Sin ficheros compartidos",
-    "sharedEmptyExplain" : "",
-
-       "favourites" : "Favoritos",
-       "uploading" : "Subiendo",
-       "of"        : "de",
-
     "previousUrl" : "URL",
     "previousViews" : "Visto",
     "previousDownloads" : "Descargado",
@@ -269,20 +262,12 @@
     "propertiesModified" : "Modif.",
     "propertiesOwner" : "Dueño",
 
-
     "directory" : "Directorio",
     "specialDirectory" : "Directorio Especial",
     "file" : "Archivo",
     "temporalFile" : "Archivo Temporal",
     "receivedFile" : "Archivo Recibido",
-    "sharedFile" : "Archivo Compartido",
-    "sharedFolder" : "Directorio Compartido",
     "unknown" : "Desconocido",
-
-
-
-
-
 
     "shareTitle" : "Elije con quién quieres compartir el archivo",
     "shareListTitle" : "Contactos:",
@@ -350,10 +335,14 @@
     "inviteByMailDesc"    : "Introduce el email de todas las personas que quieras que se unan a horbito para poder compartir archivos con ellos.",
     "addMail"             : "+ Añadir más correos",
     "mailExample"         : "ejemplo@mail.com",
-    "sendInvitations"     : "Send",
-
+    "sendInvitations"     : "Enviar",
     "invitationSentTitle"    : "Invitaciones enviadas",
     "invitationSentSubtitle" : "Tus invitaciones están de camino!",
+
+    "linkByMail"       : "Enviar por correo",
+    "linkByMailDesc"   : "Introduce el email de todas las personas a las que quieras enviarle el archivo.",
+    "linkSentTitle"    : "Archivo enviado!",
+    "linkSentSubtitle" : "En breve recibirán el archivo en su correo",
 
     "emptyFolder" : "Carpeta vacia",
     "dragIt"      : "Arrastra o sube algún archivo desde tu pc",

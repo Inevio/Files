@@ -105,8 +105,6 @@
       "sendHowButton"             : "Send!",
       "loadingList"               : "Loading..."
 
-
-
     },
 
     "properties" :{
@@ -264,13 +262,11 @@
     "propertiesModified" : "Modified",
     "propertiesOwner" : "Owner",
 
-
     "directory" : "Directory",
     "specialDirectory" : "Special Directory",
     "file" : "File",
     "temporalFile" : "Temporal File",
     "receivedFile" : "Received File",
-
     "unknown" : "Unknown",
 
     "shareTitle" : "Choose which contacts you want to share the file with",
@@ -314,6 +310,7 @@
     "imageSize" : "Image size:",
     "colorProfile" : "Color profile:",
     "resolutionPpi" : "Resolution:",
+    "title" : "Title:",
     "artist" : "Artist:",
     "album" : "Album:",
     "codec" : "Codec:",
@@ -341,6 +338,11 @@
     "sendInvitations"     : "Send",
     "invitationSentTitle"    : "Invitations sent",
     "invitationSentSubtitle" : "Your invitations are on their way!",
+
+    "linkByMail"       : "Send by mail",
+    "linkByMailDesc"   : "Introduce the email of all the people you want to send the file to.",
+    "linkSentTitle"    : "File sent!",
+    "linkSentSubtitle" : "They'll receive the file by email soon",
 
     "emptyFolder" : "Empty folder",
     "dragIt"      : "Drag or upload any file from your pc",
