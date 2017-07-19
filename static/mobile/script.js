@@ -1154,6 +1154,7 @@ win.on('swipedown', '.file-owners-section', function(e){
 
       if( percentage < 0.01 ){
 
+        $('.progress-container .cancel-progress').show();
         $('.progress-text').text( lang.downloading );
         $('.progress-container').addClass('active');
         backWidth = $('.progress-bar').width();
@@ -1415,6 +1416,7 @@ api.upload
 
   console.log( 'fileEnqueued', arguments );
   $('.progress-text').text( lang.uploading );
+  $('.progress-container .cancel-progress').hide();
   $('.progress-container').addClass('active');
   backWidth = $('.progress-bar').width();
   var queueSize = queue.length();
@@ -1434,6 +1436,7 @@ api.upload
 
   console.log( 'fsnodeStart', arguments );
   $('.progress-text').text( lang.uploading );
+  $('.progress-container .cancel-progress').hide();
   $('.progress-container').addClass('active');
   backWidth = $('.progress-bar').width();
   var queueSize = queue.length();
