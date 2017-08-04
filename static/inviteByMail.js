@@ -6,6 +6,9 @@ var shareButton   = $('.share-button');
 var closeButton   = $('.close');
 var validMails    = [];
 var MAIL_REGEXP = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,4}))$/
+var url;
+var window = app.parents().slice( -1 )[ 0 ].parentNode.defaultView
+var myUserID = api.system.user().id;
 
 addMailButton.on( 'click' , function(){
   addMail();
@@ -66,4 +69,58 @@ var checkMails = function(){
   });
 }
 
+var generateGmailUrl = function(){
+
+  var title;
+  var description;
+
+  api.config.getLanguages( function( error, languages, used ){
+
+    if( used.code === "es" || used.code === "es-es" ){
+
+      title = 'Ven%20a%20la%20nueva%20nube%20conmigo';
+      description = 'He%20estado%20jugando%20un%20rato%20con%20horbito%20y%20tiene%20muy%20buena%20pinta,%20échale%20un%20ojo:%20';
+
+
+    }else if( used.code === "en" || used.code === "en-us" ){
+      
+      title = "Come%20to%20the%20new%20Cloud%20with%20me";
+      description = "I've%20been%20playing%20with%20horbito%20for%20a%20while%20and%20it%20seems%20pretty%20cool,%20check%20it%20out:%20";
+
+    }
+
+    url = 'https://mail.google.com/mail/?view=cm&fs=1&tf=1&su=' + title + '&body=' + description + 'https://www.horbito.com/register?sender=' + myUserID;
+
+  });
+  
+
+}
+
+app.on( 'click' , '.social-networks .fb-button' , function(){
+
+  FB.ui({
+    method: 'send',
+    link: 'http://www.horbito.com/register?sender=' + myUserID,
+  });
+
+})
+
+.on( 'click' , '.social-networks .google-button' , function(){
+  
+  var w = 700;
+  var h = 600;
+  var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+  var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+
+  var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+  var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+  var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+  var top = ((height / 2) - (h / 2)) + dualScreenTop;
+  console.log('abro', url);
+  window.open( url , '', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
+
+})
+
+generateGmailUrl();
 initText();
