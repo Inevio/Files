@@ -66,6 +66,71 @@ var proportionEmpty = 1;
 var animationOpacity = 0;
 var initialColor = [ 187 , 187 , 193 ];
 
+var dropboxOpenFolder;
+var currentDropboxFolder;
+var folderIcons = {
+
+  'normal'  : {
+    16        : 'https://static.horbito.com/image/icons/16/normal/folder.png',
+    32        : 'https://static.horbito.com/image/icons/32/normal/folder.png',
+    64        : 'https://static.horbito.com/image/icons/64/normal/folder.png',
+    128       : 'https://static.horbito.com/image/icons/128/normal/folder.png',
+    256       : 'https://static.horbito.com/image/icons/256/normal/folder.png',
+    512       : 'https://static.horbito.com/image/icons/512/normal/folder.png',
+    'micro'   : 'https://static.horbito.com/image/icons/16/normal/folder.png',
+    'tiny'    : 'https://static.horbito.com/image/icons/32/normal/folder.png',
+    'small'   : 'https://static.horbito.com/image/icons/64/normal/folder.png',
+    'normal'  : 'https://static.horbito.com/image/icons/128/normal/folder.png',
+    'big'     : 'https://static.horbito.com/image/icons/256/normal/folder.png'
+  },
+
+  'retina'  : {
+    16        : 'https://static.horbito.com/image/icons/16/retina/folder.png',
+    32        : 'https://static.horbito.com/image/icons/32/retina/folder.png',
+    64        : 'https://static.horbito.com/image/icons/64/retina/folder.png',
+    128       : 'https://static.horbito.com/image/icons/128/retina/folder.png',
+    256       : 'https://static.horbito.com/image/icons/256/retina/folder.png',
+    512       : 'https://static.horbito.com/image/icons/512/retina/folder.png',
+    'micro'   : 'https://static.horbito.com/image/icons/16/retina/folder.png',
+    'tiny'    : 'https://static.horbito.com/image/icons/32/retina/folder.png',
+    'small'   : 'https://static.horbito.com/image/icons/64/retina/folder.png',
+    'normal'  : 'https://static.horbito.com/image/icons/128/retina/folder.png',
+    'big'     : 'https://static.horbito.com/image/icons/256/retina/folder.png'
+  }
+
+};
+
+var unknowFileIcons = {
+
+  'normal'  : {
+    16        : 'https://static.horbito.com/image/icons/16/normal/unknown.png',
+    32        : 'https://static.horbito.com/image/icons/32/normal/unknown.png',
+    64        : 'https://static.horbito.com/image/icons/64/normal/unknown.png',
+    128       : 'https://static.horbito.com/image/icons/128/normal/unknown.png',
+    256       : 'https://static.horbito.com/image/icons/256/normal/unknown.png',
+    512       : 'https://static.horbito.com/image/icons/512/normal/unknown.png',
+    'micro'   : 'https://static.horbito.com/image/icons/16/normal/unknown.png',
+    'tiny'    : 'https://static.horbito.com/image/icons/32/normal/unknown.png',
+    'small'   : 'https://static.horbito.com/image/icons/64/normal/unknown.png',
+    'normal'  : 'https://static.horbito.com/image/icons/128/normal/unknown.png',
+    'big'     : 'https://static.horbito.com/image/icons/256/normal/unknown.png'
+  },
+
+  'retina'  : {
+    16        : 'https://static.horbito.com/image/icons/16/retina/unknown.png',
+    32        : 'https://static.horbito.com/image/icons/32/retina/unknown.png',
+    64        : 'https://static.horbito.com/image/icons/64/retina/unknown.png',
+    128       : 'https://static.horbito.com/image/icons/128/retina/unknown.png',
+    256       : 'https://static.horbito.com/image/icons/256/retina/unknown.png',
+    512       : 'https://static.horbito.com/image/icons/512/retina/unknown.png',
+    'micro'   : 'https://static.horbito.com/image/icons/16/retina/unknown.png',
+    'tiny'    : 'https://static.horbito.com/image/icons/32/retina/unknown.png',
+    'small'   : 'https://static.horbito.com/image/icons/64/retina/unknown.png',
+    'normal'  : 'https://static.horbito.com/image/icons/128/retina/unknown.png',
+    'big'     : 'https://static.horbito.com/image/icons/256/retina/unknown.png'
+  }
+
+};
 
 if( params && ( params.command === 'selectSource' ||  params.command === 'selectDestiny' ) ){
   enabledMultipleSelect = params.command === 'selectSource' && params.mode === 'file' && params.multiple;
@@ -344,7 +409,7 @@ var appendVisualSidebarItem = function( item ){
   visualItem.find('.ui-navgroup-element-txt').text( item.name );
 
   sidebarFolders.push( item );
-  visualSidebarItemArea.append( visualItem );
+  visualSidebarItemArea.find('.old-cloud').before( visualItem );
 
 };
 
@@ -3411,7 +3476,8 @@ var translate = function(){
 
   $('.ui-header-brand').find('.name').text(lang.main.appName);
   $('.ui-input-search').find('input').attr('placeholder', lang.main.search);
-  $('.ui-navgroup-title-txt').text(lang.main.favourites);
+  $('.ui-navgroup-title.favourites .ui-navgroup-title-txt').text(lang.main.favourites);
+  $('.ui-navgroup-title.old-cloud .ui-navgroup-title-txt').text(lang.oldCloud);
   $('.space-in-use .amount').text(lang.main.amount);
   $('.space-in-use .need-more').text(lang.main.needMore);
   $('.status-number').text(lang.main.uploadXFiles);
@@ -3479,4 +3545,48 @@ if( params ){
 }
 if( win.hasClass( 'first-open' ) ){
   startOnboarding();
+}
+
+
+win.on('click' , '.old-cloud', function(){
+
+  currentDropboxFolder = '';
+  requestDropboxItems();
+
+})
+
+var requestDropboxItems = function(){
+  dropbox.listFolder( currentDropboxFolder , function( e , list ){
+    
+    dropboxOpenFolder = list;
+    list.entries.forEach(function( entry ){
+      
+      if (entry['.tag'] === 'folder') {
+        entry.icons = folderIcons.normal;
+      }else{
+        entry.icons = unknowFileIcons.normal;
+      }
+
+      entry.move = function( destiny ){
+        dropbox.move( this.path_display , getDestinyPath( destiny , this.name ) , function(){
+          requestDropboxItems();
+        });
+      }
+
+    });
+
+    clearList();
+    appendItemToList( list.entries );
+    requestDraw();
+  });
+}
+
+var getDestinyPath = function( idDestiny , fileName ){
+  var destinyPath = '';
+  dropboxOpenFolder.entries.forEach(function( entry ){
+    if ( entry.id === idDestiny ) {
+      destinyPath = entry.path_display;
+    }
+  });
+  return destinyPath + '/'  + fileName;
 }
