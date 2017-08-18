@@ -6,10 +6,13 @@ var ICON_IMAGE_HEIGHT_AREA = 80;
 var ICON_RADIUS = 6;
 var ICON_GAP_MIN = 10;
 var ROWS_GAP = 20;
+
 var TYPE_ROOT = 0;
 var TYPE_FOLDER_SPECIAL = 1;
 var TYPE_FOLDER = 2;
 var TYPE_FILE = 3;
+var TYPE_DROPBOX_FOLDER = 4;
+
 var PROGRESS_RADIUS = 5;
 var PROGRESS_ICON = new Image();
 PROGRESS_ICON.src = 'https://static.horbito.com/app/1/img/processing@2x.png';
@@ -67,7 +70,6 @@ var animationOpacity = 0;
 var initialColor = [ 187 , 187 , 193 ];
 
 var dropboxOpenFolder;
-var currentDropboxFolder;
 var folderIcons = {
 
   'normal'  : {
@@ -603,12 +605,26 @@ var contextmenuAcceptFile = function( fsnode ){
 
 var createFolder = function(){
 
-  currentOpened.createDirectory( getAvailableNewFolderName(), function( error, newDirectory ){
+  if ( currentOpened.type === TYPE_DROPBOX_FOLDER ) {
 
-    appendItemToList( newDirectory );
-    showRenameTextarea( currentIcons[ newDirectory.id ] );
+    dropbox.createFolder( currentOpened.path_display + '/' + getAvailableNewFolderName() , function(){
 
-  });
+      console.log(arguments)
+
+    });
+
+  }else{
+
+    currentOpened.createDirectory( getAvailableNewFolderName(), function( error, newDirectory ){
+
+      appendItemToList( newDirectory );
+      showRenameTextarea( currentIcons[ newDirectory.id ] );
+
+    });
+
+  }
+
+
 
 };
 
@@ -1664,7 +1680,14 @@ var historyGoBack = function(){
     return;
   }
 
-  openFolder( historyBackward.pop().id, true );
+  var backFolder = historyBackward.pop();
+
+  if ( backFolder.type === TYPE_DROPBOX_FOLDER ) {
+    openFolder( backFolder.id , { 'isBack' : true, 'dropboxFolder' : backFolder } );
+  }else{
+    openFolder( backFolder.id , { 'isBack' : true } );
+  }
+
 
   if( !historyBackward.length ){
     visualHistoryBack.removeClass('enabled');
@@ -1678,7 +1701,13 @@ var historyGoForward = function(){
     return;
   }
 
-  openFolder( historyForward.shift().id, false, true );
+  var forwardFolder = historyForward.shift();
+
+  if ( forwardFolder.type === TYPE_DROPBOX_FOLDER ) {
+    openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true , 'dropboxFolder' : forwardFolder } );
+  }else{
+    openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true } );
+  }  
 
   if( !historyForward.length ){
     visualHistoryForward.removeClass('enabled');
@@ -1752,29 +1781,26 @@ var openFile = function( fsnode ){
 
 };
 
-var openFolder = function( id, isBack, isForward ){
+var openFolder = function( id , options ){
 
   if( !currentOpened || id !== currentOpened.id ){
 
-    api.fs( id, function( error, fsnode ){
+    if ( options && options.dropboxFolder ) {
 
-      $.when( getFolderItems( fsnode ), getItemPath( fsnode ) ).done( function( list, path ){
+      $.when( requestDropboxItems( options.dropboxFolder.path_display ) , getItemPath( options.dropboxFolder ) ).done( function( list , path ){
 
-        visualSidebarItemArea.find('.active').removeClass('active');
-        visualSidebarItemArea.find( '.item-' + fsnode.id ).addClass('active');
+        console.log(arguments)
 
-        if( !isBack && !isForward && currentOpened ){
+        if( !options.isForward && !options.isBack && currentOpened ){
           addToHistoryBackward( currentOpened );
           clearHistoryForward();
-        }else if( isBack ){
+        }else if( options && options.isBack ){
           addToHistoryForward( currentOpened );
-        }else if( isForward ){
+        }else if( options && options.isForward ){
           addToHistoryBackward( currentOpened );
         }
 
-        currentScroll = 0;
-        currentOpened = fsnode;
-        currentLastPureClicked = null;
+        currentOpened = options.dropboxFolder;
 
         clearList();
         appendItemToList( list );
@@ -1783,7 +1809,38 @@ var openFolder = function( id, isBack, isForward ){
 
       });
 
-    });
+    }else{
+
+      api.fs( id, function( error, fsnode ){
+
+        $.when( getFolderItems( fsnode ), getItemPath( fsnode ) ).done( function( list, path ){
+
+          visualSidebarItemArea.find('.active').removeClass('active');
+          visualSidebarItemArea.find( '.item-' + fsnode.id ).addClass('active');
+
+          if( !options && currentOpened ){
+            addToHistoryBackward( currentOpened );
+            clearHistoryForward();
+          }else if( options && options.isBack ){
+            addToHistoryForward( currentOpened );
+          }else if( options && options.isForward ){
+            addToHistoryBackward( currentOpened );
+          }
+
+          currentScroll = 0;
+          currentOpened = fsnode;
+          currentLastPureClicked = null;
+
+          clearList();
+          appendItemToList( list );
+          generateBreadcrumbs( path );
+          requestDraw();
+
+        });
+
+      });
+
+    }
 
   }
 
@@ -1793,6 +1850,8 @@ var openItem = function( item ){
 
   if ( item.fsnode.pending ) {
     api.app.createView( item.fsnode , 'received' );
+  }else if( item.fsnode.type === TYPE_DROPBOX_FOLDER){
+    openFolder( item.fsnode.id , { 'dropboxFolder' : item.fsnode });  
   }else if( item.fsnode.type === TYPE_ROOT || item.fsnode.type === TYPE_FOLDER_SPECIAL || item.fsnode.type === TYPE_FOLDER ){
     openFolder( item.fsnode.id );
   }else if( item.fsnode.type === TYPE_FILE ){
@@ -3550,21 +3609,34 @@ if( win.hasClass( 'first-open' ) ){
 
 win.on('click' , '.old-cloud', function(){
 
-  currentDropboxFolder = '';
-  requestDropboxItems();
+  var dropboxRoot = {
+    'type'          : TYPE_DROPBOX_FOLDER,
+    'id'            : 'dropboxRoot',
+    'path_display'  : '',
+    'getPath'       : function( callback ){
+      callback( null, [{'name' : 'dropbox'}]);
+    }
+  }
+  openFolder( 'dropboxRoot' , { 'dropboxFolder' : dropboxRoot } );
 
 })
 
-var requestDropboxItems = function(){
-  dropbox.listFolder( currentDropboxFolder , function( e , list ){
+var requestDropboxItems = function( folder ){
+
+  var end = $.Deferred();
+
+  dropbox.listFolder( folder , function( e , list ){
     
     dropboxOpenFolder = list;
+
     list.entries.forEach(function( entry ){
       
       if (entry['.tag'] === 'folder') {
         entry.icons = folderIcons.normal;
+        entry.type = TYPE_DROPBOX_FOLDER;
       }else{
         entry.icons = unknowFileIcons.normal;
+        entry.type = TYPE_FILE;
       }
 
       entry.move = function( destiny ){
@@ -3573,12 +3645,26 @@ var requestDropboxItems = function(){
         });
       }
 
+      entry.getPath = function( callback ){
+
+        var path = [];
+        var stringPath = this.path_display.split('/');
+        stringPath.forEach(function( element ){
+          element = element === '' ? 'dropbox' : element; 
+          path.push({ 'name' : element });
+        });
+
+        callback( null, path );
+
+      }
+
     });
 
-    clearList();
-    appendItemToList( list.entries );
-    requestDraw();
+    end.resolve( list.entries );
+  
   });
+
+  return end;
 }
 
 var getDestinyPath = function( idDestiny , fileName ){
