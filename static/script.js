@@ -208,6 +208,58 @@ Icon.prototype.updateName = function(){
 
 }
 
+var dropboxNode = function( params ){
+
+  if ( params.isFolder ) {
+    this.icons = folderIcons.normal;
+    this.type = TYPE_DROPBOX_FOLDER;
+  }else{
+    this.icons = unknowFileIcons.normal;
+    this.type = TYPE_FILE;
+  }
+
+  this.path_display = params.path_display;
+  this.name = params.name;
+  this.id = params.id;
+
+  this.move = function( destiny ){
+    dropbox.move( this.path_display , getDestinyPath( destiny , this.name ) , function(){
+      requestDropboxItems();
+    });
+  }
+
+  this.getPath = function( callback ){
+
+    var path = [];
+    var stringPath = this.path_display.split('/');
+    stringPath.forEach(function( element ){
+      element = element === '' ? 'dropbox' : element; 
+      path.push({ 'name' : element });
+    });
+
+    callback( null, path );
+  }
+
+  this.remove = function(){
+    dropbox.remove( this.path_display, function( e , node ){
+      removeItemFromList( node.id );
+    });
+  }
+
+  this.rename = function( newName ){
+    var oldPath = this.path_display;
+    this.name = newName;
+    this.path_display = this.path_display.replace( oldPath.split('/').pop(), newName);
+    dropbox.move( oldPath, this.path_display, function(){
+      console.log(arguments)
+    });
+
+  }
+
+  return this;
+
+}
+
 var acceptButtonHandler = function(){
 
   if( params.command === 'selectSource' ){
@@ -607,9 +659,16 @@ var createFolder = function(){
 
   if ( currentOpened.type === TYPE_DROPBOX_FOLDER ) {
 
-    dropbox.createFolder( currentOpened.path_display + '/' + getAvailableNewFolderName() , function(){
+    dropbox.createFolder( currentOpened.path_display + '/' + getAvailableNewFolderName() , function( e , newDirectory ){
 
-      console.log(arguments)
+      var newDirectory = new dropboxNode({
+        'isFolder'      : true,
+        'path_display'  : newDirectory.metadata.path_display,
+        'name'          : newDirectory.metadata.name,
+        'id'            : newDirectory.metadata.id
+      });
+      appendItemToList( newDirectory );
+      showRenameTextarea( currentIcons[ newDirectory.id ] );
 
     });
 
@@ -2584,6 +2643,14 @@ var generateContextMenu = function( item, options ){
     menu
     .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
 
+  }else if( item.fsnode.type === TYPE_DROPBOX_FOLDER){
+
+    menu
+    .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'dropboxFolder' : item.fsnode } ) )
+    .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
+    .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
+
+
   }
 
   menu.render()
@@ -3629,38 +3696,27 @@ var requestDropboxItems = function( folder ){
     
     dropboxOpenFolder = list;
 
-    list.entries.forEach(function( entry ){
+    list = list.entries.map(function( entry ){
       
       if (entry['.tag'] === 'folder') {
-        entry.icons = folderIcons.normal;
-        entry.type = TYPE_DROPBOX_FOLDER;
+        return new dropboxNode({
+          'isFolder'      : true,
+          'path_display'  : entry.path_display,
+          'name'          : entry.name,
+          'id'            : entry.id
+        })
       }else{
-        entry.icons = unknowFileIcons.normal;
-        entry.type = TYPE_FILE;
-      }
-
-      entry.move = function( destiny ){
-        dropbox.move( this.path_display , getDestinyPath( destiny , this.name ) , function(){
-          requestDropboxItems();
-        });
-      }
-
-      entry.getPath = function( callback ){
-
-        var path = [];
-        var stringPath = this.path_display.split('/');
-        stringPath.forEach(function( element ){
-          element = element === '' ? 'dropbox' : element; 
-          path.push({ 'name' : element });
-        });
-
-        callback( null, path );
-
+        return new dropboxNode({
+          'isFolder'      : false,
+          'path_display'  : entry.path_display,
+          'name'          : entry.name,
+          'id'            : entry.id
+        })
       }
 
     });
 
-    end.resolve( list.entries );
+    end.resolve( list );
   
   });
 
