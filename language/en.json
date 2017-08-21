@@ -230,7 +230,8 @@
     "sharedEmptyExplain" : "",
 
     "favourites" : "Favourites",
-    "oldCloud"  : "OLD CLOUD",
+    "oldCloud"  : "Add cloud",
+    "pairOldCloud"  : "Pair other clouds",
     "uploading" : "Uploading",
     "of"        : "of",
 

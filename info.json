@@ -401,6 +401,12 @@
 
         },
 
+        "integration" : {
+
+            "dropbox" : true
+
+        },
+
         "upload" : {
 
             "file" : true
