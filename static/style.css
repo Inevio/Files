@@ -364,6 +364,66 @@
   text-transform: uppercase;
 }
 
+
+.ui-navgroup-title.old-cloud{
+
+  width: ~'calc(100% - 26px)';
+  padding: 10px 10px 10px 16px;
+
+  .plus{
+    float: left;
+    width: 8px;
+    height: 8px;
+    background-image: url('@static/addCloudPlus.png');
+    background-size: 8px 8px;
+    opacity: 0.5;
+    margin-left: 8px;
+  }
+
+  .oneDrive{
+    float: right;
+    width: 16px;
+    height: 9px;
+    background-image: url('@static/oneDriveMini.png');
+    background-size: 16px 9px;
+    margin-right: 5px;
+  }
+
+  .gDrive{
+    float: right;
+    width: 12px;
+    height: 11px;
+    background-image: url('@static/gDriveMini.png');
+    background-size: 12px 11px;
+    margin-right: 5px;    
+  }
+
+  .dropbox{
+    float: right;
+    width: 13px;
+    height: 12px;
+    background-image: url('@static/dropboxMini.png');
+    background-size: 13px 12px;
+    margin-right: 5px;    
+  }
+
+}
+
+.ui-navgroup-title.old-cloud:hover{
+
+  background-color: #e3e3e3;
+  transition: all 0.2s ease;
+
+  .ui-navgroup-title-txt{
+    color: #252525;
+  }
+
+  .plus{
+    opacity: 1;
+  }
+
+}
+
 .ui-navgroup-title-txt{
   color: #717171;
 }
@@ -546,11 +606,22 @@
   height: 134px;
 }
 
+.old-cloud-icon.dropbox{
+  float: left;
+  width: 118px;
+  height: 27px;
+  background-image: url('@static/dropboxIcon.png');
+  background-size: 118px 27px;
+  margin-left: ~'calc(50% - 59px)';
+  margin-top: 15px;
+}
+
 .folder-tools{
   padding: 9px 9px 10px;
   height: 44px;
   width: 100%;
   box-sizing: border-box;
+  float: left;
 
   &:after{
     content: '';
@@ -861,6 +932,10 @@
   float: left;
 }
 
+.item-area.old-cloud{
+  height: ~'calc(100% - 86px)';
+}
+
 .uploading-area{
   -webkit-transition: bottom 0.25s ease;
   -moz-transition: bottom 0.25s ease;
@@ -1049,6 +1124,100 @@
   }
 
 }
+
+.old-cloud-popup.active{
+  display: block;
+}
+
+.old-cloud-popup{
+  position: absolute;
+  width: 242px;
+  height: 261px;
+  background-color: #fff;
+  border-radius: 6px;
+  -webkit-box-shadow: 0 2px 4px rgba(0,1,1,.1);
+  -moz-box-shadow: 0 2px 4px rgba(0,1,1,.1);
+  box-shadow: 0 2px 4px rgba(0,1,1,.1);
+  border: solid 1px rgba(0,0,0,.1);
+  top: 158px;
+  left: 228px;
+  display: none;
+
+  i{
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    overflow: hidden;
+    transform: rotate(-90deg);
+    top: 142px;
+    left: -10px;
+  }
+
+  i:after{
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    transform: rotate(45deg);
+    top: 7px;
+    left: 1px;
+    box-shadow: -1px -1px 4px rgba(0, 0, 0, .1);
+  }
+
+  .pair-text{
+    float: left;
+    font-size: 18px;
+    color: #252525;
+    font-weight: 900;
+    margin: 0 10px;
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+    width: ~'calc(100% - 20px)';
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
+  .dropbox, .oneDrive, .gDrive{
+    float: left;
+    width: 100%;
+    height: 56px;
+  }
+
+  .dropbox:hover, .oneDrive:hover, .gDrive:hover{
+    background-color: #f7f7f7;
+    transition: all 0.2s ease;
+  }
+
+  .dropbox-icon{
+    width: 118px;
+    height: 27px;
+    background-image: url('@static/dropboxIcon.png');
+    background-size: 118px 27px;
+    margin: 0 auto;
+    margin-top: 14px;  
+  }
+
+  .oneDrive-icon{
+    width: 123px;
+    height: 20px;
+    background-image: url('@static/oneDriveIcon.png');
+    background-size: 123px 20px;
+    margin: 0 auto;
+    margin-top: 16px;  
+  }
+
+  .gDrive-icon{
+    width: 154px;
+    height: 26px;
+    background-image: url('@static/gDriveIcon.png');
+    background-size: 154px 26px;
+    margin: 0 auto;
+    margin-top: 14px;  
+  }
+
+}
+
 /*
 .item-area{
   display: flex;
