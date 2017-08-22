@@ -70,9 +70,11 @@ var proportionEmpty = 1;
 var animationOpacity = 0;
 var initialColor = [ 187 , 187 , 193 ];
 
-var dropboxOpenFolder;
+// DROPBOX 
+var dropboxAccountActive;
+var dropboxShowingItems;
+var dropboxShowingFolder;
 var folderIcons = {
-
   'normal'  : {
     16        : 'https://static.horbito.com/image/icons/16/normal/folder.png',
     32        : 'https://static.horbito.com/image/icons/32/normal/folder.png',
@@ -100,11 +102,8 @@ var folderIcons = {
     'normal'  : 'https://static.horbito.com/image/icons/128/retina/folder.png',
     'big'     : 'https://static.horbito.com/image/icons/256/retina/folder.png'
   }
-
 };
-
 var unknowFileIcons = {
-
   'normal'  : {
     16        : 'https://static.horbito.com/image/icons/16/normal/unknown.png',
     32        : 'https://static.horbito.com/image/icons/32/normal/unknown.png',
@@ -132,8 +131,8 @@ var unknowFileIcons = {
     'normal'  : 'https://static.horbito.com/image/icons/128/retina/unknown.png',
     'big'     : 'https://static.horbito.com/image/icons/256/retina/unknown.png'
   }
-
 };
+//
 
 if( params && ( params.command === 'selectSource' ||  params.command === 'selectDestiny' ) ){
   enabledMultipleSelect = params.command === 'selectSource' && params.mode === 'file' && params.multiple;
@@ -209,30 +208,35 @@ Icon.prototype.updateName = function(){
 
 }
 
-var dropboxNode = function( params ){
+var dropboxNode = function( data ){
 
-  if ( params.isFolder ) {
-    this.icons = folderIcons.normal;
-    this.type = TYPE_DROPBOX_FOLDER;
+  var that = $.extend( this, data )
+
+  if ( data.isFolder ) {
+    that.icons = folderIcons.normal;
+    that.type = TYPE_DROPBOX_FOLDER;
   }else{
-    this.icons = unknowFileIcons.normal;
-    this.type = TYPE_DROPBOX_FILE;
+    that.icons = unknowFileIcons.normal;
+    that.type = TYPE_DROPBOX_FILE;
   }
 
-  this.path_display = params.path_display;
-  this.name = params.name;
-  this.id = params.id;
-
-  this.move = function( destiny ){
-    dropbox.move( this.path_display , getDestinyPath( destiny , this.name ) , function(){
-      requestDropboxItems();
+  that.move = function( destiny ){
+    dropboxAccountActive.move( data.path_display , getDestinyPath( destiny , data.name ) , function(){
+      /* TO DO
+      if( data.path_display === currentOpened.id ){
+        removeItemFromList( data.id );
+      }else if( finalDestiny === currentOpened.id ){
+        appendItemToList( dropboxNode );
+      }
+      */
+      //requestDraw();
     });
   }
 
-  this.getPath = function( callback ){
+  that.getPath = function( callback ){
 
     var path = [];
-    var stringPath = this.path_display.split('/');
+    var stringPath = data.path_display.split('/');
     stringPath.forEach(function( element ){
       element = element === '' ? 'dropbox' : element; 
       path.push({ 'name' : element });
@@ -241,23 +245,23 @@ var dropboxNode = function( params ){
     callback( null, path );
   }
 
-  this.remove = function(){
-    dropbox.remove( this.path_display, function( e , node ){
+  that.remove = function(){
+    dropboxAccountActive.remove( data.path_display, function( e , node ){
       removeItemFromList( node.id );
     });
   }
 
-  this.rename = function( newName ){
-    var oldPath = this.path_display;
-    this.name = newName;
-    this.path_display = this.path_display.replace( oldPath.split('/').pop(), newName);
-    dropbox.move( oldPath, this.path_display, function(){
+  that.rename = function( newName ){
+    var oldPath = data.path_display;
+    that.name = newName;
+    that.path_display = data.path_display.replace( oldPath.split('/').pop(), newName);
+    dropboxAccountActive.move( oldPath, that.path_display, function(){
       console.log(arguments)
     });
-
   }
 
-  return this;
+
+  return that;
 
 }
 
@@ -660,7 +664,7 @@ var createFolder = function(){
 
   if ( currentOpened.type === TYPE_DROPBOX_FOLDER ) {
 
-    dropbox.createFolder( currentOpened.path_display + '/' + getAvailableNewFolderName() , function( e , newDirectory ){
+    dropboxAccountActive.createFolder( currentOpened.path_display + '/' + getAvailableNewFolderName() , function( e , newDirectory ){
 
       var newDirectory = new dropboxNode({
         'isFolder'      : true,
@@ -1850,6 +1854,9 @@ var openFolder = function( id , options ){
       $.when( requestDropboxItems( options.dropboxFolder.path_display ) , getItemPath( options.dropboxFolder ) ).done( function( list , path ){
 
         setInOldCloudIcon('dropbox');
+
+        visualSidebarItemArea.find('.active').removeClass('active');
+        visualSidebarItemArea.find( '.item-' + dropboxAccountActive.id ).addClass('active');
 
         if( !options.isForward && !options.isBack && currentOpened ){
           addToHistoryBackward( currentOpened );
@@ -3109,7 +3116,13 @@ win
 
 visualSidebarItemArea
 .on( 'click', '.ui-navgroup-element', function(){
-  openFolder( $(this).data('fsnode').id );
+
+  if ( $(this).hasClass('dropbox') ) {
+    openDropboxAccount(this);
+  }else{
+    openFolder( $(this).data('fsnode').id );
+  }
+
 })
 
 .on( 'contextmenu', '.ui-navgroup-element', function(){
@@ -3606,6 +3619,121 @@ sortOptions
 
 })
 
+$('.old-cloud').on('click' , function(){
+
+  $('.old-cloud-popup').addClass('active');
+  win.one( 'mousedown', function(){
+    $('.old-cloud-popup').removeClass('active')
+  })
+
+})
+
+$('.old-cloud-popup').on( 'mousedown', function( e ){
+  e.stopPropagation()
+})
+
+$('.old-cloud-popup').on('click', '.dropbox' , function(){
+
+  api.integration.dropbox.addAccount();
+
+});
+
+var openDropboxAccount = function( sidebarItem ){
+  dropboxAccountActive = $(sidebarItem).data('account');
+  var dropboxRoot = {
+    'type'          : TYPE_DROPBOX_FOLDER,
+    'id'            : 'dropboxRoot',
+    'path_display'  : '',
+    'getPath'       : function( callback ){
+      callback( null, [{'name' : 'dropbox'}]);
+    }
+  }
+  openFolder( 'dropboxRoot' , { 'dropboxFolder' : dropboxRoot } );
+};
+
+var requestDropboxItems = function( folder ){
+
+  var end = $.Deferred();
+  dropboxShowingFolder = folder;
+
+  dropboxAccountActive.listFolder( folder , function( e , list ){
+    
+    dropboxShowingItems = list;
+
+    list = list.entries.map(function( entry ){
+      
+      if (entry['.tag'] === 'folder') {
+        return new dropboxNode({
+          'isFolder'      : true,
+          'path_display'  : entry.path_display,
+          'name'          : entry.name,
+          'id'            : entry.id
+        })
+      }else{
+        return new dropboxNode({
+          'isFolder'      : false,
+          'path_display'  : entry.path_display,
+          'name'          : entry.name,
+          'id'            : entry.id
+        })
+      }
+
+    });
+
+    end.resolve( list );
+  
+  });
+
+  return end;
+}
+
+var getDestinyPath = function( idDestiny , fileName ){
+  var destinyPath = '';
+  dropboxShowingItems.entries.forEach(function( entry ){
+    if ( entry.id === idDestiny ) {
+      destinyPath = entry.path_display;
+    }
+  });
+  return destinyPath + '/'  + fileName;
+}
+
+var setInOldCloudIcon = function( oldCloud ){
+
+  $('.old-cloud-icon').addClass( oldCloud );
+  $('.item-area').addClass('old-cloud');
+
+}
+
+var setOutOldCloudIcon = function(){
+
+  $('.old-cloud-icon').attr( 'class' , 'old-cloud-icon' );
+  $('.item-area').removeClass('old-cloud');
+
+}
+
+var setOldCloudAccounts = function(){
+
+  //Dropbox
+  api.integration.dropbox.listAccounts(function( e , accounts ){
+    accounts.forEach(function( account ){
+
+      if( isInSidebar( account.id ) ){
+        return
+      }
+
+      var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
+
+      visualItem.addClass( 'item-' + account.id + ' dropbox' ).data( 'account', account ).data( 'id' , account.id );
+      visualItem.find('.ui-navgroup-element-txt').text( account.email );
+
+      sidebarFolders.push( account );
+      visualSidebarItemArea.find('.old-cloud').after( visualItem );
+
+    });
+  });
+
+}
+
 // Load texts
 var translate = function(){
 
@@ -3648,6 +3776,7 @@ var updateQuota = function(){
   })
 
 }
+
 // Start the app
 currentSort = sortByName;
 translate();
@@ -3658,6 +3787,7 @@ loadEmptyAnimationImg();
 getSidebarItems().then( function( list ){
   list.forEach( appendVisualSidebarItem );
 });
+setOldCloudAccounts();
 
 if( params ){
 
@@ -3681,97 +3811,4 @@ if( params ){
 }
 if( win.hasClass( 'first-open' ) ){
   startOnboarding();
-}
-
-
-$('.old-cloud').on('click' , function(){
-
-  $('.old-cloud-popup').addClass('active');
-  win.one( 'mousedown', function(){
-    $('.old-cloud-popup').removeClass('active')
-  })
-
-  /*
-  var dropboxRoot = {
-    'type'          : TYPE_DROPBOX_FOLDER,
-    'id'            : 'dropboxRoot',
-    'path_display'  : '',
-    'getPath'       : function( callback ){
-      callback( null, [{'name' : 'dropbox'}]);
-    }
-  }
-  openFolder( 'dropboxRoot' , { 'dropboxFolder' : dropboxRoot } );
-  */
-
-})
-
-$('.old-cloud-popup').on( 'mousedown', function( e ){
-  e.stopPropagation()
-})
-
-$('.old-cloud-popup').on('click', '.dropbox' , function(){
-
-  api.integration.dropbox.listAccounts(function(){
-    console.log(arguments)
-  });
-
-});
-
-var requestDropboxItems = function( folder ){
-
-  var end = $.Deferred();
-
-  dropbox.listFolder( folder , function( e , list ){
-    
-    dropboxOpenFolder = list;
-
-    list = list.entries.map(function( entry ){
-      
-      if (entry['.tag'] === 'folder') {
-        return new dropboxNode({
-          'isFolder'      : true,
-          'path_display'  : entry.path_display,
-          'name'          : entry.name,
-          'id'            : entry.id
-        })
-      }else{
-        return new dropboxNode({
-          'isFolder'      : false,
-          'path_display'  : entry.path_display,
-          'name'          : entry.name,
-          'id'            : entry.id
-        })
-      }
-
-    });
-
-    end.resolve( list );
-  
-  });
-
-  return end;
-}
-
-var getDestinyPath = function( idDestiny , fileName ){
-  var destinyPath = '';
-  dropboxOpenFolder.entries.forEach(function( entry ){
-    if ( entry.id === idDestiny ) {
-      destinyPath = entry.path_display;
-    }
-  });
-  return destinyPath + '/'  + fileName;
-}
-
-var setInOldCloudIcon = function( oldCloud ){
-
-  $('.old-cloud-icon').addClass( oldCloud );
-  $('.item-area').addClass('old-cloud');
-
-}
-
-var setOutOldCloudIcon = function(){
-
-  $('.old-cloud-icon').attr( 'class' , 'old-cloud-icon' );
-  $('.item-area').removeClass('old-cloud');
-
 }
