@@ -456,6 +456,26 @@
   color: #fff;
 }
 
+.ui-navgroup-element.dropbox{
+  .ui-navgroup-element-icon{
+    i{
+      width: 16px;
+      height: 16px;
+      background-image: url('@static/integrationsSprite.png');
+      background-size: 103px 15px;
+      background-position: 0px 0px;
+    }
+  }
+}
+
+.ui-navgroup-element.dropbox.active{
+  .ui-navgroup-element-icon{
+    i{
+      background-position: -17px 0px;
+    }
+  }
+}
+
 .ui-navgroup-element{
 
   width: 100%;
@@ -478,6 +498,7 @@
     height: 11px;
     text-align: center;
   }
+
 
   .ui-navgroup-element-badge:empty{
     display: none;
