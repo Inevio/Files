@@ -222,14 +222,13 @@ var dropboxNode = function( data ){
 
   that.move = function( destiny ){
     dropboxAccountActive.move( data.path_display , getDestinyPath( destiny , data.name ) , function(){
-      /* TO DO
-      if( data.path_display === currentOpened.id ){
+      var originFolder = data.path_display.replace( '/' + data.name, '' )
+      if( originFolder === currentOpened.path_display ){
         removeItemFromList( data.id );
-      }else if( finalDestiny === currentOpened.id ){
+      }else{
         appendItemToList( dropboxNode );
       }
-      */
-      //requestDraw();
+      requestDraw();
     });
   }
 
