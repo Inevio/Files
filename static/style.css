@@ -476,6 +476,26 @@
   }
 }
 
+.ui-navgroup-element.gdrive{
+  .ui-navgroup-element-icon{
+    i{
+      width: 15px;
+      height: 16px;
+      background-image: url('@static/integrationsSprite.png');
+      background-size: 103px 15px;
+      background-position: -34px 0px;
+    }
+  }
+}
+
+.ui-navgroup-element.gdrive.active{
+  .ui-navgroup-element-icon{
+    i{
+      background-position: -50px 0px;
+    }
+  }
+}
+
 .ui-navgroup-element{
 
   width: 100%;
@@ -634,6 +654,16 @@
   background-image: url('@static/dropboxIcon.png');
   background-size: 118px 27px;
   margin-left: ~'calc(50% - 59px)';
+  margin-top: 15px;
+}
+
+.old-cloud-icon.gdrive{
+  float: left;
+  width: 154px;
+  height: 26px;
+  background-image: url('@static/gDriveIcon.png');
+  background-size: 154px 26px;
+  margin-left: ~'calc(50% - 77px)';
   margin-top: 15px;
 }
 
