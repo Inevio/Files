@@ -13,6 +13,8 @@ var TYPE_FOLDER = 2;
 var TYPE_FILE = 3;
 var TYPE_DROPBOX_FOLDER = 4;
 var TYPE_DROPBOX_FILE = 5;
+var TYPE_GDRIVE_FOLDER = 6;
+var TYPE_GDRIVE_FILE = 7;
 
 var PROGRESS_RADIUS = 5;
 var PROGRESS_ICON = new Image();
@@ -74,6 +76,11 @@ var initialColor = [ 187 , 187 , 193 ];
 var dropboxAccountActive;
 var dropboxShowingItems;
 var dropboxShowingFolder;
+// GDRIVE
+var gdriveAccountActive;
+var gdriveShowingItems;
+var gdriveShowingFolder;
+
 var folderIcons = {
   'normal'  : {
     16        : 'https://static.horbito.com/image/icons/16/normal/folder.png',
@@ -221,7 +228,7 @@ var dropboxNode = function( data ){
   }
 
   that.move = function( destiny ){
-    dropboxAccountActive.move( data.path_display , getDestinyPath( destiny , data.name ) , function(){
+    dropboxAccountActive.move( data.path_display , getDropboxDestinyPath( destiny , data.name ) , function(){
       var originFolder = data.path_display.replace( '/' + data.name, '' )
       if( originFolder === currentOpened.path_display ){
         removeItemFromList( data.id );
@@ -255,6 +262,53 @@ var dropboxNode = function( data ){
     that.name = newName;
     that.path_display = data.path_display.replace( oldPath.split('/').pop(), newName);
     dropboxAccountActive.move( oldPath, that.path_display, function(){
+      console.log(arguments)
+    });
+  }
+
+
+  return that;
+
+}
+
+var gdriveNode = function( data ){
+
+  var that = $.extend( this, data )
+
+  if ( data.isFolder ) {
+    that.icons = folderIcons.normal;
+    that.type = TYPE_GDRIVE_FOLDER;
+  }else{
+    that.icons = unknowFileIcons.normal;
+    that.type = TYPE_GDRIVE_FILE;
+  }
+
+  that.move = function( destiny ){
+
+    gdriveAccountActive.move( data.id , destiny , function(){
+      if( destiny === currentOpened.id ){
+        appendItemToList( gdriveNode );
+      }else{
+        removeItemFromList( data.id );
+      }
+      requestDraw();
+    });
+
+  }
+
+  that.getPath = function( callback ){
+    var path = [ currentOpened.name ];
+    callback( null, path );
+  }
+
+  that.remove = function(){
+    gdriveAccountActive.delete( data.id, function(){
+      removeItemFromList( data.id );
+    });
+  }
+
+  that.rename = function( newName ){
+    gdriveAccountActive.rename( data.id, newName, function(){
       console.log(arguments)
     });
   }
@@ -670,6 +724,22 @@ var createFolder = function(){
         'path_display'  : newDirectory.metadata.path_display,
         'name'          : newDirectory.metadata.name,
         'id'            : newDirectory.metadata.id
+      });
+      appendItemToList( newDirectory );
+      showRenameTextarea( currentIcons[ newDirectory.id ] );
+
+    });
+
+  }else if( currentOpened.type === TYPE_GDRIVE_FOLDER ){
+
+    var folderId = currentOpened.id === 'gdriveRoot' ? 'root' : currentOpened.id;
+    gdriveAccountActive.createFolder( getAvailableNewFolderName() , folderId , function( e , newDirectory ){
+
+      var newDirectory = new gdriveNode({
+        'isFolder'      : true,
+        'mimeType'      : newDirectory.mimeType,
+        'name'          : newDirectory.name,
+        'id'            : newDirectory.id
       });
       appendItemToList( newDirectory );
       showRenameTextarea( currentIcons[ newDirectory.id ] );
@@ -1875,6 +1945,33 @@ var openFolder = function( id , options ){
 
       });
 
+    }else if( options && options.gdriveFolder ){
+
+      $.when( requestGdriveItems( options.gdriveFolder.id ) , getItemPath( options.gdriveFolder ) ).done( function( list , path ){
+
+        setInOldCloudIcon('gdrive');
+
+        visualSidebarItemArea.find('.active').removeClass('active');
+        visualSidebarItemArea.find( '.item-' + gdriveAccountActive.id ).addClass('active');
+
+        if( !options.isForward && !options.isBack && currentOpened ){
+          addToHistoryBackward( currentOpened );
+          clearHistoryForward();
+        }else if( options && options.isBack ){
+          addToHistoryForward( currentOpened );
+        }else if( options && options.isForward ){
+          addToHistoryBackward( currentOpened );
+        }
+
+        currentOpened = options.gdriveFolder;
+
+        clearList();
+        appendItemToList( list );
+        generateBreadcrumbs( path );
+        requestDraw();
+
+      });
+
     }else{
 
       api.fs( id, function( error, fsnode ){
@@ -1918,8 +2015,10 @@ var openItem = function( item ){
 
   if ( item.fsnode.pending ) {
     api.app.createView( item.fsnode , 'received' );
-  }else if( item.fsnode.type === TYPE_DROPBOX_FOLDER){
+  }else if( item.fsnode.type === TYPE_DROPBOX_FOLDER ){
     openFolder( item.fsnode.id , { 'dropboxFolder' : item.fsnode });  
+  }else if( item.fsnode.type === TYPE_GDRIVE_FOLDER ){
+    openFolder( item.fsnode.id , { 'gdriveFolder' : item.fsnode });  
   }else if( item.fsnode.type === TYPE_ROOT || item.fsnode.type === TYPE_FOLDER_SPECIAL || item.fsnode.type === TYPE_FOLDER ){
     openFolder( item.fsnode.id );
   }else if( item.fsnode.type === TYPE_FILE ){
@@ -2660,11 +2759,19 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
 
 
-  }else if( item.fsnode.type === TYPE_DROPBOX_FILE){
+  }else if( item.fsnode.type === TYPE_DROPBOX_FILE || item.fsnode.type === TYPE_GDRIVE_FILE ){
 
     menu
     .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
     .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
+
+  }else if( item.fsnode.type === TYPE_GDRIVE_FOLDER){
+
+    menu
+    .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'gdriveFolder' : item.fsnode } ) )
+    .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
+    .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
+
 
   }
 
@@ -3118,6 +3225,8 @@ visualSidebarItemArea
 
   if ( $(this).hasClass('dropbox') ) {
     openDropboxAccount(this);
+  }else if( $(this).hasClass('gdrive') ){
+    openGdriveAccount(this);
   }else{
     openFolder( $(this).data('fsnode').id );
   }
@@ -3632,10 +3741,17 @@ $('.old-cloud-popup').on( 'mousedown', function( e ){
 })
 
 $('.old-cloud-popup').on('click', '.dropbox' , function(){
-
-  api.integration.dropbox.addAccount();
-
+  api.integration.dropbox.addAccount(function(){
+    console.log(arguments)
+  });
 });
+
+$('.old-cloud-popup').on('click', '.gDrive' , function(){
+  api.integration.gdrive.addAccount(function(){
+    console.log(arguments)
+  });
+});
+
 
 var openDropboxAccount = function( sidebarItem ){
   dropboxAccountActive = $(sidebarItem).data('account');
@@ -3648,6 +3764,19 @@ var openDropboxAccount = function( sidebarItem ){
     }
   }
   openFolder( 'dropboxRoot' , { 'dropboxFolder' : dropboxRoot } );
+};
+
+var openGdriveAccount = function( sidebarItem ){
+  gdriveAccountActive = $(sidebarItem).data('account');
+  var gdriveRoot = {
+    'type'          : TYPE_GDRIVE_FOLDER,
+    'id'            : 'gdriveRoot',
+    'path_display'  : '',
+    'getPath'       : function( callback ){
+      callback( null, [{'name' : 'gdrive'}]);
+    }
+  }
+  openFolder( 'gdriveRoot' , { 'gdriveFolder' : gdriveRoot } );
 };
 
 var requestDropboxItems = function( folder ){
@@ -3686,7 +3815,79 @@ var requestDropboxItems = function( folder ){
   return end;
 }
 
-var getDestinyPath = function( idDestiny , fileName ){
+var requestGdriveItems = function( folder ){
+
+  var end = $.Deferred();
+  gdriveShowingFolder = folder;
+
+  // Is root
+  if ( folder === 'gdriveRoot' ) {
+
+    gdriveAccountActive.listFiles( function( e , list ){
+
+      gdriveShowingItems = list;
+
+      list = list.files.map(function( entry ){
+        
+        if ( entry.mimeType.indexOf('folder') !== -1 ) {
+          return new gdriveNode({
+            'isFolder'      : true,
+            'path_display'  : entry.path_display,
+            'name'          : entry.name,
+            'id'            : entry.id
+          })
+        }else{
+          return new gdriveNode({
+            'isFolder'      : false,
+            'path_display'  : entry.path_display,
+            'name'          : entry.name,
+            'id'            : entry.id
+          })
+        }
+
+      });
+
+      end.resolve( list );
+
+    });
+
+
+  }else{
+
+    gdriveAccountActive.listFilesByFolder( folder , function( e , list ){
+      
+      gdriveShowingItems = list;
+
+      list = list.files.map(function( entry ){
+        
+        if ( entry.mimeType.indexOf('folder') !== -1 ) {
+          return new gdriveNode({
+            'isFolder'      : true,
+            'path_display'  : entry.path_display,
+            'name'          : entry.name,
+            'id'            : entry.id
+          })
+        }else{
+          return new gdriveNode({
+            'isFolder'      : false,
+            'path_display'  : entry.path_display,
+            'name'          : entry.name,
+            'id'            : entry.id
+          })
+        }
+
+      });
+
+      end.resolve( list );
+    
+    });
+
+  }
+
+  return end;
+}
+
+var getDropboxDestinyPath = function( idDestiny , fileName ){
   var destinyPath = '';
   dropboxShowingItems.entries.forEach(function( entry ){
     if ( entry.id === idDestiny ) {
@@ -3696,8 +3897,19 @@ var getDestinyPath = function( idDestiny , fileName ){
   return destinyPath + '/'  + fileName;
 }
 
+var getGdriveDestinyPath = function( idDestiny , fileName ){
+  var destinyPath = '';
+  gdriveShowingItems.entries.forEach(function( entry ){
+    if ( entry.id === idDestiny ) {
+      destinyPath = entry.path_display;
+    }
+  });
+  return destinyPath + '/'  + fileName;
+}
+
 var setInOldCloudIcon = function( oldCloud ){
 
+  $('.old-cloud-icon').attr( 'class' , 'old-cloud-icon' );
   $('.old-cloud-icon').addClass( oldCloud );
   $('.item-area').addClass('old-cloud');
 
@@ -3723,6 +3935,25 @@ var setOldCloudAccounts = function(){
       var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
 
       visualItem.addClass( 'item-' + account.id + ' dropbox' ).data( 'account', account ).data( 'id' , account.id );
+      visualItem.find('.ui-navgroup-element-txt').text( account.email );
+
+      sidebarFolders.push( account );
+      visualSidebarItemArea.find('.old-cloud').after( visualItem );
+
+    });
+  });
+
+  //GDrive
+  api.integration.gdrive.listAccounts(function( e , accounts ){
+    accounts.forEach(function( account ){
+
+      if( isInSidebar( account.id ) ){
+        return
+      }
+
+      var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
+
+      visualItem.addClass( 'item-' + account.id + ' gdrive' ).data( 'account', account ).data( 'id' , account.id );
       visualItem.find('.ui-navgroup-element-txt').text( account.email );
 
       sidebarFolders.push( account );

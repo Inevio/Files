@@ -403,7 +403,8 @@
 
         "integration" : {
 
-            "dropbox" : true
+            "dropbox" : true,
+            "gdrive"  : true
 
         },
 
