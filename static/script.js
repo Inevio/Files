@@ -15,6 +15,8 @@ var TYPE_DROPBOX_FOLDER = 4;
 var TYPE_DROPBOX_FILE = 5;
 var TYPE_GDRIVE_FOLDER = 6;
 var TYPE_GDRIVE_FILE = 7;
+var TYPE_ONEDRIVE_FOLDER = 8;
+var TYPE_ONEDRIVE_FILE = 9;
 
 var PROGRESS_RADIUS = 5;
 var PROGRESS_ICON = new Image();
@@ -80,6 +82,10 @@ var dropboxShowingFolder;
 var gdriveAccountActive;
 var gdriveShowingItems;
 var gdriveShowingFolder;
+// ONEDRIVE
+var onedriveAccountActive;
+var onedriveShowingItems;
+var onedriveShowingFolder;
 
 var folderIcons = {
   'normal'  : {
@@ -309,6 +315,62 @@ var gdriveNode = function( data ){
 
   that.rename = function( newName ){
     gdriveAccountActive.rename( data.id, newName, function(){
+      console.log(arguments)
+    });
+  }
+
+
+  return that;
+
+}
+
+var onedriveNode = function( data ){
+
+  var that = $.extend( this, data )
+
+  if ( data.isFolder ) {
+    that.icons = folderIcons.normal;
+    that.type = TYPE_ONEDRIVE_FOLDER;
+  }else{
+    that.icons = unknowFileIcons.normal;
+    that.type = TYPE_ONEDRIVE_FILE;
+  }
+
+  that.move = function( destiny ){
+    onedriveAccountActive.move( data.path_display , getOnedriveDestinyPath( destiny , data.name ) , function(){
+      var originFolder = data.path_display.replace( '/' + data.name, '' )
+      if( originFolder === currentOpened.path_display ){
+        removeItemFromList( data.id );
+      }else{
+        appendItemToList( onedriveNode );
+      }
+      requestDraw();
+    });
+  }
+
+  that.getPath = function( callback ){
+
+    var path = [];
+    var stringPath = data.path_display.split('/');
+    stringPath.forEach(function( element ){
+      element = element === '' ? 'onedrive' : element; 
+      path.push({ 'name' : element });
+    });
+
+    callback( null, path );
+  }
+
+  that.remove = function(){
+    onedriveAccountActive.remove( data.path_display, function( e , node ){
+      removeItemFromList( node.id );
+    });
+  }
+
+  that.rename = function( newName ){
+    var oldPath = data.path_display;
+    that.name = newName;
+    that.path_display = data.path_display.replace( oldPath.split('/').pop(), newName);
+    onedriveAccountActive.move( oldPath, that.path_display, function(){
       console.log(arguments)
     });
   }
@@ -740,6 +802,21 @@ var createFolder = function(){
         'mimeType'      : newDirectory.mimeType,
         'name'          : newDirectory.name,
         'id'            : newDirectory.id
+      });
+      appendItemToList( newDirectory );
+      showRenameTextarea( currentIcons[ newDirectory.id ] );
+
+    });
+
+  }else if( currentOpened.type === TYPE_ONEDRIVE_FOLDER ){
+
+    onedriveAccountActive.createFolder( currentOpened.path_display + '/' + getAvailableNewFolderName() , function( e , newDirectory ){
+
+      var newDirectory = new onedriveNode({
+        'isFolder'      : true,
+        'path_display'  : newDirectory.metadata.path_display,
+        'name'          : newDirectory.metadata.name,
+        'id'            : newDirectory.metadata.id
       });
       appendItemToList( newDirectory );
       showRenameTextarea( currentIcons[ newDirectory.id ] );
@@ -1972,6 +2049,33 @@ var openFolder = function( id , options ){
 
       });
 
+    }else if( options && options.onedriveFolder ){
+
+      $.when( requestOnedriveItems( options.onedriveFolder.id ) , getItemPath( options.onedriveFolder ) ).done( function( list , path ){
+
+        setInOldCloudIcon('onedrive');
+
+        visualSidebarItemArea.find('.active').removeClass('active');
+        visualSidebarItemArea.find( '.item-' + onedriveAccountActive.id ).addClass('active');
+
+        if( !options.isForward && !options.isBack && currentOpened ){
+          addToHistoryBackward( currentOpened );
+          clearHistoryForward();
+        }else if( options && options.isBack ){
+          addToHistoryForward( currentOpened );
+        }else if( options && options.isForward ){
+          addToHistoryBackward( currentOpened );
+        }
+
+        currentOpened = options.onedriveFolder;
+
+        clearList();
+        appendItemToList( list );
+        generateBreadcrumbs( path );
+        requestDraw();
+
+      });
+
     }else{
 
       api.fs( id, function( error, fsnode ){
@@ -2019,6 +2123,8 @@ var openItem = function( item ){
     openFolder( item.fsnode.id , { 'dropboxFolder' : item.fsnode });  
   }else if( item.fsnode.type === TYPE_GDRIVE_FOLDER ){
     openFolder( item.fsnode.id , { 'gdriveFolder' : item.fsnode });  
+  }else if( item.fsnode.type === TYPE_ONEDRIVE_FOLDER ){
+    openFolder( item.fsnode.id , { 'onedriveFolder' : item.fsnode });  
   }else if( item.fsnode.type === TYPE_ROOT || item.fsnode.type === TYPE_FOLDER_SPECIAL || item.fsnode.type === TYPE_FOLDER ){
     openFolder( item.fsnode.id );
   }else if( item.fsnode.type === TYPE_FILE ){
@@ -2751,7 +2857,7 @@ var generateContextMenu = function( item, options ){
     menu
     .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
 
-  }else if( item.fsnode.type === TYPE_DROPBOX_FOLDER){
+  }else if( item.fsnode.type === TYPE_DROPBOX_FOLDER ){
 
     menu
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'dropboxFolder' : item.fsnode } ) )
@@ -2759,19 +2865,26 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
 
 
-  }else if( item.fsnode.type === TYPE_DROPBOX_FILE || item.fsnode.type === TYPE_GDRIVE_FILE ){
+  }else if( item.fsnode.type === TYPE_DROPBOX_FILE || item.fsnode.type === TYPE_GDRIVE_FILE || item.fsnode.type === TYPE_ONEDRIVE_FILE){
 
     menu
     .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
     .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
 
-  }else if( item.fsnode.type === TYPE_GDRIVE_FOLDER){
+  }else if( item.fsnode.type === TYPE_GDRIVE_FOLDER ){
 
     menu
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'gdriveFolder' : item.fsnode } ) )
     .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
     .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
 
+
+  }else if( item.fsnode.type === TYPE_ONEDRIVE_FOLDER ){
+
+    menu
+    .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'onedriveFolder' : item.fsnode } ) )
+    .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
+    .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
 
   }
 
@@ -3227,6 +3340,8 @@ visualSidebarItemArea
     openDropboxAccount(this);
   }else if( $(this).hasClass('gdrive') ){
     openGdriveAccount(this);
+  }else if( $(this).hasClass('onedrive') ){
+    openOnedriveAccount(this);
   }else{
     openFolder( $(this).data('fsnode').id );
   }
@@ -3752,6 +3867,11 @@ $('.old-cloud-popup').on('click', '.gDrive' , function(){
   });
 });
 
+$('.old-cloud-popup').on('click', '.oneDrive' , function(){
+  api.integration.onedrive.addAccount(function(){
+    console.log(arguments)
+  });
+});
 
 var openDropboxAccount = function( sidebarItem ){
   dropboxAccountActive = $(sidebarItem).data('account');
@@ -3777,6 +3897,19 @@ var openGdriveAccount = function( sidebarItem ){
     }
   }
   openFolder( 'gdriveRoot' , { 'gdriveFolder' : gdriveRoot } );
+};
+
+var openOnedriveAccount = function( sidebarItem ){
+  onedriveAccountActive = $(sidebarItem).data('account');
+  var onedriveRoot = {
+    'type'          : TYPE_ONEDRIVE_FOLDER,
+    'id'            : 'onedriveRoot',
+    'path_display'  : '',
+    'getPath'       : function( callback ){
+      callback( null, [{'name' : 'onedrive'}]);
+    }
+  }
+  openFolder( 'onedriveRoot' , { 'onedriveFolder' : onedriveRoot } );
 };
 
 var requestDropboxItems = function( folder ){
@@ -3887,6 +4020,44 @@ var requestGdriveItems = function( folder ){
   return end;
 }
 
+var requestOnedriveItems = function( folder ){
+
+  var end = $.Deferred();
+  onedriveShowingFolder = folder;
+
+  folder = folder === 'onedriveRoot' ? 'root' : folder;
+
+  onedriveAccountActive.listFolder( folder , function( e , list ){
+    
+    onedriveShowingItems = list;
+
+    list = list.map(function( entry ){
+      
+      if ( entry.folder ) {
+        return new gdriveNode({
+          'isFolder'      : true,
+          'path_display'  : entry.path_display,
+          'name'          : entry.name,
+          'id'            : entry.id
+        })
+      }else{
+        return new gdriveNode({
+          'isFolder'      : false,
+          'path_display'  : entry.path_display,
+          'name'          : entry.name,
+          'id'            : entry.id
+        })
+      }
+
+    });
+
+    end.resolve( list );
+  
+  });
+
+  return end;
+}
+
 var getDropboxDestinyPath = function( idDestiny , fileName ){
   var destinyPath = '';
   dropboxShowingItems.entries.forEach(function( entry ){
@@ -3900,6 +4071,16 @@ var getDropboxDestinyPath = function( idDestiny , fileName ){
 var getGdriveDestinyPath = function( idDestiny , fileName ){
   var destinyPath = '';
   gdriveShowingItems.entries.forEach(function( entry ){
+    if ( entry.id === idDestiny ) {
+      destinyPath = entry.path_display;
+    }
+  });
+  return destinyPath + '/'  + fileName;
+}
+
+var getOnedriveDestinyPath = function( idDestiny , fileName ){
+  var destinyPath = '';
+  onedriveShowingItems.entries.forEach(function( entry ){
     if ( entry.id === idDestiny ) {
       destinyPath = entry.path_display;
     }
@@ -3954,6 +4135,25 @@ var setOldCloudAccounts = function(){
       var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
 
       visualItem.addClass( 'item-' + account.id + ' gdrive' ).data( 'account', account ).data( 'id' , account.id );
+      visualItem.find('.ui-navgroup-element-txt').text( account.email );
+
+      sidebarFolders.push( account );
+      visualSidebarItemArea.find('.old-cloud').after( visualItem );
+
+    });
+  });
+
+  //Onedrive
+  api.integration.onedrive.listAccounts(function( e , accounts ){
+    accounts.forEach(function( account ){
+
+      if( isInSidebar( account.id ) ){
+        return
+      }
+
+      var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
+
+      visualItem.addClass( 'item-' + account.id + ' onedrive' ).data( 'account', account ).data( 'id' , account.id );
       visualItem.find('.ui-navgroup-element-txt').text( account.email );
 
       sidebarFolders.push( account );
