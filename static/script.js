@@ -293,7 +293,7 @@ var gdriveNode = function( data ){
 
     gdriveAccountActive.move( data.id , destiny , function(){
       if( destiny === currentOpened.id ){
-        appendItemToList( gdriveNode );
+        appendItemToList( that );
       }else{
         removeItemFromList( data.id );
       }
@@ -303,6 +303,9 @@ var gdriveNode = function( data ){
   }
 
   that.getPath = function( callback ){
+    gdriveAccountActive.getPath( data.id , function(){
+      console.log(arguments);
+    });
     var path = [ currentOpened.name ];
     callback( null, path );
   }
@@ -337,40 +340,30 @@ var onedriveNode = function( data ){
   }
 
   that.move = function( destiny ){
-    onedriveAccountActive.move( data.path_display , getOnedriveDestinyPath( destiny , data.name ) , function(){
-      var originFolder = data.path_display.replace( '/' + data.name, '' )
-      if( originFolder === currentOpened.path_display ){
-        removeItemFromList( data.id );
+    onedriveAccountActive.move( data.id , destiny , function(){
+          console.log(arguments)
+      if( destiny === currentOpened.id ){
+        appendItemToList( that );
       }else{
-        appendItemToList( onedriveNode );
+        removeItemFromList( data.id );
       }
       requestDraw();
     });
   }
 
   that.getPath = function( callback ){
-
-    var path = [];
-    var stringPath = data.path_display.split('/');
-    stringPath.forEach(function( element ){
-      element = element === '' ? 'onedrive' : element; 
-      path.push({ 'name' : element });
-    });
-
+    var path = [ currentOpened.name ];
     callback( null, path );
   }
 
   that.remove = function(){
-    onedriveAccountActive.remove( data.path_display, function( e , node ){
-      removeItemFromList( node.id );
+    onedriveAccountActive.delete( data.id, function( e ){
+      removeItemFromList( data.id );
     });
   }
 
   that.rename = function( newName ){
-    var oldPath = data.path_display;
-    that.name = newName;
-    that.path_display = data.path_display.replace( oldPath.split('/').pop(), newName);
-    onedriveAccountActive.move( oldPath, that.path_display, function(){
+    onedriveAccountActive.rename( newName, data.id, function(){
       console.log(arguments)
     });
   }
@@ -810,13 +803,13 @@ var createFolder = function(){
 
   }else if( currentOpened.type === TYPE_ONEDRIVE_FOLDER ){
 
-    onedriveAccountActive.createFolder( currentOpened.path_display + '/' + getAvailableNewFolderName() , function( e , newDirectory ){
+    var folderId = currentOpened.id === 'onedriveRoot' ? 'root' : currentOpened.id;
+    onedriveAccountActive.createFolder( getAvailableNewFolderName() , folderId , function( e , newDirectory ){
 
       var newDirectory = new onedriveNode({
         'isFolder'      : true,
-        'path_display'  : newDirectory.metadata.path_display,
-        'name'          : newDirectory.metadata.name,
-        'id'            : newDirectory.metadata.id
+        'name'          : newDirectory.name,
+        'id'            : newDirectory.id
       });
       appendItemToList( newDirectory );
       showRenameTextarea( currentIcons[ newDirectory.id ] );
@@ -2050,6 +2043,10 @@ var openFolder = function( id , options ){
       });
 
     }else if( options && options.onedriveFolder ){
+
+      onedriveAccountActive.getMetadata( options.onedriveFolder.id , function(){
+        console.log(arguments)
+      } );
 
       $.when( requestOnedriveItems( options.onedriveFolder.id ) , getItemPath( options.onedriveFolder ) ).done( function( list , path ){
 
@@ -4034,14 +4031,14 @@ var requestOnedriveItems = function( folder ){
     list = list.map(function( entry ){
       
       if ( entry.folder ) {
-        return new gdriveNode({
+        return new onedriveNode({
           'isFolder'      : true,
           'path_display'  : entry.path_display,
           'name'          : entry.name,
           'id'            : entry.id
         })
       }else{
-        return new gdriveNode({
+        return new onedriveNode({
           'isFolder'      : false,
           'path_display'  : entry.path_display,
           'name'          : entry.name,
@@ -4080,7 +4077,7 @@ var getGdriveDestinyPath = function( idDestiny , fileName ){
 
 var getOnedriveDestinyPath = function( idDestiny , fileName ){
   var destinyPath = '';
-  onedriveShowingItems.entries.forEach(function( entry ){
+  onedriveShowingItems.forEach(function( entry ){
     if ( entry.id === idDestiny ) {
       destinyPath = entry.path_display;
     }
