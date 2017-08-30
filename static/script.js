@@ -250,7 +250,7 @@ var dropboxNode = function( data ){
     var path = [];
     var stringPath = data.path_display.split('/');
     stringPath.forEach(function( element ){
-      element = element === '' ? 'dropbox' : element; 
+      element = element === '' ? 'Dropbox' : element; 
       path.push({ 'name' : element });
     });
 
@@ -303,11 +303,9 @@ var gdriveNode = function( data ){
   }
 
   that.getPath = function( callback ){
-    gdriveAccountActive.getPath( data.id , function(){
-      console.log(arguments);
+    gdriveAccountActive.getPath( data.id , function( e , path ){
+      callback( null, path.map(function(item){ return { 'name' : item } }) );
     });
-    var path = [ currentOpened.name ];
-    callback( null, path );
   }
 
   that.remove = function(){
@@ -352,8 +350,9 @@ var onedriveNode = function( data ){
   }
 
   that.getPath = function( callback ){
-    var path = [ currentOpened.name ];
-    callback( null, path );
+    onedriveAccountActive.getPath( data.id , function( e , path ){
+      callback( null, path.map(function(item){ return { 'name' : item } }) );
+    });
   }
 
   that.remove = function(){
@@ -1887,6 +1886,10 @@ var historyGoBack = function(){
 
   if ( backFolder.type === TYPE_DROPBOX_FOLDER ) {
     openFolder( backFolder.id , { 'isBack' : true, 'dropboxFolder' : backFolder } );
+  }else if( backFolder.type === TYPE_GDRIVE_FOLDER ){
+    openFolder( backFolder.id , { 'isBack' : true, 'gdriveFolder' : backFolder } );
+  }else if( backFolder.type === TYPE_ONEDRIVE_FOLDER ){
+    openFolder( backFolder.id , { 'isBack' : true, 'onedriveFolder' : backFolder } );
   }else{
     openFolder( backFolder.id , { 'isBack' : true } );
   }
@@ -1908,6 +1911,10 @@ var historyGoForward = function(){
 
   if ( forwardFolder.type === TYPE_DROPBOX_FOLDER ) {
     openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true , 'dropboxFolder' : forwardFolder } );
+  }else if( forwardFolder.type === TYPE_GDRIVE_FOLDER ){
+    openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true , 'gdriveFolder' : forwardFolder } );
+  }else if( backFolder.type === TYPE_ONEDRIVE_FOLDER ){
+    openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true , 'onedriveFolder' : forwardFolder } );
   }else{
     openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true } );
   }  
@@ -3602,8 +3609,14 @@ visualItemArea
     list.filter( function( item ){
       return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
     }).forEach( function( item ){
-
-      if ( item.fsnode.parent != destiny ) {
+      
+      if( item.fsnode.type === TYPE_DROPBOX_FOLDER || item.fsnode.type === TYPE_DROPBOX_FILE ){
+        console.warn('not implemented');
+      }else if( item.fsnode.type === TYPE_GDRIVE_FOLDER || item.fsnode.type === TYPE_GDRIVE_FILE ){
+        console.warn('not implemented');
+      }else if( item.fsnode.type === TYPE_ONEDRIVE_FOLDER || item.fsnode.type === TYPE_ONEDRIVE_FILE ){
+        console.warn('not implemented');
+      }else if( item.fsnode.parent != destiny ) {
         item.fsnode.move( destiny, function(){
           console.log( arguments );
         });
@@ -3877,7 +3890,7 @@ var openDropboxAccount = function( sidebarItem ){
     'id'            : 'dropboxRoot',
     'path_display'  : '',
     'getPath'       : function( callback ){
-      callback( null, [{'name' : 'dropbox'}]);
+      callback( null, [{'name' : 'Dropbox'}]);
     }
   }
   openFolder( 'dropboxRoot' , { 'dropboxFolder' : dropboxRoot } );
@@ -3890,7 +3903,7 @@ var openGdriveAccount = function( sidebarItem ){
     'id'            : 'gdriveRoot',
     'path_display'  : '',
     'getPath'       : function( callback ){
-      callback( null, [{'name' : 'gdrive'}]);
+      callback( null, [{'name' : 'Google Drive'}]);
     }
   }
   openFolder( 'gdriveRoot' , { 'gdriveFolder' : gdriveRoot } );
@@ -3903,7 +3916,7 @@ var openOnedriveAccount = function( sidebarItem ){
     'id'            : 'onedriveRoot',
     'path_display'  : '',
     'getPath'       : function( callback ){
-      callback( null, [{'name' : 'onedrive'}]);
+      callback( null, [{'name' : 'Onedrive'}]);
     }
   }
   openFolder( 'onedriveRoot' , { 'onedriveFolder' : onedriveRoot } );
