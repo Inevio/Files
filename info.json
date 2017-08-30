@@ -405,7 +405,8 @@
 
             "dropbox"   : true,
             "gdrive"    : true,
-            "onedrive"  : true
+            "onedrive"  : true,
+            "gmail"     : true
 
         },
 
