@@ -3610,18 +3610,11 @@ visualItemArea
       return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
     }).forEach( function( item ){
       
-      if( item.fsnode.type === TYPE_DROPBOX_FOLDER || item.fsnode.type === TYPE_DROPBOX_FILE ){
-        console.warn('not implemented');
-      }else if( item.fsnode.type === TYPE_GDRIVE_FOLDER || item.fsnode.type === TYPE_GDRIVE_FILE ){
-        console.warn('not implemented');
-      }else if( item.fsnode.type === TYPE_ONEDRIVE_FOLDER || item.fsnode.type === TYPE_ONEDRIVE_FILE ){
-        console.warn('not implemented');
-      }else if( item.fsnode.parent != destiny ) {
+      if( item.fsnode.parent != destiny || item.fsnode.type > TYPE_DROPBOX_FOLDER) {
         item.fsnode.move( destiny, function(){
           console.log( arguments );
         });
       }
-
     });
 
   }
