@@ -246,15 +246,9 @@ var dropboxNode = function( data ){
   }
 
   that.getPath = function( callback ){
-
-    var path = [];
-    var stringPath = data.path_display.split('/');
-    stringPath.forEach(function( element ){
-      element = element === '' ? 'Dropbox' : element; 
-      path.push({ 'name' : element });
+    dropboxAccountActive.getPath( that.path_display , function( e , path ){
+      callback( null, path.map(function(item){ return new dropboxNode( item ) }) );
     });
-
-    callback( null, path );
   }
 
   that.remove = function(){
@@ -299,12 +293,11 @@ var gdriveNode = function( data ){
       }
       requestDraw();
     });
-
   }
 
   that.getPath = function( callback ){
     gdriveAccountActive.getPath( data.id , function( e , path ){
-      callback( null, path.map(function(item){ return { 'name' : item } }) );
+      callback( null, path.map(function(item){ return new gdriveNode( item ) }) );
     });
   }
 
@@ -320,6 +313,12 @@ var gdriveNode = function( data ){
     });
   }
 
+  that.copy = function( destiny ){
+    gdriveAccountActive.copy( data.id, destiny, function( e , item ){
+      appendItemToList( new gdriveNode( item ) );
+      requestDraw();
+    });
+  }
 
   return that;
 
@@ -351,7 +350,7 @@ var onedriveNode = function( data ){
 
   that.getPath = function( callback ){
     onedriveAccountActive.getPath( data.id , function( e , path ){
-      callback( null, path.map(function(item){ return { 'name' : item } }) );
+      callback( null, path.map(function(item){ return new onedriveNode( item ) }) );
     });
   }
 
@@ -1376,6 +1375,7 @@ var generateBreadcrumbs = function( path ){
     var entry = visualBreadcrumbsEntryPrototype.clone().removeClass('wz-prototype');
     entry.text( item.name );
     entry.data( 'id', item.id );
+    entry.data( 'folder' , item );
     list.push( entry );
 
   });
@@ -2830,7 +2830,6 @@ var generateContextMenu = function( item, options ){
       }
     }
 
-
     // Add to sidebar
     if( wz.system.user().rootPath !== parseInt( item.fsnode.parent ) ){
 
@@ -2874,6 +2873,7 @@ var generateContextMenu = function( item, options ){
     menu
     .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
     .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
+    .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
 
   }else if( item.fsnode.type === TYPE_GDRIVE_FOLDER ){
 
@@ -2881,7 +2881,7 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'gdriveFolder' : item.fsnode } ) )
     .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
     .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
-
+    .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
 
   }else if( item.fsnode.type === TYPE_ONEDRIVE_FOLDER ){
 
@@ -3393,7 +3393,17 @@ visualHistoryBack.on( 'click', historyGoBack );
 visualHistoryForward.on( 'click', historyGoForward );
 
 visualBreadcrumbs.on( 'click', '.entry:not(.current, .list-trigger)', function(){
-  openFolder( $(this).data('id') );
+  var folder = $(this).data('folder');
+  if ( $('.old-cloud-icon').hasClass('dropbox') ) {
+    openFolder( folder.id , { 'dropboxFolder' : folder } );
+  }else if( $('.old-cloud-icon').hasClass('gdrive') ){
+    openFolder( folder.id , { 'gdriveFolder' : folder } );
+  }else if( $('.old-cloud-icon').hasClass('onedrive') ){
+    openFolder( folder.id , { 'onedriveFolder' : folder } );
+  }else{
+    openFolder( folder.id );
+  }
+
 });
 
 visualBreadcrumbsList
@@ -3610,11 +3620,27 @@ visualItemArea
       return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
     }).forEach( function( item ){
       
-      if( item.fsnode.parent != destiny || item.fsnode.type > TYPE_DROPBOX_FOLDER) {
+      if( item.fsnode.type === TYPE_DROPBOX_FOLDER || item.fsnode.type === TYPE_DROPBOX_FILE ){
+        appendItemToList( item.fsnode );
+        item.fsnode.move( destiny, function(){
+          console.log( arguments );
+        });
+      }else if( item.fsnode.type === TYPE_GDRIVE_FOLDER || item.fsnode.type === TYPE_GDRIVE_FILE ){
+        appendItemToList( item.fsnode );
+        item.fsnode.move( destiny, function(){
+          console.log( arguments );
+        });
+      }else if( item.fsnode.type === TYPE_ONEDRIVE_FOLDER || item.fsnode.type === TYPE_ONEDRIVE_FILE ){
+        appendItemToList( item.fsnode );
+        item.fsnode.move( destiny, function(){
+          console.log( arguments );
+        });
+      }else if( item.fsnode.parent != destiny || item.fsnode.type > TYPE_DROPBOX_FOLDER) {
         item.fsnode.move( destiny, function(){
           console.log( arguments );
         });
       }
+
     });
 
   }
