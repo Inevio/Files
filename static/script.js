@@ -266,6 +266,12 @@ var dropboxNode = function( data ){
     });
   }
 
+  that.copy = function( destiny ){
+    dropboxAccountActive.copy( data.path_display , destiny.path_display , function( e, item ){
+      appendItemToList( new dropboxNode( item ) );
+      requestDraw();
+    });
+  }
 
   return that;
 
@@ -314,7 +320,7 @@ var gdriveNode = function( data ){
   }
 
   that.copy = function( destiny ){
-    gdriveAccountActive.copy( data.id, destiny, function( e , item ){
+    gdriveAccountActive.copy( data.id, destiny.id, function( e , item ){
       appendItemToList( new gdriveNode( item ) );
       requestDraw();
     });
@@ -366,6 +372,13 @@ var onedriveNode = function( data ){
     });
   }
 
+  that.copy = function( destiny ){
+    onedriveAccountActive.copy( data.id , destiny.id , function( e, item ){
+      setTimeout(function(){ 
+        openFolder( currentOpened.id , { 'onedriveFolder' : currentOpened } );
+      }, 1000); 
+    });
+  }
 
   return that;
 
@@ -716,10 +729,15 @@ var clipboardPaste = function(){
 
     storage.copy.forEach( function( item ){
 
-      console.log( item.fsnode );
-      item.fsnode.copy( currentOpened.id, { fixCollision: true } , function(){
-        console.log( arguments );
-      });
+      if ( item.fsnode.type >= TYPE_DROPBOX_FOLDER ) {
+        item.fsnode.copy( currentOpened, { fixCollision: true } , function(){
+          console.log( arguments );
+        });
+      }else{
+        item.fsnode.copy( currentOpened.id, { fixCollision: true } , function(){
+          console.log( arguments );
+        });
+      }
 
     });
 
@@ -1993,18 +2011,103 @@ var openFile = function( fsnode ){
 
 var openFolder = function( id , options ){
 
-  if( !currentOpened || id !== currentOpened.id ){
+  if ( options && options.dropboxFolder ) {
 
-    if ( options && options.dropboxFolder ) {
+    $.when( requestDropboxItems( options.dropboxFolder.path_display ) , getItemPath( options.dropboxFolder ) ).done( function( list , path ){
 
-      $.when( requestDropboxItems( options.dropboxFolder.path_display ) , getItemPath( options.dropboxFolder ) ).done( function( list , path ){
+      setInOldCloudIcon('dropbox');
 
-        setInOldCloudIcon('dropbox');
+      visualSidebarItemArea.find('.active').removeClass('active');
+      visualSidebarItemArea.find( '.item-' + dropboxAccountActive.id ).addClass('active');
+
+      if( !options.isForward && !options.isBack && currentOpened ){
+        addToHistoryBackward( currentOpened );
+        clearHistoryForward();
+      }else if( options && options.isBack ){
+        addToHistoryForward( currentOpened );
+      }else if( options && options.isForward ){
+        addToHistoryBackward( currentOpened );
+      }
+
+      currentOpened = options.dropboxFolder;
+
+      clearList();
+      appendItemToList( list );
+      generateBreadcrumbs( path );
+      requestDraw();
+
+    });
+
+  }else if( options && options.gdriveFolder ){
+
+    $.when( requestGdriveItems( options.gdriveFolder.id ) , getItemPath( options.gdriveFolder ) ).done( function( list , path ){
+
+      setInOldCloudIcon('gdrive');
+
+      visualSidebarItemArea.find('.active').removeClass('active');
+      visualSidebarItemArea.find( '.item-' + gdriveAccountActive.id ).addClass('active');
+
+      if( !options.isForward && !options.isBack && currentOpened ){
+        addToHistoryBackward( currentOpened );
+        clearHistoryForward();
+      }else if( options && options.isBack ){
+        addToHistoryForward( currentOpened );
+      }else if( options && options.isForward ){
+        addToHistoryBackward( currentOpened );
+      }
+
+      currentOpened = options.gdriveFolder;
+
+      clearList();
+      appendItemToList( list );
+      generateBreadcrumbs( path );
+      requestDraw();
+
+    });
+
+  }else if( options && options.onedriveFolder ){
+
+    onedriveAccountActive.getMetadata( options.onedriveFolder.id , function(){
+      console.log(arguments)
+    } );
+
+    $.when( requestOnedriveItems( options.onedriveFolder.id ) , getItemPath( options.onedriveFolder ) ).done( function( list , path ){
+
+      setInOldCloudIcon('onedrive');
+
+      visualSidebarItemArea.find('.active').removeClass('active');
+      visualSidebarItemArea.find( '.item-' + onedriveAccountActive.id ).addClass('active');
+
+      if( !options.isForward && !options.isBack && currentOpened ){
+        addToHistoryBackward( currentOpened );
+        clearHistoryForward();
+      }else if( options && options.isBack ){
+        addToHistoryForward( currentOpened );
+      }else if( options && options.isForward ){
+        addToHistoryBackward( currentOpened );
+      }
+
+      currentOpened = options.onedriveFolder;
+
+      clearList();
+      appendItemToList( list );
+      generateBreadcrumbs( path );
+      requestDraw();
+
+    });
+
+  }else if(!currentOpened || id !== currentOpened.id){
+
+    api.fs( id, function( error, fsnode ){
+
+      $.when( getFolderItems( fsnode ), getItemPath( fsnode ) ).done( function( list, path ){
+
+        setOutOldCloudIcon();
 
         visualSidebarItemArea.find('.active').removeClass('active');
-        visualSidebarItemArea.find( '.item-' + dropboxAccountActive.id ).addClass('active');
+        visualSidebarItemArea.find( '.item-' + fsnode.id ).addClass('active');
 
-        if( !options.isForward && !options.isBack && currentOpened ){
+        if( !options && currentOpened ){
           addToHistoryBackward( currentOpened );
           clearHistoryForward();
         }else if( options && options.isBack ){
@@ -2013,7 +2116,9 @@ var openFolder = function( id , options ){
           addToHistoryBackward( currentOpened );
         }
 
-        currentOpened = options.dropboxFolder;
+        currentScroll = 0;
+        currentOpened = fsnode;
+        currentLastPureClicked = null;
 
         clearList();
         appendItemToList( list );
@@ -2022,98 +2127,7 @@ var openFolder = function( id , options ){
 
       });
 
-    }else if( options && options.gdriveFolder ){
-
-      $.when( requestGdriveItems( options.gdriveFolder.id ) , getItemPath( options.gdriveFolder ) ).done( function( list , path ){
-
-        setInOldCloudIcon('gdrive');
-
-        visualSidebarItemArea.find('.active').removeClass('active');
-        visualSidebarItemArea.find( '.item-' + gdriveAccountActive.id ).addClass('active');
-
-        if( !options.isForward && !options.isBack && currentOpened ){
-          addToHistoryBackward( currentOpened );
-          clearHistoryForward();
-        }else if( options && options.isBack ){
-          addToHistoryForward( currentOpened );
-        }else if( options && options.isForward ){
-          addToHistoryBackward( currentOpened );
-        }
-
-        currentOpened = options.gdriveFolder;
-
-        clearList();
-        appendItemToList( list );
-        generateBreadcrumbs( path );
-        requestDraw();
-
-      });
-
-    }else if( options && options.onedriveFolder ){
-
-      onedriveAccountActive.getMetadata( options.onedriveFolder.id , function(){
-        console.log(arguments)
-      } );
-
-      $.when( requestOnedriveItems( options.onedriveFolder.id ) , getItemPath( options.onedriveFolder ) ).done( function( list , path ){
-
-        setInOldCloudIcon('onedrive');
-
-        visualSidebarItemArea.find('.active').removeClass('active');
-        visualSidebarItemArea.find( '.item-' + onedriveAccountActive.id ).addClass('active');
-
-        if( !options.isForward && !options.isBack && currentOpened ){
-          addToHistoryBackward( currentOpened );
-          clearHistoryForward();
-        }else if( options && options.isBack ){
-          addToHistoryForward( currentOpened );
-        }else if( options && options.isForward ){
-          addToHistoryBackward( currentOpened );
-        }
-
-        currentOpened = options.onedriveFolder;
-
-        clearList();
-        appendItemToList( list );
-        generateBreadcrumbs( path );
-        requestDraw();
-
-      });
-
-    }else{
-
-      api.fs( id, function( error, fsnode ){
-
-        $.when( getFolderItems( fsnode ), getItemPath( fsnode ) ).done( function( list, path ){
-
-          setOutOldCloudIcon();
-
-          visualSidebarItemArea.find('.active').removeClass('active');
-          visualSidebarItemArea.find( '.item-' + fsnode.id ).addClass('active');
-
-          if( !options && currentOpened ){
-            addToHistoryBackward( currentOpened );
-            clearHistoryForward();
-          }else if( options && options.isBack ){
-            addToHistoryForward( currentOpened );
-          }else if( options && options.isForward ){
-            addToHistoryBackward( currentOpened );
-          }
-
-          currentScroll = 0;
-          currentOpened = fsnode;
-          currentLastPureClicked = null;
-
-          clearList();
-          appendItemToList( list );
-          generateBreadcrumbs( path );
-          requestDraw();
-
-        });
-
-      });
-
-    }
+    });
 
   }
 
@@ -2866,6 +2880,8 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'dropboxFolder' : item.fsnode } ) )
     .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
     .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
+    .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+    .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
 
 
   }else if( item.fsnode.type === TYPE_DROPBOX_FILE || item.fsnode.type === TYPE_GDRIVE_FILE || item.fsnode.type === TYPE_ONEDRIVE_FILE){
@@ -2874,6 +2890,7 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
     .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
     .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+    .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
 
   }else if( item.fsnode.type === TYPE_GDRIVE_FOLDER ){
 
@@ -2882,6 +2899,7 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
     .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
     .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+    .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
 
   }else if( item.fsnode.type === TYPE_ONEDRIVE_FOLDER ){
 
@@ -2889,6 +2907,8 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'onedriveFolder' : item.fsnode } ) )
     .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
     .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
+    .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+    .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
 
   }
 
