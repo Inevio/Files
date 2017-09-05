@@ -234,12 +234,19 @@ var dropboxNode = function( data ){
   }
 
   that.move = function( destiny ){
-    dropboxAccountActive.move( data.path_display , getDropboxDestinyPath( destiny , data.name ) , function(){
+    
+    if ( destiny.permissions ) {
+      that.uploadToHorbito( destiny );
+      return;
+    }
+
+    dropboxAccountActive.move( data.path_display , destiny.path_display , function(){
+      that.path_display = destiny.path_display + '/' + that.name;
       var originFolder = data.path_display.replace( '/' + data.name, '' )
       if( originFolder === currentOpened.path_display ){
         removeItemFromList( data.id );
       }else{
-        appendItemToList( dropboxNode );
+        appendItemToList( that );
       }
       requestDraw();
     });
@@ -261,16 +268,33 @@ var dropboxNode = function( data ){
     var oldPath = data.path_display;
     that.name = newName;
     that.path_display = data.path_display.replace( oldPath.split('/').pop(), newName);
-    dropboxAccountActive.move( oldPath, that.path_display, function(){
+    dropboxAccountActive.rename( oldPath, that.path_display, function(){
       console.log(arguments)
     });
   }
 
+
   that.copy = function( destiny ){
-    dropboxAccountActive.copy( data.path_display , destiny.path_display , function( e, item ){
-      appendItemToList( new dropboxNode( item ) );
+
+    if ( destiny.permissions ) {
+      that.uploadToHorbito( destiny );
+      return;
+    }
+
+    dropboxAccountActive.copy( data.path_display , destiny.path_display , function( err, item ){
+      item.metadata.isFolder = data.isFolder;
+      appendItemToList( new dropboxNode( item.metadata ) );
       requestDraw();
     });
+  }
+
+  that.uploadToHorbito = function( destiny ){
+
+    dropboxAccountActive.toHorbito( [ that.path_display ], destiny.id, function(){
+      console.log('Hey carlos! se esta intentando subir un archivo de dropbox -> '+ that +' a horbito -> ' + destiny );
+      console.log('Respuesta en el callback: ' + arguments);
+    });
+
   }
 
   return that;
@@ -321,6 +345,7 @@ var gdriveNode = function( data ){
 
   that.copy = function( destiny ){
     gdriveAccountActive.copy( data.id, destiny.id, function( e , item ){
+      item.isFolder = data.isFolder;
       appendItemToList( new gdriveNode( item ) );
       requestDraw();
     });
@@ -373,10 +398,10 @@ var onedriveNode = function( data ){
   }
 
   that.copy = function( destiny ){
-    onedriveAccountActive.copy( data.id , destiny.id , function( e, item ){
+    onedriveAccountActive.copy( data.id , destiny.id , function(){
       setTimeout(function(){ 
         openFolder( currentOpened.id , { 'onedriveFolder' : currentOpened } );
-      }, 1000); 
+      }, 1500); 
     });
   }
 
@@ -746,10 +771,18 @@ var clipboardPaste = function(){
     storage.cut.forEach( function( item ){
 
       if ( item.fsnode.parent != currentOpened.id ) {
-        item.fsnode.move( currentOpened.id, function(){
-          console.log( arguments );
-        });
+
+        if( item.fsnode.type === TYPE_DROPBOX_FOLDER || item.fsnode.type === TYPE_DROPBOX_FILE ){
+          item.fsnode.move( currentOpened, function(){
+            console.log( arguments );
+          });
+        }else{
+          item.fsnode.move( currentOpened.id, function(){
+            console.log( arguments );
+          });
+        }
       }
+
 
     });
 
@@ -786,7 +819,8 @@ var contextmenuAcceptFile = function( fsnode ){
 
 var createFolder = function(){
 
-  if ( currentOpened.type === TYPE_DROPBOX_FOLDER ) {
+  //Dropbox new folder
+  if ( currentOpened.type === TYPE_DROPBOX_FOLDER || currentOpened.type === TYPE_DROPBOX_FILE) {
 
     dropboxAccountActive.createFolder( currentOpened.path_display + '/' + getAvailableNewFolderName() , function( e , newDirectory ){
 
@@ -801,7 +835,8 @@ var createFolder = function(){
 
     });
 
-  }else if( currentOpened.type === TYPE_GDRIVE_FOLDER ){
+  //Google drive new folder
+  }else if( currentOpened.type === TYPE_GDRIVE_FOLDER || currentOpened.type === TYPE_GDRIVE_FILE){
 
     var folderId = currentOpened.id === 'gdriveRoot' ? 'root' : currentOpened.id;
     gdriveAccountActive.createFolder( getAvailableNewFolderName() , folderId , function( e , newDirectory ){
@@ -817,7 +852,8 @@ var createFolder = function(){
 
     });
 
-  }else if( currentOpened.type === TYPE_ONEDRIVE_FOLDER ){
+  //Onedrive new folder
+  }else if( currentOpened.type === TYPE_ONEDRIVE_FOLDER || currentOpened.type === TYPE_ONEDRIVE_FILE){
 
     var folderId = currentOpened.id === 'onedriveRoot' ? 'root' : currentOpened.id;
     onedriveAccountActive.createFolder( getAvailableNewFolderName() , folderId , function( e , newDirectory ){
@@ -1902,11 +1938,11 @@ var historyGoBack = function(){
 
   var backFolder = historyBackward.pop();
 
-  if ( backFolder.type === TYPE_DROPBOX_FOLDER ) {
+  if ( backFolder.type === TYPE_DROPBOX_FOLDER || backFolder.type === TYPE_DROPBOX_FILE) {
     openFolder( backFolder.id , { 'isBack' : true, 'dropboxFolder' : backFolder } );
-  }else if( backFolder.type === TYPE_GDRIVE_FOLDER ){
+  }else if( backFolder.type === TYPE_GDRIVE_FOLDER || backFolder.type === TYPE_GDRIVE_FILE ){
     openFolder( backFolder.id , { 'isBack' : true, 'gdriveFolder' : backFolder } );
-  }else if( backFolder.type === TYPE_ONEDRIVE_FOLDER ){
+  }else if( backFolder.type === TYPE_ONEDRIVE_FOLDER || backFolder.type === TYPE_ONEDRIVE_FILE){
     openFolder( backFolder.id , { 'isBack' : true, 'onedriveFolder' : backFolder } );
   }else{
     openFolder( backFolder.id , { 'isBack' : true } );
@@ -1927,11 +1963,11 @@ var historyGoForward = function(){
 
   var forwardFolder = historyForward.shift();
 
-  if ( forwardFolder.type === TYPE_DROPBOX_FOLDER ) {
+  if ( forwardFolder.type === TYPE_DROPBOX_FOLDER || backFolder.type === TYPE_DROPBOX_FILE) {
     openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true , 'dropboxFolder' : forwardFolder } );
-  }else if( forwardFolder.type === TYPE_GDRIVE_FOLDER ){
+  }else if( forwardFolder.type === TYPE_GDRIVE_FOLDER || backFolder.type === TYPE_GDRIVE_FILE){
     openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true , 'gdriveFolder' : forwardFolder } );
-  }else if( backFolder.type === TYPE_ONEDRIVE_FOLDER ){
+  }else if( backFolder.type === TYPE_ONEDRIVE_FOLDER || backFolder.type === TYPE_ONEDRIVE_FILE){
     openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true , 'onedriveFolder' : forwardFolder } );
   }else{
     openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true } );
@@ -2878,37 +2914,35 @@ var generateContextMenu = function( item, options ){
 
     menu
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'dropboxFolder' : item.fsnode } ) )
-    .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
-    .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
     .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
     .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
-
+    .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
+    .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
 
   }else if( item.fsnode.type === TYPE_DROPBOX_FILE || item.fsnode.type === TYPE_GDRIVE_FILE || item.fsnode.type === TYPE_ONEDRIVE_FILE){
 
     menu
-    .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
-    .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
     .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
     .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
+    .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
+    .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
 
   }else if( item.fsnode.type === TYPE_GDRIVE_FOLDER ){
 
     menu
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'gdriveFolder' : item.fsnode } ) )
+    .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
     .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
     .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
-    .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
-    .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
 
   }else if( item.fsnode.type === TYPE_ONEDRIVE_FOLDER ){
 
     menu
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'onedriveFolder' : item.fsnode } ) )
-    .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
-    .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
     .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
     .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
+    .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
+    .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
 
   }
 
@@ -3390,6 +3424,7 @@ visualSidebarItemArea
 
   var destiny = $(this).removeClass('dropover').data('id');
 
+
   list.filter( function( item ){
     return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
   }).forEach( function( item ){
@@ -3635,6 +3670,7 @@ visualItemArea
   }else{
 
     var destiny = itemOver && itemOver.fsnode.type !== TYPE_FILE ? itemOver.fsnode.id : currentOpened.id;
+    var destinyNode = itemOver && itemOver.fsnode.type !== TYPE_FILE ? itemOver.fsnode : currentOpened;
 
     list.filter( function( item ){
       return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
@@ -3642,7 +3678,7 @@ visualItemArea
       
       if( item.fsnode.type === TYPE_DROPBOX_FOLDER || item.fsnode.type === TYPE_DROPBOX_FILE ){
         appendItemToList( item.fsnode );
-        item.fsnode.move( destiny, function(){
+        item.fsnode.move( destinyNode, function(){
           console.log( arguments );
         });
       }else if( item.fsnode.type === TYPE_GDRIVE_FOLDER || item.fsnode.type === TYPE_GDRIVE_FILE ){
@@ -3655,7 +3691,7 @@ visualItemArea
         item.fsnode.move( destiny, function(){
           console.log( arguments );
         });
-      }else if( item.fsnode.parent != destiny || item.fsnode.type > TYPE_DROPBOX_FOLDER) {
+      }else if( item.fsnode.parent != destiny ) {
         item.fsnode.move( destiny, function(){
           console.log( arguments );
         });
