@@ -225,6 +225,9 @@ var dropboxNode = function( data ){
 
   var that = $.extend( this, data )
 
+  that.integration = true;
+  that.dropbox = true;
+
   if ( data.isFolder ) {
     that.icons = folderIcons.normal;
     that.type = TYPE_DROPBOX_FOLDER;
@@ -240,15 +243,10 @@ var dropboxNode = function( data ){
       return;
     }
 
-    dropboxAccountActive.move( data.path_display , destiny.path_display , function(){
-      that.path_display = destiny.path_display + '/' + that.name;
-      var originFolder = data.path_display.replace( '/' + data.name, '' )
-      if( originFolder === currentOpened.path_display ){
-        removeItemFromList( data.id );
-      }else{
-        appendItemToList( that );
+    dropboxAccountActive.move( that.path_display , destiny.path_display , function( err ){
+      if ( err ) {
+        console.log('Error dropbox move', err);
       }
-      requestDraw();
     });
   }
 
@@ -259,15 +257,17 @@ var dropboxNode = function( data ){
   }
 
   that.remove = function(){
-    dropboxAccountActive.remove( data.path_display, function( e , node ){
-      removeItemFromList( node.id );
+    dropboxAccountActive.remove( that.path_display, function( err , node ){
+      if ( err ) {
+        console.log('Error dropbox move', err);
+      }
     });
   }
 
   that.rename = function( newName ){
-    var oldPath = data.path_display;
+    var oldPath = that.path_display;
     that.name = newName;
-    that.path_display = data.path_display.replace( oldPath.split('/').pop(), newName);
+    that.path_display = that.path_display.replace( oldPath.split('/').pop(), newName);
     dropboxAccountActive.rename( oldPath, that.path_display, function(){
       console.log(arguments)
     });
@@ -276,15 +276,15 @@ var dropboxNode = function( data ){
 
   that.copy = function( destiny ){
 
-    if ( destiny.permissions ) {
+    if ( !destiny.integration ) {
       that.uploadToHorbito( destiny );
       return;
     }
 
-    dropboxAccountActive.copy( data.path_display , destiny.path_display , function( err, item ){
-      item.metadata.isFolder = data.isFolder;
-      appendItemToList( new dropboxNode( item.metadata ) );
-      requestDraw();
+    dropboxAccountActive.copy( that.path_display , destiny.path_display , function( err, item ){
+      if ( err ) {
+        console.log('Error dropbox copy', err);
+      }
     });
   }
 
@@ -294,7 +294,11 @@ var dropboxNode = function( data ){
       console.log('Hey carlos! se esta intentando subir un archivo de dropbox a horbito->', that , destiny );
       console.log('Respuesta en el callback: ' , arguments);
     });
+  }
 
+  that.getParent = function(){
+    var parentName = that.path_display.split('/')[ that.path_display.split('/').length - 2 ];
+    return parentName === '' ? 'Dropbox' : parentName;
   }
 
   return that;
@@ -304,6 +308,9 @@ var dropboxNode = function( data ){
 var gdriveNode = function( data ){
 
   var that = $.extend( this, data )
+
+  that.integration = true;
+  that.gdrive = true;
 
   if ( data.isFolder ) {
     that.icons = folderIcons.normal;
@@ -358,6 +365,9 @@ var gdriveNode = function( data ){
 var onedriveNode = function( data ){
 
   var that = $.extend( this, data )
+
+  that.integration = true;
+  that.onedrive = true;
 
   if ( data.isFolder ) {
     that.icons = folderIcons.normal;
@@ -834,6 +844,7 @@ var createFolder = function(){
       showRenameTextarea( currentIcons[ newDirectory.id ] );
 
     });
+
 
   //Google drive new folder
   }else if( currentOpened.type === TYPE_GDRIVE_FOLDER || currentOpened.type === TYPE_GDRIVE_FILE){
@@ -3677,7 +3688,7 @@ visualItemArea
     }).forEach( function( item ){
       
       if( item.fsnode.type === TYPE_DROPBOX_FOLDER || item.fsnode.type === TYPE_DROPBOX_FILE ){
-        appendItemToList( item.fsnode );
+        if ( !destinyNode.permissions ) { appendItemToList( item.fsnode ) }
         item.fsnode.move( destinyNode, function(){
           console.log( arguments );
         });
@@ -3958,6 +3969,35 @@ $('.old-cloud-popup').on('click', '.oneDrive' , function(){
   });
 });
 
+api.integration.dropbox.on('modified', function( entry ){
+  console.log( 'DROPBOX MODIFIED', entry);
+  if (entry['.tag'] === 'folder') {
+    entry.isFolder = true;
+  }else{
+    entry.isFolder = false;
+  }
+  var node = new dropboxNode( entry );
+  if( node.getParent() === currentOpened.name ){
+    appendItemToList( node );
+    currentIcons[ node.id ].fsnode = node;
+    requestDraw();
+  }
+});
+
+api.integration.dropbox.on('removed', function( entry ){
+  console.log( 'DROPBOX REMOVED', entry);
+  var node = new dropboxNode( entry );
+  if( node.getParent() === currentOpened.name ){
+    for(var id in currentIcons){
+      var icon = currentIcons[id];
+      if ( icon.fsnode.name === entry.name ) {
+        removeItemFromList( icon.fsnode.id );
+        requestDraw();
+      }
+    }
+  }
+});
+
 var openDropboxAccount = function( sidebarItem ){
   dropboxAccountActive = $(sidebarItem).data('account');
   var dropboxRoot = {
@@ -3965,7 +4005,7 @@ var openDropboxAccount = function( sidebarItem ){
     'id'            : 'dropboxRoot',
     'path_display'  : '',
     'getPath'       : function( callback ){
-      callback( null, [{'name' : 'Dropbox'}]);
+      callback( null, [{'name' : 'Dropbox', id: 'dropboxRoot'}]);
     }
   }
   openFolder( 'dropboxRoot' , { 'dropboxFolder' : dropboxRoot } );
@@ -3978,7 +4018,7 @@ var openGdriveAccount = function( sidebarItem ){
     'id'            : 'gdriveRoot',
     'path_display'  : '',
     'getPath'       : function( callback ){
-      callback( null, [{'name' : 'Google Drive'}]);
+      callback( null, [{'name' : 'Google Drive', id: 'gdriveRoot'}]);
     }
   }
   openFolder( 'gdriveRoot' , { 'gdriveFolder' : gdriveRoot } );
@@ -3994,7 +4034,7 @@ var openOnedriveAccount = function( sidebarItem ){
       callback( null, [{'name' : 'Onedrive'}]);
     }
   }
-  openFolder( 'onedriveRoot' , { 'onedriveFolder' : onedriveRoot } );
+  openFolder( 'onedriveRoot' , { 'onedriveFolder' : onedriveRoot, id: 'onedriveRoot' } );
 };
 
 var requestDropboxItems = function( folder ){
@@ -4009,19 +4049,11 @@ var requestDropboxItems = function( folder ){
     list = list.entries.map(function( entry ){
       
       if (entry['.tag'] === 'folder') {
-        return new dropboxNode({
-          'isFolder'      : true,
-          'path_display'  : entry.path_display,
-          'name'          : entry.name,
-          'id'            : entry.id
-        })
+        entry.isFolder = true;
+        return new dropboxNode( entry )
       }else{
-        return new dropboxNode({
-          'isFolder'      : false,
-          'path_display'  : entry.path_display,
-          'name'          : entry.name,
-          'id'            : entry.id
-        })
+        entry.isFolder = false;
+        return new dropboxNode( entry )
       }
 
     });
