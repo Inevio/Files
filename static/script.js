@@ -291,8 +291,8 @@ var dropboxNode = function( data ){
   that.uploadToHorbito = function( destiny ){
 
     dropboxAccountActive.toHorbito( [ that.path_display ], destiny.id, function(){
-      console.log('Hey carlos! se esta intentando subir un archivo de dropbox -> '+ that +' a horbito -> ' + destiny );
-      console.log('Respuesta en el callback: ' + arguments);
+      console.log('Hey carlos! se esta intentando subir un archivo de dropbox a horbito->', that , destiny );
+      console.log('Respuesta en el callback: ' , arguments);
     });
 
   }
