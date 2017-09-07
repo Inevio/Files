@@ -3970,7 +3970,6 @@ $('.old-cloud-popup').on('click', '.oneDrive' , function(){
 });
 
 api.integration.dropbox.on('modified', function( entry ){
-  console.log( 'DROPBOX MODIFIED', entry);
   if (entry['.tag'] === 'folder') {
     entry.isFolder = true;
   }else{
@@ -3985,7 +3984,6 @@ api.integration.dropbox.on('modified', function( entry ){
 });
 
 api.integration.dropbox.on('removed', function( entry ){
-  console.log( 'DROPBOX REMOVED', entry);
   var node = new dropboxNode( entry );
   if( node.getParent() === currentOpened.name ){
     for(var id in currentIcons){
@@ -4004,6 +4002,9 @@ var openDropboxAccount = function( sidebarItem ){
     'type'          : TYPE_DROPBOX_FOLDER,
     'id'            : 'dropboxRoot',
     'path_display'  : '',
+    'integration'   : true,
+    'dropbox'       : true,
+    'name'          : 'Dropbox',
     'getPath'       : function( callback ){
       callback( null, [{'name' : 'Dropbox', id: 'dropboxRoot'}]);
     }
@@ -4017,6 +4018,9 @@ var openGdriveAccount = function( sidebarItem ){
     'type'          : TYPE_GDRIVE_FOLDER,
     'id'            : 'gdriveRoot',
     'path_display'  : '',
+    'integration'   : true,
+    'gdrive'        : true,
+    'name'          : 'Google Drive',
     'getPath'       : function( callback ){
       callback( null, [{'name' : 'Google Drive', id: 'gdriveRoot'}]);
     }
@@ -4030,6 +4034,9 @@ var openOnedriveAccount = function( sidebarItem ){
     'type'          : TYPE_ONEDRIVE_FOLDER,
     'id'            : 'onedriveRoot',
     'path_display'  : '',
+    'integration'   : true,
+    'onedrive'      : true,
+    'name'          : 'Onedrive',
     'getPath'       : function( callback ){
       callback( null, [{'name' : 'Onedrive'}]);
     }
