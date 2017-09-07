@@ -238,7 +238,7 @@ var dropboxNode = function( data ){
 
   that.move = function( destiny ){
     
-    if ( destiny.permissions ) {
+    if ( !destiny.integration ) {
       that.uploadToHorbito( destiny );
       return;
     }
@@ -259,7 +259,7 @@ var dropboxNode = function( data ){
   that.remove = function(){
     dropboxAccountActive.remove( that.path_display, function( err , node ){
       if ( err ) {
-        console.log('Error dropbox move', err);
+        console.log('Error dropbox remove', err);
       }
     });
   }
@@ -268,8 +268,10 @@ var dropboxNode = function( data ){
     var oldPath = that.path_display;
     that.name = newName;
     that.path_display = that.path_display.replace( oldPath.split('/').pop(), newName);
-    dropboxAccountActive.rename( oldPath, that.path_display, function(){
-      console.log(arguments)
+    dropboxAccountActive.rename( oldPath, that.path_display, function( err ){
+      if ( err ) {
+        console.log('Error dropbox rename', err);
+      }
     });
   }
 
@@ -322,40 +324,58 @@ var gdriveNode = function( data ){
 
   that.move = function( destiny ){
 
-    gdriveAccountActive.move( data.id , destiny , function(){
-      if( destiny === currentOpened.id ){
-        appendItemToList( that );
-      }else{
-        removeItemFromList( data.id );
+    if ( !destiny.integration ) {
+      that.uploadToHorbito( destiny );
+      return;
+    }
+
+    gdriveAccountActive.move( data.id , destiny , function( err ){
+      if ( err ) {
+        console.log('Error gdrive move', err);
       }
-      requestDraw();
     });
   }
 
   that.getPath = function( callback ){
-    gdriveAccountActive.getPath( data.id , function( e , path ){
+    gdriveAccountActive.getPath( data.id , function( err , path ){
       callback( null, path.map(function(item){ return new gdriveNode( item ) }) );
     });
   }
 
   that.remove = function(){
-    gdriveAccountActive.delete( data.id, function(){
-      removeItemFromList( data.id );
+    gdriveAccountActive.delete( data.id, function( err ){
+      if ( err ) {
+        console.log('Error gdrive delete', err);
+      }
     });
   }
 
   that.rename = function( newName ){
-    gdriveAccountActive.rename( data.id, newName, function(){
-      console.log(arguments)
+    gdriveAccountActive.rename( data.id, newName, function( err ){
+      if ( err ) {
+        console.log('Error gdrive rename', err);
+      }
     });
   }
 
   that.copy = function( destiny ){
-    gdriveAccountActive.copy( data.id, destiny.id, function( e , item ){
-      item.isFolder = data.isFolder;
-      appendItemToList( new gdriveNode( item ) );
-      requestDraw();
+    gdriveAccountActive.copy( data.id, destiny.id, function( err , item ){
+      if ( err ) {
+        console.log('Error gdrive copy', err);
+      }
     });
+  }
+
+  that.uploadToHorbito = function( destiny ){
+
+    gdriveAccountActive.toHorbito( [ that.id ], destiny.id, function(){
+      console.log('Hey carlos! se esta intentando subir un archivo de gdrive a horbito->', that , destiny );
+      console.log('Respuesta en el callback: ' , arguments);
+    });
+  }
+
+  that.getParent = function(){
+    return that.parents[0];
   }
 
   return that;
@@ -3996,6 +4016,33 @@ api.integration.dropbox.on('removed', function( entry ){
   }
 });
 
+api.integration.gdrive.on('modified', function( entry ){
+  if (entry['.tag'] === 'folder') {
+    entry.isFolder = true;
+  }else{
+    entry.isFolder = false;
+  }
+  var node = new gdriveNode( entry );
+  if( node.getParent() === currentOpened.id ){
+    appendItemToList( node );
+    currentIcons[ node.id ].fsnode = node;
+    requestDraw();
+  }
+});
+
+api.integration.gdrive.on('removed', function( entry ){
+  var node = new gdriveNode( entry );
+  if( node.getParent() === currentOpened.id ){
+    for(var id in currentIcons){
+      var icon = currentIcons[id];
+      if ( icon.fsnode.name === entry.name ) {
+        removeItemFromList( icon.fsnode.id );
+        requestDraw();
+      }
+    }
+  }
+});
+
 var openDropboxAccount = function( sidebarItem ){
   dropboxAccountActive = $(sidebarItem).data('account');
   var dropboxRoot = {
@@ -4087,19 +4134,11 @@ var requestGdriveItems = function( folder ){
       list = list.files.map(function( entry ){
         
         if ( entry.mimeType.indexOf('folder') !== -1 ) {
-          return new gdriveNode({
-            'isFolder'      : true,
-            'path_display'  : entry.path_display,
-            'name'          : entry.name,
-            'id'            : entry.id
-          })
+          entry.isFolder = true;
+          return new gdriveNode( entry );
         }else{
-          return new gdriveNode({
-            'isFolder'      : false,
-            'path_display'  : entry.path_display,
-            'name'          : entry.name,
-            'id'            : entry.id
-          })
+          entry.isFolder = false;
+          return new gdriveNode( entry );
         }
 
       });
@@ -4118,19 +4157,11 @@ var requestGdriveItems = function( folder ){
       list = list.files.map(function( entry ){
         
         if ( entry.mimeType.indexOf('folder') !== -1 ) {
-          return new gdriveNode({
-            'isFolder'      : true,
-            'path_display'  : entry.path_display,
-            'name'          : entry.name,
-            'id'            : entry.id
-          })
+          entry.isFolder = true;
+          return new gdriveNode( entry )
         }else{
-          return new gdriveNode({
-            'isFolder'      : false,
-            'path_display'  : entry.path_display,
-            'name'          : entry.name,
-            'id'            : entry.id
-          })
+          entry.isFolder = false;
+          return new gdriveNode( entry )
         }
 
       });
