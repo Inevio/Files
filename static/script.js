@@ -329,7 +329,7 @@ var gdriveNode = function( data ){
       return;
     }
 
-    gdriveAccountActive.move( data.id , destiny , function( err ){
+    gdriveAccountActive.move( data.id , destiny.id , function( err ){
       if ( err ) {
         console.log('Error gdrive move', err);
       }
@@ -359,6 +359,12 @@ var gdriveNode = function( data ){
   }
 
   that.copy = function( destiny ){
+
+    if ( !destiny.integration ) {
+      that.uploadToHorbito( destiny );
+      return;
+    }
+
     gdriveAccountActive.copy( data.id, destiny.id, function( err , item ){
       if ( err ) {
         console.log('Error gdrive copy', err);
@@ -374,8 +380,10 @@ var gdriveNode = function( data ){
     });
   }
 
-  that.getParent = function(){
-    return that.parents[0];
+  that.getParent = function( callback ){
+    that.getPath( function( err , path ){
+      callback( null, path[ path.length - 2 ].name);
+    });
   }
 
   return that;
@@ -398,14 +406,16 @@ var onedriveNode = function( data ){
   }
 
   that.move = function( destiny ){
-    onedriveAccountActive.move( data.id , destiny , function(){
-          console.log(arguments)
-      if( destiny === currentOpened.id ){
-        appendItemToList( that );
-      }else{
-        removeItemFromList( data.id );
+
+    if ( !destiny.integration ) {
+      that.uploadToHorbito( destiny );
+      return;
+    }
+
+    onedriveAccountActive.move( data.id , destiny.id , function( err ){
+      if ( err ) {
+        console.log('Error onedrive move', err);
       }
-      requestDraw();
     });
   }
 
@@ -416,23 +426,45 @@ var onedriveNode = function( data ){
   }
 
   that.remove = function(){
-    onedriveAccountActive.delete( data.id, function( e ){
-      removeItemFromList( data.id );
+    onedriveAccountActive.delete( data.id, function( err ){
+      if ( err ) {
+        console.log('Error onedrive delete', err);
+      }
     });
   }
 
   that.rename = function( newName ){
-    onedriveAccountActive.rename( newName, data.id, function(){
-      console.log(arguments)
+    onedriveAccountActive.rename( newName, data.id, function( err ){
+      if ( err ) {
+        console.log('Error onedrive rename', err);
+      }
     });
   }
 
   that.copy = function( destiny ){
-    onedriveAccountActive.copy( data.id , destiny.id , function(){
-      setTimeout(function(){ 
-        openFolder( currentOpened.id , { 'onedriveFolder' : currentOpened } );
-      }, 1500); 
+
+    if ( !destiny.integration ) {
+      that.uploadToHorbito( destiny );
+      return;
+    }
+
+    onedriveAccountActive.copy( data.id , destiny.id , function( err ){
+      if ( err ) {
+        console.log('Error onedrive copy', err);
+      }
     });
+  }
+
+  that.uploadToHorbito = function( destiny ){
+
+    onedriveAccountActive.toHorbito( [ that.id ], destiny.id, function(){
+      console.log('Hey carlos! se esta intentando subir un archivo de onedrive a horbito->', that , destiny );
+      console.log('Respuesta en el callback: ' , arguments);
+    });
+  }
+
+  that.getParent = function(){
+    console.warn('not implemented');
   }
 
   return that;
@@ -802,7 +834,7 @@ var clipboardPaste = function(){
 
       if ( item.fsnode.parent != currentOpened.id ) {
 
-        if( item.fsnode.type === TYPE_DROPBOX_FOLDER || item.fsnode.type === TYPE_DROPBOX_FILE ){
+        if( item.fsnode.type >= TYPE_DROPBOX_FOLDER ){
           item.fsnode.move( currentOpened, function(){
             console.log( arguments );
           });
@@ -3707,24 +3739,13 @@ visualItemArea
       return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
     }).forEach( function( item ){
       
-      if( item.fsnode.type === TYPE_DROPBOX_FOLDER || item.fsnode.type === TYPE_DROPBOX_FILE ){
-        if ( !destinyNode.permissions ) { appendItemToList( item.fsnode ) }
-        item.fsnode.move( destinyNode, function(){
-          console.log( arguments );
-        });
-      }else if( item.fsnode.type === TYPE_GDRIVE_FOLDER || item.fsnode.type === TYPE_GDRIVE_FILE ){
-        appendItemToList( item.fsnode );
-        item.fsnode.move( destiny, function(){
-          console.log( arguments );
-        });
-      }else if( item.fsnode.type === TYPE_ONEDRIVE_FOLDER || item.fsnode.type === TYPE_ONEDRIVE_FILE ){
-        appendItemToList( item.fsnode );
-        item.fsnode.move( destiny, function(){
-          console.log( arguments );
+      if(  item.fsnode.type >= TYPE_DROPBOX_FOLDER  ){
+        item.fsnode.move( destinyNode, function( err ){
+          if ( err ) { console.log('Err: ', err) }
         });
       }else if( item.fsnode.parent != destiny ) {
-        item.fsnode.move( destiny, function(){
-          console.log( arguments );
+        item.fsnode.move( destiny, function( err ){
+          if ( err ) { console.log('Err: ', err) }
         });
       }
 
@@ -4017,30 +4038,41 @@ api.integration.dropbox.on('removed', function( entry ){
 });
 
 api.integration.gdrive.on('modified', function( entry ){
+  entry.id = entry.fileId;
   if (entry['.tag'] === 'folder') {
     entry.isFolder = true;
   }else{
     entry.isFolder = false;
   }
   var node = new gdriveNode( entry );
-  if( node.getParent() === currentOpened.id ){
-    appendItemToList( node );
-    currentIcons[ node.id ].fsnode = node;
-    requestDraw();
-  }
+
+  node.getParent(function( err, parent ){
+    if( parent === currentOpened.name ){
+      appendItemToList( node );
+      currentIcons[ node.id ].fsnode = node;
+      requestDraw();
+    }
+  });
 });
 
 api.integration.gdrive.on('removed', function( entry ){
   var node = new gdriveNode( entry );
-  if( node.getParent() === currentOpened.id ){
-    for(var id in currentIcons){
-      var icon = currentIcons[id];
-      if ( icon.fsnode.name === entry.name ) {
-        removeItemFromList( icon.fsnode.id );
-        requestDraw();
+
+  node.getParent(function( err, parent ){
+
+    if( parent === currentOpened.id ){
+      for(var id in currentIcons){
+        var icon = currentIcons[id];
+        if ( icon.fsnode.name === entry.name ) {
+          removeItemFromList( icon.fsnode.id );
+          requestDraw();
+        }
       }
     }
-  }
+
+  });
+
+
 });
 
 var openDropboxAccount = function( sidebarItem ){
