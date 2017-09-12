@@ -1155,6 +1155,8 @@
     margin-left: ~'calc(50% - 75px)';
     bottom: 22px;
     position: absolute;
+    opacity: 0.7;
+    transition: all 0.2s ease;
     span{
       float: left;
       color: #252525;
@@ -1164,6 +1166,10 @@
       text-align: center;
       margin-top: 11px;  
     }              
+  }
+
+  .got-it-button:hover {
+    opacity: 1;
   }
 
 }
