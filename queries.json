@@ -14,7 +14,9 @@
     "removeFolder"  : "DELETE FROM sidebar WHERE user = @userId AND folder = ? LIMIT 1",
     "changeOrder"   : "UPDATE sidebar SET `order` = ? WHERE user = @userId AND folder = ? LIMIT 1",
 
-    "firstOpenDone"  : "INSERT INTO first_open (user) VALUES (?)",
-    "isFirstOpen"    : "SELECT * FROM first_open WHERE user = ?"
+    "firstOpenDone"  : "INSERT INTO first_open SET user = ?, upload_explain = 0",
+    "isFirstOpen"    : "SELECT * FROM first_open WHERE user = ?",
+
+    "uploadExplainDone" : "UPDATE first_open SET upload_explain = 1 WHERE user = ?"
 
 }
