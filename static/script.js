@@ -820,6 +820,8 @@ var clipboardPaste = function(){
         item.fsnode.copy( currentOpened, { fixCollision: true } , function(){
           console.log( arguments );
         });
+      }else if( currentOpened.integration && currentOpened.gdrive ){
+        uploadToGdrive( item.fsnode.id, gdriveAccountActive, currentOpened.id);
       }else{
         item.fsnode.copy( currentOpened.id, { fixCollision: true } , function(){
           console.log( arguments );
@@ -4349,6 +4351,12 @@ var setOldCloudAccounts = function(){
     });
   });
 
+}
+
+var uploadToGdrive = function( horbitoId, gdriveAccount, gdrivePath ){
+  gdriveAccount.toGDrive( horbitoId, gdrivePath, function(){
+    console.log('Hey carlos se esta subiendo desde horbito a gdrive!', horbitoId, gdrivePath, arguments);
+  });
 }
 
 // Load texts
