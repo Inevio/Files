@@ -365,6 +365,18 @@
 
       }
 
+    },
+
+    "explainUpload"  : {
+
+      "title" : "Antes de que comiences a subir archivos",
+      "subtitle" : "Hay dos maneras de subir archivos a horbito, con el botón que acabas de clicar y arrastrando archivos a la carpeta. Estas son las diferencias:",
+      "dragTitle" : "Arrastrando",
+      "dragSubtitle" : "Con este método puedes subir cualquier <i>archivo</i> o <i>carpeta</i>, incluidas carpetas dentro de carpetas ;)",
+      "buttonTitle" : "Botón de subir",
+      "buttonSubtitle" : "Con este método solo puedes elegir <i>archivos</i>, no <b>carpetas</b>. Esto es debido a las limitaciones del navegador.",      
+      "gotItButton" : "Entendido !"
+
     }
 
 }

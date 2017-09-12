@@ -365,6 +365,18 @@
 
       }
 
+    },
+
+    "explainUpload"  : {
+
+      "title" : "Before you start uploading",
+      "subtitle" : "There are 2 ways you cand upload to horbito, with the button you just clicked and with drag and drop. Here are the differences:",
+      "dragTitle" : "Drag & drop",
+      "dragSubtitle" : "With this method you can upload any <i>file</i> or <i>folder</i>, even folders inside folders ;)",
+      "buttonTitle" : "Upload button",
+      "buttonSubtitle" : "With this method you can only choose <i>files</i> not <b>folders</b>. This is due to Browser limitations",      
+      "gotItButton" : "Got it !"
+
     }
 
 }

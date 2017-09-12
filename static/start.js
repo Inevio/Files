@@ -19,12 +19,16 @@ if( typeof cordova == 'undefined' ){
     if ( o.length === 0 ){
 
       win.addClass('first-open');
+      win.addClass('upload-not-explained');
 
       wql.firstOpenDone( [ api.system.user().id ] , function( e , o ){
         if(e) console.log(e);
       });
 
+    }else if(! o[0]['upload_explain']){
+      win.addClass('upload-not-explained');
     }
+
     start();
 
   });
