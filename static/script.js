@@ -3078,6 +3078,11 @@ var refreshGdrive = function(){
   }
 }
 
+var refreshOnedrive = function(){
+  if ( currentOpened.integration && currentOpened.onedrive ) {
+    openFolder( currentOpened.id , { 'onedriveFolder' : currentOpened } );
+  }
+}
 
 // API Events
 api.fs
@@ -4046,6 +4051,14 @@ api.integration.gdrive.on('modified', function( entry ){
 
 api.integration.gdrive.on('removed', function( entry ){
   refreshGdrive();
+});
+
+api.integration.onedrive.on('modified', function( entry ){
+  refreshOnedrive();
+});
+
+api.integration.onedrive.on('removed', function( entry ){
+  refreshOnedrive();
 });
 
 var openDropboxAccount = function( sidebarItem ){
