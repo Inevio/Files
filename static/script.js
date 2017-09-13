@@ -380,12 +380,6 @@ var gdriveNode = function( data ){
     });
   }
 
-  that.getParent = function( callback ){
-    that.getPath( function( err , path ){
-      callback( null, path[ path.length - 2 ].name);
-    });
-  }
-
   return that;
 
 }
@@ -3078,6 +3072,13 @@ var startOnboarding = function(){
 
 }
 
+var refreshGdrive = function(){
+  if ( currentOpened.integration && currentOpened.gdrive ) {
+    openFolder( currentOpened.id , { 'gdriveFolder' : currentOpened } );
+  }
+}
+
+
 // API Events
 api.fs
 .on( 'new', function( fsnode ){
@@ -4040,41 +4041,11 @@ api.integration.dropbox.on('removed', function( entry ){
 });
 
 api.integration.gdrive.on('modified', function( entry ){
-  entry.id = entry.fileId;
-  if (entry['.tag'] === 'folder') {
-    entry.isFolder = true;
-  }else{
-    entry.isFolder = false;
-  }
-  var node = new gdriveNode( entry );
-
-  node.getParent(function( err, parent ){
-    if( parent === currentOpened.name ){
-      appendItemToList( node );
-      currentIcons[ node.id ].fsnode = node;
-      requestDraw();
-    }
-  });
+  refreshGdrive();
 });
 
 api.integration.gdrive.on('removed', function( entry ){
-  var node = new gdriveNode( entry );
-
-  node.getParent(function( err, parent ){
-
-    if( parent === currentOpened.id ){
-      for(var id in currentIcons){
-        var icon = currentIcons[id];
-        if ( icon.fsnode.name === entry.name ) {
-          removeItemFromList( icon.fsnode.id );
-          requestDraw();
-        }
-      }
-    }
-
-  });
-
-
+  refreshGdrive();
 });
 
 var openDropboxAccount = function( sidebarItem ){
