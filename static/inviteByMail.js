@@ -122,5 +122,17 @@ app.on( 'click' , '.social-networks .fb-button' , function(){
 
 })
 
+window.fbAsyncInit = function() {
+
+  FB.init({
+    appId      : '425462067838557',
+    cookie     : true,  // enable cookies to allow the server to access 
+                        // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.9' // use graph api version 2.8
+  });
+
+};
+
 generateGmailUrl();
 initText();
