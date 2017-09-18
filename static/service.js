@@ -49,7 +49,8 @@ var addArrow = function( appName, text, position ){
     'left': $( '#wz-taskbar', window.document ).width(),
     'margin-left' : '10px',
     'box-sizing': 'border-box',
-    'z-index' : -1
+    'z-index' : -1,
+    'display' : 'none'
 
   });
 
