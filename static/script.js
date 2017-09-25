@@ -178,6 +178,7 @@ var visualAcceptButton         = $('.ui-confirm .accept');
 var visualCancelButton         = $('.ui-confirm .cancel');
 var visualDestinyNameInput     = $('.ui-confirm input');
 var sortOptions                = $('.sort-options');
+var gotItUploadExplained       = $('.explain-upload .got-it-button')
 var visualSharingNotificationPrototype = $('.share-notification.wz-prototype');
 var ctx                        = visualItemArea[ 0 ].getContext('2d');
 var backingStoreRatio          = ctx.webkitBackingStorePixelRatio ||
@@ -2805,7 +2806,7 @@ var generateContextMenu = function( item, options ){
     }
 
     menu
-    .addOption( lang.main.upload, function(){ visualUploadButton.click()  } )
+    .addOption( lang.main.upload, function(){ visualUploadButton.click() } )
     .addOption( lang.main.newFolder, createFolder )
     .addOption( lang.main.paste, clipboardPaste )
 
@@ -3069,6 +3070,13 @@ var startOnboarding = function(){
   $('.ui-content .welcome-tip').show();
   contextTimeout = setTimeout( function(){ $('.context-menu-reminder').show(); }, 300000 );//5 min
   $( '.onboarding-arrow.arrow-files' , window.document ).remove();
+  $( '.onboarding-arrow.arrow-community' , window.document ).show();
+
+}
+
+var upload = function( uploadButton ){
+  
+  
 
 }
 
@@ -3587,9 +3595,26 @@ sortOptions.on( 'mousedown', function( e ){
   e.stopPropagation()
 })
 
-visualUploadButton.on( 'click', function(){
+visualUploadButton.on( 'click', function( e ){
 
-  $(this).data( 'destiny', currentOpened.id );
+
+  if ( win.hasClass('upload-not-explained') ){
+
+      if (window.navigator.platform.indexOf('Mac') !== -1) {
+        $('.drag .gif').css('background-image', "url('https://static.horbito.com/app/1/img/uploadDragMac.gif')");
+        $('.button .gif').css('background-image', "url('https://static.horbito.com/app/1/img/uploadButtonMac.gif')");
+      }else{
+        $('.drag .gif').css('background-image', "url('https://static.horbito.com/app/1/img/uploadDragWin.gif')");
+        $('.button .gif').css('background-image', "url('https://static.horbito.com/app/1/img/uploadButtonWin.gif')");
+      }
+
+      $('.explain-upload').show();
+
+  }else{
+
+    $(this).data( 'destiny', currentOpened.id );
+
+  }
 
   /*
   if( current.id !== $( '.sharedFolder', sidebar ).data( 'file-id' ) && current.id !== $( '.receivedFolder', sidebar ).data( 'file-id' ) ){
@@ -3598,6 +3623,23 @@ visualUploadButton.on( 'click', function(){
     $(this).removeData( 'destiny' );
   }
   */
+
+});
+
+gotItUploadExplained.on( 'click', function( e ){
+
+  $('.explain-upload').hide();
+  win.removeClass('upload-not-explained');
+  visualUploadButton.click();
+  
+  wql.uploadExplainDone( [ api.system.user().id ] , function( err , o ){
+
+    if(err){
+      console.error(err);
+      return;
+    }
+
+  });
 
 });
 
@@ -4369,6 +4411,14 @@ var translate = function(){
   $('.context-menu-reminder .title').text( lang.onboarding.contextReminder.title );
   $('.context-menu-reminder .subtitle').text( lang.onboarding.contextReminder.subtitle );
   $('.pair-text').text(lang.pairOldCloud);
+
+  $('.explain-upload .title').text(lang.explainUpload.title);
+  $('.explain-upload .subtitle').text(lang.explainUpload.subtitle);
+  $('.explain-upload .drag .gif-title').text(lang.explainUpload.dragTitle);
+  $('.explain-upload .drag .gif-subtitle').html(lang.explainUpload.dragSubtitle);
+  $('.explain-upload .button .gif-title').text(lang.explainUpload.buttonTitle);
+  $('.explain-upload .button .gif-subtitle').html(lang.explainUpload.buttonSubtitle);
+  $('.explain-upload .got-it-button span').text(lang.explainUpload.gotItButton);
 
 };
 
