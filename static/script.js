@@ -26,6 +26,15 @@ SHARING_ICON.src = 'https://static.horbito.com/app/1/img/sharing@2x.png';
 var SHARED_PATH = 0;
 var RADIUS = 90;
 var dy = 1;
+var LOADING_SPRITE = {
+  dropbox  : { image : new Image(), height : 80, width : 80, frames : 48, fps : 20, rows : 8, cols : 6 },
+  gdrive   : { image : new Image(), height : 74, width : 74, frames : 336, fps : 50, rows : 19, cols : 18 },
+  onedrive : { image : new Image(), height : 90, width : 90, frames : 90, fps : 50, rows : 10, cols : 9 }
+}
+
+LOADING_SPRITE.dropbox.image.src  = 'https://static.horbito.com/app/377/img/loading_dropbox@2x.png'
+LOADING_SPRITE.gdrive.image.src   = 'https://static.horbito.com/app/377/img/loading_gdrive@2x.png'
+LOADING_SPRITE.onedrive.image.src = 'https://static.horbito.com/app/377/img/loading_onedrive@2x.png'
 
 /* COLORS */
 var BLUEUI = '#0071f6';
@@ -49,6 +58,8 @@ var currentMaxScroll        = 0;
 var currentLastPureClicked  = null;
 var currentLastDirtyClicked = null;
 var currentSort             = null;
+var currentLoadingSprite    = null;
+var currentLoadingStart     = null;
 var historyBackward         = [];
 var historyForward          = [];
 var dropActive              = false;
@@ -74,7 +85,7 @@ var proportionEmpty = 1;
 var animationOpacity = 0;
 var initialColor = [ 187 , 187 , 193 ];
 
-// DROPBOX 
+// DROPBOX
 var dropboxAccountActive;
 var dropboxShowingItems;
 var dropboxShowingFolder;
@@ -238,7 +249,7 @@ var dropboxNode = function( data ){
   }
 
   that.move = function( destiny ){
-    
+
     if ( !destiny.integration ) {
       that.uploadToHorbito( destiny );
       return;
@@ -1003,6 +1014,10 @@ var downloadAll = function( items ){
 
 var drawIcons = function(){
 
+  if( currentLoadingSprite ){
+    return drawLoadingSprite()
+  }
+
   if( currentList.length ){
     drawIconsInGrid();
     //drawIconsInList()
@@ -1036,6 +1051,35 @@ var drawIcons = function(){
     animationEmptyActive = false;
     animationOpacity = 0;
   }
+
+}
+
+var drawLoadingSprite = function(){
+
+  var frameDuration = 1000 / LOADING_SPRITE[ currentLoadingSprite ].fps
+  var currentFrame = Math.round( ( ( Date.now() - currentLoadingStart ) / frameDuration ) % LOADING_SPRITE[ currentLoadingSprite ].frames )
+  var col = currentFrame % LOADING_SPRITE[ currentLoadingSprite ].cols
+  var row = parseInt( currentFrame / LOADING_SPRITE[ currentLoadingSprite ].cols )
+  var visualWidth = parseInt( LOADING_SPRITE[ currentLoadingSprite ].width / 2 )
+  var visualHeight = parseInt( LOADING_SPRITE[ currentLoadingSprite ].height / 2 )
+
+  if( row >= LOADING_SPRITE[ currentLoadingSprite ].rows ){
+    row = 0
+    col = 0
+  }
+
+  ctx.drawImage(
+    LOADING_SPRITE[ currentLoadingSprite ].image,
+    col * LOADING_SPRITE[ currentLoadingSprite ].width,
+    row * LOADING_SPRITE[ currentLoadingSprite ].height,
+    LOADING_SPRITE[ currentLoadingSprite ].width,
+    LOADING_SPRITE[ currentLoadingSprite ].height,
+    ( ctx.width - visualWidth ) / 2,
+    ( ctx.height - visualHeight ) / 2,
+    visualWidth,
+    visualHeight
+  )
+  requestDraw()
 
 }
 
@@ -1087,6 +1131,7 @@ var drawEmptyBackground = function(){
 }
 
 var animationEmptyFolder = function (){
+
   if (animationEmptyActive){
 
     ctx.globalAlpha = animationOpacity;
@@ -2031,7 +2076,7 @@ var historyGoForward = function(){
     openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true , 'onedriveFolder' : forwardFolder } );
   }else{
     openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true } );
-  }  
+  }
 
   if( !historyForward.length ){
     visualHistoryForward.removeClass('enabled');
@@ -2109,9 +2154,13 @@ var openFolder = function( id , options ){
 
   if ( options && options.dropboxFolder ) {
 
+    setInOldCloudIcon('dropbox');
+    setInOldCloudLoading('dropbox');
+
     $.when( requestDropboxItems( options.dropboxFolder.path_display ) , getItemPath( options.dropboxFolder ) ).done( function( list , path ){
 
       setInOldCloudIcon('dropbox');
+      setOutOldCloudLoading();
 
       visualSidebarItemArea.find('.active').removeClass('active');
       visualSidebarItemArea.find( '.item-' + dropboxAccountActive.id ).addClass('active');
@@ -2136,9 +2185,13 @@ var openFolder = function( id , options ){
 
   }else if( options && options.gdriveFolder ){
 
+    setInOldCloudIcon('gdrive');
+    setInOldCloudLoading('gdrive');
+
     $.when( requestGdriveItems( options.gdriveFolder.id ) , getItemPath( options.gdriveFolder ) ).done( function( list , path ){
 
       setInOldCloudIcon('gdrive');
+      setOutOldCloudLoading();
 
       visualSidebarItemArea.find('.active').removeClass('active');
       visualSidebarItemArea.find( '.item-' + gdriveAccountActive.id ).addClass('active');
@@ -2165,11 +2218,15 @@ var openFolder = function( id , options ){
 
     onedriveAccountActive.getMetadata( options.onedriveFolder.id , function(){
       console.log(arguments)
-    } );
+    });
+
+    setInOldCloudIcon('onedrive');
+    setInOldCloudLoading('onedrive');
 
     $.when( requestOnedriveItems( options.onedriveFolder.id ) , getItemPath( options.onedriveFolder ) ).done( function( list , path ){
 
       setInOldCloudIcon('onedrive');
+      setOutOldCloudLoading();
 
       visualSidebarItemArea.find('.active').removeClass('active');
       visualSidebarItemArea.find( '.item-' + onedriveAccountActive.id ).addClass('active');
@@ -2194,11 +2251,15 @@ var openFolder = function( id , options ){
 
   }else if(!currentOpened || id !== currentOpened.id){
 
+    setOutOldCloudIcon();
+    setOutOldCloudLoading();
+
     api.fs( id, function( error, fsnode ){
 
       $.when( getFolderItems( fsnode ), getItemPath( fsnode ) ).done( function( list, path ){
 
         setOutOldCloudIcon();
+        setOutOldCloudLoading();
 
         visualSidebarItemArea.find('.active').removeClass('active');
         visualSidebarItemArea.find( '.item-' + fsnode.id ).addClass('active');
@@ -2234,11 +2295,11 @@ var openItem = function( item ){
   if ( item.fsnode.pending ) {
     api.app.createView( item.fsnode , 'received' );
   }else if( item.fsnode.type === TYPE_DROPBOX_FOLDER ){
-    openFolder( item.fsnode.id , { 'dropboxFolder' : item.fsnode });  
+    openFolder( item.fsnode.id , { 'dropboxFolder' : item.fsnode });
   }else if( item.fsnode.type === TYPE_GDRIVE_FOLDER ){
-    openFolder( item.fsnode.id , { 'gdriveFolder' : item.fsnode });  
+    openFolder( item.fsnode.id , { 'gdriveFolder' : item.fsnode });
   }else if( item.fsnode.type === TYPE_ONEDRIVE_FOLDER ){
-    openFolder( item.fsnode.id , { 'onedriveFolder' : item.fsnode });  
+    openFolder( item.fsnode.id , { 'onedriveFolder' : item.fsnode });
   }else if( item.fsnode.type === TYPE_ROOT || item.fsnode.type === TYPE_FOLDER_SPECIAL || item.fsnode.type === TYPE_FOLDER ){
     openFolder( item.fsnode.id );
   }else if( item.fsnode.type === TYPE_FILE ){
@@ -2298,20 +2359,20 @@ var removeItemFromList = function( fsnodeId ){
 var requestDraw = function(){
 
   if( requestedFrame ){
-    return;
+    return
   }
 
-  requestedFrame = true;
+  requestedFrame = true
 
   requestAnimationFrame( function(){
 
+    requestedFrame = false
+
     if( !animationEmptyActive ){
-      clearCanvas();
+      clearCanvas()
     }
 
-    drawIcons();
-
-    requestedFrame = false;
+    drawIcons()
 
   });
 
@@ -3075,8 +3136,8 @@ var startOnboarding = function(){
 }
 
 var upload = function( uploadButton ){
-  
-  
+
+
 
 }
 
@@ -3631,7 +3692,7 @@ gotItUploadExplained.on( 'click', function( e ){
   $('.explain-upload').hide();
   win.removeClass('upload-not-explained');
   visualUploadButton.click();
-  
+
   wql.uploadExplainDone( [ api.system.user().id ] , function( err , o ){
 
     if(err){
@@ -3788,7 +3849,7 @@ visualItemArea
     list.filter( function( item ){
       return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
     }).forEach( function( item ){
-      
+
       if(  item.fsnode.type >= TYPE_DROPBOX_FOLDER  ){
         item.fsnode.move( destinyNode, function( err ){
           if ( err ) { console.log('Err: ', err) }
@@ -4157,11 +4218,11 @@ var requestDropboxItems = function( folder ){
   dropboxShowingFolder = folder;
 
   dropboxAccountActive.listFolder( folder , function( e , list ){
-    
+
     dropboxShowingItems = list;
 
     list = list.entries.map(function( entry ){
-      
+
       if (entry['.tag'] === 'folder') {
         entry.isFolder = true;
         return new dropboxNode( entry )
@@ -4173,7 +4234,7 @@ var requestDropboxItems = function( folder ){
     });
 
     end.resolve( list );
-  
+
   });
 
   return end;
@@ -4192,7 +4253,7 @@ var requestGdriveItems = function( folder ){
       gdriveShowingItems = list;
 
       list = list.files.map(function( entry ){
-        
+
         if ( entry.mimeType.indexOf('folder') !== -1 ) {
           entry.isFolder = true;
           return new gdriveNode( entry );
@@ -4211,11 +4272,11 @@ var requestGdriveItems = function( folder ){
   }else{
 
     gdriveAccountActive.listFilesByFolder( folder , function( e , list ){
-      
+
       gdriveShowingItems = list;
 
       list = list.files.map(function( entry ){
-        
+
         if ( entry.mimeType.indexOf('folder') !== -1 ) {
           entry.isFolder = true;
           return new gdriveNode( entry )
@@ -4227,7 +4288,7 @@ var requestGdriveItems = function( folder ){
       });
 
       end.resolve( list );
-    
+
     });
 
   }
@@ -4243,11 +4304,11 @@ var requestOnedriveItems = function( folder ){
   folder = folder === 'onedriveRoot' ? 'root' : folder;
 
   onedriveAccountActive.listFolder( folder , function( e , list ){
-    
+
     onedriveShowingItems = list;
 
     list = list.map(function( entry ){
-      
+
       if ( entry.folder ) {
         return new onedriveNode({
           'isFolder'      : true,
@@ -4267,7 +4328,7 @@ var requestOnedriveItems = function( folder ){
     });
 
     end.resolve( list );
-  
+
   });
 
   return end;
@@ -4305,17 +4366,36 @@ var getOnedriveDestinyPath = function( idDestiny , fileName ){
 
 var setInOldCloudIcon = function( oldCloud ){
 
-  $('.old-cloud-icon').attr( 'class' , 'old-cloud-icon' );
+  $('.old-cloud-icon').attr( 'class', 'old-cloud-icon' );
   $('.old-cloud-icon').addClass( oldCloud );
   $('.item-area').addClass('old-cloud');
+  updateCanvasSize()
+
+}
+
+var setInOldCloudLoading = function( oldCloud ){
+
+  if( oldCloud !== currentLoadingSprite ){
+
+    currentLoadingSprite = oldCloud
+    currentLoadingStart  = Date.now()
+    requestDraw()
+
+  }
 
 }
 
 var setOutOldCloudIcon = function(){
 
-  $('.old-cloud-icon').attr( 'class' , 'old-cloud-icon' );
+  $('.old-cloud-icon').attr( 'class', 'old-cloud-icon' );
   $('.item-area').removeClass('old-cloud');
+  updateCanvasSize()
 
+}
+
+var setOutOldCloudLoading = function(){
+  currentLoadingSprite = null
+  requestDraw()
 }
 
 var setOldCloudAccounts = function(){
