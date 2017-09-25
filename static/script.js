@@ -2532,8 +2532,8 @@ var startOnboarding = function(){
 }
 
 var upload = function( uploadButton ){
-  
-  
+
+
 
 }
 
@@ -3024,12 +3024,12 @@ visualUploadButton.on( 'click', function( e ){
 
   if ( win.hasClass('upload-not-explained') ){
 
-      if (window.navigator.platform.indexOf('Mac') !== -1) {
-        $('.drag .gif').css('background-image', "url('https://static.horbito.com/app/1/img/uploadDragMac.gif')");
-        $('.button .gif').css('background-image', "url('https://static.horbito.com/app/1/img/uploadButtonMac.gif')");
+      if (window.navigator.platform.toLowerCase().indexOf('mac') !== -1) {
+        $('.drag .video').html('<source src="https://static.horbito.com/app/1/img/uploadDragMac.mp4" type="video/mp4">')[ 0 ].play()
+        $('.button .video').html('<source src="https://static.horbito.com/app/1/img/uploadButtonMac.mp4" type="video/mp4">')[ 0 ].play()
       }else{
-        $('.drag .gif').css('background-image', "url('https://static.horbito.com/app/1/img/uploadDragWin.gif')");
-        $('.button .gif').css('background-image', "url('https://static.horbito.com/app/1/img/uploadButtonWin.gif')");
+        $('.drag .video').html('<source src="https://static.horbito.com/app/1/img/uploadDragWin.mp4" type="video/mp4">')[ 0 ].play()
+        $('.button .video').html('<source src="https://static.horbito.com/app/1/img/uploadButtonWin.mp4" type="video/mp4">')[ 0 ].play()
       }
 
       $('.explain-upload').show();
@@ -3053,9 +3053,10 @@ visualUploadButton.on( 'click', function( e ){
 gotItUploadExplained.on( 'click', function( e ){
 
   $('.explain-upload').hide();
+  $('.drag .video, .button .video').empty()
   win.removeClass('upload-not-explained');
   visualUploadButton.click();
-  
+
   wql.uploadExplainDone( [ api.system.user().id ] , function( err , o ){
 
     if(err){
@@ -3475,10 +3476,10 @@ var translate = function(){
 
   $('.explain-upload .title').text(lang.explainUpload.title);
   $('.explain-upload .subtitle').text(lang.explainUpload.subtitle);
-  $('.explain-upload .drag .gif-title').text(lang.explainUpload.dragTitle);
-  $('.explain-upload .drag .gif-subtitle').html(lang.explainUpload.dragSubtitle);
-  $('.explain-upload .button .gif-title').text(lang.explainUpload.buttonTitle);
-  $('.explain-upload .button .gif-subtitle').html(lang.explainUpload.buttonSubtitle);
+  $('.explain-upload .drag .video-title').text(lang.explainUpload.dragTitle);
+  $('.explain-upload .drag .video-subtitle').html(lang.explainUpload.dragSubtitle);
+  $('.explain-upload .button .video-title').text(lang.explainUpload.buttonTitle);
+  $('.explain-upload .button .video-subtitle').html(lang.explainUpload.buttonSubtitle);
   $('.explain-upload .got-it-button span').text(lang.explainUpload.gotItButton);
 
 };
