@@ -1070,7 +1070,7 @@
     background: #fff;
     border-radius: 6px;
     left: ~'calc(50% - 355px)';
-    top: 16px;                       
+    top: 16px;
   }
 
   .title{
@@ -1080,7 +1080,7 @@
     font-weight: 900;
     width: 100%;
     text-align: center;
-    margin-top: 33px;                 
+    margin-top: 33px;
   }
 
   .subtitle{
@@ -1092,7 +1092,7 @@
     text-align: center;
     margin-top: 14px;
     margin-left: 114px;
-    margin-right: 114px;   
+    margin-right: 114px;
   }
 
   .left-side, .right-side{
@@ -1100,36 +1100,27 @@
     width: 50%;
   }
 
-  .gif{
+  .video{
     float: left;
     width: 240px;
     height: 180px;
     border-radius: 12px;
     margin-top: 41px;
     margin-left: ~'calc(50% - 120px)';
+    background: #fff;
   }
 
-  .drag .gif{
-    background-image: url('@static/img/uploadDragWin.gif');
-    background-size: cover;
-  }
-
-  .button .gif{
-    background-image: url('@static/img/uploadButtonWin.gif');
-    background-size: cover;
-  }
-
-  .gif-title{
+  .video-title{
     float: left;
     color: #252525;
     font-size: 21px;
     font-weight: 900;
     width: 100%;
     text-align: center;
-    margin-top: 31px      
+    margin-top: 31px
   }
 
-  .gif-subtitle{
+  .video-subtitle{
     float: left;
     color: #252525;
     font-size: 15px;
@@ -1144,7 +1135,7 @@
     }
     b{
       color: #fe1843;
-    }  
+    }
   }
 
   .got-it-button{
@@ -1164,8 +1155,8 @@
       font-weight: bold;
       width: 100%;
       text-align: center;
-      margin-top: 11px;  
-    }              
+      margin-top: 11px;
+    }
   }
 
   .got-it-button:hover {
