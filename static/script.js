@@ -828,6 +828,10 @@ var clipboardPaste = function(){
         });
       }else if( currentOpened.integration && currentOpened.gdrive ){
         uploadToGdrive( item.fsnode.id, gdriveAccountActive, currentOpened.id);
+      }else if( currentOpened.integration && currentOpened.dropbox ){
+        uploadToDropbox( item.fsnode.id, dropboxAccountActive, currentOpened.id);
+      }else if( currentOpened.integration && currentOpened.onedrive ){
+        uploadToOnedrive( item.fsnode.id, onedriveAccountActive, currentOpened.id);
       }else{
         item.fsnode.copy( currentOpened.id, { fixCollision: true } , function(){
           console.log( arguments );
@@ -4462,6 +4466,18 @@ var setOldCloudAccounts = function(){
 var uploadToGdrive = function( horbitoId, gdriveAccount, gdrivePath ){
   gdriveAccount.toGDrive( horbitoId, gdrivePath, function(){
     console.log('Hey carlos se esta subiendo desde horbito a gdrive!', horbitoId, gdrivePath, arguments);
+  });
+}
+
+var uploadToDropbox = function( horbitoId, dropboxAccount, dropboxPath ){
+  dropboxAccount.toDropbox( horbitoId, dropboxPath, function(){
+    console.log('Hey carlos se esta subiendo desde horbito a dropbox!', horbitoId, dropboxPath, arguments);
+  });
+}
+
+var uploadToOnedrive = function( horbitoId, onedriveAccount, onedrivePath ){
+  onedriveAccount.toOnedrive( horbitoId, onedrivePath, function(){
+    console.log('Hey carlos se esta subiendo desde horbito a onedrive!', horbitoId, onedrivePath, arguments);
   });
 }
 
