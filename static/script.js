@@ -2179,6 +2179,8 @@ var openFolder = function( id , options ){
       }
 
       currentOpened = options.dropboxFolder;
+      currentScroll = 0;
+      currentLastPureClicked = null;
 
       clearList();
       appendItemToList( list );
@@ -2210,6 +2212,8 @@ var openFolder = function( id , options ){
       }
 
       currentOpened = options.gdriveFolder;
+      currentScroll = 0;
+      currentLastPureClicked = null;
 
       clearList();
       appendItemToList( list );
@@ -2245,6 +2249,8 @@ var openFolder = function( id , options ){
       }
 
       currentOpened = options.onedriveFolder;
+      currentScroll = 0;
+      currentLastPureClicked = null;
 
       clearList();
       appendItemToList( list );
