@@ -436,7 +436,7 @@
     width: 16px;
     height: 16px;
     background: url('@static/img/spriteSidebar.png') no-repeat;
-    background-size: 193px 16px;
+    background-size: 208px 16px;
     background-position: -126px 0px;
   }
 
@@ -483,6 +483,14 @@
   }
 
   &.cosmos.active i{
+    background-position: -177px 0;
+  }
+
+  &.trash i{
+    background-position: -160px 0;
+  }
+
+  &.trash.active i{
     background-position: -177px 0;
   }
 
