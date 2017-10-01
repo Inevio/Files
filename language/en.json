@@ -59,7 +59,8 @@
         "Music" : "Music",
         "Received" : "Received",
         "Videos" : "Videos",
-        "Cosmos"  : "Cosmos"
+        "Cosmos"  : "Cosmos",
+        "Trash"   : "Trash"
 
       },
 
@@ -70,7 +71,8 @@
         "Music" : "music",
         "Received" : "received",
         "Videos" : "videos",
-        "Cosmos" : "cosmos"
+        "Cosmos" : "cosmos",
+        "Trash" : "trash"
 
       }
 
@@ -374,7 +376,7 @@
       "dragTitle" : "Drag & drop",
       "dragSubtitle" : "With this method you can upload any <i>file</i> or <i>folder</i>, even folders inside folders ;)",
       "buttonTitle" : "Upload button",
-      "buttonSubtitle" : "With this method you can only choose <i>files</i> not <b>folders</b>. This is due to Browser limitations",      
+      "buttonSubtitle" : "With this method you can only choose <i>files</i> not <b>folders</b>. This is due to Browser limitations",
       "gotItButton" : "Got it !"
 
     }

@@ -1626,7 +1626,7 @@ var injectAliasAttribute = function( fsnode ){
 
   if( fsnode.type === 0 && !isNaN( parseInt( fsnode.name ) ) ){
     fsnode.alias = 'root'
-  }else if( fsnode.type === 1 && lang.main.folderTranslations[ fsnode.name ] ){
+  }else if( fsnode.type === 1 && lang.main.folderAlias[ fsnode.name ] ){
     fsnode.alias = lang.main.folderAlias[ fsnode.name ]
   }
 

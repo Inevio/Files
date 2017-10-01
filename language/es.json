@@ -59,7 +59,8 @@
         "Music" : "Música",
         "Received" : "Recibidos",
         "Videos" : "Vídeos",
-        "Cosmos"  : "Cosmos"
+        "Cosmos" : "Cosmos",
+        "Trash" : "Papelera"
 
       },
 
@@ -70,7 +71,8 @@
         "Music" : "music",
         "Received" : "received",
         "Videos" : "videos",
-        "Cosmos" : "cosmos"
+        "Cosmos" : "cosmos",
+        "Trash" : "trash"
 
       }
 
@@ -374,7 +376,7 @@
       "dragTitle" : "Arrastrando",
       "dragSubtitle" : "Con este método puedes subir cualquier <i>archivo</i> o <i>carpeta</i>, incluidas carpetas dentro de carpetas ;)",
       "buttonTitle" : "Botón de subir",
-      "buttonSubtitle" : "Con este método solo puedes elegir <i>archivos</i>, no <b>carpetas</b>. Esto es debido a las limitaciones del navegador.",      
+      "buttonSubtitle" : "Con este método solo puedes elegir <i>archivos</i>, no <b>carpetas</b>. Esto es debido a las limitaciones del navegador.",
       "gotItButton" : "Entendido !"
 
     }
