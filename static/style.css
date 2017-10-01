@@ -487,11 +487,11 @@
   }
 
   &.trash i{
-    background-position: -160px 0;
+    background-position: -192px 0;
   }
 
   &.trash.active i{
-    background-position: -177px 0;
+    background-position: -192px 0;
   }
 
 }
