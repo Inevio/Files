@@ -753,6 +753,10 @@
   margin-left: 15px;
   width: 220px;
 
+  &.in-trash{
+    width: auto;
+  }
+
   .button{
     float: right;
     width: 26px;
@@ -801,6 +805,42 @@
     background-position: -38px 0;
     width: 20px;
     height: 20px;
+  }
+
+  .empty-trash, .partial-trash{
+    display: none;
+    width: auto;
+    padding: 0 3px;
+
+    span{
+      margin-left: 6px;
+      font-family: Lato;
+      font-size: 13px;
+      color: #889399;
+    }
+
+    &:hover span{
+      color: #717171;
+    }
+  }
+
+  &.in-trash .empty-trash{
+    display: flex;
+  }
+
+  &.in-trash.partial-trash .partial-trash{
+    display: flex;
+  }
+
+  &.in-trash.partial-trash .empty-trash{
+    display: none;
+  }
+
+  &.in-trash .delete.normal,
+  &.in-trash .create-folder,
+  &.in-trash .download,
+  &.in-trash .upload{
+    display: none;
   }
 
   .delete i{
