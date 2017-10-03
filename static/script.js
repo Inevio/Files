@@ -89,11 +89,14 @@ var visualUploadingArea        = $('.uploading-area');
 var visualProgressStatusNumber = $('.uploading-area .status-number');
 var visualProgressStatusTime   = $('.uploading-area .status-time');
 var visualProgressBar          = $('.uploading-area .progress .current');
-var visualCreateFolderButton   = $('.folder-utils .create-folder');
-var visualSortPreferenceButton = $('.folder-utils .sort-preference');
-var visualDeleteButton         = $('.folder-utils .delete');
-var visualDownloadButton       = $('.folder-utils .download');
-var visualUploadButton         = $('.folder-utils .upload');
+var visualFolderUtils          = $('.folder-utils')
+var visualCreateFolderButton   = visualFolderUtils.find('.create-folder');
+var visualSortPreferenceButton = visualFolderUtils.find('.sort-preference');
+var visualDeleteButton         = visualFolderUtils.find('.delete.normal');
+var visualEmptyTrashButton     = visualFolderUtils.find('.delete.empty-trash');
+var visualPartialTrashButton   = visualFolderUtils.find('.delete.partial-trash');
+var visualDownloadButton       = visualFolderUtils.find('.download');
+var visualUploadButton         = visualFolderUtils.find('.upload');
 var visualAcceptButton         = $('.ui-confirm .accept');
 var visualCancelButton         = $('.ui-confirm .cancel');
 var visualDestinyNameInput     = $('.ui-confirm input');
@@ -463,6 +466,7 @@ var clearList = function(){
   currentActive      = [];
   currentActiveIcons = {};
 
+  updateFolderUtilsStatus()
   checkDraggableArea();
 
 };
@@ -548,7 +552,7 @@ var createFolder = function(){
 
 };
 
-var deleteAll = function( items ){
+var deleteAllSelected = function( items ){
 
   items = items || currentActive
   items = items.filter( function( item ){ return item.fsnode.type !== TYPE_FOLDER_SPECIAL })
@@ -598,7 +602,7 @@ var checkIsOnSidebar = function( fsnode ){
 
 }
 
-var downloadAll = function( items ){
+var downloadAllSelected = function( items ){
 
   ( items || currentActive ).forEach( function( item ){
     item.fsnode.download()
@@ -1712,10 +1716,11 @@ var openFolder = function( id, isBack, isForward ){
         currentOpened = fsnode;
         currentLastPureClicked = null;
 
-        clearList();
-        appendItemToList( list );
-        generateBreadcrumbs( path );
-        requestDraw();
+        clearList()
+        updateFolderUtilsStatus()
+        appendItemToList( list )
+        generateBreadcrumbs( path )
+        requestDraw()
 
       });
 
@@ -1778,6 +1783,7 @@ var removeItemFromList = function( fsnodeId ){
   delete currentIcons[ fsnodeId ];
   delete currentActiveIcons[ fsnodeId ];
 
+  updateFolderUtilsStatus()
   checkDraggableArea();
   updateRows();
   checkScrollLimits();
@@ -1812,6 +1818,7 @@ var selectAllIcons = function(){
   currentActiveIcons = {};
   currentActive      = currentList.map( function( item ){ item.active = true; return item; });
 
+  updateFolderUtilsStatus()
   checkDraggableArea();
   requestDraw();
 
@@ -1824,6 +1831,8 @@ var selectIcon = function( e, itemClicked ){
     currentActive.forEach( function( item ){ item.active = false; });
     currentActive = [];
     currentActiveIcons = {};
+
+    updateFolderUtilsStatus()
 
   }else if( itemClicked && disabledFileIcons && itemClicked.fsnode.type === TYPE_FILE ){
     return
@@ -1887,6 +1896,7 @@ var selectIcon = function( e, itemClicked ){
 
   }
 
+  updateFolderUtilsStatus()
   checkDraggableArea();
   requestDraw();
 
@@ -1982,6 +1992,7 @@ var moveListenerMousemove = function( e ){
 
   });
 
+  updateFolderUtilsStatus()
   requestDraw();
 
   var topDistance    = e.clientY - offset.top;
@@ -2333,7 +2344,7 @@ var generateContextMenu = function( item, options ){
     }
 
     if( item.fsnode.permissions.download ){
-      menu.addOption( lang.main.download, downloadAll.bind( null, null ) );
+      menu.addOption( lang.main.download, downloadAllSelected.bind( null, null ) );
     }
 
     if( [ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ].indexOf( item.fsnode.mime ) !== -1 ){
@@ -2351,7 +2362,7 @@ var generateContextMenu = function( item, options ){
 
     menu
     .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
-    .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' );
+    .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' );
 
   }else if( item.fsnode.type === TYPE_FOLDER ){
 
@@ -2390,9 +2401,9 @@ var generateContextMenu = function( item, options ){
     if( item.fsnode.permissions.download ){
 
       if( options.inSidebar ){
-        menu.addOption( lang.main.download, downloadAll.bind( null, [ item ] ) );
+        menu.addOption( lang.main.download, downloadAllSelected.bind( null, [ item ] ) );
       }else{
-        menu.addOption( lang.main.download, downloadAll.bind( null, null ) );
+        menu.addOption( lang.main.download, downloadAllSelected.bind( null, null ) );
       }
 
     }
@@ -2410,9 +2421,9 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
 
     if( options.inSidebar ){
-      menu.addOption( lang.main.remove, deleteAll.bind( null, [ item ] ), 'warning' );
+      menu.addOption( lang.main.remove, deleteAllSelected.bind( null, [ item ] ), 'warning' );
     }else{
-      menu.addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' );
+      menu.addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' );
     }
 
   // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
@@ -2451,9 +2462,9 @@ var generateContextMenu = function( item, options ){
     if( item.fsnode.permissions.download ){
 
       if( options.inSidebar ){
-        menu.addOption( lang.main.download, downloadAll.bind( null, [ item ] ) );
+        menu.addOption( lang.main.download, downloadAllSelected.bind( null, [ item ] ) );
       }else{
-        menu.addOption( lang.main.download, downloadAll.bind( null, null ) );
+        menu.addOption( lang.main.download, downloadAllSelected.bind( null, null ) );
       }
 
     }
@@ -2534,6 +2545,26 @@ var startOnboarding = function(){
 var upload = function( uploadButton ){
 
 
+
+}
+
+var updateFolderUtilsStatus = function(){
+
+  if( !currentOpened || currentOpened.type !== 1 || currentOpened.name !== 'Trash' ){
+    visualFolderUtils.removeClass('in-trash partial-trash')
+  }else if( currentActive.length && currentActive.length !== currentList.length ){
+
+    visualFolderUtils.addClass('in-trash partial-trash')
+
+    if( currentActive.length === 1 ){
+      visualPartialTrashButton.find('span').text( lang.main.removeItem )
+    }else{
+      visualPartialTrashButton.find('span').text( lang.main.removeItems )
+    }
+
+  }else{
+    visualFolderUtils.addClass('in-trash').removeClass('partial-trash')
+  }
 
 }
 
@@ -2756,7 +2787,7 @@ win
   if( $(e.target).is('textarea') ){
     e.stopPropagation();
   }else{
-    deleteAll();
+    deleteAllSelected();
   }
 
 })
@@ -2992,11 +3023,20 @@ visualBreadcrumbs.on( 'click', '.list-trigger', function(){
 visualCreateFolderButton.on( 'click', createFolder );
 
 visualDeleteButton.on( 'click', function(){
-  deleteAll()
+  deleteAllSelected()
+});
+
+visualPartialTrashButton.on( 'click', function(){
+  deleteAllSelected()
+});
+
+visualEmptyTrashButton.on( 'click', function(){
+  selectAllIcons()
+  deleteAllSelected()
 });
 
 visualDownloadButton.on( 'click', function(){
-  downloadAll()
+  downloadAllSelected()
 });
 
 visualSortPreferenceButton.on( 'click', function(){
@@ -3455,6 +3495,7 @@ var translate = function(){
   $('.ui-header-brand').find('.name').text(lang.main.appName);
   $('.ui-input-search').find('input').attr('placeholder', lang.main.search);
   $('.ui-navgroup-title-txt').text(lang.main.favourites);
+  visualEmptyTrashButton.find('span').text(lang.main.emptyTrash)
   $('.space-in-use .amount').text(lang.main.amount);
   $('.space-in-use .need-more').text(lang.main.needMore);
   $('.status-number').text(lang.main.uploadXFiles);
