@@ -923,7 +923,7 @@ var drawIconsInGrid = function(){
 
     }
 
-    if( icon.conversionProgress !== -1 ){
+    if( icon.fsnode.converting || icon.conversionProgress !== -1 ){
 
       if ( icon.bigIcon.naturalWidth ) {
 
@@ -973,6 +973,10 @@ var drawProgressCircle = function( ctx , center , progress ){
 
   var centerX = center.x;
   var centerY = center.y;
+
+  if( progress < 0 ){
+    progress = 0
+  }
 
   ctx.beginPath();
   ctx.arc( centerX , centerY , 13 , 0 , 2*Math.PI );
@@ -1184,8 +1188,6 @@ var getFolderItems = function( fsnode ){
       return true
 
     })
-
-    console.log( list )
 
     end.resolve( list )
 
@@ -2121,6 +2123,7 @@ var updateIconConversionProgress = function( fsnodeId, progress ){
     return
   }
 
+  currentIcons[ fsnodeId ].fsnode.converting  = progress !== -1
   currentIcons[ fsnodeId ].conversionProgress = progress
 
   requestDraw()
