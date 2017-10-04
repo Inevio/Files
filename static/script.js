@@ -1170,7 +1170,7 @@ var getFolderItems = function( fsnode ){
 
   var end = $.Deferred();
 
-  fsnode.list({ withPermissions: true }, function( error, list ){
+  fsnode.list({ withPermissions: true, withConverting : true }, function( error, list ){
 
     // To Do -> Error
     list = list.filter( function( item ){
@@ -1184,6 +1184,8 @@ var getFolderItems = function( fsnode ){
       return true
 
     })
+
+    console.log( list )
 
     end.resolve( list )
 
