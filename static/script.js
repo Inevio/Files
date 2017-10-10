@@ -3865,9 +3865,21 @@ visualItemArea
           if ( err ) { console.log('Err: ', err) }
         });
       }else if( item.fsnode.parent != destiny ) {
-        item.fsnode.move( destiny, function( err ){
-          if ( err ) { console.log('Err: ', err) }
-        });
+        if ( destinyNode.integration ) {
+
+          if ( destinyNode.dropbox ) {
+            uploadToDropbox( item.fsnode.id, dropboxAccountActive, currentOpened.id);
+          }else if( destinyNode.gdrive ){
+            uploadToGdrive( item.fsnode.id, gdriveAccountActive, currentOpened.id);
+          }else if( destinyNode.onedrive ){
+            uploadToOnedrive( item.fsnode.id, onedriveAccountActive, currentOpened.id);
+          }
+
+        }else{
+          item.fsnode.move( destiny, function( err ){
+            if ( err ) { console.log('Err: ', err) }
+          });
+        }
       }
 
     });
