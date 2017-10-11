@@ -3151,6 +3151,12 @@ var upload = function( uploadButton ){
 
 }
 
+var refreshDropbox = function(){
+  if ( currentOpened.integration && currentOpened.dropbox ) {
+    openFolder( currentOpened.id , { 'dropboxFolder' : currentOpened } );
+  }
+}
+
 var refreshGdrive = function(){
   if ( currentOpened.integration && currentOpened.gdrive ) {
     openFolder( currentOpened.id , { 'gdriveFolder' : currentOpened } );
@@ -4144,30 +4150,11 @@ $('.old-cloud-popup').on('click', '.oneDrive' , function(){
 });
 
 api.integration.dropbox.on('modified', function( entry ){
-  if (entry['.tag'] === 'folder') {
-    entry.isFolder = true;
-  }else{
-    entry.isFolder = false;
-  }
-  var node = new dropboxNode( entry );
-  if( node.getParent() === currentOpened.name ){
-    appendItemToList( node );
-    currentIcons[ node.id ].fsnode = node;
-    requestDraw();
-  }
+  refreshDropbox();
 });
 
 api.integration.dropbox.on('removed', function( entry ){
-  var node = new dropboxNode( entry );
-  if( node.getParent() === currentOpened.name ){
-    for(var id in currentIcons){
-      var icon = currentIcons[id];
-      if ( icon.fsnode.name === entry.name ) {
-        removeItemFromList( icon.fsnode.id );
-        requestDraw();
-      }
-    }
-  }
+  refreshDropbox();
 });
 
 api.integration.gdrive.on('modified', function( entry ){
