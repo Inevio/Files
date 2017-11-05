@@ -15,6 +15,8 @@ var PROGRESS_ICON = new Image();
 PROGRESS_ICON.src = 'https://static.horbito.com/app/1/img/processing@2x.png';
 var SHARING_ICON = new Image();
 SHARING_ICON.src = 'https://static.horbito.com/app/1/img/sharing@2x.png';
+var FOLDER_ICON = new Image();
+FOLDER_ICON.src = 'https://static.horbito.com/image/icons/64/retina/folder.png';
 var SHARED_PATH = 0;
 var RADIUS = 90;
 var dy = 1;
@@ -897,9 +899,15 @@ var drawIconsInGrid = function(){
     }
 
     if( !icon.bigIcon ){
+      
+      if( icon.fsnode.type === TYPE_FOLDER ){
+        icon.bigIcon = FOLDER_ICON
+      }else{
+        
+        icon.bigIcon = new Image ();
+        icon.bigIcon.src = icon.fsnode.icons.small + ( icon.fsnode.type === TYPE_FILE ? '?time=' + Date.now() : '' );
 
-      icon.bigIcon = new Image ();
-      icon.bigIcon.src = icon.fsnode.icons.small + ( icon.fsnode.type === TYPE_FILE ? '?time=' + Date.now() : '' );
+      }
 
     }
 
