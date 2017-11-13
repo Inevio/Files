@@ -23,6 +23,8 @@ var PROGRESS_ICON = new Image();
 PROGRESS_ICON.src = 'https://static.horbito.com/app/1/img/processing@2x.png';
 var SHARING_ICON = new Image();
 SHARING_ICON.src = 'https://static.horbito.com/app/1/img/sharing@2x.png';
+var FOLDER_ICON = new Image();
+FOLDER_ICON.src = 'https://static.horbito.com/image/icons/64/retina/folder.png';
 var SHARED_PATH = 0;
 var RADIUS = 90;
 var dy = 1;
@@ -180,11 +182,14 @@ var visualUploadingArea        = $('.uploading-area');
 var visualProgressStatusNumber = $('.uploading-area .status-number');
 var visualProgressStatusTime   = $('.uploading-area .status-time');
 var visualProgressBar          = $('.uploading-area .progress .current');
-var visualCreateFolderButton   = $('.folder-utils .create-folder');
-var visualSortPreferenceButton = $('.folder-utils .sort-preference');
-var visualDeleteButton         = $('.folder-utils .delete');
-var visualDownloadButton       = $('.folder-utils .download');
-var visualUploadButton         = $('.folder-utils .upload');
+var visualFolderUtils          = $('.folder-utils')
+var visualCreateFolderButton   = visualFolderUtils.find('.create-folder');
+var visualSortPreferenceButton = visualFolderUtils.find('.sort-preference');
+var visualDeleteButton         = visualFolderUtils.find('.delete.normal');
+var visualEmptyTrashButton     = visualFolderUtils.find('.delete.empty-trash');
+var visualPartialTrashButton   = visualFolderUtils.find('.delete.partial-trash');
+var visualDownloadButton       = visualFolderUtils.find('.download');
+var visualUploadButton         = visualFolderUtils.find('.upload');
 var visualAcceptButton         = $('.ui-confirm .accept');
 var visualCancelButton         = $('.ui-confirm .cancel');
 var visualDestinyNameInput     = $('.ui-confirm input');
@@ -798,6 +803,7 @@ var clearList = function(){
   currentActive      = [];
   currentActiveIcons = {};
 
+  updateFolderUtilsStatus()
   checkDraggableArea();
 
 };
@@ -958,7 +964,7 @@ var createFolder = function(){
 
 };
 
-var deleteAll = function( items ){
+var deleteAllSelected = function( items ){
 
   items = items || currentActive
   items = items.filter( function( item ){ return item.fsnode.type !== TYPE_FOLDER_SPECIAL })
@@ -1008,7 +1014,7 @@ var checkIsOnSidebar = function( fsnode ){
 
 }
 
-var downloadAll = function( items ){
+var downloadAllSelected = function( items ){
 
   ( items || currentActive ).forEach( function( item ){
     item.fsnode.download()
@@ -1338,8 +1344,14 @@ var drawIconsInGrid = function(){
 
     if( !icon.bigIcon ){
 
-      icon.bigIcon = new Image ();
-      icon.bigIcon.src = icon.fsnode.icons.small + ( icon.fsnode.type === TYPE_FILE ? '?time=' + Date.now() : '' );
+      if( icon.fsnode.type === TYPE_FOLDER ){
+        icon.bigIcon = FOLDER_ICON
+      }else{
+
+        icon.bigIcon = new Image ();
+        icon.bigIcon.src = icon.fsnode.icons.small + ( icon.fsnode.type === TYPE_FILE ? '?time=' + Date.now() : '' );
+
+      }
 
     }
 
@@ -1363,7 +1375,7 @@ var drawIconsInGrid = function(){
 
     }
 
-    if( icon.conversionProgress !== -1 ){
+    if( icon.fsnode.converting || icon.conversionProgress !== -1 ){
 
       if ( icon.bigIcon.naturalWidth ) {
 
@@ -1413,6 +1425,10 @@ var drawProgressCircle = function( ctx , center , progress ){
 
   var centerX = center.x;
   var centerY = center.y;
+
+  if( progress < 0 ){
+    progress = 0
+  }
 
   ctx.beginPath();
   ctx.arc( centerX , centerY , 13 , 0 , 2*Math.PI );
@@ -1611,7 +1627,7 @@ var getFolderItems = function( fsnode ){
 
   var end = $.Deferred();
 
-  fsnode.list({ withPermissions: true }, function( error, list ){
+  fsnode.list({ withPermissions: true, withConverting : true }, function( error, list ){
 
     // To Do -> Error
     list = list.filter( function( item ){
@@ -2092,7 +2108,7 @@ var injectAliasAttribute = function( fsnode ){
 
   if( fsnode.type === 0 && !isNaN( parseInt( fsnode.name ) ) ){
     fsnode.alias = 'root'
-  }else if( fsnode.type === 1 && lang.main.folderTranslations[ fsnode.name ] ){
+  }else if( fsnode.type === 1 && lang.main.folderAlias[ fsnode.name ] ){
     fsnode.alias = lang.main.folderAlias[ fsnode.name ]
   }
 
@@ -2287,10 +2303,11 @@ var openFolder = function( id , options ){
         currentOpened = fsnode;
         currentLastPureClicked = null;
 
-        clearList();
-        appendItemToList( list );
-        generateBreadcrumbs( path );
-        requestDraw();
+        clearList()
+        updateFolderUtilsStatus()
+        appendItemToList( list )
+        generateBreadcrumbs( path )
+        requestDraw()
 
       });
 
@@ -2359,6 +2376,7 @@ var removeItemFromList = function( fsnodeId ){
   delete currentIcons[ fsnodeId ];
   delete currentActiveIcons[ fsnodeId ];
 
+  updateFolderUtilsStatus()
   checkDraggableArea();
   updateRows();
   checkScrollLimits();
@@ -2393,6 +2411,7 @@ var selectAllIcons = function(){
   currentActiveIcons = {};
   currentActive      = currentList.map( function( item ){ item.active = true; return item; });
 
+  updateFolderUtilsStatus()
   checkDraggableArea();
   requestDraw();
 
@@ -2405,6 +2424,8 @@ var selectIcon = function( e, itemClicked ){
     currentActive.forEach( function( item ){ item.active = false; });
     currentActive = [];
     currentActiveIcons = {};
+
+    updateFolderUtilsStatus()
 
   }else if( itemClicked && disabledFileIcons && itemClicked.fsnode.type === TYPE_FILE ){
     return
@@ -2468,6 +2489,7 @@ var selectIcon = function( e, itemClicked ){
 
   }
 
+  updateFolderUtilsStatus()
   checkDraggableArea();
   requestDraw();
 
@@ -2563,6 +2585,7 @@ var moveListenerMousemove = function( e ){
 
   });
 
+  updateFolderUtilsStatus()
   requestDraw();
 
   var topDistance    = e.clientY - offset.top;
@@ -2689,6 +2712,7 @@ var updateIconConversionProgress = function( fsnodeId, progress ){
     return
   }
 
+  currentIcons[ fsnodeId ].fsnode.converting  = progress !== -1
   currentIcons[ fsnodeId ].conversionProgress = progress
 
   requestDraw()
@@ -2914,7 +2938,7 @@ var generateContextMenu = function( item, options ){
     }
 
     if( item.fsnode.permissions.download ){
-      menu.addOption( lang.main.download, downloadAll.bind( null, null ) );
+      menu.addOption( lang.main.download, downloadAllSelected.bind( null, null ) );
     }
 
     if( [ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ].indexOf( item.fsnode.mime ) !== -1 ){
@@ -2932,7 +2956,7 @@ var generateContextMenu = function( item, options ){
 
     menu
     .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
-    .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' );
+    .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' );
 
   }else if( item.fsnode.type === TYPE_FOLDER ){
 
@@ -2971,9 +2995,9 @@ var generateContextMenu = function( item, options ){
     if( item.fsnode.permissions.download ){
 
       if( options.inSidebar ){
-        menu.addOption( lang.main.download, downloadAll.bind( null, [ item ] ) );
+        menu.addOption( lang.main.download, downloadAllSelected.bind( null, [ item ] ) );
       }else{
-        menu.addOption( lang.main.download, downloadAll.bind( null, null ) );
+        menu.addOption( lang.main.download, downloadAllSelected.bind( null, null ) );
       }
 
     }
@@ -2991,9 +3015,9 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
 
     if( options.inSidebar ){
-      menu.addOption( lang.main.remove, deleteAll.bind( null, [ item ] ), 'warning' );
+      menu.addOption( lang.main.remove, deleteAllSelected.bind( null, [ item ] ), 'warning' );
     }else{
-      menu.addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' );
+      menu.addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' );
     }
 
   // To Do -> Check all the rules -> }else if( icon.hasClass('file') || ( icon.data( 'filePointerType' ) === 2 && !icon.hasClass('pointer-pending') ) ){
@@ -3031,9 +3055,9 @@ var generateContextMenu = function( item, options ){
     if( item.fsnode.permissions.download ){
 
       if( options.inSidebar ){
-        menu.addOption( lang.main.download, downloadAll.bind( null, [ item ] ) );
+        menu.addOption( lang.main.download, downloadAllSelected.bind( null, [ item ] ) );
       }else{
-        menu.addOption( lang.main.download, downloadAll.bind( null, null ) );
+        menu.addOption( lang.main.download, downloadAllSelected.bind( null, null ) );
       }
 
     }
@@ -3145,9 +3169,23 @@ var startOnboarding = function(){
 
 }
 
-var upload = function( uploadButton ){
+var updateFolderUtilsStatus = function(){
 
+  if( !currentOpened || currentOpened.type !== 1 || currentOpened.name !== 'Trash' ){
+    visualFolderUtils.removeClass('in-trash partial-trash')
+  }else if( currentActive.length && currentActive.length !== currentList.length ){
 
+    visualFolderUtils.addClass('in-trash partial-trash')
+
+    if( currentActive.length === 1 ){
+      visualPartialTrashButton.find('span').text( lang.main.removeItem )
+    }else{
+      visualPartialTrashButton.find('span').text( lang.main.removeItems )
+    }
+
+  }else{
+    visualFolderUtils.addClass('in-trash').removeClass('partial-trash')
+  }
 
 }
 
@@ -3388,7 +3426,7 @@ win
   if( $(e.target).is('textarea') ){
     e.stopPropagation();
   }else{
-    deleteAll();
+    deleteAllSelected();
   }
 
 })
@@ -3645,11 +3683,20 @@ visualBreadcrumbs.on( 'click', '.list-trigger', function(){
 visualCreateFolderButton.on( 'click', createFolder );
 
 visualDeleteButton.on( 'click', function(){
-  deleteAll()
+  deleteAllSelected()
+});
+
+visualPartialTrashButton.on( 'click', function(){
+  deleteAllSelected()
+});
+
+visualEmptyTrashButton.on( 'click', function(){
+  selectAllIcons()
+  deleteAllSelected()
 });
 
 visualDownloadButton.on( 'click', function(){
-  downloadAll()
+  downloadAllSelected()
 });
 
 visualSortPreferenceButton.on( 'click', function(){
@@ -3677,12 +3724,12 @@ visualUploadButton.on( 'click', function( e ){
 
   if ( win.hasClass('upload-not-explained') ){
 
-      if (window.navigator.platform.indexOf('Mac') !== -1) {
-        $('.drag .gif').css('background-image', "url('https://static.horbito.com/app/1/img/uploadDragMac.gif')");
-        $('.button .gif').css('background-image', "url('https://static.horbito.com/app/1/img/uploadButtonMac.gif')");
+      if (window.navigator.platform.toLowerCase().indexOf('mac') !== -1) {
+        $('.drag .video').html('<source src="https://static.horbito.com/app/1/img/uploadDragMac.mp4" type="video/mp4">')[ 0 ].play()
+        $('.button .video').html('<source src="https://static.horbito.com/app/1/img/uploadButtonMac.mp4" type="video/mp4">')[ 0 ].play()
       }else{
-        $('.drag .gif').css('background-image', "url('https://static.horbito.com/app/1/img/uploadDragWin.gif')");
-        $('.button .gif').css('background-image', "url('https://static.horbito.com/app/1/img/uploadButtonWin.gif')");
+        $('.drag .video').html('<source src="https://static.horbito.com/app/1/img/uploadDragWin.mp4" type="video/mp4">')[ 0 ].play()
+        $('.button .video').html('<source src="https://static.horbito.com/app/1/img/uploadButtonWin.mp4" type="video/mp4">')[ 0 ].play()
       }
 
       $('.explain-upload').show();
@@ -3706,6 +3753,7 @@ visualUploadButton.on( 'click', function( e ){
 gotItUploadExplained.on( 'click', function( e ){
 
   $('.explain-upload').hide();
+  $('.drag .video, .button .video').empty()
   win.removeClass('upload-not-explained');
   visualUploadButton.click();
 
@@ -4493,6 +4541,7 @@ var translate = function(){
   $('.ui-input-search').find('input').attr('placeholder', lang.main.search);
   $('.ui-navgroup-title.favourites .ui-navgroup-title-txt').text(lang.main.favourites);
   $('.ui-navgroup-title.old-cloud .ui-navgroup-title-txt').text(lang.oldCloud);
+  visualEmptyTrashButton.find('span').text(lang.main.emptyTrash)
   $('.space-in-use .amount').text(lang.main.amount);
   $('.space-in-use .need-more').text(lang.main.needMore);
   $('.status-number').text(lang.main.uploadXFiles);
@@ -4515,10 +4564,10 @@ var translate = function(){
 
   $('.explain-upload .title').text(lang.explainUpload.title);
   $('.explain-upload .subtitle').text(lang.explainUpload.subtitle);
-  $('.explain-upload .drag .gif-title').text(lang.explainUpload.dragTitle);
-  $('.explain-upload .drag .gif-subtitle').html(lang.explainUpload.dragSubtitle);
-  $('.explain-upload .button .gif-title').text(lang.explainUpload.buttonTitle);
-  $('.explain-upload .button .gif-subtitle').html(lang.explainUpload.buttonSubtitle);
+  $('.explain-upload .drag .video-title').text(lang.explainUpload.dragTitle);
+  $('.explain-upload .drag .video-subtitle').html(lang.explainUpload.dragSubtitle);
+  $('.explain-upload .button .video-title').text(lang.explainUpload.buttonTitle);
+  $('.explain-upload .button .video-subtitle').html(lang.explainUpload.buttonSubtitle);
   $('.explain-upload .got-it-button span').text(lang.explainUpload.gotItButton);
 
 };
