@@ -557,7 +557,7 @@
     width: 16px;
     height: 16px;
     background: url('@static/img/spriteSidebar.png') no-repeat;
-    background-size: 193px 16px;
+    background-size: 208px 16px;
     background-position: -126px 0px;
   }
 
@@ -605,6 +605,14 @@
 
   &.cosmos.active i{
     background-position: -177px 0;
+  }
+
+  &.trash i{
+    background-position: -193px 0;
+  }
+
+  &.trash.active i{
+    background-position: -193px 0;
   }
 
 }
@@ -898,6 +906,10 @@
   margin-left: 15px;
   width: 220px;
 
+  &.in-trash{
+    width: auto;
+  }
+
   .button{
     float: right;
     width: 26px;
@@ -946,6 +958,42 @@
     background-position: -38px 0;
     width: 20px;
     height: 20px;
+  }
+
+  .empty-trash, .partial-trash{
+    display: none;
+    width: auto;
+    padding: 0 3px;
+
+    span{
+      margin-left: 6px;
+      font-family: Lato;
+      font-size: 13px;
+      color: #889399;
+    }
+
+    &:hover span{
+      color: #717171;
+    }
+  }
+
+  &.in-trash .empty-trash{
+    display: flex;
+  }
+
+  &.in-trash.partial-trash .partial-trash{
+    display: flex;
+  }
+
+  &.in-trash.partial-trash .empty-trash{
+    display: none;
+  }
+
+  &.in-trash .delete.normal,
+  &.in-trash .create-folder,
+  &.in-trash .download,
+  &.in-trash .upload{
+    display: none;
   }
 
   .delete i{
@@ -1350,26 +1398,17 @@
     width: 50%;
   }
 
-  .gif{
+  .video{
     float: left;
     width: 240px;
     height: 180px;
     border-radius: 12px;
     margin-top: 41px;
     margin-left: ~'calc(50% - 120px)';
+    background: #fff;
   }
 
-  .drag .gif{
-    background-image: url('@static/img/uploadDragWin.gif');
-    background-size: cover;
-  }
-
-  .button .gif{
-    background-image: url('@static/img/uploadButtonWin.gif');
-    background-size: cover;
-  }
-
-  .gif-title{
+  .video-title{
     float: left;
     color: #252525;
     font-size: 21px;
@@ -1379,7 +1418,7 @@
     margin-top: 31px
   }
 
-  .gif-subtitle{
+  .video-subtitle{
     float: left;
     color: #252525;
     font-size: 15px;
