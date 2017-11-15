@@ -246,11 +246,13 @@ var dropboxNode = function( data ){
   that.dropbox = true;
 
   if ( data.isFolder ) {
-    that.icons = folderIcons.normal;
     that.type = TYPE_DROPBOX_FOLDER;
   }else{
-    that.icons = unknowFileIcons.normal;
     that.type = TYPE_DROPBOX_FILE;
+  }
+
+  if( that.thumbnails ){
+    that.icons = that.thumbnails
   }
 
   that.move = function( destiny ){
