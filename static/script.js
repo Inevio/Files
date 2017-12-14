@@ -336,7 +336,7 @@ var gdriveNode = function( data ){
     that.icons = folderIcons.normal;
     that.type = TYPE_GDRIVE_FOLDER;
   }else{
-    that.icons = unknowFileIcons.normal;
+    //that.icons = unknowFileIcons.normal;
     that.type = TYPE_GDRIVE_FILE;
   }
 
