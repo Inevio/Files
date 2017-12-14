@@ -294,7 +294,6 @@ var dropboxNode = function( data ){
     });
   }
 
-
   that.copy = function( destiny ){
 
     if ( !destiny.integration ) {
@@ -2321,6 +2320,8 @@ var openFolder = function( id , options ){
 
 var openItem = function( item ){
 
+  console.log('item type',item.fsnode.type)
+
   if ( item.fsnode.pending ) {
     api.app.createView( item.fsnode , 'received' );
   }else if( item.fsnode.type === TYPE_DROPBOX_FOLDER ){
@@ -2331,7 +2332,7 @@ var openItem = function( item ){
     openFolder( item.fsnode.id , { 'onedriveFolder' : item.fsnode });
   }else if( item.fsnode.type === TYPE_ROOT || item.fsnode.type === TYPE_FOLDER_SPECIAL || item.fsnode.type === TYPE_FOLDER ){
     openFolder( item.fsnode.id );
-  }else if( item.fsnode.type === TYPE_FILE ){
+  }else if( item.fsnode.type === TYPE_FILE || item.fsnode.type === TYPE_DROPBOX_FILE || item.fsnode.type === TYPE_GDRIVE_FILE ){
 
     if( params && ( params.command === 'selectSource' || params.command === 'selectDestiny' ) ){
       acceptButtonHandler()
@@ -3849,16 +3850,17 @@ visualItemArea
 
 .on( 'dblclick', function( e ){
 
+  console.log('dblclick', currentList)
   if( !currentList.length ){
     return
   }
 
   var itemClicked = getIconWithMouserOver( e );
-
+console.log(itemClicked)
   if( !itemClicked || ( disabledFileIcons && itemClicked.fsnode.type === TYPE_FILE ) ){
     return
   }
-
+console.log('will open')
   openItem( itemClicked )
 
 })
