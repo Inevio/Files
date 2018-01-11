@@ -242,19 +242,6 @@ var dropboxNode = function( data ){
 
   var that = $.extend( this, data )
 
-  that.integration = true;
-  that.dropbox = true;
-
-  if ( data.isFolder ) {
-    that.type = TYPE_DROPBOX_FOLDER;
-  }else{
-    that.type = TYPE_DROPBOX_FILE;
-  }
-
-  if( that.thumbnails ){
-    that.icons = that.thumbnails
-  }
-
   that.move = function( destiny ){
 
     if ( !destiny.integration ) {
@@ -829,10 +816,39 @@ var clipboardPaste = function(){
 
     storage.copy.forEach( function( item ){
 
-      if ( item.fsnode.type >= TYPE_DROPBOX_FOLDER ) {
+      if ( item.fsnode.type >= TYPE_DROPBOX_FOLDER && currentOpened.integration && currentOpened.dropbox ) {
+
         item.fsnode.copy( currentOpened, { fixCollision: true } , function(){
           console.log( arguments );
         });
+
+      }else if ( item.fsnode.type >= TYPE_DROPBOX_FOLDER && currentOpened.integration && currentOpened.gdrive ) {
+
+        console.log( item )
+        api.integration.dropbox( item.fsnode.account, function( err, res ){
+
+          console.log( currentOpened, err )
+          res.uploadToGDrive( item.fsnode.id, item.fsnode.name, currentOpened.id, 5628, function(){
+            console.log( arguments )
+          })
+
+        })
+        /*item.fsnode.copy( currentOpened, { fixCollision: true } , function(){
+          console.log( arguments );
+        });*/
+
+      }else if ( item.fsnode.type >= TYPE_GDRIVE_FOLDER && currentOpened.integration && currentOpened.gdrive ) {
+
+        item.fsnode.copy( currentOpened, { fixCollision: true } , function(){
+          console.log( arguments );
+        });
+
+      }else if ( item.fsnode.type >= TYPE_ONEDRIVE_FOLDER && currentOpened.integration && currentOpened.onedrive ) {
+
+        item.fsnode.copy( currentOpened, { fixCollision: true } , function(){
+          console.log( arguments );
+        });
+
       }else if( currentOpened.integration && currentOpened.gdrive ){
         uploadToGdrive( item.fsnode.id, gdriveAccountActive, currentOpened.id);
       }else if( currentOpened.integration && currentOpened.dropbox ){
@@ -3075,7 +3091,7 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
     .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
     .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
-    .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
+    .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' )
 
   }else if( item.fsnode.type === TYPE_DROPBOX_FILE || item.fsnode.type === TYPE_GDRIVE_FILE || item.fsnode.type === TYPE_ONEDRIVE_FILE){
 
@@ -3083,7 +3099,7 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
     .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
     .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
-    .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
+    .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' )
 
   }else if( item.fsnode.type === TYPE_GDRIVE_FOLDER ){
 
@@ -3091,7 +3107,7 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'gdriveFolder' : item.fsnode } ) )
     .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
     .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
-    .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
+    .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' )
 
   }else if( item.fsnode.type === TYPE_ONEDRIVE_FOLDER ){
 
@@ -3100,7 +3116,7 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
     .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
     .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
-    .addOption( lang.main.remove, deleteAll.bind( null, null ), 'warning' )
+    .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' )
 
   }
 
