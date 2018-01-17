@@ -396,13 +396,15 @@ var onedriveNode = function( data ){
   that.integration = true;
   that.onedrive = true;
 
-  if ( data.isFolder ) {
+  console.log( that.icons.small )
+
+  /*if ( data.isFolder ) {
     that.icons = folderIcons.normal;
     that.type = TYPE_ONEDRIVE_FOLDER;
   }else{
     that.icons = unknowFileIcons.normal;
     that.type = TYPE_ONEDRIVE_FILE;
-  }
+  }*/
 
   that.move = function( destiny ){
 
@@ -4385,23 +4387,7 @@ var requestOnedriveItems = function( folder ){
     onedriveShowingItems = list;
 
     list = list.map(function( entry ){
-
-      if ( entry.folder ) {
-        return new onedriveNode({
-          'isFolder'      : true,
-          'path_display'  : entry.path_display,
-          'name'          : entry.name,
-          'id'            : entry.id
-        })
-      }else{
-        return new onedriveNode({
-          'isFolder'      : false,
-          'path_display'  : entry.path_display,
-          'name'          : entry.name,
-          'id'            : entry.id
-        })
-      }
-
+      return new onedriveNode( entry )
     });
 
     end.resolve( list );
