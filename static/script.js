@@ -3640,7 +3640,16 @@ visualSidebarItemArea
 .on( 'wz-drop', '.ui-navgroup-element', function( e, item, list ){
 
   var destiny = $(this).removeClass('dropover').data('id');
+  var cloud = $(this).data('cloud')
+  var account = $(this).data('account').id
 
+  if (cloud === 'dropbox') {
+    destiny = {path_display: destiny, dropbox: true, account: account}
+  }else if(cloud === 'gdrive'){
+    destiny = {id: destiny, gdrive: true, account: account}
+  }else if(cloud === 'onedrive'){
+    destiny = {id: destiny, onedrive: true, account: account}
+  }
 
   list.filter( function( item ){
     return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
@@ -4239,6 +4248,7 @@ api.integration.onedrive.on('removed', function( entry ){
 var openDropboxAccount = function( sidebarItem ){
   dropboxAccountActive = $(sidebarItem).data('account');
   var dropboxRoot = {
+    'account'       : dropboxAccountActive.id,
     'id'            : 'dropboxRoot',
     'path_display'  : '',
     'integration'   : true,
@@ -4254,6 +4264,7 @@ var openDropboxAccount = function( sidebarItem ){
 var openGdriveAccount = function( sidebarItem ){
   gdriveAccountActive = $(sidebarItem).data('account');
   var gdriveRoot = {
+    'account'       : gdriveAccountActive.id,
     'id'            : 'gdriveRoot',
     'path_display'  : '',
     'integration'   : true,
@@ -4269,6 +4280,7 @@ var openGdriveAccount = function( sidebarItem ){
 var openOnedriveAccount = function( sidebarItem ){
   onedriveAccountActive = $(sidebarItem).data('account');
   var onedriveRoot = {
+    'account'       : onedriveAccountActive.id,
     'id'            : 'onedriveRoot',
     'path_display'  : '',
     'integration'   : true,
@@ -4463,7 +4475,7 @@ var setOldCloudAccounts = function(){
 
       var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
 
-      visualItem.addClass( 'item-' + account.id + ' dropbox' ).data( 'account', account ).data( 'id' , account.id );
+      visualItem.addClass( 'item-' + account.id + ' dropbox' ).data( 'account', account ).data( 'id' , '' ).data('cloud', 'dropbox');
       visualItem.find('.ui-navgroup-element-txt').text( account.email );
 
       sidebarFolders.push( account );
@@ -4482,7 +4494,7 @@ var setOldCloudAccounts = function(){
 
       var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
 
-      visualItem.addClass( 'item-' + account.id + ' gdrive' ).data( 'account', account ).data( 'id' , account.id );
+      visualItem.addClass( 'item-' + account.id + ' gdrive' ).data( 'account', account ).data( 'id' , 'root' ).data('cloud', 'gdrive');
       visualItem.find('.ui-navgroup-element-txt').text( account.email );
 
       sidebarFolders.push( account );
@@ -4501,7 +4513,7 @@ var setOldCloudAccounts = function(){
 
       var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
 
-      visualItem.addClass( 'item-' + account.id + ' onedrive' ).data( 'account', account ).data( 'id' , account.id );
+      visualItem.addClass( 'item-' + account.id + ' onedrive' ).data( 'account', account ).data( 'id' , 'root' ).data('cloud', 'onedrive');
       visualItem.find('.ui-navgroup-element-txt').text( account.email );
 
       sidebarFolders.push( account );
