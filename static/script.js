@@ -4249,13 +4249,13 @@ var openDropboxAccount = function( sidebarItem ){
   dropboxAccountActive = $(sidebarItem).data('account');
   var dropboxRoot = {
     'account'       : dropboxAccountActive.id,
-    'id'            : 'dropboxRoot',
+    'id'            : '/',
     'path_display'  : '',
     'integration'   : true,
     'dropbox'       : true,
     'name'          : 'Dropbox',
     'getPath'       : function( callback ){
-      callback( null, [{'name' : 'Dropbox', id: 'dropboxRoot'}]);
+      callback( null, [{'name' : 'Dropbox', id: '/'}]);
     }
   }
   openFolder( 'dropboxRoot' , { 'dropboxFolder' : dropboxRoot } );
