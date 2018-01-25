@@ -11,12 +11,6 @@ var TYPE_ROOT = 0;
 var TYPE_FOLDER_SPECIAL = 1;
 var TYPE_FOLDER = 2;
 var TYPE_FILE = 3;
-var TYPE_DROPBOX_FOLDER = 4;
-var TYPE_DROPBOX_FILE = 5;
-var TYPE_GDRIVE_FOLDER = 6;
-var TYPE_GDRIVE_FILE = 7;
-var TYPE_ONEDRIVE_FOLDER = 8;
-var TYPE_ONEDRIVE_FILE = 9;
 
 var PROGRESS_RADIUS = 5;
 var PROGRESS_ICON = new Image();
@@ -244,15 +238,21 @@ var dropboxNode = function( data ){
 
   that.move = function( destiny ){
 
-    if ( !destiny.integration ) {
-      that.uploadToHorbito( destiny );
-      return;
+    // From dropbox to horbito
+    if (!destiny.dropbox && !destiny.gdrive && !destiny.onedrive) {
+      that.uploadToHorbito( destiny )
+      return
     }
 
-    dropboxAccountActive.move( that.path_display , destiny.path_display , function( err ){
-      if ( err ) {
-        console.log('Error dropbox move', err);
-      }
+    // From dropbox to gdrive or onedrive
+    if (destiny.gdrive || destiny.onedrive) {
+      this.copy(destiny)
+      return
+    }
+
+    // From dropbox to dropbox
+    dropboxAccountActive.move(that.path_display , destiny.path_display , function (err) {
+      console.log(err)
     });
   }
 
@@ -283,23 +283,42 @@ var dropboxNode = function( data ){
 
   that.copy = function( destiny ){
 
-    if ( !destiny.integration ) {
-      that.uploadToHorbito( destiny );
-      return;
+    // From dropbox to horbito
+    if (!destiny.dropbox && !destiny.gdrive && !destiny.onedrive) {
+      that.uploadToHorbito( destiny )
+      return
     }
 
-    dropboxAccountActive.copy( that.path_display , destiny.path_display , function( err, item ){
-      if ( err ) {
-        console.log('Error dropbox copy', err);
-      }
+    // From dropbox to gdrive
+    if (destiny.gdrive) {
+
+      dropboxAccountActive.toGDrive(this.id, destiny.id, destiny.account, function (err) {
+        console.log(err)
+      })
+
+      return
+    }
+
+    // From dropbox to onedrive
+    if (destiny.onedrive) {
+
+      dropboxAccountActive.toOnedrive(this.id, destiny.id, destiny.account, function (err) {
+        console.log( err )
+      })
+
+      return
+    }
+
+    // From dropbox to dropbox
+    dropboxAccountActive.copy( that.path_display , destiny.path_display , function (err) {
+      console.log(err)
     });
   }
 
   that.uploadToHorbito = function( destiny ){
 
-    dropboxAccountActive.toHorbito( [ that.path_display ], destiny.id, function(){
-      console.log('Hey carlos! se esta intentando subir un archivo de dropbox a horbito->', that , destiny );
-      console.log('Respuesta en el callback: ' , arguments);
+    dropboxAccountActive.toHorbito( [ that.path_display ], destiny.id, function (err) {
+      console.log(err);
     });
   }
 
@@ -316,29 +335,24 @@ var gdriveNode = function( data ){
 
   var that = $.extend( this, data )
 
-  that.integration = true;
-  that.gdrive = true;
-
-  if ( data.isFolder ) {
-    that.icons = folderIcons.normal;
-    that.type = TYPE_GDRIVE_FOLDER;
-  }else{
-    //that.icons = unknowFileIcons.normal;
-    that.type = TYPE_GDRIVE_FILE;
-  }
-
   that.move = function( destiny ){
 
-    if ( !destiny.integration ) {
-      that.uploadToHorbito( destiny );
-      return;
+    // From gdrive to horbito
+    if (!destiny.dropbox && !destiny.gdrive && !destiny.onedrive) {
+      that.uploadToHorbito( destiny )
+      return
     }
 
-    gdriveAccountActive.move( data.id , destiny.id , function( err ){
-      if ( err ) {
-        console.log('Error gdrive move', err);
-      }
-    });
+    // From gdrive to dropbox or onedrive
+    if (destiny.dropbox || destiny.onedrive) {
+      this.copy(destiny)
+      return
+    }
+
+    // From gdrive to gdrive
+    gdriveAccountActive.move(data.id, destiny.id, function (err) {
+      console.log(err)
+    })
   }
 
   that.getPath = function( callback ){
@@ -365,23 +379,42 @@ var gdriveNode = function( data ){
 
   that.copy = function( destiny ){
 
-    if ( !destiny.integration ) {
-      that.uploadToHorbito( destiny );
-      return;
+    // From gdrive to horbito
+    if (!destiny.dropbox && !destiny.gdrive && !destiny.onedrive) {
+      that.uploadToHorbito(destiny)
+      return
     }
 
-    gdriveAccountActive.copy( data.id, destiny.id, function( err , item ){
-      if ( err ) {
-        console.log('Error gdrive copy', err);
-      }
-    });
+    // From gdrive to dropbox
+    if (destiny.dropbox) {
+
+      gdriveAccountActive.toDropbox(this.id, destiny.id, destiny.account, function (err) {
+        console.log(err)
+      })
+
+      return
+    }
+
+    // From gdrive to onedrive
+    if (destiny.onedrive) {
+
+      gdriveAccountActive.toOnedrive(this.id, destiny.id, destiny.account, function (err) {
+        console.log( err )
+      })
+
+      return
+    }
+
+    // From gdrive to gdrive
+    gdriveAccountActive.copy( data.id, destiny.id, function (err) {
+      console.log(err)
+    })
   }
 
   that.uploadToHorbito = function( destiny ){
 
-    gdriveAccountActive.toHorbito( [ that.id ], destiny.id, function(){
-      console.log('Hey carlos! se esta intentando subir un archivo de gdrive a horbito->', that , destiny );
-      console.log('Respuesta en el callback: ' , arguments);
+    gdriveAccountActive.toHorbito( [ that.id ], destiny.id, function (err) {
+      console.log(err);
     });
   }
 
@@ -393,31 +426,24 @@ var onedriveNode = function( data ){
 
   var that = $.extend( this, data )
 
-  that.integration = true;
-  that.onedrive = true;
-
-  console.log( that.icons.small )
-
-  /*if ( data.isFolder ) {
-    that.icons = folderIcons.normal;
-    that.type = TYPE_ONEDRIVE_FOLDER;
-  }else{
-    that.icons = unknowFileIcons.normal;
-    that.type = TYPE_ONEDRIVE_FILE;
-  }*/
-
   that.move = function( destiny ){
 
-    if ( !destiny.integration ) {
-      that.uploadToHorbito( destiny );
-      return;
+    // From onedrive to horbito
+    if (!destiny.dropbox && !destiny.gdrive && !destiny.onedrive) {
+      that.uploadToHorbito( destiny )
+      return
     }
 
-    onedriveAccountActive.move( data.id , destiny.id , function( err ){
-      if ( err ) {
-        console.log('Error onedrive move', err);
-      }
-    });
+    // From onedrive to dropbox or gdrive
+    if (destiny.dropbox || destiny.gdrive) {
+      this.copy(destiny)
+      return
+    }
+
+    // From onedrive to onedrive
+    onedriveAccountActive.move( data.id, destiny.id, function (err) {
+      console.log(err)
+    })
   }
 
   that.getPath = function( callback ){
@@ -439,28 +465,47 @@ var onedriveNode = function( data ){
       if ( err ) {
         console.log('Error onedrive rename', err);
       }
-    });
+    })
   }
 
   that.copy = function( destiny ){
-
-    if ( !destiny.integration ) {
-      that.uploadToHorbito( destiny );
-      return;
+   
+    // From ondrive to horbito
+    if (!destiny.dropbox && !destiny.gdrive && !destiny.onedrive) {
+      that.uploadToHorbito(destiny)
+      return
     }
 
-    onedriveAccountActive.copy( data.id , destiny.id , function( err ){
-      if ( err ) {
-        console.log('Error onedrive copy', err);
-      }
-    });
+    // From ondrive to dropbox
+    if (destiny.dropbox) {
+
+      onedriveAccountActive.toDropbox(this.id, destiny.id, destiny.account, function (err) {
+        console.log(err)
+      })
+
+      return
+    }
+
+    // From onedrive to gdrive
+    if (destiny.gdrive) {
+
+      onedriveAccountActive.toGDrive(this.id, destiny.id, destiny.account, function (err) {
+        console.log( err )
+      })
+
+      return
+    }
+
+    // From onedrive to onedrive
+    onedriveAccountActive.copy(data.id, destiny.id, function (err) {
+      console.log(err);
+    })
   }
 
   that.uploadToHorbito = function( destiny ){
 
-    onedriveAccountActive.toHorbito( [ that.id ], destiny.id, function(){
-      console.log('Hey carlos! se esta intentando subir un archivo de onedrive a horbito->', that , destiny );
-      console.log('Respuesta en el callback: ' , arguments);
+    onedriveAccountActive.toHorbito( [that.id], destiny.id, function (err) {
+      console.log(err);
     });
   }
 
@@ -818,50 +863,9 @@ var clipboardPaste = function(){
 
     storage.copy.forEach( function( item ){
 
-      if ( item.fsnode.type >= TYPE_DROPBOX_FOLDER && currentOpened.integration && currentOpened.dropbox ) {
-
-        item.fsnode.copy( currentOpened, { fixCollision: true } , function(){
-          console.log( arguments );
-        });
-
-      }else if ( item.fsnode.type >= TYPE_DROPBOX_FOLDER && currentOpened.integration && currentOpened.gdrive ) {
-
-        console.log( item )
-        api.integration.dropbox( item.fsnode.account, function( err, res ){
-
-          console.log( currentOpened, err )
-          res.uploadToGDrive( item.fsnode.id, item.fsnode.name, currentOpened.id, 5628, function(){
-            console.log( arguments )
-          })
-
-        })
-        /*item.fsnode.copy( currentOpened, { fixCollision: true } , function(){
-          console.log( arguments );
-        });*/
-
-      }else if ( item.fsnode.type >= TYPE_GDRIVE_FOLDER && currentOpened.integration && currentOpened.gdrive ) {
-
-        item.fsnode.copy( currentOpened, { fixCollision: true } , function(){
-          console.log( arguments );
-        });
-
-      }else if ( item.fsnode.type >= TYPE_ONEDRIVE_FOLDER && currentOpened.integration && currentOpened.onedrive ) {
-
-        item.fsnode.copy( currentOpened, { fixCollision: true } , function(){
-          console.log( arguments );
-        });
-
-      }else if( currentOpened.integration && currentOpened.gdrive ){
-        uploadToGdrive( item.fsnode.id, gdriveAccountActive, currentOpened.id);
-      }else if( currentOpened.integration && currentOpened.dropbox ){
-        uploadToDropbox( item.fsnode.id, dropboxAccountActive, currentOpened.id);
-      }else if( currentOpened.integration && currentOpened.onedrive ){
-        uploadToOnedrive( item.fsnode.id, onedriveAccountActive, currentOpened.id);
-      }else{
-        item.fsnode.copy( currentOpened.id, { fixCollision: true } , function(){
-          console.log( arguments );
-        });
-      }
+      item.fsnode.copy( currentOpened.id, {fixCollision: true} , function(){
+        console.log( arguments );
+      });
 
     });
 
@@ -870,16 +874,9 @@ var clipboardPaste = function(){
     storage.cut.forEach( function( item ){
 
       if ( item.fsnode.parent != currentOpened.id ) {
-
-        if( item.fsnode.type >= TYPE_DROPBOX_FOLDER ){
-          item.fsnode.move( currentOpened, function(){
-            console.log( arguments );
-          });
-        }else{
-          item.fsnode.move( currentOpened.id, function(){
-            console.log( arguments );
-          });
-        }
+        item.fsnode.move( currentOpened.id, function(){
+          console.log( arguments );
+        });
       }
 
 
@@ -919,7 +916,7 @@ var contextmenuAcceptFile = function( fsnode ){
 var createFolder = function(){
 
   //Dropbox new folder
-  if ( currentOpened.type === TYPE_DROPBOX_FOLDER || currentOpened.type === TYPE_DROPBOX_FILE) {
+  if (currentOpened.dropbox) {
 
     dropboxAccountActive.createFolder( currentOpened.path_display + '/' + getAvailableNewFolderName() , function( e , newDirectory ){
 
@@ -936,7 +933,7 @@ var createFolder = function(){
 
 
   //Google drive new folder
-  }else if( currentOpened.type === TYPE_GDRIVE_FOLDER || currentOpened.type === TYPE_GDRIVE_FILE){
+  }else if(currentOpened.gdrive){
 
     var folderId = currentOpened.id === 'gdriveRoot' ? 'root' : currentOpened.id;
     gdriveAccountActive.createFolder( getAvailableNewFolderName() , folderId , function( e , newDirectory ){
@@ -953,7 +950,7 @@ var createFolder = function(){
     });
 
   //Onedrive new folder
-  }else if( currentOpened.type === TYPE_ONEDRIVE_FOLDER || currentOpened.type === TYPE_ONEDRIVE_FILE){
+  }else if(currentOpened.onedrive){
 
     var folderId = currentOpened.id === 'onedriveRoot' ? 'root' : currentOpened.id;
     onedriveAccountActive.createFolder( getAvailableNewFolderName() , folderId , function( e , newDirectory ){
@@ -2082,11 +2079,11 @@ var historyGoBack = function(){
 
   var backFolder = historyBackward.pop();
 
-  if ( backFolder.type === TYPE_DROPBOX_FOLDER || backFolder.type === TYPE_DROPBOX_FILE) {
+  if (backFolder.dropbox) {
     openFolder( backFolder.id , { 'isBack' : true, 'dropboxFolder' : backFolder } );
-  }else if( backFolder.type === TYPE_GDRIVE_FOLDER || backFolder.type === TYPE_GDRIVE_FILE ){
+  }else if(backFolder.gdrive){
     openFolder( backFolder.id , { 'isBack' : true, 'gdriveFolder' : backFolder } );
-  }else if( backFolder.type === TYPE_ONEDRIVE_FOLDER || backFolder.type === TYPE_ONEDRIVE_FILE){
+  }else if(backFolder.onedrive){
     openFolder( backFolder.id , { 'isBack' : true, 'onedriveFolder' : backFolder } );
   }else{
     openFolder( backFolder.id , { 'isBack' : true } );
@@ -2107,11 +2104,11 @@ var historyGoForward = function(){
 
   var forwardFolder = historyForward.shift();
 
-  if ( forwardFolder.type === TYPE_DROPBOX_FOLDER || backFolder.type === TYPE_DROPBOX_FILE) {
+  if (forwardFolder.dropbox) {
     openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true , 'dropboxFolder' : forwardFolder } );
-  }else if( forwardFolder.type === TYPE_GDRIVE_FOLDER || backFolder.type === TYPE_GDRIVE_FILE){
+  }else if(forwardFolder.gdrive){
     openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true , 'gdriveFolder' : forwardFolder } );
-  }else if( backFolder.type === TYPE_ONEDRIVE_FOLDER || backFolder.type === TYPE_ONEDRIVE_FILE){
+  }else if(backFolder.onedrive){
     openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true , 'onedriveFolder' : forwardFolder } );
   }else{
     openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true } );
@@ -2342,15 +2339,20 @@ var openItem = function( item ){
 
   if ( item.fsnode.pending ) {
     api.app.createView( item.fsnode , 'received' );
-  }else if( item.fsnode.type === TYPE_DROPBOX_FOLDER ){
+
+  }else if(item.fsnode.dropbox && item.fsnode.type === TYPE_FOLDER){
     openFolder( item.fsnode.id , { 'dropboxFolder' : item.fsnode });
-  }else if( item.fsnode.type === TYPE_GDRIVE_FOLDER ){
+
+  }else if(item.fsnode.gdrive && item.fsnode.type === TYPE_FOLDER){
     openFolder( item.fsnode.id , { 'gdriveFolder' : item.fsnode });
-  }else if( item.fsnode.type === TYPE_ONEDRIVE_FOLDER ){
+
+  }else if(item.fsnode.onedrive && item.fsnode.type === TYPE_FOLDER){
     openFolder( item.fsnode.id , { 'onedriveFolder' : item.fsnode });
-  }else if( item.fsnode.type === TYPE_ROOT || item.fsnode.type === TYPE_FOLDER_SPECIAL || item.fsnode.type === TYPE_FOLDER ){
+
+  }else if(item.fsnode.type === TYPE_ROOT || item.fsnode.type === TYPE_FOLDER_SPECIAL || item.fsnode.type === TYPE_FOLDER){
     openFolder( item.fsnode.id );
-  }else if( item.fsnode.type === TYPE_FILE || item.fsnode.type === TYPE_DROPBOX_FILE || item.fsnode.type === TYPE_GDRIVE_FILE ){
+
+  }else if(item.fsnode.type === TYPE_FILE){
 
     if( params && ( params.command === 'selectSource' || params.command === 'selectDestiny' ) ){
       acceptButtonHandler()
@@ -3086,7 +3088,7 @@ var generateContextMenu = function( item, options ){
     menu
     .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
 
-  }else if( item.fsnode.type === TYPE_DROPBOX_FOLDER ){
+  }else if(item.fsnode.dropbox && item.fsnode.type === TYPE_FOLDER){
 
     menu
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'dropboxFolder' : item.fsnode } ) )
@@ -3095,7 +3097,7 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
     .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' )
 
-  }else if( item.fsnode.type === TYPE_DROPBOX_FILE || item.fsnode.type === TYPE_GDRIVE_FILE || item.fsnode.type === TYPE_ONEDRIVE_FILE){
+  }else if(item.fsnode.integration){
 
     menu
     .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
@@ -3103,7 +3105,7 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
     .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' )
 
-  }else if( item.fsnode.type === TYPE_GDRIVE_FOLDER ){
+  }else if(item.fsnode.gdrive && item.fsnode.type === TYPE_FOLDER){
 
     menu
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'gdriveFolder' : item.fsnode } ) )
@@ -3111,7 +3113,7 @@ var generateContextMenu = function( item, options ){
     .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
     .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' )
 
-  }else if( item.fsnode.type === TYPE_ONEDRIVE_FOLDER ){
+  }else if(item.fsnode.onedrive && item.fsnode.type === TYPE_FOLDER){
 
     menu
     .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'onedriveFolder' : item.fsnode } ) )
@@ -3211,19 +3213,19 @@ var updateFolderUtilsStatus = function(){
 }
 
 var refreshDropbox = function(){
-  if ( currentOpened.integration && currentOpened.dropbox ) {
+  if (currentOpened.dropbox) {
     openFolder( currentOpened.id , { 'dropboxFolder' : currentOpened } );
   }
 }
 
 var refreshGdrive = function(){
-  if ( currentOpened.integration && currentOpened.gdrive ) {
+  if (currentOpened.gdrive) {
     openFolder( currentOpened.id , { 'gdriveFolder' : currentOpened } );
   }
 }
 
 var refreshOnedrive = function(){
-  if ( currentOpened.integration && currentOpened.onedrive ) {
+  if (currentOpened.onedrive) {
     openFolder( currentOpened.id , { 'onedriveFolder' : currentOpened } );
   }
 }
@@ -3936,28 +3938,19 @@ console.log('will open')
       return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
     }).forEach( function( item ){
 
-      if(  item.fsnode.type >= TYPE_DROPBOX_FOLDER  ){
-        item.fsnode.move( destinyNode, function( err ){
-          if ( err ) { console.log('Err: ', err) }
-        });
+      if(item.fsnode.dropbox || item.fsnode.gdrive || item.fsnode.onedrive){
+
+        item.fsnode.move( destinyNode, function(err){
+          if (err) { console.log(err) }
+        }) 
+
       }else if( item.fsnode.parent != destiny ) {
-        if ( destinyNode.integration ) {
 
-          if ( destinyNode.dropbox ) {
-            uploadToDropbox( item.fsnode.id, dropboxAccountActive, currentOpened.id);
-          }else if( destinyNode.gdrive ){
-            uploadToGdrive( item.fsnode.id, gdriveAccountActive, currentOpened.id);
-          }else if( destinyNode.onedrive ){
-            uploadToOnedrive( item.fsnode.id, onedriveAccountActive, currentOpened.id);
-          }
+        item.fsnode.move( destiny, function(err){
+          if (err) { console.log(err) }
+        });
 
-        }else{
-          item.fsnode.move( destiny, function( err ){
-            if ( err ) { console.log('Err: ', err) }
-          });
-        }
       }
-
     });
 
   }
@@ -4246,7 +4239,6 @@ api.integration.onedrive.on('removed', function( entry ){
 var openDropboxAccount = function( sidebarItem ){
   dropboxAccountActive = $(sidebarItem).data('account');
   var dropboxRoot = {
-    'type'          : TYPE_DROPBOX_FOLDER,
     'id'            : 'dropboxRoot',
     'path_display'  : '',
     'integration'   : true,
@@ -4262,7 +4254,6 @@ var openDropboxAccount = function( sidebarItem ){
 var openGdriveAccount = function( sidebarItem ){
   gdriveAccountActive = $(sidebarItem).data('account');
   var gdriveRoot = {
-    'type'          : TYPE_GDRIVE_FOLDER,
     'id'            : 'gdriveRoot',
     'path_display'  : '',
     'integration'   : true,
@@ -4278,7 +4269,6 @@ var openGdriveAccount = function( sidebarItem ){
 var openOnedriveAccount = function( sidebarItem ){
   onedriveAccountActive = $(sidebarItem).data('account');
   var onedriveRoot = {
-    'type'          : TYPE_ONEDRIVE_FOLDER,
     'id'            : 'onedriveRoot',
     'path_display'  : '',
     'integration'   : true,
@@ -4520,24 +4510,6 @@ var setOldCloudAccounts = function(){
     });
   });
 
-}
-
-var uploadToGdrive = function( horbitoId, gdriveAccount, gdrivePath ){
-  gdriveAccount.toGDrive( horbitoId, gdrivePath, function(){
-    console.log('Hey carlos se esta subiendo desde horbito a gdrive!', horbitoId, gdrivePath, arguments);
-  });
-}
-
-var uploadToDropbox = function( horbitoId, dropboxAccount, dropboxPath ){
-  dropboxAccount.toDropbox( horbitoId, dropboxPath, function(){
-    console.log('Hey carlos se esta subiendo desde horbito a dropbox!', horbitoId, dropboxPath, arguments);
-  });
-}
-
-var uploadToOnedrive = function( horbitoId, onedriveAccount, onedrivePath ){
-  onedriveAccount.toOnedrive( horbitoId, onedrivePath, function(){
-    console.log('Hey carlos se esta subiendo desde horbito a onedrive!', horbitoId, onedrivePath, arguments);
-  });
 }
 
 // Load texts
