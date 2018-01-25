@@ -292,7 +292,7 @@ var dropboxNode = function( data ){
     // From dropbox to gdrive
     if (destiny.gdrive) {
 
-      dropboxAccountActive.toGDrive(this.id, destiny.id, destiny.account, function (err) {
+      dropboxAccountActive.toGDrive([this.id], destiny.id, destiny.account, function (err) {
         console.log(err)
       })
 
@@ -302,7 +302,7 @@ var dropboxNode = function( data ){
     // From dropbox to onedrive
     if (destiny.onedrive) {
 
-      dropboxAccountActive.toOnedrive(this.id, destiny.id, destiny.account, function (err) {
+      dropboxAccountActive.toOnedrive([this.id], destiny.id, destiny.account, function (err) {
         console.log( err )
       })
 
@@ -388,7 +388,7 @@ var gdriveNode = function( data ){
     // From gdrive to dropbox
     if (destiny.dropbox) {
 
-      gdriveAccountActive.toDropbox(this.id, destiny.id, destiny.account, function (err) {
+      gdriveAccountActive.toDropbox([this.id], destiny.id, destiny.account, function (err) {
         console.log(err)
       })
 
@@ -398,7 +398,7 @@ var gdriveNode = function( data ){
     // From gdrive to onedrive
     if (destiny.onedrive) {
 
-      gdriveAccountActive.toOnedrive(this.id, destiny.id, destiny.account, function (err) {
+      gdriveAccountActive.toOnedrive([this.id], destiny.id, destiny.account, function (err) {
         console.log( err )
       })
 
@@ -479,7 +479,7 @@ var onedriveNode = function( data ){
     // From ondrive to dropbox
     if (destiny.dropbox) {
 
-      onedriveAccountActive.toDropbox(this.id, destiny.id, destiny.account, function (err) {
+      onedriveAccountActive.toDropbox([this.id], destiny.id, destiny.account, function (err) {
         console.log(err)
       })
 
@@ -489,7 +489,7 @@ var onedriveNode = function( data ){
     // From onedrive to gdrive
     if (destiny.gdrive) {
 
-      onedriveAccountActive.toGDrive(this.id, destiny.id, destiny.account, function (err) {
+      onedriveAccountActive.toGDrive([this.id], destiny.id, destiny.account, function (err) {
         console.log( err )
       })
 
