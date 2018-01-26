@@ -236,6 +236,8 @@ var dropboxNode = function( data ){
 
   var that = $.extend( this, data )
 
+  that.dropbox = true;
+
   that.move = function( destiny ){
 
     // From dropbox to horbito
@@ -335,6 +337,8 @@ var gdriveNode = function( data ){
 
   var that = $.extend( this, data )
 
+  that.gdrive = true
+
   that.move = function( destiny ){
 
     // From gdrive to horbito
@@ -425,6 +429,8 @@ var gdriveNode = function( data ){
 var onedriveNode = function( data ){
 
   var that = $.extend( this, data )
+
+  that.onedrive = true
 
   that.move = function( destiny ){
 
@@ -935,7 +941,7 @@ var createFolder = function(){
   //Google drive new folder
   }else if(currentOpened.gdrive){
 
-    var folderId = currentOpened.id === 'gdriveRoot' ? 'root' : currentOpened.id;
+    var folderId = currentOpened.id === '/' ? 'root' : currentOpened.id;
     gdriveAccountActive.createFolder( getAvailableNewFolderName() , folderId , function( e , newDirectory ){
 
       var newDirectory = new gdriveNode({
@@ -952,7 +958,7 @@ var createFolder = function(){
   //Onedrive new folder
   }else if(currentOpened.onedrive){
 
-    var folderId = currentOpened.id === 'onedriveRoot' ? 'root' : currentOpened.id;
+    var folderId = currentOpened.id === '/' ? 'root' : currentOpened.id;
     onedriveAccountActive.createFolder( getAvailableNewFolderName() , folderId , function( e , newDirectory ){
 
       var newDirectory = new onedriveNode({
@@ -2108,7 +2114,7 @@ var historyGoForward = function(){
     openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true , 'dropboxFolder' : forwardFolder } );
   }else if(forwardFolder.gdrive){
     openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true , 'gdriveFolder' : forwardFolder } );
-  }else if(backFolder.onedrive){
+  }else if(forwardFolder.onedrive){
     openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true , 'onedriveFolder' : forwardFolder } );
   }else{
     openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true } );
@@ -4255,7 +4261,7 @@ var openDropboxAccount = function( sidebarItem ){
     'dropbox'       : true,
     'name'          : 'Dropbox',
     'getPath'       : function( callback ){
-      callback( null, [{'name' : 'Dropbox', id: '/'}]);
+      callback( null, [{'name' : 'Dropbox', id: '/', 'dropbox' : true}]);
     }
   }
   openFolder( 'dropboxRoot' , { 'dropboxFolder' : dropboxRoot } );
@@ -4265,13 +4271,13 @@ var openGdriveAccount = function( sidebarItem ){
   gdriveAccountActive = $(sidebarItem).data('account');
   var gdriveRoot = {
     'account'       : gdriveAccountActive.id,
-    'id'            : 'gdriveRoot',
+    'id'            : '/',
     'path_display'  : '',
     'integration'   : true,
     'gdrive'        : true,
     'name'          : 'Google Drive',
     'getPath'       : function( callback ){
-      callback( null, [{'name' : 'Google Drive', id: 'gdriveRoot'}]);
+      callback( null, [{'name' : 'Google Drive', id: '/', 'gdrive' : true}]);
     }
   }
   openFolder( 'gdriveRoot' , { 'gdriveFolder' : gdriveRoot } );
@@ -4281,16 +4287,16 @@ var openOnedriveAccount = function( sidebarItem ){
   onedriveAccountActive = $(sidebarItem).data('account');
   var onedriveRoot = {
     'account'       : onedriveAccountActive.id,
-    'id'            : 'onedriveRoot',
+    'id'            : '/',
     'path_display'  : '',
     'integration'   : true,
     'onedrive'      : true,
     'name'          : 'Onedrive',
     'getPath'       : function( callback ){
-      callback( null, [{'name' : 'Onedrive'}]);
+      callback( null, [{'name' : 'Onedrive', 'onedrive' : true}]);
     }
   }
-  openFolder( 'onedriveRoot' , { 'onedriveFolder' : onedriveRoot, id: 'onedriveRoot' } );
+  openFolder( 'onedriveRoot' , { 'onedriveFolder' : onedriveRoot, id: '/' } );
 };
 
 var requestDropboxItems = function( folder ){
@@ -4327,7 +4333,7 @@ var requestGdriveItems = function( folder ){
   gdriveShowingFolder = folder;
 
   // Is root
-  if ( folder === 'gdriveRoot' ) {
+  if ( folder === '/' ) {
 
     gdriveAccountActive.listFiles( function( e , list ){
 
@@ -4382,7 +4388,7 @@ var requestOnedriveItems = function( folder ){
   var end = $.Deferred();
   onedriveShowingFolder = folder;
 
-  folder = folder === 'onedriveRoot' ? 'root' : folder;
+  folder = folder === '/' ? 'root' : folder;
 
   onedriveAccountActive.listFolder( folder , function( e , list ){
 
@@ -4475,7 +4481,7 @@ var setOldCloudAccounts = function(){
 
       var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
 
-      visualItem.addClass( 'item-' + account.id + ' dropbox' ).data( 'account', account ).data( 'id' , '' ).data('cloud', 'dropbox');
+      visualItem.addClass( 'item-' + account.id + ' dropbox' ).data( 'account', account ).data( 'id' , '/' ).data('cloud', 'dropbox');
       visualItem.find('.ui-navgroup-element-txt').text( account.email );
 
       sidebarFolders.push( account );
@@ -4494,7 +4500,7 @@ var setOldCloudAccounts = function(){
 
       var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
 
-      visualItem.addClass( 'item-' + account.id + ' gdrive' ).data( 'account', account ).data( 'id' , 'root' ).data('cloud', 'gdrive');
+      visualItem.addClass( 'item-' + account.id + ' gdrive' ).data( 'account', account ).data( 'id' , '/' ).data('cloud', 'gdrive');
       visualItem.find('.ui-navgroup-element-txt').text( account.email );
 
       sidebarFolders.push( account );
@@ -4513,7 +4519,7 @@ var setOldCloudAccounts = function(){
 
       var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
 
-      visualItem.addClass( 'item-' + account.id + ' onedrive' ).data( 'account', account ).data( 'id' , 'root' ).data('cloud', 'onedrive');
+      visualItem.addClass( 'item-' + account.id + ' onedrive' ).data( 'account', account ).data( 'id' , '/' ).data('cloud', 'onedrive');
       visualItem.find('.ui-navgroup-element-txt').text( account.email );
 
       sidebarFolders.push( account );
