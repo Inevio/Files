@@ -1,0 +1,114 @@
+@darkHorbito: #252525;
+@gray1: #717171;
+@gray2: #9a9aa2;
+@gray3: #bbbbc1;
+@lightGray: #f9f9fe;
+
+*{
+	font-family: Lato;
+}
+
+.progress-container{
+	float: left;
+	width: 100%;
+	height: 100%;
+
+	.ui-header-buttons{
+		position: absolute;
+		z-index: 3;
+		right: 0;
+	}
+
+	.text-layer{
+
+		position: absolute;
+		top: 0;
+		left: 0;
+		widows: 100%;
+		height: 100%;
+		z-index: 3;
+
+		.percentage{
+
+			float: left;
+			margin-top: 19px;
+			margin-left: 21px;
+			width: ~'calc(100% - 22px)';
+			font-size: 29px;
+			color: @darkHorbito;
+			font-weight: 900;
+
+		}
+
+		.loading-info{
+
+			float: left;
+			margin-top: 19px;
+			margin-left: 21px;
+			width: ~'calc(100% - 22px)';
+			font-size: 15px;
+			color: @darkHorbito;
+
+			i{
+				color: #0071f6;
+			}
+			
+		}
+
+		.time-remaining{
+
+			float: left;
+			margin-top: 9px;
+			margin-left: 21px;
+			font-size: 15px;
+			color: @gray1;
+
+		}
+
+		.time{
+
+			float: left;
+			margin-top: 9px;
+			margin-left: 10px;
+			font-size: 15px;
+			color: @gray1;
+
+		}
+
+	}
+
+	.loading-layer{
+
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 30%;
+		height: 100%;
+		transition: all 0.2s ease;
+		background: #0071f6;
+		z-index: 1;
+	}
+
+	.background-layer{
+
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 128px;
+		transition: all 0.2s ease;
+		background: #fff;
+		opacity: 0.9;
+		z-index: 2;
+	}
+
+	.gray-layer{
+		position: absolute;
+		bottom: 0;
+		height: 10px;
+		width: 100%;
+		background-color: #e1e1e3;
+	}
+
+
+}
