@@ -1,6 +1,7 @@
 
 {
 
+
     "name"    : "Files",
     "version" : "1.0",
     "stage"   : "beta",
@@ -332,6 +333,35 @@
 
                   "css"    : [ "linkByMail.css" ],
                   "script" : [ "linkByMail.js" ],
+                  "start"  : []
+
+                },
+
+                "progress" : {
+
+                  "template" : "progress.html",
+
+                  "maxizable" : false,
+                  "resizable" : false,
+
+                  "width"  : {
+
+                      "default" : 525,
+                      "min"     : 525,
+                      "max"     : 0
+
+                  },
+
+                  "height" : {
+
+                      "default" : 138,
+                      "min"     : 138,
+                      "max"     : 0
+
+                  },
+
+                  "css"    : [ "progress.css" ],
+                  "script" : [ "progress.js" ],
                   "start"  : []
 
                 }
