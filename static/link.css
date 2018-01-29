@@ -28,8 +28,9 @@
 .links-container{
   float: left;
   width: 100%;
-  height: ~'calc(100% - 35px)';
+  height: auto;
 }
+
 
 .wz-view{
   background-color: #fff;
@@ -299,7 +300,6 @@
   float: left;
   width: 100%;
   table-layout: fixed;
-  display: none;
 
   td, th{
     text-align: left;
