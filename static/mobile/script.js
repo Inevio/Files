@@ -310,6 +310,8 @@ var showOptions = function( file ){
 
     if( !error ){
 
+      pathList[0] = changeName( pathList[0] )
+
       var stringPath = '';
 
       for( var i=0, len = pathList.length; i < len; i++ ){
