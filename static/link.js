@@ -19,7 +19,7 @@ var appendLink = function( link ){
 
   var newLink = linkPrototype.clone().removeClass('wz-prototype');
 
-  newLink.addClass( 'link link-' + link.id );
+  newLink.addClass( 'opened link link-' + link.id );
   newLink.find('td:eq(1)').text( link.url );
   newLink.find('td:eq(2)').text( link.visitsCounter );
   newLink.find('td:eq(3)').text( link.downloadsCounter );
@@ -38,34 +38,16 @@ var appendLink = function( link ){
   }
 
   linksList.append( newLink );
-
-  showLinks.addClass('show');
   newLink.data( 'id' , link.id );
 
-  if( showLinks.hasClass('opened') ){
-    $('.links').show();
-  }
+  checkViewSize();
 
 };
 
 var removeLink = function( link ){
 
   $( '.link-' + link ).remove();
-  if ( showLinks.hasClass('opened') ) {
-
-    if ( linksList.find('.link').length === 0 ) {
-
-      showLinks.removeClass('opened show');
-      $('.links').hide();
-
-    }else{
-
-      $('.links').show();
-
-
-    }
-
-  }
+  checkViewSize();
 
 }
 // API Events
@@ -85,21 +67,6 @@ api.fs
 });
 
 // DOM Events
-showLinks.on( 'click', function(){
-
-  if( showLinks.hasClass('opened') ){
-
-    showLinks.removeClass('opened');
-    $('.links').hide();
-
-  }else{
-
-    showLinks.addClass('opened');
-    $('.links').show();
-
-  }
-});
-
 linkOutput.on( 'focus', function(){
   linkOutput.select();
 });
@@ -123,6 +90,7 @@ $('.create-link').on( 'click', function(){
       // To Do -> Error
       console.log( error );
       linkOutput.val( link.url ).focus();
+      appendLink(link)
 
 
     });
@@ -137,13 +105,13 @@ $('.option.password .ui-checkbox').on( 'click', function( e ){
 
     passwordInput.val('').blur();
     win.removeClass('show-password');
-    api.view.setSize( win.width(), DEFAULT_HEIGHT + ( showLinks.hasClass('opened') ? linksList.outerHeight( true ) : 0 ) );
+    checkViewSize();
 
   }else{
 
     win.addClass('show-password');
     passwordInput.val('').focus();
-    api.view.setSize( win.width(), DEFAULT_HEIGHT + passwordInput.outerHeight( true ) + ( showLinks.hasClass('opened') ? linksList.outerHeight( true ) : 0 ) );
+    checkViewSize();
 
   }
 
@@ -216,6 +184,22 @@ var translate = function () {
 
 }
 
+var checkViewSize = function(){
+
+    var height = 0;
+
+    console.log(win);
+
+    win.children().not('.wz-dialog').each( function(){
+        height += $(this).outerHeight( true );
+    });
+
+    if( height !== win.height() ){
+        api.view.setSize( win.width(), height );
+    }
+
+};
+
 // Start
 translate();
 api.fs( params, function( error, fsnode ){
@@ -229,6 +213,8 @@ api.fs( params, function( error, fsnode ){
     for( var i = 0; i < links.length; i++ ){
       appendLink( links[ i ] );
     }
+
+    checkViewSize();
 
   });
 
