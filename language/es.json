@@ -55,6 +55,7 @@
       "fileReceivedDialogTitle"   : "%s ha sido recibido",
       "fileReceivedDialogDescription" : "Si lo aceptas será guardado en tu carpeta principal",
       "arrow" : "Aquí están tus archivos",
+      "setAsWallpaper"  : "Establecer como fondo",
       "folderTranslations"        : {
 
         "Documents" : "Documentos",

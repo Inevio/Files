@@ -2362,7 +2362,7 @@ var generateContextMenu = function( item, options ){
 
     if( [ 'image/jpeg', 'image/jpg', 'image/png', 'image/gif' ].indexOf( item.fsnode.mime ) !== -1 ){
 
-      menu.addOption( 'Establecer como fondo', function(){
+      menu.addOption( lang.setAsWallpaper, function(){
         api.config.setFSNodeAsWallpaper( item.fsnode.id );
       });
 
