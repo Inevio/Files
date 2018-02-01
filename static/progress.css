@@ -15,7 +15,7 @@
 
 	.ui-header-buttons{
 		position: absolute;
-		z-index: 3;
+		z-index: 4;
 		right: 0;
 	}
 
@@ -49,10 +49,10 @@
 			font-size: 15px;
 			color: @darkHorbito;
 
-			i{
+			.source, .destiny{
 				color: #0071f6;
 			}
-			
+
 		}
 
 		.time-remaining{
@@ -82,7 +82,7 @@
 		position: absolute;
 		top: 0;
 		left: 0;
-		width: 30%;
+		width: 0;
 		height: 100%;
 		transition: all 0.2s ease;
 		background: #0071f6;

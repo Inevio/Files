@@ -236,7 +236,7 @@
 
     "favourites" : "Favoritos",
     "oldCloud"  : "Añadir otra nube",
-    "pairOldCloud"  : "Añadir otra nube",    
+    "pairOldCloud"  : "Añadir otra nube",
     "uploading" : "Subiendo",
     "of"        : "de",
 
@@ -384,6 +384,21 @@
       "buttonSubtitle" : "Con este método solo puedes elegir <i>archivos</i>, no <b>carpetas</b>. Esto es debido a las limitaciones del navegador.",
       "gotItButton" : "Entendido !"
 
+    },
+
+    "progress" : {
+      "percentage" : "%d% completo",
+      "copyingSingle" : "Copiando %d archivo desde ",
+      "copyingMultiple" : "Copiando %d de %d archivos desde ",
+      "to": "a",
+      "remaining" : "Tiempo restante:",
+      "hour" : "hora",
+      "hours" : "horas",
+      "minute" : "minuto",
+      "minutes" : "minutos",
+      "second" : "segundo",
+      "seconds" : "segundos",
+      "calculating" : "Calculando..."
     }
 
 }

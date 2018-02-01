@@ -475,7 +475,7 @@ var onedriveNode = function( data ){
   }
 
   that.copy = function( destiny ){
-   
+
     // From ondrive to horbito
     if (!destiny.dropbox && !destiny.gdrive && !destiny.onedrive) {
       that.uploadToHorbito(destiny)
@@ -3948,25 +3948,155 @@ console.log('will open')
 
     var destiny = itemOver && itemOver.fsnode.type !== TYPE_FILE ? itemOver.fsnode.id : currentOpened.id;
     var destinyNode = itemOver && itemOver.fsnode.type !== TYPE_FILE ? itemOver.fsnode : currentOpened;
-
-    list.filter( function( item ){
+    var toMove = list.filter( function( item ){
       return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
-    }).forEach( function( item ){
+    })
 
-      if(item.fsnode.dropbox || item.fsnode.gdrive || item.fsnode.onedrive){
+    if( !toMove.length ){
+      return
+    }
 
-        item.fsnode.move( destinyNode, function(err){
-          if (err) { console.log(err) }
-        }) 
+    if( toMove[ 0 ].fsnode.dropbox ){
 
-      }else if( item.fsnode.parent != destiny ) {
+      api.integration.dropbox( toMove[ 0 ].fsnode.account, function( err, account ){
 
-        item.fsnode.move( destiny, function(err){
-          if (err) { console.log(err) }
-        });
+        if( destinyNode.gdrive ){
+
+          account.toGDrive( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, destinyNode.account, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
+          })
+
+        }else if( destinyNode.onedrive ){
+
+          account.toOnedrive( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id === '/' ? 'root' : destinyNode.id, destinyNode.account, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
+          })
+
+        }else{
+
+          account.toHorbito( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
+          })
+
+        }
+
+      })
+
+    }else if( toMove[ 0 ].fsnode.gdrive ){
+
+      api.integration.gdrive( toMove[ 0 ].fsnode.account, function( err, account ){
+
+        if( destinyNode.dropbox ){
+
+          account.toDropbox( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, destinyNode.account, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
+          })
+
+        }else if( destinyNode.onedrive ){
+
+          account.toOnedrive( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id === '/' ? 'root' : destinyNode.id, destinyNode.account, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
+          })
+
+        }else{
+
+          account.toHorbito( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
+          })
+
+        }
+
+      })
+
+    }else if( toMove[ 0 ].fsnode.onedrive ){
+
+      api.integration.onedrive( toMove[ 0 ].fsnode.account, function( err, account ){
+
+        if( destinyNode.dropbox ){
+
+          account.toDropbox( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, destinyNode.account, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
+          })
+
+        }else if( destinyNode.gdrive ){
+
+          account.toGDrive( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, destinyNode.account, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
+          })
+
+        }else{
+
+          account.toHorbito( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
+          })
+
+        }
+
+      })
+
+    }else{
+
+      if( destinyNode.dropbox ){
+
+        api.integration.dropbox( destinyNode.account, function( err, account ){
+
+          account.toDropbox( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
+          })
+
+        })
+
+      }else if( destinyNode.gdrive ){
+
+        api.integration.gdrive( destinyNode.account, function( err, account ){
+
+          console.log( destinyNode )
+          account.toGdrive( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
+          })
+
+        })
+
+      }else if( destinyNode.onedrive ){
+
+        api.integration.onedrive( destinyNode.account, function( err, account ){
+
+          console.log( destinyNode )
+          account.toOnedrive( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
+          })
+
+        })
+
+      }else {
+
+        toMove.forEach( function( item ){
+
+          if( item.fsnode.parent != destiny ){
+
+            item.fsnode.move( destiny, function(err){
+              if (err) { console.log(err) }
+            });
+
+          }
+
+        })
 
       }
-    });
+
+    }
 
   }
 

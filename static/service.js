@@ -93,19 +93,13 @@ wql.isFirstOpen( [ api.system.user().id ] , function( e , o ){
 
 api.fs
 .on( 'new', function( fsnode ){
-
   checkRecieved();
-
 })
 .on( 'move', function( fsnode, finalDestiny, originalSource ){
-
   checkRecieved();
-
 })
 .on( 'remove', function( fsnodeId, quota, parent ){
-
   checkRecieved();
-
 })
 
 checkRecieved();
