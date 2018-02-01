@@ -384,6 +384,21 @@
       "buttonSubtitle" : "With this method you can only choose <i>files</i> not <b>folders</b>. This is due to Browser limitations",
       "gotItButton" : "Got it !"
 
+    },
+
+    "progress" : {
+      "percentage" : "%d% complete",
+      "copyingSingle" : "Copying %d file from ",
+      "copyingMultiple" : "Copying %d of %d files from ",
+      "to": "to",
+      "remaining" : "Time remaining:",
+      "hour" : "hour",
+      "hours" : "hours",
+      "minute" : "minute",
+      "minutes" : "minutes",
+      "second" : "second",
+      "seconds" : "seconds",
+      "calculating" : "Calculating..."
     }
 
 }
