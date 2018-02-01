@@ -4061,7 +4061,7 @@ console.log('will open')
         api.integration.gdrive( destinyNode.account, function( err, account ){
 
           console.log( destinyNode )
-          account.toGdrive( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, function (err, taskProgressId) {
+          account.toGDrive( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, function (err, taskProgressId) {
             console.log( arguments )
             api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
           })
