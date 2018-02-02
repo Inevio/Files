@@ -238,6 +238,23 @@ var dropboxNode = function( data ){
 
   that.dropbox = true;
 
+  if (data.icon === 'folder') {
+    that.icons = folderIcons;
+  }
+
+  that.rename = function( newName ){
+    var oldPath = that.path_display;
+    that.name = newName;
+    that.path_display = that.path_display.replace( oldPath.split('/').pop(), newName);
+    dropboxAccountActive.rename( oldPath, that.path_display, function( err ){
+      if ( err ) {
+        console.log('Error dropbox rename', err);
+      }
+    });
+  }
+
+  /*
+
   that.move = function( destiny ){
 
     // From dropbox to horbito
@@ -268,17 +285,6 @@ var dropboxNode = function( data ){
     dropboxAccountActive.remove( that.path_display, function( err , node ){
       if ( err ) {
         console.log('Error dropbox remove', err);
-      }
-    });
-  }
-
-  that.rename = function( newName ){
-    var oldPath = that.path_display;
-    that.name = newName;
-    that.path_display = that.path_display.replace( oldPath.split('/').pop(), newName);
-    dropboxAccountActive.rename( oldPath, that.path_display, function( err ){
-      if ( err ) {
-        console.log('Error dropbox rename', err);
       }
     });
   }
@@ -329,6 +335,8 @@ var dropboxNode = function( data ){
     return parentName === '' ? 'Dropbox' : parentName;
   }
 
+  */
+
   return that;
 
 }
@@ -338,6 +346,20 @@ var gdriveNode = function( data ){
   var that = $.extend( this, data )
 
   that.gdrive = true
+
+  if (data.icon === 'folder') {
+    that.icons = folderIcons;
+  }
+
+  that.rename = function( newName ){
+    gdriveAccountActive.rename( data.id, newName, function( err ){
+      if ( err ) {
+        console.log('Error gdrive rename', err);
+      }
+    });
+  }
+
+  /*
 
   that.move = function( destiny ){
 
@@ -369,14 +391,6 @@ var gdriveNode = function( data ){
     gdriveAccountActive.delete( data.id, function( err ){
       if ( err ) {
         console.log('Error gdrive delete', err);
-      }
-    });
-  }
-
-  that.rename = function( newName ){
-    gdriveAccountActive.rename( data.id, newName, function( err ){
-      if ( err ) {
-        console.log('Error gdrive rename', err);
       }
     });
   }
@@ -422,6 +436,8 @@ var gdriveNode = function( data ){
     });
   }
 
+  */
+
   return that;
 
 }
@@ -431,6 +447,25 @@ var onedriveNode = function( data ){
   var that = $.extend( this, data )
 
   that.onedrive = true
+
+  if (data.icon === 'folder') {
+    that.icons = folderIcons;
+  }
+
+  that.rename = function( newName ){
+    onedriveAccountActive.rename( newName, data.id, function( err ){
+      if ( err ) {
+        console.log('Error onedrive rename', err);
+      }
+    })
+  }
+
+  /*
+  that.getPath = function( callback ){
+    onedriveAccountActive.getPath( data.id , function( e , path ){
+      callback( null, path.map(function(item){ return new onedriveNode( item ) }) );
+    });
+  }
 
   that.move = function( destiny ){
 
@@ -452,26 +487,12 @@ var onedriveNode = function( data ){
     })
   }
 
-  that.getPath = function( callback ){
-    onedriveAccountActive.getPath( data.id , function( e , path ){
-      callback( null, path.map(function(item){ return new onedriveNode( item ) }) );
-    });
-  }
-
   that.remove = function(){
     onedriveAccountActive.delete( data.id, function( err ){
       if ( err ) {
         console.log('Error onedrive delete', err);
       }
     });
-  }
-
-  that.rename = function( newName ){
-    onedriveAccountActive.rename( newName, data.id, function( err ){
-      if ( err ) {
-        console.log('Error onedrive rename', err);
-      }
-    })
   }
 
   that.copy = function( destiny ){
@@ -518,6 +539,8 @@ var onedriveNode = function( data ){
   that.getParent = function(){
     console.warn('not implemented');
   }
+  
+  */
 
   return that;
 
@@ -867,26 +890,11 @@ var clipboardPaste = function(){
 
   if( storage.copy ){
 
-    storage.copy.forEach( function( item ){
-
-      item.fsnode.copy( currentOpened.id, {fixCollision: true} , function(){
-        console.log( arguments );
-      });
-
-    });
+    moveData({toMove: storage.copy, destiny: currentOpened, operation: 'copy'})
 
   }else if( storage.cut ){
 
-    storage.cut.forEach( function( item ){
-
-      if ( item.fsnode.parent != currentOpened.id ) {
-        item.fsnode.move( currentOpened.id, function(){
-          console.log( arguments );
-        });
-      }
-
-
-    });
+    moveData({toMove: storage.cut, destiny: currentOpened, operation: 'move'})
 
   }
 
@@ -930,7 +938,9 @@ var createFolder = function(){
         'isFolder'      : true,
         'path_display'  : newDirectory.metadata.path_display,
         'name'          : newDirectory.metadata.name,
-        'id'            : newDirectory.metadata.id
+        'id'            : newDirectory.metadata.id,
+        'icon'          : 'folder',
+        'type'          : 2
       });
       appendItemToList( newDirectory );
       showRenameTextarea( currentIcons[ newDirectory.id ] );
@@ -948,7 +958,10 @@ var createFolder = function(){
         'isFolder'      : true,
         'mimeType'      : newDirectory.mimeType,
         'name'          : newDirectory.name,
-        'id'            : newDirectory.id
+        'id'            : newDirectory.id,
+        'icon'          : 'folder',
+        'type'          : 2
+
       });
       appendItemToList( newDirectory );
       showRenameTextarea( currentIcons[ newDirectory.id ] );
@@ -964,7 +977,10 @@ var createFolder = function(){
       var newDirectory = new onedriveNode({
         'isFolder'      : true,
         'name'          : newDirectory.name,
-        'id'            : newDirectory.id
+        'id'            : newDirectory.id,
+        'icon'          : 'folder',
+        'type'          : 2
+
       });
       appendItemToList( newDirectory );
       showRenameTextarea( currentIcons[ newDirectory.id ] );
@@ -2939,6 +2955,17 @@ var generateContextMenu = function( item, options ){
     menu.addOption( lang.received.contentAccept , acceptContent.bind( null , item.fsnode ) );
     menu.addOption( lang.received.contentRefuse , refuseContent.bind( null , item.fsnode ), 'warning');
 
+
+  }else if( item.fsnode.dropbox || item.fsnode.gdrive || item.fsnode.onedrive ){
+
+    menu.addOption( lang.main.openFile, openFile.bind( null, item.fsnode ) )
+    .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+    .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
+    .addOption( lang.main.download, downloadAllSelected.bind( null, null ) )
+    .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
+    .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' )
+
+
   }else if( item.fsnode.type === TYPE_FILE ){
 
     menu.addOption( lang.main.openFile, openFile.bind( null, item.fsnode ) )
@@ -3234,6 +3261,274 @@ var refreshOnedrive = function(){
   if (currentOpened.onedrive) {
     openFolder( currentOpened.id , { 'onedriveFolder' : currentOpened } );
   }
+}
+
+var moveData = function(options){
+
+    if( options.toMove[ 0 ].fsnode.dropbox ){
+
+      api.integration.dropbox( options.toMove[ 0 ].fsnode.account, function( err, account ){
+
+        // Dropbox -> GDrive
+        if( options.destiny.gdrive ){
+
+          account.toGDrive( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id, options.destiny.account, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : options.toMove.length, destiny : options.destiny.name}, 'progress' )
+          })
+
+        // Dropbox -> Onedrive
+        }else if( options.destiny.onedrive ){
+
+          account.toOnedrive( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id === '/' ? 'root' : options.destiny.id, options.destiny.account, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : options.toMove.length, destiny : options.destiny.name}, 'progress' )
+          })
+
+        // Dropbox -> Dropbox
+        }else if( options.destiny.dropbox ){
+
+          // Same account
+          if ( options.destiny.account === options.toMove[0].fsnode.account) {
+
+            options.toMove.forEach(function(item){
+
+              if (options.operation === 'move') {
+
+                account.move(item.fsnode.id, options.destiny.id, function(err){
+                  if (err) {console.log(err)}
+                })
+
+              }else{
+
+                account.copy(item.fsnode.id, options.destiny.id, function(err){
+                  if (err) {
+                    alert(lang.cantCopySamePlace)
+                    console.log(err)
+                  }
+                })
+
+              }
+            })
+
+          // Different account
+          }else{
+
+            account.toDropbox( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id, options.destiny.account, function (err, taskProgressId) {
+              console.log( arguments )
+              api.app.createView({ id : taskProgressId, totalItems : options.toMove.length, destiny : options.destiny.name}, 'progress' )
+            })
+
+          }
+
+        // Dropbox -> Horbito
+        }else{
+
+          account.toHorbito( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : options.toMove.length, destiny : options.destiny.name}, 'progress' )
+          })
+
+        }
+
+      })
+
+    }else if( options.toMove[ 0 ].fsnode.gdrive ){
+
+      api.integration.gdrive( options.toMove[ 0 ].fsnode.account, function( err, account ){
+
+        // Gdrive -> Dropbox
+        if( options.destiny.dropbox ){
+
+          account.toDropbox( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id, options.destiny.account, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : options.toMove.length, destiny : options.destiny.name}, 'progress' )
+          })
+
+        // Gdrive -> Onedrive
+        }else if( options.destiny.onedrive ){
+
+          account.toOnedrive( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id === '/' ? 'root' : options.destiny.id, options.destiny.account, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : options.toMove.length, destiny : options.destiny.name}, 'progress' )
+          })
+
+        // Gdrive -> Gdrive
+        }else if( options.destiny.gdrive ){
+
+          // Same account
+          if ( options.destiny.account === options.toMove[0].fsnode.account) {
+
+            options.toMove.forEach(function(item){
+
+              if (options.operation === 'move') {
+
+                account.move(item.fsnode.id, options.destiny.id, function(err){
+                  if (err) {console.log(err)}
+                })
+
+              }else{
+
+                account.copy(item.fsnode.id, options.destiny.id, function(err){
+                  if (err) {
+                    alert(lang.cantCopySamePlace)
+                    console.log(err)
+                  }
+                })
+
+              }
+            })
+
+          // Different account
+          }else{
+
+            account.toGDrive( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id, options.destiny.account, function (err, taskProgressId) {
+              console.log( arguments )
+              api.app.createView({ id : taskProgressId, totalItems : options.toMove.length, destiny : options.destiny.name}, 'progress' )
+            })
+
+          }
+
+        // Gdrive -> Horbito
+        }else{
+
+          account.toHorbito( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : options.toMove.length, destiny : options.destiny.name}, 'progress' )
+          })
+
+        }
+
+      })
+
+    }else if( options.toMove[ 0 ].fsnode.onedrive ){
+
+      api.integration.onedrive( options.toMove[ 0 ].fsnode.account, function( err, account ){
+
+        // Onedrive -> Dropbox 
+        if( options.destiny.dropbox ){
+
+          account.toDropbox( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id, options.destiny.account, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : options.toMove.length, destiny : options.destiny.name}, 'progress' )
+          })
+
+        // Onedrive -> Gdrive
+        }else if( options.destiny.gdrive ){
+
+          account.toGDrive( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id, options.destiny.account, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : options.toMove.length, destiny : options.destiny.name}, 'progress' )
+          })
+
+        // Onedrive -> Onedrive
+        }else if( options.destiny.onedrive ){
+
+          // Same account
+          if ( options.destiny.account === options.toMove[0].fsnode.account) {
+
+            options.toMove.forEach(function(item){
+
+              if (options.operation === 'move') {
+
+                account.move(item.fsnode.id, options.destiny.id, function(err){
+                  if (err) {console.log(err)}
+                })
+
+              }else{
+
+                account.copy(item.fsnode.id, options.destiny.id, function(err){
+                  if (err) {
+                    alert(lang.cantCopySamePlace)
+                    console.log(err)
+                  }
+                })
+
+              }
+            })
+
+          // Diferent account
+          }else{
+
+            account.toOnedrive( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id, options.destiny.account, function (err, taskProgressId) {
+              console.log( arguments )
+              api.app.createView({ id : taskProgressId, totalItems : options.toMove.length, destiny : options.destiny.name}, 'progress' )
+            })
+
+          }
+
+        // Onedrive to Horbito
+        }else{
+
+          account.toHorbito( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : options.toMove.length, destiny : options.destiny.name}, 'progress' )
+          })
+
+        }
+
+      })
+
+    }else{
+
+      // Horbito -> Dropbox
+      if( options.destiny.dropbox ){
+
+        api.integration.dropbox( options.destiny.account, function( err, account ){
+
+          account.toDropbox( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : options.toMove.length, destiny : options.destiny.name}, 'progress' )
+          })
+
+        })
+
+      // Horbito -> Gdrive
+      }else if( options.destiny.gdrive ){
+
+        api.integration.gdrive( options.destiny.account, function( err, account ){
+
+          console.log( destiny )
+          account.toGDrive( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : options.toMove.length, destiny : options.destiny.name}, 'progress' )
+          })
+
+        })
+
+      // Horbito -> Onedrive
+      }else if( options.destiny.onedrive ){
+
+        api.integration.onedrive( options.destiny.account, function( err, account ){
+
+          console.log( destiny )
+          account.toOnedrive( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id, function (err, taskProgressId) {
+            console.log( arguments )
+            api.app.createView({ id : taskProgressId, totalItems : options.toMove.length, destiny : options.destiny.name}, 'progress' )
+          })
+
+        })
+
+      // Horbito -> Horbito
+      }else{
+
+        options.toMove.forEach( function( item ){
+
+          if (options.operation === 'copy') {
+            item.fsnode.copy( options.destiny.id, {fixCollision: true} , function(err){
+              if (err) { console.log(err) }
+            });
+          }else if(item.fsnode.parent != options.destiny.id){
+            item.fsnode.move( options.destiny.id, function(err){
+              if (err) { console.log(err) }
+            });
+          }
+
+        })
+
+      }
+
+    }
 }
 
 // API Events
@@ -3956,147 +4251,7 @@ console.log('will open')
       return
     }
 
-    if( toMove[ 0 ].fsnode.dropbox ){
-
-      api.integration.dropbox( toMove[ 0 ].fsnode.account, function( err, account ){
-
-        if( destinyNode.gdrive ){
-
-          account.toGDrive( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, destinyNode.account, function (err, taskProgressId) {
-            console.log( arguments )
-            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
-          })
-
-        }else if( destinyNode.onedrive ){
-
-          account.toOnedrive( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id === '/' ? 'root' : destinyNode.id, destinyNode.account, function (err, taskProgressId) {
-            console.log( arguments )
-            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
-          })
-
-        }else{
-
-          account.toHorbito( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, function (err, taskProgressId) {
-            console.log( arguments )
-            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
-          })
-
-        }
-
-      })
-
-    }else if( toMove[ 0 ].fsnode.gdrive ){
-
-      api.integration.gdrive( toMove[ 0 ].fsnode.account, function( err, account ){
-
-        if( destinyNode.dropbox ){
-
-          account.toDropbox( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, destinyNode.account, function (err, taskProgressId) {
-            console.log( arguments )
-            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
-          })
-
-        }else if( destinyNode.onedrive ){
-
-          account.toOnedrive( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id === '/' ? 'root' : destinyNode.id, destinyNode.account, function (err, taskProgressId) {
-            console.log( arguments )
-            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
-          })
-
-        }else{
-
-          account.toHorbito( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, function (err, taskProgressId) {
-            console.log( arguments )
-            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
-          })
-
-        }
-
-      })
-
-    }else if( toMove[ 0 ].fsnode.onedrive ){
-
-      api.integration.onedrive( toMove[ 0 ].fsnode.account, function( err, account ){
-
-        if( destinyNode.dropbox ){
-
-          account.toDropbox( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, destinyNode.account, function (err, taskProgressId) {
-            console.log( arguments )
-            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
-          })
-
-        }else if( destinyNode.gdrive ){
-
-          account.toGDrive( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, destinyNode.account, function (err, taskProgressId) {
-            console.log( arguments )
-            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
-          })
-
-        }else{
-
-          account.toHorbito( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, function (err, taskProgressId) {
-            console.log( arguments )
-            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
-          })
-
-        }
-
-      })
-
-    }else{
-
-      if( destinyNode.dropbox ){
-
-        api.integration.dropbox( destinyNode.account, function( err, account ){
-
-          account.toDropbox( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, function (err, taskProgressId) {
-            console.log( arguments )
-            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
-          })
-
-        })
-
-      }else if( destinyNode.gdrive ){
-
-        api.integration.gdrive( destinyNode.account, function( err, account ){
-
-          console.log( destinyNode )
-          account.toGDrive( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, function (err, taskProgressId) {
-            console.log( arguments )
-            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
-          })
-
-        })
-
-      }else if( destinyNode.onedrive ){
-
-        api.integration.onedrive( destinyNode.account, function( err, account ){
-
-          console.log( destinyNode )
-          account.toOnedrive( toMove.map( function( item ){ return item.fsnode.id }), destinyNode.id, function (err, taskProgressId) {
-            console.log( arguments )
-            api.app.createView({ id : taskProgressId, totalItems : toMove.length, destiny : destinyNode.name}, 'progress' )
-          })
-
-        })
-
-      }else {
-
-        toMove.forEach( function( item ){
-
-          if( item.fsnode.parent != destiny ){
-
-            item.fsnode.move( destiny, function(err){
-              if (err) { console.log(err) }
-            });
-
-          }
-
-        })
-
-      }
-
-    }
+    moveData({toMove: toMove, destiny:destinyNode, operation:'move'})
 
   }
 
