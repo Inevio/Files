@@ -399,6 +399,8 @@
       "second" : "second",
       "seconds" : "seconds",
       "calculating" : "Calculating..."
-    }
+    },
+
+    "cantCopySamePlace" : "You can't copy to the same directory"
 
 }
