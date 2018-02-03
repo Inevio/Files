@@ -3695,15 +3695,22 @@ visualSidebarItemArea
 .on( 'wz-drop', '.ui-navgroup-element', function( e, item, list ){
 
   var destiny = $(this).removeClass('dropover').data('id');
-  var cloud = $(this).data('cloud')
-  var account = $(this).data('account').id
 
-  if (cloud === 'dropbox') {
-    destiny = {path_display: destiny, dropbox: true, account: account}
+  // For old clouds sidebar
+  var cloud = $(this).data('cloud')
+  var account = $(this).data('account')
+
+  
+
+  if (cloud === 'dropbox'){
+    moveData({toMove: list, destiny:{account: account.id, id: '/', dropbox: true}, operation:'move'})
+    return
   }else if(cloud === 'gdrive'){
-    destiny = {id: destiny, gdrive: true, account: account}
+    moveData({toMove: list, destiny:{account: account.id, id: '/', gdrive: true}, operation:'move'})
+    return
   }else if(cloud === 'onedrive'){
-    destiny = {id: destiny, onedrive: true, account: account}
+    moveData({toMove: list, destiny:{account: account.id, id: '/', onedrive: true}, operation:'move'})
+    return
   }
 
   list.filter( function( item ){
