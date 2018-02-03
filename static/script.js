@@ -539,7 +539,7 @@ var onedriveNode = function( data ){
   that.getParent = function(){
     console.warn('not implemented');
   }
-  
+
   */
 
   return that;
@@ -3405,7 +3405,7 @@ var moveData = function(options){
 
       api.integration.onedrive( options.toMove[ 0 ].fsnode.account, function( err, account ){
 
-        // Onedrive -> Dropbox 
+        // Onedrive -> Dropbox
         if( options.destiny.dropbox ){
 
           account.toDropbox( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id, options.destiny.account, function (err, taskProgressId) {
@@ -3488,7 +3488,6 @@ var moveData = function(options){
 
         api.integration.gdrive( options.destiny.account, function( err, account ){
 
-          console.log( destiny )
           account.toGDrive( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id, function (err, taskProgressId) {
             console.log( arguments )
             api.app.createView({ id : taskProgressId, totalItems : options.toMove.length, destiny : options.destiny.name}, 'progress' )
