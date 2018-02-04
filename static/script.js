@@ -3257,7 +3257,6 @@ var moveData = function(options){
 
         api.integration.onedrive( options.destiny.account, function( err, account ){
 
-          console.log( destiny )
           account.toOnedrive( options.toMove.map( function( item ){ return item.fsnode.id }), options.destiny.id, function (err, taskProgressId) {
             console.log( arguments )
             api.app.createView({ id : taskProgressId, totalItems : options.toMove.length, destiny : options.destiny.name}, 'progress' )
