@@ -4350,7 +4350,9 @@ var requestDropboxItems = function( folder ){
   var end = $.Deferred();
   dropboxShowingFolder = folder;
 
-  dropboxAccountActive.listFolder( folder , function( e , list ){
+  dropboxAccountActive.listFolder( folder , function( err , list ){
+
+    if (err) {console.log(err) return}
 
     dropboxShowingItems = list;
 
@@ -4381,7 +4383,9 @@ var requestGdriveItems = function( folder ){
   // Is root
   if ( folder === '/' ) {
 
-    gdriveAccountActive.listFiles( function( e , list ){
+    gdriveAccountActive.listFiles( function( err , list ){
+
+      if (err) {console.log(err) return}
 
       gdriveShowingItems = list;
 
@@ -4436,7 +4440,9 @@ var requestOnedriveItems = function( folder ){
 
   folder = folder === '/' ? 'root' : folder;
 
-  onedriveAccountActive.listFolder( folder , function( e , list ){
+  onedriveAccountActive.listFolder( folder , function( err , list ){
+
+    if (err) {console.log(err) return}
 
     onedriveShowingItems = list;
 
