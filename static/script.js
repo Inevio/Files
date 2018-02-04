@@ -3048,15 +3048,17 @@ var moveData = function(options){
 
             options.toMove.forEach(function(item){
 
+              options.destiny.path_display = options.destiny.path_display === '/' ? '' : options.destiny.path_display;
+
               if (options.operation === 'move') {
 
-                account.move(item.fsnode.id, options.destiny.id, function(err){
+                account.move(item.fsnode.path_display, options.destiny.path_display, function(err){
                   if (err) {console.log(err)}
                 })
 
               }else{
 
-                account.copy(item.fsnode.id, options.destiny.id, function(err){
+                account.copy(item.fsnode.path_display, options.destiny.path_display, function(err){
                   if (err) {
                     alert(lang.cantCopySamePlace)
                     console.log(err)
@@ -3695,15 +3697,15 @@ visualSidebarItemArea
 .on( 'wz-drop', '.ui-navgroup-element', function( e, item, list ){
 
   var destiny = $(this).removeClass('dropover').data('id');
+  var fsnode = $(this).data('fsnode');
 
   // For old clouds sidebar
   var cloud = $(this).data('cloud')
   var account = $(this).data('account')
 
-  
-
+  // Anywhere -> Clouds sidebar
   if (cloud === 'dropbox'){
-    moveData({toMove: list, destiny:{account: account.id, id: '/', dropbox: true}, operation:'move'})
+    moveData({toMove: list, destiny:{account: account.id, id: '/', dropbox: true, path_display: '/'}, operation:'move'})
     return
   }else if(cloud === 'gdrive'){
     moveData({toMove: list, destiny:{account: account.id, id: '/', gdrive: true}, operation:'move'})
@@ -3713,6 +3715,13 @@ visualSidebarItemArea
     return
   }
 
+  // Clouds -> Horbito sidebar
+  if (list[0].fsnode.onedrive||list[0].fsnode.gdrive||list[0].fsnode.dropbox) {
+    moveData({toMove:list, destiny:fsnode, operation:'move'})
+    return
+  }
+
+  // Horbito -> Horbito sidebar
   list.filter( function( item ){
     return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
   }).forEach( function( item ){
@@ -4306,8 +4315,9 @@ var openDropboxAccount = function( sidebarItem ){
     'integration'   : true,
     'dropbox'       : true,
     'name'          : 'Dropbox',
+    'path_display'  : '/',
     'getPath'       : function( callback ){
-      callback( null, [{'name' : 'Dropbox', id: '/', 'dropbox' : true}]);
+      callback( null, [{'name' : 'Dropbox', id: '/', 'dropbox' : true, path_display: '/'}]);
     }
   }
   openFolder( 'dropboxRoot' , { 'dropboxFolder' : dropboxRoot } );
@@ -4349,10 +4359,14 @@ var requestDropboxItems = function( folder ){
 
   var end = $.Deferred();
   dropboxShowingFolder = folder;
+  folder = folder === '/' ? '' : folder;
 
   dropboxAccountActive.listFolder( folder , function( err , list ){
 
-    if (err) {console.log(err) return}
+    if (err) {
+      console.log(err);
+      return
+    }
 
     dropboxShowingItems = list;
 
@@ -4385,7 +4399,10 @@ var requestGdriveItems = function( folder ){
 
     gdriveAccountActive.listFiles( function( err , list ){
 
-      if (err) {console.log(err) return}
+      if (err) {
+        console.log(err);
+        return
+      }
 
       gdriveShowingItems = list;
 
@@ -4408,7 +4425,12 @@ var requestGdriveItems = function( folder ){
 
   }else{
 
-    gdriveAccountActive.listFilesByFolder( folder , function( e , list ){
+    gdriveAccountActive.listFilesByFolder( folder , function( err , list ){
+
+      if (err) {
+        console.log(err);
+        return
+      }
 
       gdriveShowingItems = list;
 
@@ -4442,7 +4464,10 @@ var requestOnedriveItems = function( folder ){
 
   onedriveAccountActive.listFolder( folder , function( err , list ){
 
-    if (err) {console.log(err) return}
+    if (err) {
+      console.log(err);
+      return
+    }
 
     onedriveShowingItems = list;
 
