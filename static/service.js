@@ -102,4 +102,25 @@ api.fs
   checkRecieved();
 })
 
+api.taskProgress
+.on( 'update', function( data ){
+
+  if ($('.progress-container-' + data.id).length) {
+    $('.progress-container-' + data.id).trigger('update', [data])
+  }else{
+    api.app.createView({ id : data.id, totalItems : data.totalItems, destiny : data.destiny, porcentage: data.totalProgress, completedItems: data.completedItems, origin: data.origin}, 'progress' )
+  }
+
+})
+.on( 'error', function( data ){
+  $('.progress-container-' + data.id).trigger('error', [data])
+})
+.on( 'finish', function( data ){
+
+  if ($('.progress-container-' + data.id).length) {
+    api.app.removeView( $('.progress-container-' + data.id).parent() )
+  }
+  
+})
+
 checkRecieved();

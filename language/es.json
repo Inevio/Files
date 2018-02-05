@@ -401,6 +401,12 @@
       "calculating" : "Calculando..."
     },
 
-    "cantCopySamePlace" : "No puedes copiarlo a la misma carpeta"
+    "cantCopySamePlace" : "No puedes copiarlo a la misma carpeta",
+    "omit"  : "Omitir",
+    "replace" : "Remplazar",
+    "dontReplace" : "No remplazar",
+    "alreadyExists" : "ya existe en la carpeta destino",
+    "whatToDo"  : "¿Qué quieres hacer?",
+    "noQuota" : "Lo sentimos, no hay suficiente espacio disponible en la nube destino"
 
 }
