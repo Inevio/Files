@@ -9,6 +9,7 @@ var destinyDom = $('.destiny')
 var loadingDom = $('.loading-layer')
 var timeDom = $('.time')
 var remainingDom = $('.time-remaining')
+var main = $('.progress-container')
 
 // Functions
 var update = function( percentage, completedItems, totalItems, eta ){
@@ -54,25 +55,63 @@ var toHumanTime = function( ms ){
 }
 
 // Events
-api.taskProgress
-.on( 'update', function( data ){
+main.on('update', function(e, data){
+  update( data.totalProgress, data.completedItems, data.totalItems, data.eta )
+  sourceDom.text( data.origin )
+  destinyDom.text( data.destiny.name )
+})
 
-  if( data.id === params.id ){
-    update( data.totalProgress, data.completedItems, data.totalItems, data.eta )
+main.on('error', function(e, data){
+
+  if (data.error.conflicts) {
+
+    data.error.conflicts.forEach(function(conflict){
+
+      var dialog = api.dialog();
+
+      dialog.setTitle( lang.alreadyExists );
+      dialog.setText( lang.whatToDo );
+      dialog.setButton( 0, lang.omit, 'black' );
+      dialog.setButton( 1, lang.replace, 'blue' );
+      dialog.setButton( 2, lang.dontReplace, 'blue' );
+
+      dialog.render(function( doIt ){
+
+        params.callback( params.toMove, params.destiny.id, {origin: params.origin, destiny: params.destiny.name, replacementPolicy: doIt+1},params.destiny.account, function (err, taskProgressId) {
+
+            api.app.createView({
+              id : taskProgressId, 
+              totalItems : params.totalItems, 
+              destiny : params.destiny, 
+              porcentage: params.porcentage, 
+              completedItems: params.completedItems, 
+              origin: params.origin, 
+              callback: params.callback,
+              toMove: params.toMove
+            }, 'progress' )
+
+            api.app.removeView( $('.progress-container-' + data.id).parent() )
+
+          })
+
+      })
+
+    })
+
+  }else if(data.error.quota){
+    alert(lang.noQuota);
+    api.app.removeView( $('.progress-container-' + data.id).parent() )
+  }else{
+    console.error(data)
+    api.app.removeView( $('.progress-container-' + data.id).parent() )
   }
 
 })
-.on( 'error', function( data ){
-  console.log( data )
-})
-.on( 'finish', function( data ){
-  api.app.removeView( win )
-  console.log( data )
-})
 
 // Initial data
-sourceDom.text('Origen')
+sourceDom.text( params.origin )
 toDom.text( lang.progress.to )
-destinyDom.text( params.destiny )
+destinyDom.text( params.destiny.name )
 remainingDom.text( lang.progress.remaining )
-update( 0, 0, params.totalItems )
+main.addClass( 'progress-container-' + params.id )
+update( params.porcentage, params.completedItems, params.totalItems )

@@ -401,6 +401,12 @@
       "calculating" : "Calculating..."
     },
 
-    "cantCopySamePlace" : "You can't copy to the same directory"
+    "cantCopySamePlace" : "You can't copy to the same directory",
+    "omit"  : "Omit",
+    "replace" : "Replace",
+    "dontReplace" : "Don't replace",
+    "alreadyExists" : "already exists on destiny folder",
+    "whatToDo"  : "What do you want to do?",
+    "noQuota" : "Sorry, there is no enough available storage in destiny cloud"
 
 }

@@ -352,10 +352,11 @@
 
                   },
 
+
                   "height" : {
 
-                      "default" : 138,
-                      "min"     : 138,
+                      "default" : 160,
+                      "min"     : 160,
                       "max"     : 0
 
                   },
