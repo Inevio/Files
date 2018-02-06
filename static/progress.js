@@ -193,11 +193,55 @@ var checkConflicts = function(conflicts){
   })
 }
 
+var setTexts = function(data){
+
+  sourceDom.text( data.origin.name )
+  toDom.text( lang.progress.to )
+  destinyDom.text( data.destiny.name )
+  remainingDom.text( lang.progress.remaining )
+
+  // Origin
+  // Dropbox
+  if (data.origin.dropbox) {
+    api.integration.dropbox( data.origin.account, function( err, account ){
+      console.log('origen', account )
+    })
+  // Gdrive
+  }else if(data.origin.gdrive){
+    api.integration.gdrive( data.origin.account, function( err, account ){
+      console.log('origen', account )
+    })
+  // Onedrive
+  }else if(data.origin.onedrive){
+    api.integration.gdrive( data.origin.account, function( err, account ){
+      console.log('origen', account )
+    })
+  }
+
+  // Destiny
+  // Dropbox
+  if (data.origin.dropbox) {
+    api.integration.dropbox( data.origin.account, function( err, account ){
+      console.log('destino', account )
+    })
+  // Gdrive
+  }else if(data.origin.gdrive){
+    api.integration.gdrive( data.origin.account, function( err, account ){
+      console.log('destino', account )
+    })
+  // Onedrive
+  }else if(data.origin.onedrive){
+    api.integration.gdrive( data.origin.account, function( err, account ){
+      console.log('destino', account )
+    })
+  }
+
+}
+
 // Events
 main.on('update', function(e, data){
   update( data.totalProgress, data.completedItems, data.totalItems, data.eta )
-  sourceDom.text( data.origin )
-  destinyDom.text( data.destiny.name )
+  setTexts(data)
 })
 
 main.on('error', function(e, data){
@@ -215,10 +259,8 @@ main.on('error', function(e, data){
 })
 
 // Initial data
-sourceDom.text( params.origin )
-toDom.text( lang.progress.to )
-destinyDom.text( params.destiny.name )
-remainingDom.text( lang.progress.remaining )
+
+setTexts(params);
 main.addClass( 'progress-container-' + params.id )
-win.parent().addClass('with-transition')
+win.parent().addClass('height-transition')
 update( params.porcentage, params.completedItems, params.totalItems )

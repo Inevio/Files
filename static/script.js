@@ -3104,14 +3104,13 @@ var moveData = function(options){
       
       path.pop();
       var originFolder = path.pop();
-      originFolder.name = originFolder.name === 'Dropbox' ?  'Dropbox (' + originFolder.account + ')' : originFolder.name;
       
       api.integration.dropbox( options.toMove[ 0 ].fsnode.account, function( err, account ){
 
         // Dropbox -> GDrive
         if( options.destiny.gdrive ){
 
-          options.destiny.name = options.destiny.name || 'Gdrive (' + options.destiny.account + ')'
+          options.destiny.name = options.destiny.name || 'Gdrive'
 
           account.toGDrive( toMoveIds, options.destiny.id, {origin: originFolder.name, destiny: options.destiny.name, replacementPolicy: 0} ,options.destiny.account, function (err, taskProgressId) {
 
@@ -3121,7 +3120,7 @@ var moveData = function(options){
               destiny : options.destiny, 
               porcentage: 0, 
               completedItems: 0, 
-              origin: originFolder.name, 
+              origin: originFolder, 
               callback: account.toGDrive.bind(),
               toMove: toMoveIds
             }, 'progress' )
@@ -3131,7 +3130,7 @@ var moveData = function(options){
         // Dropbox -> Onedrive
         }else if( options.destiny.onedrive ){
 
-          options.destiny.name = options.destiny.name || 'Onedrive (' + options.destiny.account + ')'
+          options.destiny.name = options.destiny.name || 'Onedrive'
 
           account.toOnedrive( toMoveIds, options.destiny.id === '/' ? 'root' : options.destiny.id, options.destiny.account, function (err, taskProgressId) {
 
@@ -3141,7 +3140,7 @@ var moveData = function(options){
               destiny : options.destiny,
               porcentage: 0, 
               completedItems: 0, 
-              origin: originFolder.name,
+              origin: originFolder,
               callback: account.toOnedrive.bind(),
               toMove: toMoveIds
             }, 'progress' )
@@ -3151,7 +3150,7 @@ var moveData = function(options){
         // Dropbox -> Dropbox
         }else if( options.destiny.dropbox ){
 
-          options.destiny.name = options.destiny.name || 'Dropbox (' + options.destiny.account + ')'
+          options.destiny.name = options.destiny.name || 'Dropbox'
 
           // Same account
           if ( options.destiny.account === options.toMove[0].fsnode.account) {
@@ -3194,7 +3193,7 @@ var moveData = function(options){
                 destiny : options.destiny, 
                 porcentage: 0, 
                 completedItems: 0, 
-                origin: originFolder.name,
+                origin: originFolder,
                 callback: account.toDropbox.bind(),
                 toMove: toMoveIds
               }, 'progress' )
@@ -3214,7 +3213,7 @@ var moveData = function(options){
               destiny : options.destiny, 
               porcentage: 0, 
               completedItems: 0, 
-              origin: originFolder.name,
+              origin: originFolder,
               callback: account.toHorbito.bind(),
               toMove: toMoveIds
             }, 'progress' )
@@ -3234,14 +3233,13 @@ var moveData = function(options){
 
       path.pop();
       var originFolder = path.pop();
-      originFolder.name = originFolder.name === 'Gdrive' ?  'Gdrive (' + originFolder.account + ')' : originFolder.name; 
 
       api.integration.gdrive( options.toMove[ 0 ].fsnode.account, function( err, account ){
 
         // Gdrive -> Dropbox
         if( options.destiny.dropbox ){
 
-          options.destiny.name = options.destiny.name || 'Dropbox (' + options.destiny.account + ')'
+          options.destiny.name = options.destiny.name || 'Dropbox'
 
           account.toDropbox( toMoveIds, options.destiny.id, options.destiny.account, function (err, taskProgressId) {
 
@@ -3251,7 +3249,7 @@ var moveData = function(options){
               destiny : options.destiny, 
               porcentage: 0, 
               completedItems: 0, 
-              origin: originFolder.name,
+              origin: originFolder,
               callback: account.toDropbox.bind(),
               toMove: toMoveIds
             }, 'progress' )
@@ -3261,7 +3259,7 @@ var moveData = function(options){
         // Gdrive -> Onedrive
         }else if( options.destiny.onedrive ){
 
-          options.destiny.name = options.destiny.name || 'Onedrive (' + options.destiny.account + ')'
+          options.destiny.name = options.destiny.name || 'Onedrive'
 
           account.toOnedrive( toMoveIds, options.destiny.id === '/' ? 'root' : options.destiny.id, options.destiny.account, function (err, taskProgressId) {
 
@@ -3271,7 +3269,7 @@ var moveData = function(options){
               destiny : options.destiny, 
               porcentage: 0, 
               completedItems: 0, 
-              origin: originFolder.name,
+              origin: originFolder,
               callback: account.toOnedrive.bind(),
               toMove: toMoveIds
             }, 'progress' )
@@ -3281,7 +3279,7 @@ var moveData = function(options){
         // Gdrive -> Gdrive
         }else if( options.destiny.gdrive ){
 
-          options.destiny.name = options.destiny.name || 'Gdrive (' + options.destiny.account + ')'
+          options.destiny.name = options.destiny.name || 'Gdrive'
 
           // Same account
           if ( options.destiny.account === options.toMove[0].fsnode.account) {
@@ -3322,7 +3320,7 @@ var moveData = function(options){
                 destiny : options.destiny, 
                 porcentage: 0, 
                 completedItems: 0, 
-                origin: originFolder.name,
+                origin: originFolder,
                 callback: account.toGDrive.bind(),
                 toMove: toMoveIds
               }, 'progress' )
@@ -3342,7 +3340,7 @@ var moveData = function(options){
               destiny : options.destiny, 
               porcentage: 0, 
               completedItems: 0, 
-              origin: originFolder.name,
+              origin: originFolder,
               callback: account.toHorbito.bind(),
               toMove: toMoveIds
             }, 'progress' )
@@ -3361,15 +3359,14 @@ var moveData = function(options){
     options.toMove[ 0 ].fsnode.getPath(function(err, path){
 
       path.pop();
-      var originFolder = path.pop();
-      originFolder.name = originFolder.name === 'Onedrive' ?  'Onedrive (' + originFolder.account + ')' : originFolder.name; 
+      var originFolder = path.pop(); 
 
       api.integration.onedrive( options.toMove[ 0 ].fsnode.account, function( err, account ){
 
         // Onedrive -> Dropbox
         if( options.destiny.dropbox ){
 
-          options.destiny.name = options.destiny.name || 'Dropbox (' + options.destiny.account + ')'
+          options.destiny.name = options.destiny.name || 'Dropbox'
 
           account.toDropbox( toMoveIds, options.destiny.id, options.destiny.account, function (err, taskProgressId) {
 
@@ -3379,7 +3376,7 @@ var moveData = function(options){
               destiny : options.destiny, 
               porcentage: 0, 
               completedItems: 0, 
-              origin: originFolder.name,
+              origin: originFolder,
               callback: account.toDropbox(),
               toMove: toMoveIds
             }, 'progress' )
@@ -3389,7 +3386,7 @@ var moveData = function(options){
         // Onedrive -> Gdrive
         }else if( options.destiny.gdrive ){
 
-          options.destiny.name = options.destiny.name || 'Gdrive (' + options.destiny.account + ')'
+          options.destiny.name = options.destiny.name || 'Gdrive'
 
           account.toGDrive( toMoveIds, options.destiny.id, options.destiny.account, function (err, taskProgressId) {
 
@@ -3399,7 +3396,7 @@ var moveData = function(options){
               destiny : options.destiny, 
               porcentage: 0, 
               completedItems: 0, 
-              origin: originFolder.name,
+              origin: originFolder,
               callback: account.toGDrive(),
               toMove: toMoveIds
             }, 'progress' )
@@ -3409,7 +3406,7 @@ var moveData = function(options){
         // Onedrive -> Onedrive
         }else if( options.destiny.onedrive ){
 
-          options.destiny.name = options.destiny.name || 'Onedrive (' + options.destiny.account + ')'
+          options.destiny.name = options.destiny.name || 'Onedrive'
 
           // Same account
           if ( options.destiny.account === options.toMove[0].fsnode.account) {
@@ -3450,7 +3447,7 @@ var moveData = function(options){
                 destiny : options.destiny, 
                 porcentage: 0, 
                 completedItems: 0, 
-                origin: originFolder.name,
+                origin: originFolder,
                 callback: account.toOnedrive(),
                 toMove: toMoveIds
               }, 'progress' )
@@ -3470,7 +3467,7 @@ var moveData = function(options){
               destiny : options.destiny, 
               porcentage: 0, 
               completedItems: 0, 
-              origin: originFolder.name,
+              origin: originFolder,
               callback: account.toHorbito(),
               toMove: toMoveIds
             }, 'progress' )
