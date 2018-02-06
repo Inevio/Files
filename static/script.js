@@ -152,6 +152,35 @@ var unknowFileIcons = {
     'big'     : 'https://static.horbito.com/image/icons/256/retina/unknown.png'
   }
 };
+var trashIcons = {
+  'normal'  : {
+    16        : 'https://static.horbito.com/image/icons/16/normal/trash.png',
+    32        : 'https://static.horbito.com/image/icons/32/normal/trash.png',
+    64        : 'https://static.horbito.com/image/icons/64/normal/trash.png',
+    128       : 'https://static.horbito.com/image/icons/128/normal/trash.png',
+    256       : 'https://static.horbito.com/image/icons/256/normal/trash.png',
+    512       : 'https://static.horbito.com/image/icons/512/normal/trash.png',
+    'micro'   : 'https://static.horbito.com/image/icons/16/normal/trash.png',
+    'tiny'    : 'https://static.horbito.com/image/icons/32/normal/trash.png',
+    'small'   : 'https://static.horbito.com/image/icons/64/normal/trash.png',
+    'normal'  : 'https://static.horbito.com/image/icons/128/normal/trash.png',
+    'big'     : 'https://static.horbito.com/image/icons/256/normal/trash.png'
+  },
+
+  'retina'  : {
+    16        : 'https://static.horbito.com/image/icons/16/retina/trash.png',
+    32        : 'https://static.horbito.com/image/icons/32/retina/trash.png',
+    64        : 'https://static.horbito.com/image/icons/64/retina/trash.png',
+    128       : 'https://static.horbito.com/image/icons/128/retina/trash.png',
+    256       : 'https://static.horbito.com/image/icons/256/retina/trash.png',
+    512       : 'https://static.horbito.com/image/icons/512/retina/trash.png',
+    'micro'   : 'https://static.horbito.com/image/icons/16/retina/trash.png',
+    'tiny'    : 'https://static.horbito.com/image/icons/32/retina/trash.png',
+    'small'   : 'https://static.horbito.com/image/icons/64/retina/trash.png',
+    'normal'  : 'https://static.horbito.com/image/icons/128/retina/trash.png',
+    'big'     : 'https://static.horbito.com/image/icons/256/retina/trash.png'
+  }  
+}
 //
 
 if( params && ( params.command === 'selectSource' ||  params.command === 'selectDestiny' ) ){
@@ -242,6 +271,11 @@ var dropboxNode = function( data ){
     that.icons = folderIcons;
   }
 
+  if (data.id === 'trash') {
+    that.name = lang.main.folderTranslations.Trash
+    that.icons = trashIcons;
+  }
+
   that.rename = function( newName ){
     var oldPath = that.path_display;
     that.name = newName;
@@ -267,6 +301,11 @@ var gdriveNode = function( data ){
     that.icons = folderIcons;
   }
 
+  if (data.id === 'trash') {
+    that.name = lang.main.folderTranslations.Trash
+    that.icons = trashIcons;
+  }
+
   that.rename = function( newName ){
     gdriveAccountActive.rename( data.id, newName, function( err ){
       if ( err ) {
@@ -287,6 +326,11 @@ var onedriveNode = function( data ){
 
   if (data.icon === 'folder') {
     that.icons = folderIcons;
+  }
+
+  if (data.id === 'trash') {
+    that.name = lang.main.folderTranslations.Trash
+    that.icons = trashIcons;
   }
 
   that.rename = function( newName ){
@@ -783,12 +827,14 @@ var deleteAllSelected = function( items ){
 
     items.forEach( function( item ){
 
-      if( item.fsnode.type === TYPE_FOLDER_SPECIAL|| !doIt ){
+      if( item.fsnode.type === TYPE_FOLDER_SPECIAL|| !doIt || item.fsnode.id === 'trash'){
         return
       }
 
       checkIsOnSidebar( item.fsnode );
-      item.fsnode.remove( function( error ){});
+      item.fsnode.remove( function( error ){
+        console.log( error );
+      });
 
     });
 
@@ -1137,8 +1183,14 @@ var drawIconsInGrid = function(){
 
     if( !icon.bigIcon ){
 
-      if( icon.fsnode.type === TYPE_FOLDER ){
+      if( icon.fsnode.type === TYPE_FOLDER && icon.fsnode.id !== 'trash'){
         icon.bigIcon = FOLDER_ICON
+      
+      }else if(icon.fsnode.id === 'trash'){
+
+        icon.bigIcon = new Image ();
+        icon.bigIcon.src = icon.fsnode.icons.retina.small + '?time=' + Date.now();
+
       }else{
 
         icon.bigIcon = new Image ();
@@ -1952,6 +2004,11 @@ var normalizeBigIconSize = function( image ){
 
 var openFile = function( fsnode ){
 
+  if ( fsnode.onedrive && fsnode.id === 'trash' ) {
+    alert(lang.onedriveTrash);
+    return;
+  }
+
   fsnode.open( currentList.filter(function( item ){ return item.fsnode.type === TYPE_FILE; }).map( function( item ){ return item.fsnode.id; }), function( error ){
 
     if( error ){
@@ -2713,13 +2770,31 @@ var generateContextMenu = function( item, options ){
 
   }else if( item.fsnode.dropbox || item.fsnode.gdrive || item.fsnode.onedrive ){
 
-    menu.addOption( lang.main.openFile, openFile.bind( null, item.fsnode ) )
-    .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
-    .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
-    .addOption( lang.main.download, downloadAllSelected.bind( null, null ) )
-    .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
-    .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' )
+    if (item.fsnode.id !== 'trash') {
 
+      if (item.fsnode.trashed) {
+
+        menu.addOption( lang.main.restore, item.fsnode.untrash.bind( null, null ) )
+          .addOption( lang.main.removePermanently, deleteAllSelected.bind( null, null ), 'warning' )
+
+      }else{
+
+        menu.addOption( lang.main.openFile, openFile.bind( null, item.fsnode ) )
+          .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+          .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
+          .addOption( lang.main.download, downloadAllSelected.bind( null, null ) )
+          .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
+          .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' )
+
+      }
+
+    }else{
+
+      if (!item.fsnode.onedrive) {
+        menu.addOption( lang.main.emptyTrash, item.fsnode.emptyTrash.bind( null, null ), 'warning' )
+      }
+
+    }
 
   }else if( item.fsnode.type === TYPE_FILE ){
 
