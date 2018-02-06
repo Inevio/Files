@@ -40,6 +40,8 @@
       "download"                  : "Download",
       "properties"                : "Properties",
       "remove"                    : "Delete",
+      "removePermanently"         : "Delete Permanently",
+      "restore"                   : "Restore",
       "emptyTrash"                : "Empty trash",
       "removeItem"                : "Remove item",
       "removeItems"               : "Remove items",
@@ -402,11 +404,17 @@
     },
 
     "cantCopySamePlace" : "You can't copy to the same directory",
-    "omit"  : "Omit",
+    "skip"  : "Skip",
     "replace" : "Replace",
-    "dontReplace" : "Don't replace",
-    "alreadyExists" : "already exists on destiny folder",
+    "dontReplace" : "Mantain both",
+    "alreadyExists" : "already exists on",
     "whatToDo"  : "What do you want to do?",
-    "noQuota" : "Sorry, there is no enough available storage in destiny cloud"
+    "noQuota" : "Sorry, there is no enough available storage in destiny cloud",
+    "onedriveTrash" : "Sorry, but Microsoft doesn't allow using the Trash folder outside their system. Please go to Onedrive official web page to restore or remove permanently a file.",
+    "destinationConflictFile"   : "The destination has a file with the same name.",
+    "destinationConflictFolder" : "The destination has a folder with the same name.",
+    "conflict" : "Conflict",
+    "forAll"  : "For all"
+
 
 }

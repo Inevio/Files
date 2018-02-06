@@ -40,6 +40,8 @@
       "download"                  : "Descargar",
       "properties"                : "Propiedades",
       "remove"                    : "Eliminar",
+      "removePermanently"         : "Eliminar Permanentemente",
+      "restore"                   : "Restaurar",
       "emptyTrash"                : "Vaciar papelera",
       "removeItem"                : "Eliminar item",
       "removeItems"               : "Eliminar items",
@@ -402,11 +404,16 @@
     },
 
     "cantCopySamePlace" : "No puedes copiarlo a la misma carpeta",
-    "omit"  : "Omitir",
+    "skip"  : "Omitir",
     "replace" : "Remplazar",
-    "dontReplace" : "No remplazar",
-    "alreadyExists" : "ya existe en la carpeta destino",
+    "dontReplace" : "Mantener ambos",
+    "alreadyExists" : "ya existe en",
     "whatToDo"  : "¿Qué quieres hacer?",
-    "noQuota" : "Lo sentimos, no hay suficiente espacio disponible en la nube destino"
+    "noQuota" : "Lo sentimos, no hay suficiente espacio disponible en la nube destino",
+    "onedriveTrash" : "Lo sentimos, pero Microsoft no permite usar la Papelera fuera de su sistema. Por favor, vaya a la pagina oficial de Onedrive para restaurar o borrar permanentemente un archivo.",
+    "destinationConflictFile"   : "El destino tiene un fichero con el mismo nombre",
+    "destinationConflictFolder" : "El destino tiene una carpeta con el mismo nombre",
+    "conflict" : "Conflicto",
+    "forAll"  : "Para todos"
 
 }
