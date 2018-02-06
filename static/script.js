@@ -3205,7 +3205,7 @@ var moveData = function(options){
         // Dropbox -> Horbito
         }else{
 
-          account.toHorbito( toMoveIds, options.destiny.id, function (err, taskProgressId) {
+          account.toHorbito( toMoveIds, options.destiny.id, {origin: originFolder.name, destiny: options.destiny.name, replacementPolicy: 0}, function (err, taskProgressId) {
 
             api.app.createView({ 
               id : taskProgressId, 
