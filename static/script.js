@@ -3132,7 +3132,7 @@ var moveData = function(options){
 
           options.destiny.name = options.destiny.name || 'Onedrive'
 
-          account.toOnedrive( toMoveIds, options.destiny.id === '/' ? 'root' : options.destiny.id, options.destiny.account, function (err, taskProgressId) {
+          account.toOnedrive( toMoveIds, options.destiny.id === '/' ? 'root' : options.destiny.id, {origin: originFolder.name, destiny: options.destiny.name, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
 
             api.app.createView({
               id : taskProgressId,
@@ -3185,7 +3185,7 @@ var moveData = function(options){
           // Different account
           }else{
 
-            account.toDropbox( toMoveIds, options.destiny.id, options.destiny.account, function (err, taskProgressId) {
+            account.toDropbox( toMoveIds, options.destiny.id, {origin: originFolder.name, destiny: options.destiny.name, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
 
               api.app.createView({ 
                 id : taskProgressId, 
@@ -3241,7 +3241,7 @@ var moveData = function(options){
 
           options.destiny.name = options.destiny.name || 'Dropbox'
 
-          account.toDropbox( toMoveIds, options.destiny.id, options.destiny.account, function (err, taskProgressId) {
+          account.toDropbox( toMoveIds, options.destiny.id, {origin: originFolder.name, destiny: options.destiny.name, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
 
             api.app.createView({ 
               id : taskProgressId, 
@@ -3261,7 +3261,7 @@ var moveData = function(options){
 
           options.destiny.name = options.destiny.name || 'Onedrive'
 
-          account.toOnedrive( toMoveIds, options.destiny.id === '/' ? 'root' : options.destiny.id, options.destiny.account, function (err, taskProgressId) {
+          account.toOnedrive( toMoveIds, options.destiny.id === '/' ? 'root' : options.destiny.id, {origin: originFolder.name, destiny: options.destiny.name, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
 
             api.app.createView({ 
               id : taskProgressId, 
@@ -3312,7 +3312,7 @@ var moveData = function(options){
           // Different account
           }else{
 
-            account.toGDrive( toMoveIds, options.destiny.id, options.destiny.account, function (err, taskProgressId) {
+            account.toGDrive( toMoveIds, options.destiny.id, {origin: originFolder.name, destiny: options.destiny.name, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
 
               api.app.createView({ 
                 id : taskProgressId, 
@@ -3332,7 +3332,7 @@ var moveData = function(options){
         // Gdrive -> Horbito
         }else{
 
-          account.toHorbito( toMoveIds, options.destiny.id, function (err, taskProgressId) {
+          account.toHorbito( toMoveIds, options.destiny.id, {origin: originFolder.name, destiny: options.destiny.name, replacementPolicy: 0}, function (err, taskProgressId) {
 
             api.app.createView({ 
               id : taskProgressId, 
@@ -3368,7 +3368,7 @@ var moveData = function(options){
 
           options.destiny.name = options.destiny.name || 'Dropbox'
 
-          account.toDropbox( toMoveIds, options.destiny.id, options.destiny.account, function (err, taskProgressId) {
+          account.toDropbox( toMoveIds, options.destiny.id, {origin: originFolder.name, destiny: options.destiny.name, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
 
             api.app.createView({ 
               id : taskProgressId, 
@@ -3388,7 +3388,7 @@ var moveData = function(options){
 
           options.destiny.name = options.destiny.name || 'Gdrive'
 
-          account.toGDrive( toMoveIds, options.destiny.id, options.destiny.account, function (err, taskProgressId) {
+          account.toGDrive( toMoveIds, options.destiny.id, {origin: originFolder.name, destiny: options.destiny.name, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
 
             api.app.createView({ 
               id : taskProgressId, 
@@ -3439,7 +3439,7 @@ var moveData = function(options){
           // Diferent account
           }else{
 
-            account.toOnedrive( toMoveIds, options.destiny.id, options.destiny.account, function (err, taskProgressId) {
+            account.toOnedrive( toMoveIds, options.destiny.id, {origin: originFolder.name, destiny: options.destiny.name, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
 
               api.app.createView({ 
                 id : taskProgressId, 
@@ -3459,7 +3459,7 @@ var moveData = function(options){
         // Onedrive to Horbito
         }else{
 
-          account.toHorbito( toMoveIds, options.destiny.id, function (err, taskProgressId) {
+          account.toHorbito( toMoveIds, options.destiny.id, {origin: originFolder.name, destiny: options.destiny.name, replacementPolicy: 0}, function (err, taskProgressId) {
 
             api.app.createView({ 
               id : taskProgressId, 
@@ -3488,7 +3488,7 @@ var moveData = function(options){
 
       api.integration.dropbox( options.destiny.account, function( err, account ){
 
-        account.toDropbox( toMoveIds, options.destiny.id, function (err, taskProgressId) {
+        account.toDropbox( toMoveIds, options.destiny.id, {origin: originFolder.name, destiny: options.destiny.name, replacementPolicy: 0}, function (err, taskProgressId) {
 
           api.app.createView({ 
             id : taskProgressId, 
@@ -3510,7 +3510,7 @@ var moveData = function(options){
 
       api.integration.gdrive( options.destiny.account, function( err, account ){
 
-        account.toGDrive( toMoveIds, options.destiny.id, function (err, taskProgressId) {
+        account.toGDrive( toMoveIds, options.destiny.id, {origin: originFolder.name, destiny: options.destiny.name, replacementPolicy: 0}, function (err, taskProgressId) {
 
           api.app.createView({ 
             id : taskProgressId, 
@@ -3532,7 +3532,7 @@ var moveData = function(options){
 
       api.integration.onedrive( options.destiny.account, function( err, account ){
 
-        account.toOnedrive( toMoveIds, options.destiny.id, function (err, taskProgressId) {
+        account.toOnedrive( toMoveIds, options.destiny.id, {origin: originFolder.name, destiny: options.destiny.name, replacementPolicy: 0}, function (err, taskProgressId) {
 
           api.app.createView({ 
             id : taskProgressId, 
