@@ -414,6 +414,8 @@
     "destinationConflictFile"   : "El destino tiene un fichero con el mismo nombre",
     "destinationConflictFolder" : "El destino tiene una carpeta con el mismo nombre",
     "conflict" : "Conflicto",
-    "forAll"  : "Para todos"
+    "forAll"  : "Para todos",
+    "confirmEmptyTrash" : "¿Seguro que desea eliminar definitivamente todo el contenido de la papelera?",
+    "restoreFolder"  : "Esta carpeta esta en tu papelera, para verla debes restaurarla"
 
 }

@@ -945,6 +945,10 @@
     opacity: 1;
   }
 
+  .button.hidden{
+    display: none;
+  }
+
   .upload i{
     background-position: -18px 0;
     width: 19px;
