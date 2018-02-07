@@ -414,7 +414,8 @@
     "destinationConflictFile"   : "The destination has a file with the same name.",
     "destinationConflictFolder" : "The destination has a folder with the same name.",
     "conflict" : "Conflict",
-    "forAll"  : "For all"
-
+    "forAll"  : "For all",
+    "confirmEmptyTrash" : "You are going to remove permanently all trash content. ¿Are you sure?",
+    "restoreFolder"  : "This folder is deleted, you have to restore it to open it."
 
 }

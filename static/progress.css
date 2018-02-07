@@ -8,6 +8,7 @@
 	font-family: Lato;
 }
 
+
 .progress-container{
 	position: absolute;
 	width: 100%;
@@ -52,8 +53,54 @@
 			font-size: 15px;
 			color: @darkHorbito;
 
+			*{
+				float: left;
+			}
+
 			.source, .destiny{
+				position: relative;
+
+				.icon.dropbox{
+					margin-left: 6px;
+					float: left;
+					width: 15px;
+					height: 13px;
+					background-image: url('@static/cloudsIcons/dropbox.png');
+					background-size: 15px 13px;
+				}
+
+				.icon.gdrive{
+					margin-left: 6px;
+					float: left;
+					width: 15px;
+					height: 13px;
+					background-image: url('@static/cloudsIcons/drive.png');
+					background-size: 15px 13px;
+				}
+
+				.icon.onedrive{
+					margin-left: 6px;
+					float: left;
+					width: 16px;
+					height: 10px;
+					background-image: url('@static/cloudsIcons/onedrive.png');
+					background-size: 16px 10px;
+				}
+
+				.icon.horbito{
+					margin-left: 6px;
+					float: left;
+					width: 13px;
+					height: 13px;
+					background-image: url('@static/cloudsIcons/horbito.png');
+					background-size: 13px 13px;
+				}
+
+			}
+
+			.source-text, .destiny-text{
 				color: #0071f6;
+				margin: 0 5px;
 			}
 
 		}
@@ -160,16 +207,22 @@
 
 	}
 
+
 	.conflict-file{
 
 		float: left;
-		font-size: 15px;
-		color: #0071f6;
-		font-weight: 900;
-		margin-top: 9px;
-    width: ~'calc(100% - 20px)';
+		position: relative;
+		width: ~'calc(100% - 20px)';
     margin-left: 20px;
+    margin-top: 9px;
 
+    .text{
+    	float: left;
+    	font-size: 15px;
+			color: #0071f6;
+			font-weight: 900;
+    }
+		
 	}
 
 	.apply-all{
@@ -228,4 +281,42 @@
 
 	}
 
+}
+
+.hover-text{
+
+	position: absolute;
+	background: #fff;
+	box-shadow: 0 20px 40px rgba(34, 31, 26, 0.3);
+  top: -33px;
+  border-radius: 4px;
+  left: -15px;
+	opacity: 0;
+	transition: all 0.2s ease;
+
+	i{
+		width: 0;
+		height: 0;
+		border-style: solid;
+		border-width: 5px 5px 0 5px;
+		border-color: #ffffff transparent transparent transparent;
+		position: absolute;
+    top: 25px;
+    left: 35px;
+	}
+
+	span{
+
+		float: left;
+		color: #545f65;
+    padding: 6px 13px;
+    font-size: 13px;
+    white-space: nowrap;
+
+	}
+
+}
+
+.source:hover .hover-text, .destiny:hover .hover-text, .conflict-file:hover .hover-text{
+	opacity: 1;
 }

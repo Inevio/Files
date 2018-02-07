@@ -3,9 +3,9 @@
 var win = $(this)
 var percentageDom = $('.percentage')
 var operationDom = $('.operation')
-var sourceDom = $('.source')
+var sourceDom = $('.source-text')
 var toDom = $('.to')
-var destinyDom = $('.destiny')
+var destinyDom = $('.destiny-text')
 var loadingDom = $('.loading-layer')
 var timeDom = $('.time')
 var remainingDom = $('.time-remaining')
@@ -87,11 +87,13 @@ var asyncEach = function( list, step, callback ){
     step( item, checkEnd );
   });
 
-};
+}
 
 var resendTransferation = function(conflictsSolution){
 
-  params.callback( params.toMove, params.destiny.id, {origin: params.origin, destiny: params.destiny.name, replacementPolicy: conflictsSolution},params.destiny.account, function (err, taskProgressId) {
+  api.app.removeView( $('.progress-container-' + params.id).parent() )
+
+  params.callback( params.toMove, params.destiny.id, {origin: params.origin, destiny: params.destiny, replacementPolicy: conflictsSolution},params.destiny.account, function (err, taskProgressId) {
 
       api.app.createView({
         id : taskProgressId, 
@@ -104,7 +106,6 @@ var resendTransferation = function(conflictsSolution){
         toMove: params.toMove
       }, 'progress' )
 
-      api.app.removeView( $('.progress-container-' + params.id).parent() )
     });
 
 }
@@ -129,7 +130,8 @@ var checkConflicts = function(conflicts){
     }
 
     conflictDom.find('.number-conflict').text(lang.conflict + ' ' + (conflicts.indexOf(conflict)+1) + ' ' + lang.of + ' ' + conflicts.length )
-    conflictDom.find('.conflict-file').text(conflict.name)
+    conflictDom.find('.conflict-file .text').text(conflict.name)
+    conflictDom.find('.conflict-file .hover-text span').text($('.destiny .hover-text span').text() + '/' + conflict.name)
     conflictDom.find('.for-all').text(lang.forAll)
     conflictDom.find('.replace-button span').text(lang.replace)
     conflictDom.find('.mantain-button span').text(lang.dontReplace)
@@ -193,49 +195,116 @@ var checkConflicts = function(conflicts){
   })
 }
 
+
 var setTexts = function(data){
 
   sourceDom.text( data.origin.name )
   toDom.text( lang.progress.to )
   destinyDom.text( data.destiny.name )
-  remainingDom.text( lang.progress.remaining )
+  remainingDom.text( lang.progress.remaining )  
 
-  // Origin
+  // --- Origin ---
   // Dropbox
   if (data.origin.dropbox) {
     api.integration.dropbox( data.origin.account, function( err, account ){
-      console.log('origen', account )
+
+      $('.source .icon').addClass('dropbox')
+
+      if (data.origin.name === 'Dropbox') {
+        $('.source .hover-text span').text(account.email + '/' + data.origin.name)
+      }else{
+        $('.source .hover-text span').text(account.email + pathToString(data.origin.path))
+      }
+
     })
   // Gdrive
   }else if(data.origin.gdrive){
     api.integration.gdrive( data.origin.account, function( err, account ){
-      console.log('origen', account )
+
+      $('.source .icon').addClass('gdrive')
+
+      if (data.origin.name === 'Gdrive') {
+        $('.source .hover-text span').text(account.email + '/' + data.origin.name)
+      }else{
+        $('.source .hover-text span').text(account.email + pathToString(data.origin.path))
+      }
+
     })
   // Onedrive
   }else if(data.origin.onedrive){
-    api.integration.gdrive( data.origin.account, function( err, account ){
-      console.log('origen', account )
+    api.integration.onedrive( data.origin.account, function( err, account ){
+
+      $('.source .icon').addClass('onedrive')
+
+      if (data.origin.name === 'OneDrive') {
+        $('.source .hover-text span').text(account.email + '/' + data.origin.name)
+      }else{
+        $('.source .hover-text span').text(account.email + pathToString(data.origin.path))
+      }
+
     })
+  // Horbito
+  }else{
+    $('.source .icon').addClass('horbito')
+    $('.source .hover-text span').text(pathToString(data.origin.path))
   }
 
-  // Destiny
+  // --- Destiny ---
   // Dropbox
-  if (data.origin.dropbox) {
-    api.integration.dropbox( data.origin.account, function( err, account ){
-      console.log('destino', account )
+  if (data.destiny.dropbox) {
+    api.integration.dropbox( data.destiny.account, function( err, account ){
+
+      $('.destiny .icon').addClass('dropbox')
+
+      if (data.destiny.name === 'Dropbox') {
+        $('.destiny .hover-text span').text(account.email + '/' + data.destiny.name)
+      }else{
+        $('.destiny .hover-text span').text(account.email + pathToString(data.destiny.path))
+      }
+
     })
   // Gdrive
-  }else if(data.origin.gdrive){
-    api.integration.gdrive( data.origin.account, function( err, account ){
-      console.log('destino', account )
+  }else if(data.destiny.gdrive){
+    api.integration.gdrive( data.destiny.account, function( err, account ){
+
+      $('.destiny .icon').addClass('gdrive')
+
+      if (data.destiny.name === 'Gdrive') {
+        $('.destiny .hover-text span').text(account.email + '/' + data.destiny.name)
+      }else{
+        $('.destiny .hover-text span').text(account.email + pathToString(data.destiny.path))
+      }
+
     })
   // Onedrive
-  }else if(data.origin.onedrive){
-    api.integration.gdrive( data.origin.account, function( err, account ){
-      console.log('destino', account )
+  }else if(data.destiny.onedrive){
+    api.integration.onedrive( data.destiny.account, function( err, account ){
+
+      $('.destiny .icon').addClass('onedrive')
+
+      if (data.destiny.name === 'OneDrive') {
+        $('.destiny .hover-text span').text(account.email + '/' + data.destiny.name)
+      }else{
+        $('.destiny .hover-text span').text(account.email + pathToString(data.destiny.path))
+      }
+
     })
+  // Horbito
+  }else{
+    $('.destiny .icon').addClass('horbito')
+    $('.destiny .hover-text span').text(pathToString(data.destiny.path))
   }
 
+}
+
+var pathToString = function(path){
+  var stringPath = '';
+  path.forEach(function(item, index){
+    if (index > -1) {
+      stringPath += '/' + item.name;
+    }
+  })
+  return stringPath
 }
 
 // Events
@@ -249,8 +318,15 @@ main.on('error', function(e, data){
   if (data.error.conflicts) {
     checkConflicts(data.error.conflicts)
   }else if(data.error.quota){
-    alert(lang.noQuota);
-    api.app.removeView( $('.progress-container-' + data.id).parent() )
+
+    var dialog = api.dialog();
+
+    dialog.setText( lang.noQuota );
+    dialog.setButton( 1, wzLang.core.dialogAccept, 'blue' );
+
+    dialog.render(function( doIt ){
+      api.app.removeView( $('.progress-container-' + data.id).parent() )
+    });  
   }else{
     console.error(data)
     api.app.removeView( $('.progress-container-' + data.id).parent() )
