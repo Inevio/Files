@@ -293,6 +293,7 @@
   left: -15px;
 	opacity: 0;
 	transition: all 0.2s ease;
+	display: none;
 
 	i{
 		width: 0;

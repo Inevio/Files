@@ -131,7 +131,7 @@ var checkConflicts = function(conflicts){
 
     conflictDom.find('.number-conflict').text(lang.conflict + ' ' + (conflicts.indexOf(conflict)+1) + ' ' + lang.of + ' ' + conflicts.length )
     conflictDom.find('.conflict-file .text').text(conflict.name)
-    conflictDom.find('.conflict-file .hover-text span').text($('.destiny .hover-text span').text() + '/' + conflict.name)
+    conflictDom.find('.conflict-file').attr('title', $('.destiny').attr('title') + '/' + conflict.name)
     conflictDom.find('.for-all').text(lang.forAll)
     conflictDom.find('.replace-button span').text(lang.replace)
     conflictDom.find('.mantain-button span').text(lang.dontReplace)
@@ -211,9 +211,9 @@ var setTexts = function(data){
       $('.source .icon').addClass('dropbox')
 
       if (data.origin.name === 'Dropbox') {
-        $('.source .hover-text span').text(account.email + '/' + data.origin.name)
+        $('.source').attr('title', account.email + '/' + data.origin.name)
       }else{
-        $('.source .hover-text span').text(account.email + pathToString(data.origin.path))
+        $('.source').attr('title', account.email + pathToString(data.origin.path))
       }
 
     })
@@ -224,9 +224,9 @@ var setTexts = function(data){
       $('.source .icon').addClass('gdrive')
 
       if (data.origin.name === 'Gdrive') {
-        $('.source .hover-text span').text(account.email + '/' + data.origin.name)
+        $('.source').attr('title', account.email + '/' + data.origin.name)
       }else{
-        $('.source .hover-text span').text(account.email + pathToString(data.origin.path))
+        $('.source').attr('title', account.email + pathToString(data.origin.path))
       }
 
     })
@@ -237,9 +237,9 @@ var setTexts = function(data){
       $('.source .icon').addClass('onedrive')
 
       if (data.origin.name === 'OneDrive') {
-        $('.source .hover-text span').text(account.email + '/' + data.origin.name)
+        $('.source').attr('title', account.email + '/' + data.origin.name)
       }else{
-        $('.source .hover-text span').text(account.email + pathToString(data.origin.path))
+        $('.source').attr('title', account.email + pathToString(data.origin.path))
       }
 
     })
@@ -257,9 +257,9 @@ var setTexts = function(data){
       $('.destiny .icon').addClass('dropbox')
 
       if (data.destiny.name === 'Dropbox') {
-        $('.destiny .hover-text span').text(account.email + '/' + data.destiny.name)
+        $('.destiny').attr('title', account.email + '/' + data.destiny.name)
       }else{
-        $('.destiny .hover-text span').text(account.email + pathToString(data.destiny.path))
+        $('.destiny').attr('title', account.email + pathToString(data.destiny.path))
       }
 
     })
@@ -270,9 +270,9 @@ var setTexts = function(data){
       $('.destiny .icon').addClass('gdrive')
 
       if (data.destiny.name === 'Gdrive') {
-        $('.destiny .hover-text span').text(account.email + '/' + data.destiny.name)
+        $('.destiny').attr('title', account.email + '/' + data.destiny.name)
       }else{
-        $('.destiny .hover-text span').text(account.email + pathToString(data.destiny.path))
+        $('.destiny').attr('title', account.email + pathToString(data.destiny.path))
       }
 
     })
@@ -283,9 +283,9 @@ var setTexts = function(data){
       $('.destiny .icon').addClass('onedrive')
 
       if (data.destiny.name === 'OneDrive') {
-        $('.destiny .hover-text span').text(account.email + '/' + data.destiny.name)
+        $('.destiny').attr('title', account.email + '/' + data.destiny.name)
       }else{
-        $('.destiny .hover-text span').text(account.email + pathToString(data.destiny.path))
+        $('.destiny').attr('title', account.email + pathToString(data.destiny.path))
       }
 
     })

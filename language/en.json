@@ -410,12 +410,13 @@
     "alreadyExists" : "already exists on",
     "whatToDo"  : "What do you want to do?",
     "noQuota" : "Sorry, there is no enough available storage in destiny cloud",
-    "onedriveTrash" : "Sorry, but Microsoft doesn't allow using the Trash folder outside their system. Please go to Onedrive official web page to restore or remove permanently a file.",
+    "onedriveTrash" : "Sorry, but Microsoft doesn't allow using the Trash folder outside their system. Please go to <a href='https://onedrive.live.com' target='_blank'> Onedrive official web page </a> to restore or remove permanently a file.",
     "destinationConflictFile"   : "The destination has a file with the same name.",
     "destinationConflictFolder" : "The destination has a folder with the same name.",
     "conflict" : "Conflict",
     "forAll"  : "For all",
     "confirmEmptyTrash" : "You are going to remove permanently all trash content. ¿Are you sure?",
     "restoreFolder"  : "This folder is deleted, you have to restore it to open it."
+
 
 }
