@@ -363,6 +363,17 @@
   height: ~'calc(100% - 60px)';
 }
 
+.ui-navgroup-element.dropbox:hover > .remove-account, .ui-navgroup-element.gdrive:hover > .remove-account, .ui-navgroup-element.onedrive:hover > .remove-account{
+
+  float: right;
+  margin-right: 8px;
+  margin-top: 7px;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+
+}
+
 .ui-navgroup-title{
   text-transform: uppercase;
 }
@@ -432,10 +443,11 @@
 }
 
 .ui-navgroup-element-txt{
-  width: 113px;
+  width: 135px;
   color: #252525;
   font-weight: bold;
 }
+
 
 .ui-navgroup-element.active:hover{
   background-color: #0071f6;

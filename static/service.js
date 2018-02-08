@@ -117,6 +117,8 @@ api.taskProgress
 })
 .on( 'finish', function( data ){
 
+  console.log('Evento finish', data);
+
   if ($('.progress-container-' + data.id).length) {
     api.app.removeView( $('.progress-container-' + data.id).parent() )
   }
