@@ -331,9 +331,9 @@
   position: relative;
 
   .space-in-use{
-    position: absolute;
+    float: left;
     bottom: 0;
-    margin: 0 0 12px 18px;
+    margin: 17px 0 12px 18px;
     box-sizing: border-box;
     color: #717171;
     font-size: 13px;
@@ -366,12 +366,17 @@
 .ui-navgroup-element.dropbox:hover > .remove-account, .ui-navgroup-element.gdrive:hover > .remove-account, .ui-navgroup-element.onedrive:hover > .remove-account{
 
   float: right;
-  margin-right: 8px;
-  margin-top: 7px;
-  width: 10px;
-  height: 10px;
-  background-color: red;
+  margin-right: 15px;
+  margin-top: 5px;
+  width: 14px;
+  height: 14px;
+  background-image: url('@static/delete-cloud.png');
+  background-size: 29px 14px;
 
+}
+
+.ui-navgroup-element.dropbox.active:hover > .remove-account, .ui-navgroup-element.gdrive.active:hover > .remove-account, .ui-navgroup-element.onedrive.active:hover > .remove-account{
+  background-position: 14px;
 }
 
 .ui-navgroup-title{
@@ -1013,6 +1018,22 @@
   &.in-trash .download,
   &.in-trash .upload{
     display: none;
+  }
+
+  &.in-cloud .upload{
+    display: none;
+  }
+
+  &.in-trash-cloud .delete.normal,
+  &.in-trash-cloud .create-folder,
+  &.in-trash-cloud .download,
+  &.in-trash-cloud .sort-preference,
+  &.in-trash-cloud .upload{
+    display: none;
+  }
+
+  &.in-trash-cloud .empty-trash{
+    display: flex;
   }
 
   .delete i{
