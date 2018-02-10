@@ -337,6 +337,7 @@
     box-sizing: border-box;
     color: #717171;
     font-size: 13px;
+    text-decoration: none;
 
     &:hover{
       color: #0071f6;
