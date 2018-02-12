@@ -172,7 +172,10 @@ var checkConflicts = function(conflicts){
     conflictDom.find('.skip-button span').on('click', function(){
 
       if ($('.apply-all').hasClass('active')) {
-        api.app.removeView( $('.progress-container-' + params.id).parent() )
+        conflicts.forEach(function(conflict){
+          conflictsSolution[conflict.id] = 1
+        })
+        resendTransferation(conflictsSolution)
         return;
       }
 
