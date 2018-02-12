@@ -93,7 +93,7 @@ var resendTransferation = function(conflictsSolution){
 
   api.app.removeView( $('.progress-container-' + params.id).parent() )
 
-  params.callback( params.toMove, params.destiny.id, {origin: params.origin, destiny: params.destiny, replacementPolicy: conflictsSolution},params.destiny.account, function (err, taskProgressId) {
+  params.callback( params.toMove, params.destiny.dropbox === true ? params.destiny.path_display : params.destiny.id, {origin: params.origin, destiny: params.destiny, replacementPolicy: conflictsSolution},params.destiny.account, function (err, taskProgressId) {
 
       api.app.createView({
         id : taskProgressId,
