@@ -760,7 +760,9 @@ var createFolder = function(){
   //Dropbox new folder
   if (currentOpened.dropbox) {
 
-    dropboxAccountActive.createFolder( currentOpened.path_display + '/' + getAvailableNewFolderName() , function( e , newDirectory ){
+    var currentPath = currentOpened.path_display === '/' ? '' : currentOpened.path_display
+
+    dropboxAccountActive.createFolder( currentPath + '/' + getAvailableNewFolderName() , function( e , newDirectory ){
 
       var newDirectory = new dropboxNode({
         'isFolder'      : true,
@@ -3424,8 +3426,9 @@ var moveFromGdrive = function(options){
 
     if(err) return handleError(err)
     
-    path.pop();
-    options.originFolder = path.pop();
+    path[0].id = '/'
+    path.pop()
+    options.originFolder = path.pop()
 
     options.destiny.getPath(function(err, destinyPath){
 
@@ -3608,8 +3611,8 @@ var moveFromOnedrive = function(options){
 
     if(err) return handleError(err)
 
-    path.pop();
-    options.originFolder = path.pop();
+    path.pop()
+    options.originFolder = path.pop()
 
     options.destiny.getPath(function(err, destinyPath){
 
@@ -3620,6 +3623,8 @@ var moveFromOnedrive = function(options){
       options.originFolder.getPath(function(err, originPath){
 
         if(err) return handleError(err)
+
+        if (options.originFolder.id === originPath[0].id) options.originFolder.id = '/'
 
         options.originFolder.path = originPath;
 
@@ -5030,7 +5035,7 @@ var addCloudAccount = function( account ){
 
   var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
 
-  visualItem.addClass( 'item-' + account.id + ' dropbox' ).data( 'account', account ).data( 'id' , '/' ).data('cloud', account.type);
+  visualItem.addClass( 'item-' + account.id + ' ' + account.type).data( 'account', account ).data( 'id' , '/' ).data('cloud', account.type);
   visualItem.find('.ui-navgroup-element-txt').text( account.email );
   visualItem.append('<figure class="remove-account"></figure>')
 
@@ -5393,11 +5398,14 @@ var updateQuota = function(){
 
   }else if(currentOpened && currentOpened.onedrive){
     $('.space-in-use').attr('href', 'https://onedrive.live.com/about/en-us/plans/')
-    visualSpaceInUseAmount.text(
-      lang.main.amount
-      .replace( "%s", '' )
-      .replace( "%s", '' )
-    )
+    onedriveAccountActive.accountData(function(err, data){
+      if(err) return handleError(err)
+      visualSpaceInUseAmount.text(
+        lang.main.amount
+        .replace( "%s", api.tool.bytesToUnit( data.quota.used, 2 ) )
+        .replace( "%s", api.tool.bytesToUnit( data.quota.total ) )
+      )
+    })
 
   }else{
     $('.space-in-use').attr('href', '')
@@ -5452,8 +5460,6 @@ var translate = function(){
   $('.explain-upload .got-it-button span').text(lang.explainUpload.gotItButton);
 
 };
-
-
 
 // Start the app
 currentSort = sortByName;

@@ -133,6 +133,9 @@ var checkConflicts = function(conflicts){
     conflictDom.find('.conflict-file .text').text(conflict.name)
     conflictDom.find('.conflict-file').attr('title', $('.destiny').attr('title') + '/' + conflict.name)
     conflictDom.find('.for-all').text(lang.forAll)
+    conflictDom.find('.for-all').on('click', function(){
+      $('.apply-all').click()
+    })
     conflictDom.find('.replace-button span').text(lang.replace)
     conflictDom.find('.mantain-button span').text(lang.dontReplace)
     conflictDom.find('.skip-button span').text(lang.skip)
@@ -294,6 +297,7 @@ var setTexts = function(data){
 }
 
 var pathToString = function(path){
+  path = path instanceof Array ? path : [path]
   var stringPath = '';
   path.forEach(function(item, index){
     if (index > -1) {
@@ -331,6 +335,9 @@ main.on('error', function(e, data){
 })
 
 // Initial data
+if (!params.origin) {
+  api.app.removeView( $('.progress-container-' + params.id).parent() )
+}
 
 setTexts(params);
 main.addClass( 'progress-container-' + params.id )
