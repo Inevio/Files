@@ -368,7 +368,7 @@ var onedriveNode = function( data ){
 var handleError = function(err){
   console.error(JSON.stringify(err,null,2))
   if (api.system.user().id === 50523) {
-    alert('Un pequeño error pero anda para: El FUCKING BOSS EEEH LOCOOO, VAMOS AHI A TOPE SIGUE PROGRAMANDO, ANIMO QUE TU PUEDES.')
+    alert(JSON.stringify(err,null,2))
   }else{
     alert('Error')
   }
@@ -2036,8 +2036,28 @@ var normalizeBigIconSize = function( image ){
 var openFile = function( fsnode ){
 
   if ( fsnode.onedrive && fsnode.id === 'trash' ) {
-    alert(lang.onedriveTrash);
-    return;
+    return alert(lang.onedriveTrash); // To Do -> This is a folder, it shouldn't be here
+  }
+
+  if( fsnode.trashed ){
+
+    /*$('.folder-utils').addClass('in-trash-cloud')
+    $('.folder-utils').removeClass('in-cloud')*/
+
+    var dialog = api.dialog();
+
+    dialog.setText( lang.restoreFolder );
+    dialog.setButton( 0, wzLang.core.dialogAccept, 'black' );
+    dialog.setButton( 1, lang.main.restore, 'blue' );
+
+    dialog.render(function( doIt ){
+      if (doIt) {
+        fsnode.untrash()
+      }
+    });
+
+    return
+
   }
 
   fsnode.open( currentList.filter(function( item ){ return item.fsnode.type === TYPE_FILE; }).map( function( item ){ return item.fsnode.id; }), function( error ){
@@ -3235,7 +3255,7 @@ var moveData = function(options){
 var moveFromDropbox = function(options){
 
   options.toMove[ 0 ].fsnode.getPath(function(err, path){
-    
+
     if(err) return handleError(err)
 
     path.pop()
@@ -3250,7 +3270,7 @@ var moveFromDropbox = function(options){
       options.originFolder.getPath(function(err, originPath){
 
         if(err) return handleError(err)
-        
+
         options.originFolder.path = originPath;
 
         api.integration.dropbox( options.toMove[ 0 ].fsnode.account, function( err, account ){
@@ -3293,7 +3313,7 @@ var moveFromDropbox = function(options){
 var dropboxToHorbito = function(options){
 
   options.account.toHorbito( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, function (err, taskProgressId) {
-    
+
     if(err) return handleError(err)
 
     api.app.createView({
@@ -3353,7 +3373,7 @@ var dropboxToDropbox = function(options){
   }else{
 
     options.account.toDropbox( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
-      
+
       if(err) return handleError(err)
 
       api.app.createView({
@@ -3377,7 +3397,7 @@ var dropboxToOnedrive = function(options){
   options.destiny.name = options.destiny.name || 'Onedrive'
 
   options.account.toOnedrive( options.toMoveIds, options.destiny.id === '/' ? 'root' : options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
-    
+
     if(err) return handleError(err)
 
     api.app.createView({
@@ -3399,7 +3419,7 @@ var dropboxToGdrive = function(options){
   options.destiny.name = options.destiny.name || 'Gdrive'
 
   options.account.toGDrive( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0} ,options.destiny.account, function (err, taskProgressId) {
-    
+
     if(err) return handleError(err)
 
     api.app.createView({
@@ -3423,20 +3443,20 @@ var moveFromGdrive = function(options){
   options.toMove[ 0 ].fsnode.getPath(function(err, path){
 
     if(err) return handleError(err)
-    
+
     path.pop();
     options.originFolder = path.pop();
 
     options.destiny.getPath(function(err, destinyPath){
 
       if(err) return handleError(err)
-      
+
       options.destiny.path = destinyPath;
 
       options.originFolder.getPath(function(err, originPath){
 
         if(err) return handleError(err)
-        
+
         options.originFolder.path = originPath;
 
         api.integration.gdrive( options.toMove[ 0 ].fsnode.account, function( err, account ){
@@ -3444,7 +3464,7 @@ var moveFromGdrive = function(options){
           if(err) return handleError(err)
 
           options.account = account
-        
+
           // Gdrive -> Dropbox
           if( options.destiny.dropbox ){
 
@@ -3481,7 +3501,7 @@ var gdriveToDropbox = function(options){
   options.destiny.name = options.destiny.name || 'Dropbox'
 
   options.account.toDropbox( options.toMoveIds, options.destiny.path_display, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
-    
+
     if(err) return handleError(err)
 
     api.app.createView({
@@ -3503,7 +3523,7 @@ var gdriveToOnedrive = function(options){
   options.destiny.name = options.destiny.name || 'Onedrive'
 
   options.account.toOnedrive( options.toMoveIds, options.destiny.id === '/' ? 'root' : options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
-    
+
     if(err) return handleError(err)
 
     api.app.createView({
@@ -3561,7 +3581,7 @@ var gdriveToGdrive = function(options){
   }else{
 
     options.account.toGDrive( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
-      
+
       if(err) return handleError(err)
 
       api.app.createView({
@@ -3581,9 +3601,9 @@ var gdriveToGdrive = function(options){
 }
 
 var gdriveToHorbito = function(options){
-  
+
   options.account.toHorbito( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, function (err, taskProgressId) {
-  
+
     if(err) return handleError(err)
 
     api.app.createView({
@@ -3613,7 +3633,7 @@ var moveFromOnedrive = function(options){
 
     options.destiny.getPath(function(err, destinyPath){
 
-      if(err) return handleError(err) 
+      if(err) return handleError(err)
 
       options.destiny.path = destinyPath;
 
@@ -3667,7 +3687,7 @@ var onedriveToDropbox = function(options){
   options.destiny.name = options.destiny.name || 'Dropbox'
 
   options.account.toDropbox( options.toMoveIds, options.destiny.path_display, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
-    
+
     if(err) return handleError(err)
 
     api.app.createView({
@@ -3689,7 +3709,7 @@ var onedriveToGdrive = function(options){
   options.destiny.name = options.destiny.name || 'Gdrive'
 
   options.account.toGDrive( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
-    
+
     if(err) return handleError(err)
 
     api.app.createView({
@@ -3747,7 +3767,7 @@ var onedriveToOnedrive = function(options){
   }else{
 
     options.account.toOnedrive( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
-      
+
       if(err) return handleError(err)
 
       api.app.createView({
@@ -3769,7 +3789,7 @@ var onedriveToOnedrive = function(options){
 var onedriveToHorbito = function(options){
 
   options.account.toHorbito( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, function (err, taskProgressId) {
-    
+
     if(err) return handleError(err)
 
     api.app.createView({
@@ -3798,7 +3818,7 @@ var moveFromHorbito = function(options){
     options.originFolder = path.pop();
 
     options.destiny.getPath(function(err, destinyPath){
-      
+
       if(err) return handleError(err)
 
       options.destiny.path = destinyPath;
@@ -3808,7 +3828,7 @@ var moveFromHorbito = function(options){
         if(err) return handleError(err)
 
         options.originFolder.path = originPath;
-          
+
         // Horbito -> Dropbox
         if( options.destiny.dropbox ){
 
@@ -3838,11 +3858,11 @@ var moveFromHorbito = function(options){
 var horbitoToDropbox = function(options){
 
   api.integration.dropbox( options.destiny.account, function( err, account ){
-    
+
     if(err) return handleError(err)
 
     account.toDropbox( options.toMoveIds, options.destiny.path_display, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, function (err, taskProgressId) {
-      
+
       if(err) return handleError(err)
 
       api.app.createView({
@@ -3868,7 +3888,7 @@ var horbitoToGdrive = function(options){
     if(err) return handleError(err)
 
     account.toGDrive( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, function (err, taskProgressId) {
-      
+
       if(err) return handleError(err)
 
       api.app.createView({
@@ -3889,11 +3909,11 @@ var horbitoToGdrive = function(options){
 
 var horbitoToOnedrive = function(options){
   api.integration.onedrive( options.destiny.account, function( err, account ){
-    
+
     if(err) return handleError(err)
 
     account.toOnedrive( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, function (err, taskProgressId) {
-      
+
       if(err) return handleError(err)
 
       api.app.createView({
