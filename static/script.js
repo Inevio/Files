@@ -3580,6 +3580,10 @@ var gdriveToGdrive = function(options){
   // Different account
   }else{
 
+    if (api.system.user().id != 50523) {
+      return alert(lang.developing)
+    }
+
     options.account.toGDrive( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
 
       if(err) return handleError(err)
@@ -3767,6 +3771,10 @@ var onedriveToOnedrive = function(options){
 
   // Diferent account
   }else{
+
+    if (api.system.user().id != 50523) {
+      return alert(lang.developing)
+    }
 
     options.account.toOnedrive( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
 
