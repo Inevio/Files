@@ -416,7 +416,7 @@
     "conflict" : "Conflict",
     "forAll"  : "For all",
     "confirmEmptyTrash" : "You are going to remove permanently all trash content. ¿Are you sure?",
-    "restoreFolder"  : "This folder is deleted, you have to restore it to open it."
-
+    "restoreFolder"  : "This folder is deleted, you have to restore it to open it.",
+    "developing"  : "This feature is not available yet"
 
 }
