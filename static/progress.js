@@ -93,15 +93,15 @@ var resendTransferation = function(conflictsSolution){
 
   api.app.removeView( $('.progress-container-' + params.id).parent() )
 
-  params.callback( params.toMove, params.destiny.id, {origin: params.origin, destiny: params.destiny, replacementPolicy: conflictsSolution},params.destiny.account, function (err, taskProgressId) {
+  params.callback( params.toMove, params.destiny.dropbox === true ? params.destiny.path_display : params.destiny.id, {origin: params.origin, destiny: params.destiny, replacementPolicy: conflictsSolution},params.destiny.account, function (err, taskProgressId) {
 
       api.app.createView({
-        id : taskProgressId, 
-        totalItems : params.totalItems, 
-        destiny : params.destiny, 
-        porcentage: params.porcentage, 
-        completedItems: params.completedItems, 
-        origin: params.origin, 
+        id : taskProgressId,
+        totalItems : params.totalItems,
+        destiny : params.destiny,
+        porcentage: params.porcentage,
+        completedItems: params.completedItems,
+        origin: params.origin,
         callback: params.callback,
         toMove: params.toMove
       }, 'progress' )
@@ -133,6 +133,9 @@ var checkConflicts = function(conflicts){
     conflictDom.find('.conflict-file .text').text(conflict.name)
     conflictDom.find('.conflict-file').attr('title', $('.destiny').attr('title') + '/' + conflict.name)
     conflictDom.find('.for-all').text(lang.forAll)
+    conflictDom.find('.for-all').on('click', function(){
+      $('.apply-all').click()
+    })
     conflictDom.find('.replace-button span').text(lang.replace)
     conflictDom.find('.mantain-button span').text(lang.dontReplace)
     conflictDom.find('.skip-button span').text(lang.skip)
@@ -172,7 +175,10 @@ var checkConflicts = function(conflicts){
     conflictDom.find('.skip-button span').on('click', function(){
 
       if ($('.apply-all').hasClass('active')) {
-        api.app.removeView( $('.progress-container-' + params.id).parent() )
+        conflicts.forEach(function(conflict){
+          conflictsSolution[conflict.id] = 1
+        })
+        resendTransferation(conflictsSolution)
         return;
       }
 
@@ -182,13 +188,6 @@ var checkConflicts = function(conflicts){
     })
 
   }, function(){
-
-    // Si todos omitidos no llamar de nuevo
-    var solutions = Object.values(conflictsSolution)
-    if (solutions.indexOf(2) === -1 && solutions.indexOf(3) === -1) {
-      api.app.removeView( $('.progress-container-' + params.id).parent() )
-      return
-    }
 
     resendTransferation(conflictsSolution)
 
@@ -201,7 +200,7 @@ var setTexts = function(data){
   sourceDom.text( data.origin.name )
   toDom.text( lang.progress.to )
   destinyDom.text( data.destiny.name )
-  remainingDom.text( lang.progress.remaining )  
+  remainingDom.text( lang.progress.remaining )
 
   // --- Origin ---
   // Dropbox
@@ -298,6 +297,7 @@ var setTexts = function(data){
 }
 
 var pathToString = function(path){
+  path = path instanceof Array ? path : [path]
   var stringPath = '';
   path.forEach(function(item, index){
     if (index > -1) {
@@ -326,7 +326,7 @@ main.on('error', function(e, data){
 
     dialog.render(function( doIt ){
       api.app.removeView( $('.progress-container-' + data.id).parent() )
-    });  
+    });
   }else{
     console.error(data)
     api.app.removeView( $('.progress-container-' + data.id).parent() )
@@ -335,6 +335,9 @@ main.on('error', function(e, data){
 })
 
 // Initial data
+if (!params.origin) {
+  api.app.removeView( $('.progress-container-' + params.id).parent() )
+}
 
 setTexts(params);
 main.addClass( 'progress-container-' + params.id )

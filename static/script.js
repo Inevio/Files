@@ -760,7 +760,9 @@ var createFolder = function(){
   //Dropbox new folder
   if (currentOpened.dropbox) {
 
-    dropboxAccountActive.createFolder( currentOpened.path_display + '/' + getAvailableNewFolderName() , function( e , newDirectory ){
+    var currentPath = currentOpened.path_display === '/' ? '' : currentOpened.path_display
+
+    dropboxAccountActive.createFolder( currentPath + '/' + getAvailableNewFolderName() , function( e , newDirectory ){
 
       var newDirectory = new dropboxNode({
         'isFolder'      : true,
@@ -837,6 +839,10 @@ var deleteAllSelected = function( items ){
 
   if( !items.length ){
     return
+  }
+
+  if ( items[0].fsnode.trashed && items[0].fsnode.dropbox ) {
+    return alert(lang.developing)
   }
 
   var dialog = api.dialog();
@@ -2082,27 +2088,9 @@ var openFolder = function( id , options ){
 
   if ( options && options.dropboxFolder ) {
 
-    if (options.dropboxFolder.id === 'trash'){
+    if (options.dropboxFolder.id === 'trash' || options.dropboxFolder.trashed){
       $('.folder-utils').addClass('in-trash-cloud')
       $('.folder-utils').removeClass('in-cloud')
-    }else if(options.dropboxFolder.trashed) {
-      $('.folder-utils').addClass('in-trash-cloud')
-      $('.folder-utils').removeClass('in-cloud')
-
-      var dialog = api.dialog();
-
-      dialog.setText( lang.restoreFolder );
-      dialog.setButton( 0, wzLang.core.dialogAccept, 'black' );
-      dialog.setButton( 1, lang.main.restore, 'blue' );
-
-      dialog.render(function( doIt ){
-        if (doIt) {
-          options.dropboxFolder.untrash()
-        }
-      });
-
-      return
-
     }else{
       $('.folder-utils').removeClass('in-trash-cloud')
       $('.folder-utils').addClass('in-cloud')
@@ -2878,9 +2866,14 @@ var generateContextMenu = function( item, options ){
       return
     }
 
-    if (isOldCloud(currentOpened)) {
+    if (isOldCloud(currentOpened) && (currentOpened.id === 'trash' || currentOpened.trashed)) {
 
       menu.addOption( lang.main.paste, clipboardPaste )
+
+    }else if(isOldCloud(currentOpened)){
+
+      menu.addOption( lang.main.paste, clipboardPaste )
+      .addOption( lang.main.newFolder, createFolder )
 
     }else{
 
@@ -2920,8 +2913,10 @@ var generateContextMenu = function( item, options ){
 
     }else{
 
-      if (!item.fsnode.onedrive) {
+      if (item.fsnode.gdrive) {
         menu.addOption( lang.main.emptyTrash, emptyTrashCloud.bind(null, item.fsnode), 'warning' )
+      }else if(item.fsnode.dropbox){
+        menu.addOption( lang.main.emptyTrash, alert.bind(null, lang.developing), 'warning' )
       }
 
     }
@@ -3205,20 +3200,20 @@ var updateFolderUtilsStatus = function(){
 
 }
 
-var refreshDropbox = function(){
-  if (currentOpened.dropbox) {
+var refreshDropbox = function(accountId){
+  if (currentOpened.dropbox && currentOpened.account === accountId) {
     openFolder( currentOpened.id , { 'dropboxFolder' : currentOpened } );
   }
 }
 
-var refreshGdrive = function(){
-  if (currentOpened.gdrive) {
+var refreshGdrive = function(accountId){
+  if (currentOpened.gdrive && currentOpened.account === accountId) {
     openFolder( currentOpened.id , { 'gdriveFolder' : currentOpened } );
   }
 }
 
-var refreshOnedrive = function(){
-  if (currentOpened.onedrive) {
+var refreshOnedrive = function(accountId){
+  if (currentOpened.onedrive && currentOpened.account === accountId) {
     openFolder( currentOpened.id , { 'onedriveFolder' : currentOpened } );
   }
 }
@@ -3372,6 +3367,10 @@ var dropboxToDropbox = function(options){
   // Different account
   }else{
 
+    if (api.system.user().id != 50523) {
+      return alert(lang.developing)
+    }
+
     options.account.toDropbox( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
 
       if(err) return handleError(err)
@@ -3444,8 +3443,9 @@ var moveFromGdrive = function(options){
 
     if(err) return handleError(err)
 
-    path.pop();
-    options.originFolder = path.pop();
+    path[0].id = '/'
+    path.pop()
+    options.originFolder = path.pop()
 
     options.destiny.getPath(function(err, destinyPath){
 
@@ -3628,8 +3628,8 @@ var moveFromOnedrive = function(options){
 
     if(err) return handleError(err)
 
-    path.pop();
-    options.originFolder = path.pop();
+    path.pop()
+    options.originFolder = path.pop()
 
     options.destiny.getPath(function(err, destinyPath){
 
@@ -3640,6 +3640,8 @@ var moveFromOnedrive = function(options){
       options.originFolder.getPath(function(err, originPath){
 
         if(err) return handleError(err)
+
+        if (options.originFolder.id === originPath[0].id) options.originFolder.id = '/'
 
         options.originFolder.path = originPath;
 
@@ -4501,8 +4503,10 @@ visualPartialTrashButton.on( 'click', function(){
 
 visualEmptyTrashButton.on( 'click', function(){
 
-  if(isOldCloud(currentOpened)){
+  if(currentOpened.gdrive){
     emptyTrashCloud(currentOpened)
+  }else if(currentOpened.dropbox){
+    alert(lang.developing)
   }else{
     selectAllIcons()
     deleteAllSelected()
@@ -4998,27 +5002,27 @@ $('.old-cloud-popup')
 })
 
 api.integration.dropbox.on('modified', function( entry ){
-  refreshDropbox();
+  refreshDropbox(entry.id);
 });
 
 api.integration.dropbox.on('removed', function( entry ){
-  refreshDropbox();
+  refreshDropbox(entry.id);
 });
 
 api.integration.gdrive.on('modified', function( entry ){
-  refreshGdrive();
+  refreshGdrive(entry.id);
 });
 
 api.integration.gdrive.on('removed', function( entry ){
-  refreshGdrive();
+  refreshGdrive(entry.id);
 });
 
 api.integration.onedrive.on('modified', function( entry ){
-  refreshOnedrive();
+  refreshOnedrive(entry.id);
 });
 
 api.integration.onedrive.on('removed', function( entry ){
-  refreshOnedrive();
+  refreshOnedrive(entry.id);
 });
 
 api.integration.dropbox.on('added-account', function (acc) {
@@ -5050,7 +5054,7 @@ var addCloudAccount = function( account ){
 
   var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
 
-  visualItem.addClass( 'item-' + account.id + ' dropbox' ).data( 'account', account ).data( 'id' , '/' ).data('cloud', account.type);
+  visualItem.addClass( 'item-' + account.id + ' ' + account.type).data( 'account', account ).data( 'id' , '/' ).data('cloud', account.type);
   visualItem.find('.ui-navgroup-element-txt').text( account.email );
   visualItem.append('<figure class="remove-account"></figure>')
 
@@ -5413,11 +5417,14 @@ var updateQuota = function(){
 
   }else if(currentOpened && currentOpened.onedrive){
     $('.space-in-use').attr('href', 'https://onedrive.live.com/about/en-us/plans/')
-    visualSpaceInUseAmount.text(
-      lang.main.amount
-      .replace( "%s", '' )
-      .replace( "%s", '' )
-    )
+    onedriveAccountActive.accountData(function(err, data){
+      if(err) return handleError(err)
+      visualSpaceInUseAmount.text(
+        lang.main.amount
+        .replace( "%s", api.tool.bytesToUnit( data.quota.used, 2 ) )
+        .replace( "%s", api.tool.bytesToUnit( data.quota.total ) )
+      )
+    })
 
   }else{
     $('.space-in-use').attr('href', '')
@@ -5472,8 +5479,6 @@ var translate = function(){
   $('.explain-upload .got-it-button span').text(lang.explainUpload.gotItButton);
 
 };
-
-
 
 // Start the app
 currentSort = sortByName;
