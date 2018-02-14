@@ -1,6 +1,7 @@
 
 {
 
+
     "name"    : "Files",
     "version" : "1.0",
     "stage"   : "beta",
@@ -334,6 +335,37 @@
                   "script" : [ "linkByMail.js" ],
                   "start"  : []
 
+                },
+
+                "progress" : {
+
+                  "template" : "progress.html",
+
+                  "maxizable" : false,
+                  "resizable" : false,
+
+                  "width"  : {
+
+                      "default" : 525,
+                      "min"     : 525,
+                      "max"     : 0
+
+                  },
+
+
+                  "height" : {
+
+                      "default" : 138,
+                      "min"     : 138,
+                      "max"     : 0
+
+
+                  },
+
+                  "css"    : [ "progress.css" ],
+                  "script" : [ "progress.js" ],
+                  "start"  : []
+
                 }
 
 
@@ -398,6 +430,15 @@
             "create" : true,
             "modify" : true,
             "read"   : true
+
+        },
+
+        "integration" : {
+
+            "dropbox"   : true,
+            "gdrive"    : true,
+            "onedrive"  : true,
+            "gmail"     : true
 
         },
 

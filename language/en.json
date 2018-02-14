@@ -40,6 +40,8 @@
       "download"                  : "Download",
       "properties"                : "Properties",
       "remove"                    : "Delete",
+      "removePermanently"         : "Delete Permanently",
+      "restore"                   : "Restore",
       "emptyTrash"                : "Empty trash",
       "removeItem"                : "Remove item",
       "removeItems"               : "Remove items",
@@ -236,6 +238,8 @@
     "sharedEmptyExplain" : "",
 
     "favourites" : "Favourites",
+    "oldCloud"  : "Add cloud",
+    "pairOldCloud"  : "Pair other clouds",
     "uploading" : "Uploading",
     "of"        : "of",
 
@@ -383,6 +387,37 @@
       "buttonSubtitle" : "With this method you can only choose <i>files</i> not <b>folders</b>. This is due to Browser limitations",
       "gotItButton" : "Got it !"
 
-    }
+    },
+
+    "progress" : {
+      "percentage" : "%d% complete",
+      "copyingSingle" : "Copying %d file from ",
+      "copyingMultiple" : "Copying %d of %d files from ",
+      "to": "to",
+      "remaining" : "Time remaining:",
+      "hour" : "hour",
+      "hours" : "hours",
+      "minute" : "minute",
+      "minutes" : "minutes",
+      "second" : "second",
+      "seconds" : "seconds",
+      "calculating" : "Calculating..."
+    },
+
+    "cantCopySamePlace" : "You can't copy to the same directory",
+    "skip"  : "Skip",
+    "replace" : "Replace",
+    "dontReplace" : "Mantain both",
+    "alreadyExists" : "already exists on",
+    "whatToDo"  : "What do you want to do?",
+    "noQuota" : "Sorry, there is no enough available storage in destiny cloud",
+    "onedriveTrash" : "Sorry, but Microsoft doesn't allow using the Trash folder outside their system. Please go to <a href='https://onedrive.live.com' target='_blank'> Onedrive official web page </a> to restore or remove permanently a file.",
+    "destinationConflictFile"   : "The destination has a file with the same name.",
+    "destinationConflictFolder" : "The destination has a folder with the same name.",
+    "conflict" : "Conflict",
+    "forAll"  : "For all",
+    "confirmEmptyTrash" : "You are going to remove permanently all trash content. ¿Are you sure?",
+    "restoreFolder"  : "This folder is deleted, you have to restore it to open it.",
+    "developing"  : "This feature is not available yet"
 
 }

@@ -93,19 +93,34 @@ wql.isFirstOpen( [ api.system.user().id ] , function( e , o ){
 
 api.fs
 .on( 'new', function( fsnode ){
-
   checkRecieved();
-
 })
 .on( 'move', function( fsnode, finalDestiny, originalSource ){
-
   checkRecieved();
-
 })
 .on( 'remove', function( fsnodeId, quota, parent ){
-
   checkRecieved();
+})
 
+api.taskProgress
+.on( 'update', function( data ){
+
+  if ($('.progress-container-' + data.id).length) {
+    $('.progress-container-' + data.id).trigger('update', [data])
+  }else{
+    api.app.createView({ id : data.id, totalItems : data.totalItems, destiny : data.destiny, porcentage: data.totalProgress, completedItems: data.completedItems, origin: data.origin}, 'progress' )
+  }
+})
+.on( 'error', function( data ){
+  $('.progress-container-' + data.id).trigger('error', [data])
+})
+.on( 'finish', function( data ){
+
+  console.log('Evento finish', data);
+
+  if ($('.progress-container-' + data.id).length) {
+    api.app.removeView( $('.progress-container-' + data.id).parent() )
+  }
 })
 
 checkRecieved();

@@ -6,10 +6,12 @@ var ICON_IMAGE_HEIGHT_AREA = 80;
 var ICON_RADIUS = 6;
 var ICON_GAP_MIN = 10;
 var ROWS_GAP = 20;
+
 var TYPE_ROOT = 0;
 var TYPE_FOLDER_SPECIAL = 1;
 var TYPE_FOLDER = 2;
 var TYPE_FILE = 3;
+
 var PROGRESS_RADIUS = 5;
 var PROGRESS_ICON = new Image();
 PROGRESS_ICON.src = 'https://static.horbito.com/app/1/img/processing@2x.png';
@@ -20,6 +22,15 @@ FOLDER_ICON.src = 'https://static.horbito.com/image/icons/64/retina/folder.png';
 var SHARED_PATH = 0;
 var RADIUS = 90;
 var dy = 1;
+var LOADING_SPRITE = {
+  dropbox  : { image : new Image(), height : 80, width : 80, frames : 48, fps : 20, rows : 8, cols : 6 },
+  gdrive   : { image : new Image(), height : 74, width : 74, frames : 336, fps : 50, rows : 19, cols : 18 },
+  onedrive : { image : new Image(), height : 90, width : 90, frames : 90, fps : 50, rows : 10, cols : 9 }
+}
+
+LOADING_SPRITE.dropbox.image.src  = 'https://static.horbito.com/app/377/img/loading_dropbox@2x.png'
+LOADING_SPRITE.gdrive.image.src   = 'https://static.horbito.com/app/377/img/loading_gdrive@2x.png'
+LOADING_SPRITE.onedrive.image.src = 'https://static.horbito.com/app/377/img/loading_onedrive@2x.png'
 
 /* COLORS */
 var BLUEUI = '#0071f6';
@@ -43,6 +54,8 @@ var currentMaxScroll        = 0;
 var currentLastPureClicked  = null;
 var currentLastDirtyClicked = null;
 var currentSort             = null;
+var currentLoadingSprite    = null;
+var currentLoadingStart     = null;
 var historyBackward         = [];
 var historyForward          = [];
 var dropActive              = false;
@@ -68,6 +81,107 @@ var proportionEmpty = 1;
 var animationOpacity = 0;
 var initialColor = [ 187 , 187 , 193 ];
 
+// DROPBOX
+var dropboxAccountActive;
+var dropboxShowingItems;
+var dropboxShowingFolder;
+// GDRIVE
+var gdriveAccountActive;
+var gdriveShowingItems;
+var gdriveShowingFolder;
+// ONEDRIVE
+var onedriveAccountActive;
+var onedriveShowingItems;
+var onedriveShowingFolder;
+
+var folderIcons = {
+  'normal'  : {
+    16        : 'https://static.horbito.com/image/icons/16/normal/folder.png',
+    32        : 'https://static.horbito.com/image/icons/32/normal/folder.png',
+    64        : 'https://static.horbito.com/image/icons/64/normal/folder.png',
+    128       : 'https://static.horbito.com/image/icons/128/normal/folder.png',
+    256       : 'https://static.horbito.com/image/icons/256/normal/folder.png',
+    512       : 'https://static.horbito.com/image/icons/512/normal/folder.png',
+    'micro'   : 'https://static.horbito.com/image/icons/16/normal/folder.png',
+    'tiny'    : 'https://static.horbito.com/image/icons/32/normal/folder.png',
+    'small'   : 'https://static.horbito.com/image/icons/64/normal/folder.png',
+    'normal'  : 'https://static.horbito.com/image/icons/128/normal/folder.png',
+    'big'     : 'https://static.horbito.com/image/icons/256/normal/folder.png'
+  },
+
+  'retina'  : {
+    16        : 'https://static.horbito.com/image/icons/16/retina/folder.png',
+    32        : 'https://static.horbito.com/image/icons/32/retina/folder.png',
+    64        : 'https://static.horbito.com/image/icons/64/retina/folder.png',
+    128       : 'https://static.horbito.com/image/icons/128/retina/folder.png',
+    256       : 'https://static.horbito.com/image/icons/256/retina/folder.png',
+    512       : 'https://static.horbito.com/image/icons/512/retina/folder.png',
+    'micro'   : 'https://static.horbito.com/image/icons/16/retina/folder.png',
+    'tiny'    : 'https://static.horbito.com/image/icons/32/retina/folder.png',
+    'small'   : 'https://static.horbito.com/image/icons/64/retina/folder.png',
+    'normal'  : 'https://static.horbito.com/image/icons/128/retina/folder.png',
+    'big'     : 'https://static.horbito.com/image/icons/256/retina/folder.png'
+  }
+};
+var unknowFileIcons = {
+  'normal'  : {
+    16        : 'https://static.horbito.com/image/icons/16/normal/unknown.png',
+    32        : 'https://static.horbito.com/image/icons/32/normal/unknown.png',
+    64        : 'https://static.horbito.com/image/icons/64/normal/unknown.png',
+    128       : 'https://static.horbito.com/image/icons/128/normal/unknown.png',
+    256       : 'https://static.horbito.com/image/icons/256/normal/unknown.png',
+    512       : 'https://static.horbito.com/image/icons/512/normal/unknown.png',
+    'micro'   : 'https://static.horbito.com/image/icons/16/normal/unknown.png',
+    'tiny'    : 'https://static.horbito.com/image/icons/32/normal/unknown.png',
+    'small'   : 'https://static.horbito.com/image/icons/64/normal/unknown.png',
+    'normal'  : 'https://static.horbito.com/image/icons/128/normal/unknown.png',
+    'big'     : 'https://static.horbito.com/image/icons/256/normal/unknown.png'
+  },
+
+  'retina'  : {
+    16        : 'https://static.horbito.com/image/icons/16/retina/unknown.png',
+    32        : 'https://static.horbito.com/image/icons/32/retina/unknown.png',
+    64        : 'https://static.horbito.com/image/icons/64/retina/unknown.png',
+    128       : 'https://static.horbito.com/image/icons/128/retina/unknown.png',
+    256       : 'https://static.horbito.com/image/icons/256/retina/unknown.png',
+    512       : 'https://static.horbito.com/image/icons/512/retina/unknown.png',
+    'micro'   : 'https://static.horbito.com/image/icons/16/retina/unknown.png',
+    'tiny'    : 'https://static.horbito.com/image/icons/32/retina/unknown.png',
+    'small'   : 'https://static.horbito.com/image/icons/64/retina/unknown.png',
+    'normal'  : 'https://static.horbito.com/image/icons/128/retina/unknown.png',
+    'big'     : 'https://static.horbito.com/image/icons/256/retina/unknown.png'
+  }
+};
+var trashIcons = {
+  'normal'  : {
+    16        : 'https://static.horbito.com/image/icons/16/normal/trash.png',
+    32        : 'https://static.horbito.com/image/icons/32/normal/trash.png',
+    64        : 'https://static.horbito.com/image/icons/64/normal/trash.png',
+    128       : 'https://static.horbito.com/image/icons/128/normal/trash.png',
+    256       : 'https://static.horbito.com/image/icons/256/normal/trash.png',
+    512       : 'https://static.horbito.com/image/icons/512/normal/trash.png',
+    'micro'   : 'https://static.horbito.com/image/icons/16/normal/trash.png',
+    'tiny'    : 'https://static.horbito.com/image/icons/32/normal/trash.png',
+    'small'   : 'https://static.horbito.com/image/icons/64/normal/trash.png',
+    'normal'  : 'https://static.horbito.com/image/icons/128/normal/trash.png',
+    'big'     : 'https://static.horbito.com/image/icons/256/normal/trash.png'
+  },
+
+  'retina'  : {
+    16        : 'https://static.horbito.com/image/icons/16/retina/trash.png',
+    32        : 'https://static.horbito.com/image/icons/32/retina/trash.png',
+    64        : 'https://static.horbito.com/image/icons/64/retina/trash.png',
+    128       : 'https://static.horbito.com/image/icons/128/retina/trash.png',
+    256       : 'https://static.horbito.com/image/icons/256/retina/trash.png',
+    512       : 'https://static.horbito.com/image/icons/512/retina/trash.png',
+    'micro'   : 'https://static.horbito.com/image/icons/16/retina/trash.png',
+    'tiny'    : 'https://static.horbito.com/image/icons/32/retina/trash.png',
+    'small'   : 'https://static.horbito.com/image/icons/64/retina/trash.png',
+    'normal'  : 'https://static.horbito.com/image/icons/128/retina/trash.png',
+    'big'     : 'https://static.horbito.com/image/icons/256/retina/trash.png'
+  }
+}
+//
 
 if( params && ( params.command === 'selectSource' ||  params.command === 'selectDestiny' ) ){
   enabledMultipleSelect = params.command === 'selectSource' && params.mode === 'file' && params.multiple;
@@ -114,6 +228,7 @@ var backingStoreRatio          = ctx.webkitBackingStorePixelRatio ||
 var pixelRatio                 = api.tool.devicePixelRatio() / backingStoreRatio;
 var contextTimeout;
 
+
 var Icon = function( fsnode ){
 
   this.fsnode             = fsnode;
@@ -145,6 +260,118 @@ Icon.prototype.updateName = function(){
 
   return this
 
+}
+
+var dropboxNode = function( data ){
+
+  var that = $.extend( this, data )
+
+  that.dropbox = true;
+
+  if (data.icon === 'folder') {
+    that.icons = folderIcons;
+  }
+
+  if (data.id === 'trash') {
+    that.name = lang.main.folderTranslations.Trash
+    that.icons = trashIcons;
+  }
+
+  if (data.id === '/') {
+    that.getPath = function(callback){
+      callback(null, data);
+    }
+  }
+
+
+  that.rename = function( newName ){
+    var oldPath = that.path_display;
+    that.name = newName;
+    that.path_display = that.path_display.replace( oldPath.split('/').pop(), newName);
+    dropboxAccountActive.rename( oldPath, that.path_display, function( err ){
+      if ( err ) {
+        console.log('Error dropbox rename', err);
+      }
+    });
+  }
+
+  return that;
+
+}
+
+var gdriveNode = function( data ){
+
+  var that = $.extend( this, data )
+
+  that.gdrive = true
+
+  if (data.icon === 'folder') {
+    that.icons = folderIcons;
+  }
+
+  if (data.id === 'trash') {
+    that.name = lang.main.folderTranslations.Trash
+    that.icons = trashIcons;
+  }
+
+  if (data.id === '/') {
+    that.getPath = function(callback){
+      callback(null, data);
+    }
+  }
+
+  that.rename = function( newName ){
+    gdriveAccountActive.rename( data.id, newName, function( err ){
+      if ( err ) {
+        console.log('Error gdrive rename', err);
+      }
+    });
+  }
+
+  return that;
+
+}
+
+var onedriveNode = function( data ){
+
+  var that = $.extend( this, data )
+
+  that.onedrive = true
+
+  if (data.icon === 'folder') {
+    that.icons = folderIcons;
+  }
+
+  if (data.id === 'trash') {
+    that.name = lang.main.folderTranslations.Trash
+    that.icons = trashIcons;
+  }
+
+  if (data.id === '/') {
+    that.getPath = function(callback){
+      callback(null, data);
+    }
+  }
+
+  that.rename = function( newName ){
+    onedriveAccountActive.rename( newName, data.id, function( err ){
+      if ( err ) {
+        console.log('Error onedrive rename', err);
+      }
+    })
+  }
+
+  return that;
+
+}
+
+var handleError = function(err){
+  console.error(JSON.stringify(err,null,2))
+  if (api.system.user().id === 50523) {
+    alert(JSON.stringify(err,null,2))
+  }else{
+    alert('Error')
+  }
 }
 
 var acceptButtonHandler = function(){
@@ -350,7 +577,7 @@ var appendVisualSidebarItem = function( item ){
   visualItem.find('.ui-navgroup-element-txt').text( item.name );
 
   sidebarFolders.push( item );
-  visualSidebarItemArea.append( visualItem );
+  visualSidebarItemArea.find('.old-cloud').before( visualItem );
 
 };
 
@@ -491,26 +718,11 @@ var clipboardPaste = function(){
 
   if( storage.copy ){
 
-    storage.copy.forEach( function( item ){
-
-      console.log( item.fsnode );
-      item.fsnode.copy( currentOpened.id, { fixCollision: true } , function(){
-        console.log( arguments );
-      });
-
-    });
+    moveData({toMove: storage.copy, destiny: currentOpened, operation: 'copy'})
 
   }else if( storage.cut ){
 
-    storage.cut.forEach( function( item ){
-
-      if ( item.fsnode.parent != currentOpened.id ) {
-        item.fsnode.move( currentOpened.id, function(){
-          console.log( arguments );
-        });
-      }
-
-    });
+    moveData({toMove: storage.cut, destiny: currentOpened, operation: 'move'})
 
   }
 
@@ -545,12 +757,78 @@ var contextmenuAcceptFile = function( fsnode ){
 
 var createFolder = function(){
 
-  currentOpened.createDirectory( getAvailableNewFolderName(), function( error, newDirectory ){
+  //Dropbox new folder
+  if (currentOpened.dropbox) {
 
-    appendItemToList( newDirectory );
-    showRenameTextarea( currentIcons[ newDirectory.id ] );
+    var currentPath = currentOpened.path_display === '/' ? '' : currentOpened.path_display
 
-  });
+    dropboxAccountActive.createFolder( currentPath + '/' + getAvailableNewFolderName() , function( e , newDirectory ){
+
+      var newDirectory = new dropboxNode({
+        'isFolder'      : true,
+        'path_display'  : newDirectory.metadata.path_display,
+        'name'          : newDirectory.metadata.name,
+        'id'            : newDirectory.metadata.id,
+        'icon'          : 'folder',
+        'type'          : 2
+      });
+      appendItemToList( newDirectory );
+      showRenameTextarea( currentIcons[ newDirectory.id ] );
+
+    });
+
+
+  //Google drive new folder
+  }else if(currentOpened.gdrive){
+
+    var folderId = currentOpened.id === '/' ? 'root' : currentOpened.id;
+    gdriveAccountActive.createFolder( getAvailableNewFolderName() , folderId , function( e , newDirectory ){
+
+      var newDirectory = new gdriveNode({
+        'isFolder'      : true,
+        'mimeType'      : newDirectory.mimeType,
+        'name'          : newDirectory.name,
+        'id'            : newDirectory.id,
+        'icon'          : 'folder',
+        'type'          : 2
+
+      });
+      appendItemToList( newDirectory );
+      showRenameTextarea( currentIcons[ newDirectory.id ] );
+
+    });
+
+  //Onedrive new folder
+  }else if(currentOpened.onedrive){
+
+    var folderId = currentOpened.id === '/' ? 'root' : currentOpened.id;
+    onedriveAccountActive.createFolder( getAvailableNewFolderName() , folderId , function( e , newDirectory ){
+
+      var newDirectory = new onedriveNode({
+        'isFolder'      : true,
+        'name'          : newDirectory.name,
+        'id'            : newDirectory.id,
+        'icon'          : 'folder',
+        'type'          : 2
+
+      });
+      appendItemToList( newDirectory );
+      showRenameTextarea( currentIcons[ newDirectory.id ] );
+
+    });
+
+  }else{
+
+    currentOpened.createDirectory( getAvailableNewFolderName(), function( error, newDirectory ){
+
+      appendItemToList( newDirectory );
+      showRenameTextarea( currentIcons[ newDirectory.id ] );
+
+    });
+
+  }
+
+
 
 };
 
@@ -561,6 +839,10 @@ var deleteAllSelected = function( items ){
 
   if( !items.length ){
     return
+  }
+
+  if ( items[0].fsnode.trashed && items[0].fsnode.dropbox ) {
+    return alert(lang.developing)
   }
 
   var dialog = api.dialog();
@@ -580,12 +862,14 @@ var deleteAllSelected = function( items ){
 
     items.forEach( function( item ){
 
-      if( item.fsnode.type === TYPE_FOLDER_SPECIAL|| !doIt ){
+      if( item.fsnode.type === TYPE_FOLDER_SPECIAL|| !doIt || item.fsnode.id === 'trash'){
         return
       }
 
       checkIsOnSidebar( item.fsnode );
-      item.fsnode.remove( function( error ){});
+      item.fsnode.remove( function( error ){
+        console.log( error );
+      });
 
     });
 
@@ -613,6 +897,10 @@ var downloadAllSelected = function( items ){
 }
 
 var drawIcons = function(){
+
+  if( currentLoadingSprite ){
+    return drawLoadingSprite()
+  }
 
   if( currentList.length ){
     drawIconsInGrid();
@@ -647,6 +935,35 @@ var drawIcons = function(){
     animationEmptyActive = false;
     animationOpacity = 0;
   }
+
+}
+
+var drawLoadingSprite = function(){
+
+  var frameDuration = 1000 / LOADING_SPRITE[ currentLoadingSprite ].fps
+  var currentFrame = Math.round( ( ( Date.now() - currentLoadingStart ) / frameDuration ) % LOADING_SPRITE[ currentLoadingSprite ].frames )
+  var col = currentFrame % LOADING_SPRITE[ currentLoadingSprite ].cols
+  var row = parseInt( currentFrame / LOADING_SPRITE[ currentLoadingSprite ].cols )
+  var visualWidth = parseInt( LOADING_SPRITE[ currentLoadingSprite ].width / 2 )
+  var visualHeight = parseInt( LOADING_SPRITE[ currentLoadingSprite ].height / 2 )
+
+  if( row >= LOADING_SPRITE[ currentLoadingSprite ].rows ){
+    row = 0
+    col = 0
+  }
+
+  ctx.drawImage(
+    LOADING_SPRITE[ currentLoadingSprite ].image,
+    col * LOADING_SPRITE[ currentLoadingSprite ].width,
+    row * LOADING_SPRITE[ currentLoadingSprite ].height,
+    LOADING_SPRITE[ currentLoadingSprite ].width,
+    LOADING_SPRITE[ currentLoadingSprite ].height,
+    ( ctx.width - visualWidth ) / 2,
+    ( ctx.height - visualHeight ) / 2,
+    visualWidth,
+    visualHeight
+  )
+  requestDraw()
 
 }
 
@@ -698,6 +1015,7 @@ var drawEmptyBackground = function(){
 }
 
 var animationEmptyFolder = function (){
+
   if (animationEmptyActive){
 
     ctx.globalAlpha = animationOpacity;
@@ -818,6 +1136,8 @@ var drawIconsInGrid = function(){
   var iconsInRow = 0;
   var currentRow = 0;
 
+  setCloudTrashFirst();
+
   currentList.forEach( function( icon, i ){
 
     iconsInRow++;
@@ -899,11 +1219,17 @@ var drawIconsInGrid = function(){
     }
 
     if( !icon.bigIcon ){
-      
-      if( icon.fsnode.type === TYPE_FOLDER ){
+
+      if( icon.fsnode.type === TYPE_FOLDER && icon.fsnode.id !== 'trash'){
         icon.bigIcon = FOLDER_ICON
+
+      }else if(icon.fsnode.id === 'trash'){
+
+        icon.bigIcon = new Image ();
+        icon.bigIcon.src = icon.fsnode.icons.retina.small + '?time=' + Date.now();
+
       }else{
-        
+
         icon.bigIcon = new Image ();
         icon.bigIcon.src = icon.fsnode.icons.small + ( icon.fsnode.type === TYPE_FILE ? '?time=' + Date.now() : '' );
 
@@ -1110,6 +1436,7 @@ var generateBreadcrumbs = function( path ){
     var entry = visualBreadcrumbsEntryPrototype.clone().removeClass('wz-prototype');
     entry.text( item.name );
     entry.data( 'id', item.id );
+    entry.data( 'folder' , item );
     list.push( entry );
 
   });
@@ -1616,7 +1943,18 @@ var historyGoBack = function(){
     return;
   }
 
-  openFolder( historyBackward.pop().id, true );
+  var backFolder = historyBackward.pop();
+
+  if (backFolder.dropbox) {
+    openFolder( backFolder.id , { 'isBack' : true, 'dropboxFolder' : backFolder } );
+  }else if(backFolder.gdrive){
+    openFolder( backFolder.id , { 'isBack' : true, 'gdriveFolder' : backFolder } );
+  }else if(backFolder.onedrive){
+    openFolder( backFolder.id , { 'isBack' : true, 'onedriveFolder' : backFolder } );
+  }else{
+    openFolder( backFolder.id , { 'isBack' : true } );
+  }
+
 
   if( !historyBackward.length ){
     visualHistoryBack.removeClass('enabled');
@@ -1630,7 +1968,17 @@ var historyGoForward = function(){
     return;
   }
 
-  openFolder( historyForward.shift().id, false, true );
+  var forwardFolder = historyForward.shift();
+
+  if (forwardFolder.dropbox) {
+    openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true , 'dropboxFolder' : forwardFolder } );
+  }else if(forwardFolder.gdrive){
+    openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true , 'gdriveFolder' : forwardFolder } );
+  }else if(forwardFolder.onedrive){
+    openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true , 'onedriveFolder' : forwardFolder } );
+  }else{
+    openFolder( forwardFolder.id , { 'isBack' : false , 'isForward' : true } );
+  }
 
   if( !historyForward.length ){
     visualHistoryForward.removeClass('enabled');
@@ -1693,6 +2041,31 @@ var normalizeBigIconSize = function( image ){
 
 var openFile = function( fsnode ){
 
+  if ( fsnode.onedrive && fsnode.id === 'trash' ) {
+    return alert(lang.onedriveTrash); // To Do -> This is a folder, it shouldn't be here
+  }
+
+  if( fsnode.trashed ){
+
+    /*$('.folder-utils').addClass('in-trash-cloud')
+    $('.folder-utils').removeClass('in-cloud')*/
+
+    var dialog = api.dialog();
+
+    dialog.setText( lang.restoreFolder );
+    dialog.setButton( 0, wzLang.core.dialogAccept, 'black' );
+    dialog.setButton( 1, lang.main.restore, 'blue' );
+
+    dialog.render(function( doIt ){
+      if (doIt) {
+        fsnode.untrash()
+      }
+    });
+
+    return
+
+  }
+
   fsnode.open( currentList.filter(function( item ){ return item.fsnode.type === TYPE_FILE; }).map( function( item ){ return item.fsnode.id; }), function( error ){
 
     if( error ){
@@ -1704,23 +2077,179 @@ var openFile = function( fsnode ){
 
 };
 
-var openFolder = function( id, isBack, isForward ){
+var bytesToSize = function(bytes) {
+   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+   if (bytes == 0) return '0 Byte';
+   var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+   return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+}
 
-  if( !currentOpened || id !== currentOpened.id ){
+var openFolder = function( id , options ){
+
+  if ( options && options.dropboxFolder ) {
+
+    if (options.dropboxFolder.id === 'trash' || options.dropboxFolder.trashed){
+      $('.folder-utils').addClass('in-trash-cloud')
+      $('.folder-utils').removeClass('in-cloud')
+    }else{
+      $('.folder-utils').removeClass('in-trash-cloud')
+      $('.folder-utils').addClass('in-cloud')
+    }
+
+    setInOldCloudIcon('dropbox');
+    setInOldCloudLoading('dropbox');
+
+    $.when( requestDropboxItems( options.dropboxFolder.path_display ) , getItemPath( options.dropboxFolder ) ).done( function( list , path ){
+
+      setInOldCloudIcon('dropbox');
+      setOutOldCloudLoading();
+
+      visualSidebarItemArea.find('.active').removeClass('active');
+      visualSidebarItemArea.find( '.item-' + dropboxAccountActive.id ).addClass('active');
+
+      if( !options.isForward && !options.isBack && currentOpened ){
+        addToHistoryBackward( currentOpened );
+        clearHistoryForward();
+      }else if( options && options.isBack ){
+        addToHistoryForward( currentOpened );
+      }else if( options && options.isForward ){
+        addToHistoryBackward( currentOpened );
+      }
+
+      currentOpened = options.dropboxFolder;
+      currentScroll = 0;
+      currentLastPureClicked = null;
+
+      clearList();
+      appendItemToList( list );
+      generateBreadcrumbs( path );
+      requestDraw();
+      updateQuota()
+
+    });
+
+  }else if( options && options.gdriveFolder ){
+
+    if (options.gdriveFolder.id === 'trash'){
+      $('.folder-utils').addClass('in-trash-cloud')
+      $('.folder-utils').removeClass('in-cloud')
+    }else if(options.gdriveFolder.trashed) {
+      $('.folder-utils').addClass('in-trash-cloud')
+      $('.folder-utils').removeClass('in-cloud')
+
+
+      var dialog = api.dialog();
+
+      dialog.setText( lang.restoreFolder );
+      dialog.setButton( 0, wzLang.core.dialogAccept, 'black' );
+      dialog.setButton( 1, lang.main.restore, 'blue' );
+
+      dialog.render(function( doIt ){
+        if (doIt) {
+          options.gdriveFolder.untrash()
+        }
+      });
+
+      return
+
+    }else{
+      $('.folder-utils').removeClass('in-trash-cloud')
+      $('.folder-utils').addClass('in-cloud')
+    }
+
+    setInOldCloudIcon('gdrive');
+    setInOldCloudLoading('gdrive');
+
+    $.when( requestGdriveItems( options.gdriveFolder ) , getItemPath( options.gdriveFolder ) ).done( function( list , path ){
+
+      setInOldCloudIcon('gdrive');
+      setOutOldCloudLoading();
+
+      visualSidebarItemArea.find('.active').removeClass('active');
+      visualSidebarItemArea.find( '.item-' + gdriveAccountActive.id ).addClass('active');
+
+      if( !options.isForward && !options.isBack && currentOpened ){
+        addToHistoryBackward( currentOpened );
+        clearHistoryForward();
+      }else if( options && options.isBack ){
+        addToHistoryForward( currentOpened );
+      }else if( options && options.isForward ){
+        addToHistoryBackward( currentOpened );
+      }
+
+      currentOpened = options.gdriveFolder;
+      currentScroll = 0;
+      currentLastPureClicked = null;
+
+      clearList();
+      appendItemToList( list );
+      generateBreadcrumbs( path );
+      requestDraw();
+      updateQuota()
+
+    });
+
+  }else if( options && options.onedriveFolder ){
+
+    $('.folder-utils').removeClass('in-trash-cloud')
+    $('.folder-utils').addClass('in-cloud')
+
+    setInOldCloudIcon('onedrive');
+    setInOldCloudLoading('onedrive');
+
+    $.when( requestOnedriveItems( options.onedriveFolder.id ) , getItemPath( options.onedriveFolder ) ).done( function( list , path ){
+
+      setInOldCloudIcon('onedrive');
+      setOutOldCloudLoading();
+
+      visualSidebarItemArea.find('.active').removeClass('active');
+      visualSidebarItemArea.find( '.item-' + onedriveAccountActive.id ).addClass('active');
+
+      if( !options.isForward && !options.isBack && currentOpened ){
+        addToHistoryBackward( currentOpened );
+        clearHistoryForward();
+      }else if( options && options.isBack ){
+        addToHistoryForward( currentOpened );
+      }else if( options && options.isForward ){
+        addToHistoryBackward( currentOpened );
+      }
+
+      currentOpened = options.onedriveFolder;
+      currentScroll = 0;
+      currentLastPureClicked = null;
+
+      clearList();
+      appendItemToList( list );
+      generateBreadcrumbs( path );
+      requestDraw();
+      updateQuota()
+
+    });
+
+  }else if(!currentOpened || id !== currentOpened.id){
+
+    $('.folder-utils').removeClass('in-trash-cloud')
+    $('.folder-utils').removeClass('in-cloud')
+
+    setOutOldCloudIcon();
+    setOutOldCloudLoading();
 
     api.fs( id, function( error, fsnode ){
 
       $.when( getFolderItems( fsnode ), getItemPath( fsnode ) ).done( function( list, path ){
 
+        setOutOldCloudIcon();
+        setOutOldCloudLoading();
+
         visualSidebarItemArea.find('.active').removeClass('active');
         visualSidebarItemArea.find( '.item-' + fsnode.id ).addClass('active');
 
-        if( !isBack && !isForward && currentOpened ){
+        if( !options && currentOpened ){
           addToHistoryBackward( currentOpened );
           clearHistoryForward();
-        }else if( isBack ){
+        }else if( options && options.isBack ){
           addToHistoryForward( currentOpened );
-        }else if( isForward ){
+        }else if( options && options.isForward ){
           addToHistoryBackward( currentOpened );
         }
 
@@ -1733,6 +2262,7 @@ var openFolder = function( id, isBack, isForward ){
         appendItemToList( list )
         generateBreadcrumbs( path )
         requestDraw()
+        updateQuota()
 
       });
 
@@ -1744,11 +2274,24 @@ var openFolder = function( id, isBack, isForward ){
 
 var openItem = function( item ){
 
+  console.log('item type',item.fsnode.type)
+
   if ( item.fsnode.pending ) {
     api.app.createView( item.fsnode , 'received' );
-  }else if( item.fsnode.type === TYPE_ROOT || item.fsnode.type === TYPE_FOLDER_SPECIAL || item.fsnode.type === TYPE_FOLDER ){
+
+  }else if(item.fsnode.dropbox && item.fsnode.type === TYPE_FOLDER){
+    openFolder( item.fsnode.id , { 'dropboxFolder' : item.fsnode });
+
+  }else if(item.fsnode.gdrive && item.fsnode.type === TYPE_FOLDER){
+    openFolder( item.fsnode.id , { 'gdriveFolder' : item.fsnode });
+
+  }else if(item.fsnode.onedrive && item.fsnode.type === TYPE_FOLDER){
+    openFolder( item.fsnode.id , { 'onedriveFolder' : item.fsnode });
+
+  }else if(item.fsnode.type === TYPE_ROOT || item.fsnode.type === TYPE_FOLDER_SPECIAL || item.fsnode.type === TYPE_FOLDER){
     openFolder( item.fsnode.id );
-  }else if( item.fsnode.type === TYPE_FILE ){
+
+  }else if(item.fsnode.type === TYPE_FILE){
 
     if( params && ( params.command === 'selectSource' || params.command === 'selectDestiny' ) ){
       acceptButtonHandler()
@@ -1806,20 +2349,20 @@ var removeItemFromList = function( fsnodeId ){
 var requestDraw = function(){
 
   if( requestedFrame ){
-    return;
+    return
   }
 
-  requestedFrame = true;
+  requestedFrame = true
 
   requestAnimationFrame( function(){
 
+    requestedFrame = false
+
     if( !animationEmptyActive ){
-      clearCanvas();
+      clearCanvas()
     }
 
-    drawIcons();
-
-    requestedFrame = false;
+    drawIcons()
 
   });
 
@@ -2306,6 +2849,10 @@ var isOnSidebar = function( fsnode ){
 
 }
 
+var isOldCloud = function(fsnode) {
+  return fsnode.dropbox || fsnode.gdrive || fsnode.onedrive
+}
+
 var generateContextMenu = function( item, options ){
 
   var menu = api.menu()
@@ -2319,15 +2866,60 @@ var generateContextMenu = function( item, options ){
       return
     }
 
-    menu
-    .addOption( lang.main.upload, function(){ visualUploadButton.click() } )
-    .addOption( lang.main.newFolder, createFolder )
-    .addOption( lang.main.paste, clipboardPaste )
+    if (isOldCloud(currentOpened) && (currentOpened.id === 'trash' || currentOpened.trashed)) {
+
+      menu.addOption( lang.main.paste, clipboardPaste )
+
+    }else if(isOldCloud(currentOpened)){
+
+      menu.addOption( lang.main.paste, clipboardPaste )
+      .addOption( lang.main.newFolder, createFolder )
+
+    }else{
+
+      menu
+      .addOption( lang.main.upload, function(){ visualUploadButton.click() } )
+      .addOption( lang.main.newFolder, createFolder )
+      .addOption( lang.main.paste, clipboardPaste )
+
+    }
+
 
   }else if( item.fsnode.pending ){
 
     menu.addOption( lang.received.contentAccept , acceptContent.bind( null , item.fsnode ) );
     menu.addOption( lang.received.contentRefuse , refuseContent.bind( null , item.fsnode ), 'warning');
+
+
+  }else if(isOldCloud(item.fsnode)){
+
+    if (item.fsnode.id !== 'trash') {
+
+      if (item.fsnode.trashed) {
+
+        menu.addOption( lang.main.restore, item.fsnode.untrash.bind( null, null ) )
+          .addOption( lang.main.removePermanently, deleteAllSelected.bind( null, null ), 'warning' )
+
+      }else{
+
+        menu.addOption( lang.main.openFile, openFile.bind( null, item.fsnode ) )
+          .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+          .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
+          .addOption( lang.main.download, downloadAllSelected.bind( null, null ) )
+          .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
+          .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' )
+
+      }
+
+    }else{
+
+      if (item.fsnode.gdrive) {
+        menu.addOption( lang.main.emptyTrash, emptyTrashCloud.bind(null, item.fsnode), 'warning' )
+      }else if(item.fsnode.dropbox){
+        menu.addOption( lang.main.emptyTrash, alert.bind(null, lang.developing), 'warning' )
+      }
+
+    }
 
   }else if( item.fsnode.type === TYPE_FILE ){
 
@@ -2454,7 +3046,6 @@ var generateContextMenu = function( item, options ){
       }
     }
 
-
     // Add to sidebar
     if( wz.system.user().rootPath !== parseInt( item.fsnode.parent ) ){
 
@@ -2484,6 +3075,40 @@ var generateContextMenu = function( item, options ){
 
     menu
     .addOption( lang.main.properties, api.app.createView.bind( null, item.fsnode.id, 'properties') )
+
+  }else if(item.fsnode.dropbox && item.fsnode.type === TYPE_FOLDER){
+
+    menu
+    .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'dropboxFolder' : item.fsnode } ) )
+    .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+    .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
+    .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
+    .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' )
+
+  }else if(item.fsnode.integration){
+
+    menu
+    .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+    .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
+    .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
+    .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' )
+
+  }else if(item.fsnode.gdrive && item.fsnode.type === TYPE_FOLDER){
+
+    menu
+    .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'gdriveFolder' : item.fsnode } ) )
+    .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
+    .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
+    .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' )
+
+  }else if(item.fsnode.onedrive && item.fsnode.type === TYPE_FOLDER){
+
+    menu
+    .addOption( lang.main.openFolder, openFolder.bind( null, item.fsnode.id, { 'onedriveFolder' : item.fsnode } ) )
+    .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+    .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
+    .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
+    .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' )
 
   }
 
@@ -2555,12 +3180,6 @@ var startOnboarding = function(){
 
 }
 
-var upload = function( uploadButton ){
-
-
-
-}
-
 var updateFolderUtilsStatus = function(){
 
   if( !currentOpened || currentOpened.type !== 1 || currentOpened.name !== 'Trash' ){
@@ -2578,6 +3197,793 @@ var updateFolderUtilsStatus = function(){
   }else{
     visualFolderUtils.addClass('in-trash').removeClass('partial-trash')
   }
+
+}
+
+var refreshDropbox = function(accountId){
+  if (currentOpened.dropbox && currentOpened.account === accountId) {
+    openFolder( currentOpened.id , { 'dropboxFolder' : currentOpened } );
+  }
+}
+
+var refreshGdrive = function(accountId){
+  if (currentOpened.gdrive && currentOpened.account === accountId) {
+    openFolder( currentOpened.id , { 'gdriveFolder' : currentOpened } );
+  }
+}
+
+var refreshOnedrive = function(accountId){
+  if (currentOpened.onedrive && currentOpened.account === accountId) {
+    openFolder( currentOpened.id , { 'onedriveFolder' : currentOpened } );
+  }
+}
+
+// MOVE DATA
+var moveData = function(options){
+
+  options.toMoveIds = options.toMove.map( function( item ){ return item.fsnode.id });
+
+  // From dropbox
+  if( options.toMove[ 0 ].fsnode.dropbox ){
+
+    moveFromDropbox(options)
+
+  // From gdrive
+  }else if( options.toMove[ 0 ].fsnode.gdrive ){
+
+    moveFromGdrive(options)
+
+  // From onedrive
+  }else if( options.toMove[ 0 ].fsnode.onedrive ){
+
+    moveFromOnedrive(options)
+
+  // From horbito
+  }else{
+
+    moveFromHorbito(options)
+
+  }
+}
+
+// -- DROPBOX TO --
+var moveFromDropbox = function(options){
+
+  options.toMove[ 0 ].fsnode.getPath(function(err, path){
+
+    if(err) return handleError(err)
+
+    path.pop()
+    options.originFolder = path.pop()
+
+    options.destiny.getPath(function(err, destinyPath){
+
+      if(err) return handleError(err)
+
+      options.destiny.path = destinyPath
+
+      options.originFolder.getPath(function(err, originPath){
+
+        if(err) return handleError(err)
+
+        options.originFolder.path = originPath;
+
+        api.integration.dropbox( options.toMove[ 0 ].fsnode.account, function( err, account ){
+
+          if(err) return handleError(err)
+
+          options.account = account
+
+          // Dropbox -> GDrive
+          if( options.destiny.gdrive ){
+
+            dropboxToGdrive(options)
+
+          // Dropbox -> Onedrive
+          }else if( options.destiny.onedrive ){
+
+            dropboxToOnedrive(options)
+
+          // Dropbox -> Dropbox
+          }else if( options.destiny.dropbox ){
+
+            dropboxToDropbox(options)
+
+          // Dropbox -> Horbito
+          }else{
+
+            dropboxToHorbito(options)
+
+          }
+
+        })
+
+      })
+
+    })
+
+  })
+}
+
+var dropboxToHorbito = function(options){
+
+  options.account.toHorbito( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, function (err, taskProgressId) {
+
+    if(err) return handleError(err)
+
+    api.app.createView({
+      id : taskProgressId,
+      totalItems : options.toMove.length,
+      destiny : options.destiny,
+      porcentage: 0,
+      completedItems: 0,
+      origin: options.originFolder,
+      callback: options.account.toHorbito.bind(),
+      toMove: options.toMoveIds
+    }, 'progress' )
+
+  })
+}
+
+var dropboxToDropbox = function(options){
+
+  options.destiny.name = options.destiny.name || 'Dropbox'
+
+  // Same account
+  if ( options.destiny.account === options.toMove[0].fsnode.account) {
+
+    // Same destiny -> return
+    if (options.originFolder.id === options.destiny.id) {
+      return;
+    }
+
+    options.toMove.forEach(function(item){
+
+      if (options.destiny.id === 'trash') {
+        item.fsnode.remove()
+        return;
+      }
+
+      options.destiny.path_display = options.destiny.path_display === '/' ? '' : options.destiny.path_display;
+
+      if (options.operation === 'move') {
+
+        options.account.move(item.fsnode.path_display, options.destiny.path_display, function(err){
+          if(err) return handleError(err)
+        })
+
+      }else{
+
+        options.account.copy(item.fsnode.path_display, options.destiny.path_display, function(err){
+          if (err) {
+            alert(lang.cantCopySamePlace)
+            if(err) return handleError(err)
+          }
+        })
+
+      }
+    })
+
+  // Different account
+  }else{
+
+    if (api.system.user().id != 50523) {
+      return alert(lang.developing)
+    }
+
+    options.account.toDropbox( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
+
+      if(err) return handleError(err)
+
+      api.app.createView({
+        id : taskProgressId,
+        totalItems : options.toMove.length,
+        destiny : options.destiny,
+        porcentage: 0,
+        completedItems: 0,
+        origin: options.originFolder,
+        callback: options.account.toDropbox.bind(),
+        toMove: options.toMoveIds
+      }, 'progress' )
+
+    })
+
+  }
+}
+
+var dropboxToOnedrive = function(options){
+
+  options.destiny.name = options.destiny.name || 'Onedrive'
+
+  options.account.toOnedrive( options.toMoveIds, options.destiny.id === '/' ? 'root' : options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
+
+    if(err) return handleError(err)
+
+    api.app.createView({
+      id : taskProgressId,
+      totalItems : options.toMove.length,
+      destiny : options.destiny,
+      porcentage: 0,
+      completedItems: 0,
+      origin: options.originFolder,
+      callback: options.account.toOnedrive.bind(),
+      toMove: options.toMoveIds
+    }, 'progress' )
+
+  })
+}
+
+var dropboxToGdrive = function(options){
+
+  options.destiny.name = options.destiny.name || 'Gdrive'
+
+  options.account.toGDrive( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0} ,options.destiny.account, function (err, taskProgressId) {
+
+    if(err) return handleError(err)
+
+    api.app.createView({
+      id : taskProgressId,
+      totalItems : options.toMove.length,
+      destiny : options.destiny,
+      porcentage: 0,
+      completedItems: 0,
+      origin: options.originFolder,
+      callback: options.account.toGDrive.bind(),
+      toMove: options.toMoveIds
+    }, 'progress' )
+
+  })
+}
+// -- END DROPBOX TO --
+
+// -- GDRIVE TO --
+var moveFromGdrive = function(options){
+
+  options.toMove[ 0 ].fsnode.getPath(function(err, path){
+
+    if(err) return handleError(err)
+
+    path[0].id = '/'
+    path.pop()
+    options.originFolder = path.pop()
+
+    options.destiny.getPath(function(err, destinyPath){
+
+      if(err) return handleError(err)
+
+      options.destiny.path = destinyPath;
+
+      options.originFolder.getPath(function(err, originPath){
+
+        if(err) return handleError(err)
+
+        options.originFolder.path = originPath;
+
+        api.integration.gdrive( options.toMove[ 0 ].fsnode.account, function( err, account ){
+
+          if(err) return handleError(err)
+
+          options.account = account
+
+          // Gdrive -> Dropbox
+          if( options.destiny.dropbox ){
+
+            gdriveToDropbox(options)
+
+          // Gdrive -> Onedrive
+          }else if( options.destiny.onedrive ){
+
+            gdriveToOnedrive(options)
+
+          // Gdrive -> Gdrive
+          }else if( options.destiny.gdrive ){
+
+            gdriveToGdrive(options)
+
+          // Gdrive -> Horbito
+          }else{
+
+            gdriveToHorbito(options)
+
+          }
+
+        })
+
+      })
+
+    })
+
+  })
+}
+
+var gdriveToDropbox = function(options){
+
+  options.destiny.name = options.destiny.name || 'Dropbox'
+
+  options.account.toDropbox( options.toMoveIds, options.destiny.path_display, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
+
+    if(err) return handleError(err)
+
+    api.app.createView({
+      id : taskProgressId,
+      totalItems : options.toMove.length,
+      destiny : options.destiny,
+      porcentage: 0,
+      completedItems: 0,
+      origin: options.originFolder,
+      callback: options.account.toDropbox.bind(),
+      toMove: options.toMoveIds
+    }, 'progress' )
+
+  })
+}
+
+var gdriveToOnedrive = function(options){
+
+  options.destiny.name = options.destiny.name || 'Onedrive'
+
+  options.account.toOnedrive( options.toMoveIds, options.destiny.id === '/' ? 'root' : options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
+
+    if(err) return handleError(err)
+
+    api.app.createView({
+      id : taskProgressId,
+      totalItems : options.toMove.length,
+      destiny : options.destiny,
+      porcentage: 0,
+      completedItems: 0,
+      origin: options.originFolder,
+      callback: options.account.toOnedrive.bind(),
+      toMove: options.toMoveIds
+    }, 'progress' )
+
+  })
+}
+
+var gdriveToGdrive = function(options){
+
+  options.destiny.name = options.destiny.name || 'Gdrive'
+
+  // Same account
+  if ( options.destiny.account === options.toMove[0].fsnode.account) {
+
+    // Same destiny -> return
+    if (options.originFolder.id === options.destiny.id) {
+      return;
+    }
+
+    options.toMove.forEach(function(item){
+
+      if (options.destiny.id === 'trash') {
+        item.fsnode.remove()
+        return;
+      }
+
+      if (options.operation === 'move') {
+
+        options.account.move(item.fsnode.id, options.destiny.id, function(err){
+          if(err) return handleError(err)
+        })
+
+      }else{
+
+        options.account.copy(item.fsnode.id, options.destiny.id, function(err){
+          if (err) {
+            alert(lang.cantCopySamePlace)
+            if(err) return handleError(err)
+          }
+        })
+
+      }
+    })
+
+  // Different account
+  }else{
+
+    if (api.system.user().id != 50523) {
+      return alert(lang.developing)
+    }
+
+    options.account.toGDrive( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
+
+      if(err) return handleError(err)
+
+      api.app.createView({
+        id : taskProgressId,
+        totalItems : options.toMove.length,
+        destiny : options.destiny,
+        porcentage: 0,
+        completedItems: 0,
+        origin: options.originFolder,
+        callback: options.account.toGDrive.bind(),
+        toMove: options.toMoveIds
+      }, 'progress' )
+
+    })
+
+  }
+}
+
+var gdriveToHorbito = function(options){
+
+  options.account.toHorbito( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, function (err, taskProgressId) {
+
+    if(err) return handleError(err)
+
+    api.app.createView({
+      id : taskProgressId,
+      totalItems : options.toMove.length,
+      destiny : options.destiny,
+      porcentage: 0,
+      completedItems: 0,
+      origin: options.originFolder,
+      callback: options.account.toHorbito.bind(),
+      toMove: options.toMoveIds
+    }, 'progress' )
+
+  })
+}
+// -- END GDRIVE TO --
+
+// -- ONEDRIVE TO --
+var moveFromOnedrive = function(options){
+
+  options.toMove[ 0 ].fsnode.getPath(function(err, path){
+
+    if(err) return handleError(err)
+
+    path.pop()
+    options.originFolder = path.pop()
+
+    options.destiny.getPath(function(err, destinyPath){
+
+      if(err) return handleError(err)
+
+      options.destiny.path = destinyPath;
+
+      options.originFolder.getPath(function(err, originPath){
+
+        if(err) return handleError(err)
+
+        if (options.originFolder.id === originPath[0].id) options.originFolder.id = '/'
+
+        options.originFolder.path = originPath;
+
+        api.integration.onedrive( options.toMove[ 0 ].fsnode.account, function( err, account ){
+
+          if(err) return handleError(err)
+
+          options.account = account
+
+          // Onedrive -> Dropbox
+          if( options.destiny.dropbox ){
+
+            onedriveToDropbox(options)
+
+          // Onedrive -> Gdrive
+          }else if( options.destiny.gdrive ){
+
+            onedriveToGdrive(options)
+
+          // Onedrive -> Onedrive
+          }else if( options.destiny.onedrive ){
+
+            onedriveToOnedrive(options)
+
+          // Onedrive to Horbito
+          }else{
+
+            onedriveToHorbito(options)
+
+          }
+
+        })
+
+      })
+
+    })
+
+
+
+  })
+}
+
+var onedriveToDropbox = function(options){
+
+  options.destiny.name = options.destiny.name || 'Dropbox'
+
+  options.account.toDropbox( options.toMoveIds, options.destiny.path_display, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
+
+    if(err) return handleError(err)
+
+    api.app.createView({
+      id : taskProgressId,
+      totalItems : options.toMove.length,
+      destiny : options.destiny,
+      porcentage: 0,
+      completedItems: 0,
+      origin: options.originFolder,
+      callback: options.account.toDropbox.bind(),
+      toMove: options.toMoveIds
+    }, 'progress' )
+
+  })
+}
+
+var onedriveToGdrive = function(options){
+
+  options.destiny.name = options.destiny.name || 'Gdrive'
+
+  options.account.toGDrive( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
+
+    if(err) return handleError(err)
+
+    api.app.createView({
+      id : taskProgressId,
+      totalItems : options.toMove.length,
+      destiny : options.destiny,
+      porcentage: 0,
+      completedItems: 0,
+      origin: options.originFolder,
+      callback: options.account.toGDrive.bind(),
+      toMove: options.toMoveIds
+    }, 'progress' )
+
+  })
+}
+
+var onedriveToOnedrive = function(options){
+
+  options.destiny.name = options.destiny.name || 'Onedrive'
+
+  // Same account
+  if ( options.destiny.account === options.toMove[0].fsnode.account) {
+
+    // Same destiny -> return
+    if (options.originFolder.id === options.destiny.id) {
+      return;
+    }
+
+    options.toMove.forEach(function(item){
+
+      if (options.destiny.id === 'trash') {
+        item.fsnode.remove()
+        return;
+      }
+
+      if (options.operation === 'move') {
+
+        options.account.move(item.fsnode.id, options.destiny.id, function(err){
+          if(err) return handleError(err)
+        })
+
+      }else{
+
+        options.account.copy(item.fsnode.id, options.destiny.id, function(err){
+          if (err) {
+            alert(lang.cantCopySamePlace)
+            if(err) return handleError(err)
+          }
+        })
+
+      }
+    })
+
+  // Diferent account
+  }else{
+
+    if (api.system.user().id != 50523) {
+      return alert(lang.developing)
+    }
+
+    options.account.toOnedrive( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
+
+      if(err) return handleError(err)
+
+      api.app.createView({
+        id : taskProgressId,
+        totalItems : options.toMove.length,
+        destiny : options.destiny,
+        porcentage: 0,
+        completedItems: 0,
+        origin: options.originFolder,
+        callback: options.account.toOnedrive.bind(),
+        toMove: options.toMoveIds
+      }, 'progress' )
+
+    })
+
+  }
+}
+
+var onedriveToHorbito = function(options){
+
+  options.account.toHorbito( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, function (err, taskProgressId) {
+
+    if(err) return handleError(err)
+
+    api.app.createView({
+      id : taskProgressId,
+      totalItems : options.toMove.length,
+      destiny : options.destiny,
+      porcentage: 0,
+      completedItems: 0,
+      origin: options.originFolder,
+      callback: options.account.toHorbito.bind(),
+      toMove: options.toMoveIds
+    }, 'progress' )
+
+  })
+}
+// -- END ONEDRIVE TO --
+
+// -- HORBITO TO --
+var moveFromHorbito = function(options){
+
+  options.toMove[ 0 ].fsnode.getPath(function(err, path){
+
+    if(err) return handleError(err)
+
+    path.pop();
+    options.originFolder = path.pop();
+
+    options.destiny.getPath(function(err, destinyPath){
+
+      if(err) return handleError(err)
+
+      options.destiny.path = destinyPath;
+
+      options.originFolder.getPath(function(err, originPath){
+
+        if(err) return handleError(err)
+
+        options.originFolder.path = originPath;
+
+        // Horbito -> Dropbox
+        if( options.destiny.dropbox ){
+
+          horbitoToDropbox(options)
+
+        // Horbito -> Gdrive
+        }else if( options.destiny.gdrive ){
+
+          horbitoToGdrive(options)
+
+        // Horbito -> Onedrive
+        }else if( options.destiny.onedrive ){
+
+          horbitoToOnedrive(options)
+
+        // Horbito -> Horbito
+        }else{
+
+          horbitoToHorbito(options)
+
+        }
+      })
+    })
+  })
+}
+
+var horbitoToDropbox = function(options){
+
+  api.integration.dropbox( options.destiny.account, function( err, account ){
+
+    if(err) return handleError(err)
+
+    account.toDropbox( options.toMoveIds, options.destiny.path_display, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, function (err, taskProgressId) {
+
+      if(err) return handleError(err)
+
+      api.app.createView({
+        id : taskProgressId,
+        totalItems : options.toMove.length,
+        destiny : options.destiny,
+        porcentage: 0,
+        completedItems: 0,
+        origin: options.originFolder,
+        callback: account.toDropbox.bind(),
+        toMove: options.toMoveIds
+      }, 'progress' )
+
+    })
+
+  })
+}
+
+var horbitoToGdrive = function(options){
+
+  api.integration.gdrive( options.destiny.account, function( err, account ){
+
+    if(err) return handleError(err)
+
+    account.toGDrive( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, function (err, taskProgressId) {
+
+      if(err) return handleError(err)
+
+      api.app.createView({
+        id : taskProgressId,
+        totalItems : options.toMove.length,
+        destiny : options.destiny,
+        porcentage: 0,
+        completedItems: 0,
+        origin: options.originFolder,
+        callback: account.toGDrive.bind(),
+        toMove: options.toMoveIds
+      }, 'progress' )
+
+    })
+
+  })
+}
+
+var horbitoToOnedrive = function(options){
+  api.integration.onedrive( options.destiny.account, function( err, account ){
+
+    if(err) return handleError(err)
+
+    account.toOnedrive( options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, function (err, taskProgressId) {
+
+      if(err) return handleError(err)
+
+      api.app.createView({
+        id : taskProgressId,
+        totalItems : options.toMove.length,
+        destiny : options.destiny,
+        porcentage: 0,
+        completedItems: 0,
+        origin: options.originFolder,
+        callback: account.toOnedrive.bind(),
+        toMove: options.toMoveIds
+      }, 'progress' )
+
+    })
+
+  })
+}
+
+var horbitoToHorbito = function(options){
+  options.toMove.forEach( function( item ){
+
+    if (options.operation === 'copy') {
+      item.fsnode.copy( options.destiny.id, {fixCollision: true} , function(err){
+        if(err) return handleError(err)
+      });
+    }else if(item.fsnode.parent != options.destiny.id){
+      item.fsnode.move( options.destiny.id, function(err){
+        if(err) return handleError(err)
+      });
+    }
+
+  })
+}
+// -- END HORBITO TO --
+
+var emptyTrashCloud = function(fsnode){
+
+  confirm( lang.confirmEmptyTrash, function( accepted ){
+
+    if (accepted) {
+      fsnode.emptyTrash(function(err){
+        if(err) return handleError(err)
+        $('.ui-navgroup-element.active').click()
+      })
+    }
+  })
+
+}
+
+var setCloudTrashFirst = function(){
+
+  currentList.forEach(function(item, index){
+
+    if (item.fsnode.id === 'trash') {
+      var oldFirst = currentList[0]
+      currentList[0] = item
+      currentList[index] = oldFirst
+    }
+
+  })
 
 }
 
@@ -2961,7 +4367,26 @@ win
 
 visualSidebarItemArea
 .on( 'click', '.ui-navgroup-element', function(){
-  openFolder( $(this).data('fsnode').id );
+
+  if ( $(this).hasClass('dropbox') ) {
+    openDropboxAccount(this);
+  }else if( $(this).hasClass('gdrive') ){
+    openGdriveAccount(this);
+  }else if( $(this).hasClass('onedrive') ){
+    openOnedriveAccount(this);
+  }else{
+    openFolder( $(this).data('fsnode').id );
+  }
+
+})
+
+.on( 'click', '.ui-navgroup-element.dropbox .remove-account, .ui-navgroup-element.gdrive .remove-account, .ui-navgroup-element.onedrive .remove-account', function(e){
+
+  e.stopPropagation()
+  e.preventDefault()
+
+  removeCloudAccount($(this).parent().data('account'))
+
 })
 
 .on( 'contextmenu', '.ui-navgroup-element', function(){
@@ -2981,7 +4406,34 @@ visualSidebarItemArea
 .on( 'wz-drop', '.ui-navgroup-element', function( e, item, list ){
 
   var destiny = $(this).removeClass('dropover').data('id');
+  var fsnode = $(this).data('fsnode');
 
+  // For old clouds sidebar
+  var cloud = $(this).data('cloud')
+  var account = $(this).data('account')
+
+  // Anywhere -> Clouds sidebar
+  if (cloud === 'dropbox'){
+    var destiny = new dropboxNode({account: account.id, id: '/', dropbox: true, path_display: '/'});
+    moveData({toMove: list, destiny:destiny, operation:'move'})
+    return
+  }else if(cloud === 'gdrive'){
+    var destiny = new gdriveNode({account: account.id, id: '/', gdrive: true});
+    moveData({toMove: list, destiny:destiny, operation:'move'})
+    return
+  }else if(cloud === 'onedrive'){
+    var destiny = new onedriveNode({account: account.id, id: '/', onedrive: true});
+    moveData({toMove: list, destiny:destiny, operation:'move'})
+    return
+  }
+
+  // Clouds -> Horbito sidebar
+  if (isOldCloud(list[0].fsnode)) {
+    moveData({toMove:list, destiny:fsnode, operation:'move'})
+    return
+  }
+
+  // Horbito -> Horbito sidebar
   list.filter( function( item ){
     return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
   }).forEach( function( item ){
@@ -2997,15 +4449,29 @@ visualSidebarItemArea
 })
 
 $('.space-in-use')
-.on( 'click', function(){
-  api.app.openApp( 3 )
+.on( 'click', function(e){
+  if (!currentOpened || !isOldCloud(currentOpened)) {
+    e.preventDefault()
+    e.stopPropagation()
+    api.app.openApp( 3 )
+  }
 })
 
 visualHistoryBack.on( 'click', historyGoBack );
 visualHistoryForward.on( 'click', historyGoForward );
 
 visualBreadcrumbs.on( 'click', '.entry:not(.current, .list-trigger)', function(){
-  openFolder( $(this).data('id') );
+  var folder = $(this).data('folder');
+  if ( $('.old-cloud-icon').hasClass('dropbox') ) {
+    openFolder( folder.id , { 'dropboxFolder' : folder } );
+  }else if( $('.old-cloud-icon').hasClass('gdrive') ){
+    openFolder( folder.id , { 'gdriveFolder' : folder } );
+  }else if( $('.old-cloud-icon').hasClass('onedrive') ){
+    openFolder( folder.id , { 'onedriveFolder' : folder } );
+  }else{
+    openFolder( folder.id );
+  }
+
 });
 
 visualBreadcrumbsList
@@ -3044,8 +4510,17 @@ visualPartialTrashButton.on( 'click', function(){
 });
 
 visualEmptyTrashButton.on( 'click', function(){
-  selectAllIcons()
-  deleteAllSelected()
+
+  if(currentOpened.gdrive){
+    emptyTrashCloud(currentOpened)
+  }else if(currentOpened.dropbox){
+    alert(lang.developing)
+  }else{
+    selectAllIcons()
+    deleteAllSelected()
+  }
+
+
 });
 
 visualDownloadButton.on( 'click', function(){
@@ -3200,16 +4675,17 @@ visualItemArea
 
 .on( 'dblclick', function( e ){
 
+  console.log('dblclick', currentList)
   if( !currentList.length ){
     return
   }
 
   var itemClicked = getIconWithMouserOver( e );
-
+console.log(itemClicked)
   if( !itemClicked || ( disabledFileIcons && itemClicked.fsnode.type === TYPE_FILE ) ){
     return
   }
-
+console.log('will open')
   openItem( itemClicked )
 
 })
@@ -3261,18 +4737,16 @@ visualItemArea
   }else{
 
     var destiny = itemOver && itemOver.fsnode.type !== TYPE_FILE ? itemOver.fsnode.id : currentOpened.id;
-
-    list.filter( function( item ){
+    var destinyNode = itemOver && itemOver.fsnode.type !== TYPE_FILE ? itemOver.fsnode : currentOpened;
+    var toMove = list.filter( function( item ){
       return item.fsnode.parent !== destiny && item.fsnode.id !== destiny;
-    }).forEach( function( item ){
+    })
 
-      if ( item.fsnode.parent != destiny ) {
-        item.fsnode.move( destiny, function(){
-          console.log( arguments );
-        });
-      }
+    if( !toMove.length ){
+      return
+    }
 
-    });
+    moveData({toMove: toMove, destiny:destinyNode, operation:'move'})
 
   }
 
@@ -3502,12 +4976,487 @@ sortOptions
 
 })
 
+$('.old-cloud').on('click' , function(){
+
+  $('.old-cloud-popup').addClass('active');
+  win.one( 'mousedown', function(){
+    $('.old-cloud-popup').removeClass('active')
+  })
+
+})
+
+$('.old-cloud-popup')
+
+.on( 'mousedown', function( e ){
+  e.stopPropagation()
+})
+
+.on('click', '.dropbox' , function(){
+  api.integration.dropbox.addAccount(function(){
+  });
+  $('.old-cloud-popup').removeClass('active')
+})
+
+.on('click', '.gDrive' , function(){
+  api.integration.gdrive.addAccount(function(){
+  });
+  $('.old-cloud-popup').removeClass('active')
+})
+
+.on('click', '.oneDrive' , function(){
+  api.integration.onedrive.addAccount(function(){
+  });
+  $('.old-cloud-popup').removeClass('active')
+})
+
+api.integration.dropbox.on('modified', function( entry ){
+  refreshDropbox(entry.id);
+});
+
+api.integration.dropbox.on('removed', function( entry ){
+  refreshDropbox(entry.id);
+});
+
+api.integration.gdrive.on('modified', function( entry ){
+  refreshGdrive(entry.id);
+});
+
+api.integration.gdrive.on('removed', function( entry ){
+  refreshGdrive(entry.id);
+});
+
+api.integration.onedrive.on('modified', function( entry ){
+  refreshOnedrive(entry.id);
+});
+
+api.integration.onedrive.on('removed', function( entry ){
+  refreshOnedrive(entry.id);
+});
+
+api.integration.dropbox.on('added-account', function (acc) {
+  api.integration.dropbox(acc.id, function(err, account){
+    if(err) return handleError(err)
+    addCloudAccount(account)
+  })
+})
+
+api.integration.gdrive.on('added-account', function (acc) {
+  api.integration.gdrive(acc.id, function(err, account){
+    if(err) return handleError(err)
+    addCloudAccount(account)
+  })
+})
+
+api.integration.onedrive.on('added-account', function (acc) {
+  api.integration.onedrive(acc.id, function(err, account){
+    if(err) return handleError(err)
+    addCloudAccount(account)
+  })
+})
+
+var addCloudAccount = function( account ){
+
+  if( isInSidebar( account.id ) ){
+    return
+  }
+
+  var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
+
+  visualItem.addClass( 'item-' + account.id + ' ' + account.type).data( 'account', account ).data( 'id' , '/' ).data('cloud', account.type);
+  visualItem.find('.ui-navgroup-element-txt').text( account.email );
+  visualItem.append('<figure class="remove-account"></figure>')
+
+  sidebarFolders.push( account );
+  visualSidebarItemArea.find('.old-cloud').after( visualItem );
+
+}
+
+var openDropboxAccount = function( sidebarItem ){
+  dropboxAccountActive = $(sidebarItem).data('account');
+  var dropboxRoot = {
+    'account'       : dropboxAccountActive.id,
+    'id'            : '/',
+    'path_display'  : '',
+    'integration'   : true,
+    'dropbox'       : true,
+    'name'          : 'Dropbox',
+    'path_display'  : '/',
+    'getPath'       : function( callback ){
+      callback( null, [{'name' : 'Dropbox', id: '/', 'dropbox' : true, path_display: '/'}]);
+    }
+  }
+  openFolder( 'dropboxRoot' , { 'dropboxFolder' : dropboxRoot } );
+};
+
+var openGdriveAccount = function( sidebarItem ){
+  gdriveAccountActive = $(sidebarItem).data('account');
+  var gdriveRoot = {
+    'account'       : gdriveAccountActive.id,
+    'id'            : '/',
+    'path_display'  : '',
+    'integration'   : true,
+    'gdrive'        : true,
+    'name'          : 'Google Drive',
+    'getPath'       : function( callback ){
+      callback( null, [{'name' : 'Google Drive', id: '/', 'gdrive' : true}]);
+    }
+  }
+  openFolder( 'gdriveRoot' , { 'gdriveFolder' : gdriveRoot } );
+};
+
+var openOnedriveAccount = function( sidebarItem ){
+  onedriveAccountActive = $(sidebarItem).data('account');
+  var onedriveRoot = {
+    'account'       : onedriveAccountActive.id,
+    'id'            : '/',
+    'path_display'  : '',
+    'integration'   : true,
+    'onedrive'      : true,
+    'name'          : 'Onedrive',
+    'getPath'       : function( callback ){
+      callback( null, [{'name' : 'Onedrive', 'onedrive' : true}]);
+    }
+  }
+  openFolder( 'onedriveRoot' , { 'onedriveFolder' : onedriveRoot, id: '/' } );
+};
+
+var requestDropboxItems = function( folder ){
+
+  var end = $.Deferred();
+  dropboxShowingFolder = folder;
+  folder = folder === '/' ? '' : folder;
+
+  dropboxAccountActive.listFolder( folder , function( err , list ){
+
+    if (err) {
+      console.log(err);
+      return
+    }
+
+    dropboxShowingItems = list;
+
+    list = list.entries.map(function( entry ){
+
+      if (entry['.tag'] === 'folder') {
+        entry.isFolder = true;
+        return new dropboxNode( entry )
+      }else{
+        entry.isFolder = false;
+        return new dropboxNode( entry )
+      }
+
+    });
+
+    end.resolve( list );
+
+  });
+
+  return end;
+}
+
+var requestGdriveItems = function( folder ){
+
+  var end = $.Deferred();
+  gdriveShowingFolder = folder;
+
+  // Is root
+  if ( folder.id === '/' ) {
+
+    gdriveAccountActive.listFiles( function( err , list ){
+
+      if (err) {
+        console.log(err);
+        return
+      }
+
+      gdriveShowingItems = list;
+
+      list = list.files.map(function( entry ){
+
+        if ( entry.mimeType.indexOf('folder') !== -1 ) {
+          entry.isFolder = true;
+          return new gdriveNode( entry );
+        }else{
+          entry.isFolder = false;
+          return new gdriveNode( entry );
+        }
+
+      });
+
+      end.resolve( list );
+
+    });
+
+
+  }else{
+
+    gdriveAccountActive.listFilesByFolder( folder.id , function( err , list ){
+
+      if (err) {
+        console.log(err);
+        return
+      }
+
+      gdriveShowingItems = list;
+
+      list = list.files.map(function( entry ){
+
+        if ( entry.mimeType.indexOf('folder') !== -1 ) {
+          entry.isFolder = true;
+          return new gdriveNode( entry )
+        }else{
+          entry.isFolder = false;
+          return new gdriveNode( entry )
+        }
+
+      });
+
+      end.resolve( list );
+
+    });
+
+  }
+
+  return end;
+}
+
+var requestOnedriveItems = function( folder ){
+
+  var end = $.Deferred();
+  onedriveShowingFolder = folder;
+
+  folder = folder === '/' ? 'root' : folder;
+
+  onedriveAccountActive.listFolder( folder , function( err , list ){
+
+    if (err) {
+      console.log(err);
+      return
+    }
+
+    onedriveShowingItems = list;
+
+    list = list.map(function( entry ){
+      return new onedriveNode( entry )
+    });
+
+    end.resolve( list );
+
+  });
+
+  return end;
+}
+
+var getDropboxDestinyPath = function( idDestiny , fileName ){
+  var destinyPath = '';
+  dropboxShowingItems.entries.forEach(function( entry ){
+    if ( entry.id === idDestiny ) {
+      destinyPath = entry.path_display;
+    }
+  });
+  return destinyPath + '/'  + fileName;
+}
+
+var getGdriveDestinyPath = function( idDestiny , fileName ){
+  var destinyPath = '';
+  gdriveShowingItems.entries.forEach(function( entry ){
+    if ( entry.id === idDestiny ) {
+      destinyPath = entry.path_display;
+    }
+  });
+  return destinyPath + '/'  + fileName;
+}
+
+var getOnedriveDestinyPath = function( idDestiny , fileName ){
+  var destinyPath = '';
+  onedriveShowingItems.forEach(function( entry ){
+    if ( entry.id === idDestiny ) {
+      destinyPath = entry.path_display;
+    }
+  });
+  return destinyPath + '/'  + fileName;
+}
+
+var setInOldCloudIcon = function( oldCloud ){
+
+  $('.old-cloud-icon').attr( 'class', 'old-cloud-icon' );
+  $('.old-cloud-icon').addClass( oldCloud );
+  $('.item-area').addClass('old-cloud');
+  updateCanvasSize()
+
+}
+
+var setInOldCloudLoading = function( oldCloud ){
+
+  if( oldCloud !== currentLoadingSprite ){
+
+    currentLoadingSprite = oldCloud
+    currentLoadingStart  = Date.now()
+    requestDraw()
+
+  }
+
+}
+
+var setOutOldCloudIcon = function(){
+
+  $('.old-cloud-icon').attr( 'class', 'old-cloud-icon' );
+  $('.item-area').removeClass('old-cloud');
+  updateCanvasSize()
+
+}
+
+var setOutOldCloudLoading = function(){
+  currentLoadingSprite = null
+  requestDraw()
+}
+
+var setOldCloudAccounts = function(){
+
+  //Dropbox
+  api.integration.dropbox.listAccounts(function( e , accounts ){
+    accounts.forEach(function( account ){
+
+      if( isInSidebar( account.id ) ){
+        return
+      }
+
+      var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
+
+      visualItem.addClass( 'item-' + account.id + ' dropbox' ).data( 'account', account ).data( 'id' , '/' ).data('cloud', 'dropbox');
+      visualItem.find('.ui-navgroup-element-txt').text( account.email );
+      visualItem.append('<figure class="remove-account"></figure>')
+
+      sidebarFolders.push( account );
+      visualSidebarItemArea.find('.old-cloud').after( visualItem );
+
+    });
+  });
+
+  //GDrive
+  api.integration.gdrive.listAccounts(function( e , accounts ){
+    accounts.forEach(function( account ){
+
+      if( isInSidebar( account.id ) ){
+        return
+      }
+
+      var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
+
+      visualItem.addClass( 'item-' + account.id + ' gdrive' ).data( 'account', account ).data( 'id' , '/' ).data('cloud', 'gdrive');
+      visualItem.find('.ui-navgroup-element-txt').text( account.email );
+      visualItem.append('<figure class="remove-account"></figure>')
+
+
+      sidebarFolders.push( account );
+      visualSidebarItemArea.find('.old-cloud').after( visualItem );
+
+    });
+  });
+
+  //Onedrive
+  api.integration.onedrive.listAccounts(function( e , accounts ){
+    accounts.forEach(function( account ){
+
+      if( isInSidebar( account.id ) ){
+        return
+      }
+
+      var visualItem = visualSidebarItemPrototype.clone().removeClass('wz-prototype')
+
+      visualItem.addClass( 'item-' + account.id + ' onedrive' ).data( 'account', account ).data( 'id' , '/' ).data('cloud', 'onedrive');
+      visualItem.find('.ui-navgroup-element-txt').text( account.email );
+      visualItem.append('<figure class="remove-account"></figure>')
+
+
+      sidebarFolders.push( account );
+      visualSidebarItemArea.find('.old-cloud').after( visualItem );
+
+    });
+  });
+
+}
+
+var removeCloudAccount = function(account){
+
+  $('.ui-navgroup-element.root').click();
+
+  if (account.type === 'dropbox') {
+    api.integration.dropbox.removeAccount(account.id, function(err){
+      if(err) return handleError(err)
+      $('.ui-navgroup-element.item-' + account.id).remove();
+    })
+  }else if(account.type === 'gdrive'){
+    api.integration.gdrive.removeAccount(account.id, function(err){
+      if(err) return handleError(err)
+      $('.ui-navgroup-element.item-' + account.id).remove();
+    })
+  }else{
+    api.integration.onedrive.removeAccount(account.id, function(err){
+      if(err) return handleError(err)
+      $('.ui-navgroup-element.item-' + account.id).remove();
+    })
+  }
+}
+
+var updateQuota = function(){
+
+  if (currentOpened && currentOpened.dropbox) {
+    $('.space-in-use').attr('href', 'https://www.dropbox.com/plans?trigger=direct')
+    dropboxAccountActive.getMyUserSpace(function(err, data){
+      if(err) return handleError(err)
+      visualSpaceInUseAmount.text(
+        lang.main.amount
+        .replace( "%s", api.tool.bytesToUnit( data.used, 2 ) )
+        .replace( "%s", api.tool.bytesToUnit( data.allocation.allocated ) )
+      )
+    })
+
+  }else if(currentOpened && currentOpened.gdrive){
+    $('.space-in-use').attr('href', 'https://drive.google.com/settings/storage')
+    gdriveAccountActive.getUserInfo(function(err, data){
+      if(err) return handleError(err)
+      visualSpaceInUseAmount.text(
+        lang.main.amount
+        .replace( "%s", api.tool.bytesToUnit( data.quotaBytesUsed, 2 ) )
+        .replace( "%s", api.tool.bytesToUnit( data.quotaBytesTotal ) )
+      )
+    })
+
+  }else if(currentOpened && currentOpened.onedrive){
+    $('.space-in-use').attr('href', 'https://onedrive.live.com/about/en-us/plans/')
+    onedriveAccountActive.accountData(function(err, data){
+      if(err) return handleError(err)
+      visualSpaceInUseAmount.text(
+        lang.main.amount
+        .replace( "%s", api.tool.bytesToUnit( data.quota.used, 2 ) )
+        .replace( "%s", api.tool.bytesToUnit( data.quota.total ) )
+      )
+    })
+
+  }else{
+    $('.space-in-use').attr('href', '')
+    api.system.updateQuota( function( error, quota ){
+    visualSpaceInUseAmount.text(
+      lang.main.amount
+      .replace( "%s", api.tool.bytesToUnit( api.system.quota().used, 2 ) )
+      .replace( "%s", api.tool.bytesToUnit( api.system.quota().total ) )
+    )
+
+  })
+
+
+  }
+
+}
+
 // Load texts
 var translate = function(){
 
   $('.ui-header-brand').find('.name').text(lang.main.appName);
   $('.ui-input-search').find('input').attr('placeholder', lang.main.search);
-  $('.ui-navgroup-title-txt').text(lang.main.favourites);
+  $('.ui-navgroup-title.favourites .ui-navgroup-title-txt').text(lang.main.favourites);
+  $('.ui-navgroup-title.old-cloud .ui-navgroup-title-txt').text(lang.oldCloud);
   visualEmptyTrashButton.find('span').text(lang.main.emptyTrash)
   $('.space-in-use .amount').text(lang.main.amount);
   $('.space-in-use .need-more').text(lang.main.needMore);
@@ -3527,6 +5476,7 @@ var translate = function(){
   $('.welcome-tip .subtitle').text( lang.onboarding.welcome.subtitle );
   $('.context-menu-reminder .title').text( lang.onboarding.contextReminder.title );
   $('.context-menu-reminder .subtitle').text( lang.onboarding.contextReminder.subtitle );
+  $('.pair-text').text(lang.pairOldCloud);
 
   $('.explain-upload .title').text(lang.explainUpload.title);
   $('.explain-upload .subtitle').text(lang.explainUpload.subtitle);
@@ -3538,19 +5488,6 @@ var translate = function(){
 
 };
 
-var updateQuota = function(){
-
-  api.system.updateQuota( function( error, quota ){
-
-    visualSpaceInUseAmount.text(
-      lang.main.amount
-      .replace( "%s", api.tool.bytesToUnit( api.system.quota().used, 2 ) )
-      .replace( "%s", api.tool.bytesToUnit( api.system.quota().total ) )
-    )
-
-  })
-
-}
 // Start the app
 currentSort = sortByName;
 translate();
@@ -3561,6 +5498,7 @@ loadEmptyAnimationImg();
 getSidebarItems().then( function( list ){
   list.forEach( appendVisualSidebarItem );
 });
+setOldCloudAccounts();
 
 if( params ){
 
