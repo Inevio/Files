@@ -891,6 +891,11 @@ var checkIsOnSidebar = function( fsnode ){
 var downloadAllSelected = function( items ){
 
   ( items || currentActive ).forEach( function( item ){
+
+    if (item.fsnode.type === TYPE_FOLDER && isOldCloud(item.fsnode)) {
+      alert(lang.cantDownloadFolders)
+    }
+
     item.fsnode.download()
   })
 
@@ -2899,6 +2904,16 @@ var generateContextMenu = function( item, options ){
 
         menu.addOption( lang.main.restore, item.fsnode.untrash.bind( null, null ) )
           .addOption( lang.main.removePermanently, deleteAllSelected.bind( null, null ), 'warning' )
+
+
+      }else if(item.fsnode.type === TYPE_FOLDER){
+
+        menu.addOption( lang.main.openFile, openFile.bind( null, item.fsnode ) )
+          .addOption( lang.main.copy, clipboardCopy.bind( null, null ) )
+          .addOption( lang.main.cut, clipboardCut.bind( null, null ) )
+          .addOption( lang.main.rename, showRenameTextarea.bind( null, item ) )
+          .addOption( lang.main.remove, deleteAllSelected.bind( null, null ), 'warning' )
+
 
       }else{
 
