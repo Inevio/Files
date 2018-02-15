@@ -418,6 +418,7 @@
     "forAll"  : "Para todos",
     "confirmEmptyTrash" : "¿Seguro que desea eliminar definitivamente todo el contenido de la papelera?",
     "restoreFolder"  : "Esta carpeta esta en tu papelera, para verla debes restaurarla",
-    "developing"  : "Esta funcionalidad aun no esta disponible"
+    "developing"  : "Esta funcionalidad aun no esta disponible",
+    "cantDownloadFolders" : "No es posible descargar una carpeta desde Dropbox, Google Drive o Onedrive"
 
 }
