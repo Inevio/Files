@@ -3340,7 +3340,11 @@ var dropboxToDropbox = function(options){
     options.toMove.forEach(function(item){
 
       if (options.destiny.id === 'trash') {
-        item.fsnode.remove()
+        item.fsnode.remove(function(err){
+          if(err) return handleError(err)
+          removeItemFromList(item.fsnode.id)
+        requestDraw()
+        })
         return;
       }
 
@@ -3350,6 +3354,8 @@ var dropboxToDropbox = function(options){
 
         options.account.move(item.fsnode.path_display, options.destiny.path_display, function(err){
           if(err) return handleError(err)
+          removeItemFromList(item.fsnode.id)
+        requestDraw()
         })
 
       }else{
@@ -3357,8 +3363,10 @@ var dropboxToDropbox = function(options){
         options.account.copy(item.fsnode.path_display, options.destiny.path_display, function(err){
           if (err) {
             alert(lang.cantCopySamePlace)
-            if(err) return handleError(err)
+            return handleError(err)
           }
+          removeItemFromList(item.fsnode.id)
+          requestDraw()
         })
 
       }
@@ -3555,7 +3563,11 @@ var gdriveToGdrive = function(options){
     options.toMove.forEach(function(item){
 
       if (options.destiny.id === 'trash') {
-        item.fsnode.remove()
+        item.fsnode.remove(function(err){
+          if(err) return handleError(err)
+          removeItemFromList(item.fsnode.id)
+          requestDraw()
+        })
         return;
       }
 
@@ -3563,6 +3575,8 @@ var gdriveToGdrive = function(options){
 
         options.account.move(item.fsnode.id, options.destiny.id, function(err){
           if(err) return handleError(err)
+          removeItemFromList(item.fsnode.id)
+          requestDraw()
         })
 
       }else{
@@ -3570,8 +3584,10 @@ var gdriveToGdrive = function(options){
         options.account.copy(item.fsnode.id, options.destiny.id, function(err){
           if (err) {
             alert(lang.cantCopySamePlace)
-            if(err) return handleError(err)
+            return handleError(err)
           }
+          removeItemFromList(item.fsnode.id)
+          requestDraw()
         })
 
       }
@@ -3747,7 +3763,11 @@ var onedriveToOnedrive = function(options){
     options.toMove.forEach(function(item){
 
       if (options.destiny.id === 'trash') {
-        item.fsnode.remove()
+        item.fsnode.remove(function(err){
+          if(err) return handleError(err)
+          removeItemFromList(item.fsnode.id)
+          requestDraw()
+        })
         return;
       }
 
@@ -3755,6 +3775,8 @@ var onedriveToOnedrive = function(options){
 
         options.account.move(item.fsnode.id, options.destiny.id, function(err){
           if(err) return handleError(err)
+          removeItemFromList(item.fsnode.id)
+          requestDraw()
         })
 
       }else{
@@ -3762,8 +3784,10 @@ var onedriveToOnedrive = function(options){
         options.account.copy(item.fsnode.id, options.destiny.id, function(err){
           if (err) {
             alert(lang.cantCopySamePlace)
-            if(err) return handleError(err)
+            return handleError(err)
           }
+          removeItemFromList(item.fsnode.id)
+          requestDraw()
         })
 
       }
