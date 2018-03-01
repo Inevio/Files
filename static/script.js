@@ -184,7 +184,7 @@ var trashIcons = {
 //
 
 if (params && (params.command === 'selectSource' || params.command === 'selectDestiny')) {
-  enabledMultipleSelect = params.command === 'selectSource' && params.mode === 'file' && params.multiple
+  enabledMultipleSelect = params.command === 'selectSource' && params.mode === 'file' || params.mode === 'both' && params.multiple
   disabledFileIcons = params.command === 'selectSource' && params.mode === 'directory'
   notificationBellButton.hide()
 }
@@ -365,7 +365,9 @@ var handleError = function (err) {
 var acceptButtonHandler = function () {
   if (params.command === 'selectSource') {
     var validIcons = currentActive.filter(function (icon) {
-      if (params.mode === 'file') {
+      if (params.mode === 'both') {
+        return true
+      } else if (params.mode === 'file') {
         return icon.fsnode.type === 3
       }
 
