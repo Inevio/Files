@@ -3474,6 +3474,9 @@ api.fs
   })
 
 api.upload
+  .on('conflict', function(data){
+    alert(data.origin + ' ' + lang.alreadyExists + ' ' + lang.destinyFolder)
+  })
   .on('fileEnqueued', function (file, queue) {
     var queueSize = queue.length()
 
