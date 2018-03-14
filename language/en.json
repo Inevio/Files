@@ -409,6 +409,7 @@
     "replace" : "Replace",
     "dontReplace" : "Mantain both",
     "alreadyExists" : "already exists on",
+    "destinyFolder" : "destiny folder",
     "whatToDo"  : "What do you want to do?",
     "noQuota" : "Sorry, there is no enough available storage in destiny cloud",
     "onedriveTrash" : "Sorry, but Microsoft doesn't allow using the Trash folder outside their system. Please go to <a href='https://onedrive.live.com' target='_blank'> Onedrive official web page </a> to restore or remove permanently a file.",
