@@ -234,7 +234,11 @@ var Icon = function (fsnode) {
   this.hover = false
   this.bigIcon = null
   this.bigIconHeight = 0
+  this.bigIconFullHeight = 0
+  this.bigIconText = []
   this.bigIconTextHeight = 0
+  this.bigIconFullText = []
+  this.bigIconFullTextHeight = 0
   this.smallIcon = null
   this.conversionProgress = -1
 
@@ -244,9 +248,40 @@ var Icon = function (fsnode) {
 }
 
 Icon.prototype.updateName = function () {
-  this.lines = getIconLines(this.fsnode.name)
 
-  if (this.lines.length > 1) {
+  this.bigIconFullText = getIconLines(this.fsnode.name)
+  this.bigIconFullTextHeight = 4 + ( this.bigIconFullText.length * ( 14 + 4 ) )
+  this.bigIconFullHeight = ICON_IMAGE_HEIGHT_AREA + this.bigIconFullTextHeight
+
+  if( this.bigIconFullText.length <= 2 ){
+    this.bigIconText = this.bigIconFullText
+  }else{
+    this.bigIconText = [ this.bigIconFullText[ 0 ] ]
+
+    var start = this.bigIconFullText[ 1 ]
+    var end = this.fsnode.name.slice( -1 * start.length )
+    var itFits = false
+    var removedChars = 1
+    var text = ''
+
+    ctx.font = '13px Lato'
+
+    while( !itFits ){
+
+      text = start.slice( 0, -1 * Math.ceil( removedChars / 2 ) ) + '...' + end.slice( Math.floor( removedChars / 2 ) )
+      removedChars++
+
+      if (ctx.measureText(text).width < ICON_TEXT_WIDTH) {
+        itFits = true
+      }
+
+    }
+
+    this.bigIconText[ 1 ] = text
+
+  }
+
+  if (this.bigIconText.length > 1) {
     this.bigIconTextHeight = 4 + 14 + 4 + 14 + 4
   } else {
     this.bigIconTextHeight = 4 + 14 + 4
@@ -998,10 +1033,11 @@ var drawIconsInGrid = function () {
   var y = 10 + currentScroll
   var iconsInRow = 0
   var currentRow = 0
+  var deferredDraw
 
   setCloudTrashFirst()
 
-  currentList.forEach(function (icon, i) {
+  currentList.forEach(function (icon) {
     iconsInRow++
 
     if (iconsInRow > grid.iconsInRow) {
@@ -1011,116 +1047,128 @@ var drawIconsInGrid = function () {
       currentRow++
     }
 
-    if (dropActive && dropIgnore.indexOf(icon) === -1) {
-      if (icon.fsnode.type !== TYPE_FILE) {
-        if (icon === dropActive) {
-          ctx.strokeStyle = '#e5e9ea'
-          ctx.fillStyle = '#e5e9ea'
-          drawRoundRect(ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true)
-          border = 0
-        } else {
-          ctx.strokeStyle = '#ccd3d5'
-          ctx.fillStyle = '#f9fafb'
-          drawRoundRect(ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true)
-        }
-      }
-    } else {
-      if (icon.hover || icon.active) {
-        ctx.strokeStyle = '#e4e8e9'
-        ctx.fillStyle = '#f9fafb'
-        drawRoundRect(ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true)
-      }
-
-      if (icon.active && !isCutted(icon)) {
-        ctx.strokeStyle = BLUEUI
-        ctx.fillStyle = BLUEUI
-        drawRoundRect(ctx, x, y + ICON_IMAGE_HEIGHT_AREA, ICON_WIDTH, icon.bigIconTextHeight, { bl: ICON_RADIUS, br: ICON_RADIUS }, true, false)
-      }
-    }
-
-    if (dropActive) {
-      if ((icon.fsnode.type !== TYPE_FILE && icon === dropActive) || dropIgnore.indexOf(icon) !== -1) {
-        ctx.fillStyle = '#252525'
-      } else {
-        ctx.fillStyle = '#252525'
-      }
-    } else {
-      if (isCutted(icon)) {
-        ctx.fillStyle = '#b6babc'
-      } else {
-        ctx.fillStyle = icon.active ? '#ffffff' : '#252525'
-      }
-    }
-
-    ctx.font = '13px Lato'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'top'
-    ctx.fillText(icon.lines[ 0 ], x + ICON_WIDTH / 2, 4 + y + ICON_IMAGE_HEIGHT_AREA)
-
-    if (icon.lines[ 1 ]) {
-      ctx.fillText(icon.lines[ 1 ], x + ICON_WIDTH / 2, 4 + y + 18 + ICON_IMAGE_HEIGHT_AREA)
-    }
-
-    if (!icon.bigIcon) {
-      if (icon.fsnode.type === TYPE_FOLDER && icon.fsnode.id !== 'trash') {
-        icon.bigIcon = FOLDER_ICON
-      } else if (icon.fsnode.id === 'trash') {
-        icon.bigIcon = new Image()
-        icon.bigIcon.src = icon.fsnode.icons.retina.small + '?time=' + Date.now()
-      } else {
-        icon.bigIcon = new Image()
-        icon.bigIcon.src = icon.fsnode.icons.small + (icon.fsnode.type === TYPE_FILE ? '?time=' + Date.now() : '')
-      }
-    }
-
-    if (icon.bigIcon.naturalWidth) {
-      var normalized = normalizeBigIconSize(icon.bigIcon)
-
-      ctx.drawImage(icon.bigIcon, x + (ICON_WIDTH - normalized.width) / 2, y + (ICON_IMAGE_HEIGHT_AREA - normalized.height) / 2, normalized.width, normalized.height)
-    } else {
-      $(icon.bigIcon).on('load', requestDraw)
-    }
-
-    if (icon.fsnode.isSharedRoot && icon.bigIcon.naturalWidth) {
-      var normalized = normalizeBigIconSize(icon.bigIcon)
-      var centerX = normalized.width + x + (ICON_WIDTH - normalized.width) / 2
-      var centerY = normalized.height + y + (ICON_IMAGE_HEIGHT_AREA - normalized.height) / 2
-
-      drawSharedCircle(ctx, { x: centerX - 5, y: centerY - 5 })
-    }
-
-    if (icon.fsnode.converting || icon.conversionProgress !== -1) {
-      if (icon.bigIcon.naturalWidth) {
-        var normalized = normalizeBigIconSize(icon.bigIcon)
-        var centerX = normalized.width + x + (ICON_WIDTH - normalized.width) / 2
-        var centerY = normalized.height + y + (ICON_IMAGE_HEIGHT_AREA - normalized.height) / 2
-
-        drawProgressCircle(ctx, { x: centerX, y: centerY }, icon.conversionProgress)
-      } else {
-        var centerX = x + ICON_WIDTH / 2
-        var centerY = y + ICON_IMAGE_HEIGHT_AREA / 2
-
-        drawProgressCircle(ctx, { x: centerX, y: centerY }, icon.conversionProgress)
-      }
-    }
-
-    if (
-      (disabledFileIcons && icon.fsnode.type === TYPE_FILE) ||
-      (dropActive && icon.fsnode.type === TYPE_FILE) ||
-      dropIgnore.indexOf(icon) !== -1 ||
-      icon.fsnode.fileId === 'TO_UPDATE' || isCutted(icon)
-    ) {
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'
-      ctx.fillRect(x, y, ICON_WIDTH + 1, icon.bigIconHeight + 1)
+    if (currentActive.length === 1 && icon.active) {
+      deferredDraw = { icon: icon, x: x, y: y }
+    }else{
+      drawIconInGrid( icon, x ,y )
     }
 
     x += ICON_WIDTH + grid.gap
   })
 
+  if (deferredDraw) {
+    drawIconInGrid(deferredDraw.icon, deferredDraw.x, deferredDraw.y)
+  }
+
   if (selectDragCurrent) {
     ctx.fillStyle = TRANSPARENTBLUEUI
     ctx.fillRect(selectDragOrigin.x, selectDragOrigin.y + currentScroll, selectDragCurrent.x - selectDragOrigin.x, selectDragCurrent.y - selectDragOrigin.y)
   }
+}
+
+var drawIconInGrid = function(icon,x,y){
+
+  if (dropActive && dropIgnore.indexOf(icon) === -1) {
+    if (icon.fsnode.type !== TYPE_FILE) {
+      if (icon === dropActive) {
+        ctx.strokeStyle = '#e5e9ea'
+        ctx.fillStyle = '#e5e9ea'
+        drawRoundRect(ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true)
+        border = 0
+      } else {
+        ctx.strokeStyle = '#ccd3d5'
+        ctx.fillStyle = '#f9fafb'
+        drawRoundRect(ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true)
+      }
+    }
+  } else {
+    if (icon.hover || icon.active) {
+      ctx.strokeStyle = '#e4e8e9'
+      ctx.fillStyle = '#f9fafb'
+      drawRoundRect(ctx, x, y, ICON_WIDTH, icon.bigIconHeight, ICON_RADIUS, true)
+    }
+
+    if (icon.active) {
+      ctx.strokeStyle = BLUEUI
+      ctx.fillStyle = BLUEUI
+      
+      if( currentActive.length !== 1 || dropActive ){
+        drawRoundRect(ctx, x, y + ICON_IMAGE_HEIGHT_AREA, ICON_WIDTH, icon.bigIconTextHeight, { bl: ICON_RADIUS, br: ICON_RADIUS }, true, false)
+      }else{
+        drawRoundRect(ctx, x, y + ICON_IMAGE_HEIGHT_AREA, ICON_WIDTH, icon.bigIconFullTextHeight, { bl: ICON_RADIUS, br: ICON_RADIUS }, true, false)
+      }
+
+    }
+  }
+
+  ctx.fillStyle = icon.active ? '#ffffff' : '#252525'
+  ctx.font = '13px Lato'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'top'
+
+  for (var i = 0, source = ( icon.active && !dropActive && currentActive.length === 1 ) ? icon.bigIconFullText : icon.bigIconText; i < source.length; i++) {
+    ctx.fillText(source[ i ], x + ICON_WIDTH / 2, 4 + y + (18*i) +ICON_IMAGE_HEIGHT_AREA)
+  }
+
+  if (!icon.bigIcon) {
+    if (icon.fsnode.type === TYPE_FOLDER && icon.fsnode.id !== 'trash') {
+      icon.bigIcon = FOLDER_ICON
+    } else if (icon.fsnode.id === 'trash') {
+      icon.bigIcon = new Image()
+      icon.bigIcon.src = icon.fsnode.icons.retina.small + '?time=' + Date.now()
+    } else {
+      icon.bigIcon = new Image()
+      icon.bigIcon.src = icon.fsnode.icons.small + (icon.fsnode.type === TYPE_FILE ? '?time=' + Date.now() : '')
+    }
+  }
+
+  if (icon.bigIcon.naturalWidth) {
+    var normalized = normalizeBigIconSize(icon.bigIcon)
+
+    ctx.drawImage(icon.bigIcon, x + (ICON_WIDTH - normalized.width) / 2, y + (ICON_IMAGE_HEIGHT_AREA - normalized.height) / 2, normalized.width, normalized.height)
+  } else {
+    $(icon.bigIcon).on('load', requestDraw)
+  }
+
+  if (icon.fsnode.isSharedRoot && icon.bigIcon.naturalWidth) {
+    var normalized = normalizeBigIconSize(icon.bigIcon)
+    var centerX = normalized.width + x + (ICON_WIDTH - normalized.width) / 2
+    var centerY = normalized.height + y + (ICON_IMAGE_HEIGHT_AREA - normalized.height) / 2
+
+    drawSharedCircle(ctx, { x: centerX - 5, y: centerY - 5 })
+  }
+
+  if (icon.fsnode.converting || icon.conversionProgress !== -1) {
+    if (icon.bigIcon.naturalWidth) {
+      var normalized = normalizeBigIconSize(icon.bigIcon)
+      var centerX = normalized.width + x + (ICON_WIDTH - normalized.width) / 2
+      var centerY = normalized.height + y + (ICON_IMAGE_HEIGHT_AREA - normalized.height) / 2
+
+      drawProgressCircle(ctx, { x: centerX, y: centerY }, icon.conversionProgress)
+    } else {
+      var centerX = x + ICON_WIDTH / 2
+      var centerY = y + ICON_IMAGE_HEIGHT_AREA / 2
+
+      drawProgressCircle(ctx, { x: centerX, y: centerY }, icon.conversionProgress)
+    }
+  }
+
+  if (
+    (disabledFileIcons && icon.fsnode.type === TYPE_FILE) ||
+    (dropActive && icon.fsnode.type === TYPE_FILE) ||
+    dropIgnore.indexOf(icon) !== -1 ||
+    icon.fsnode.fileId === 'TO_UPDATE' || isCutted(icon)
+  ) {
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'
+
+    if( currentActive.length !== 1 || dropActive ){
+      ctx.fillRect(x, y, ICON_WIDTH + 1, icon.bigIconHeight + 1)
+    }else{
+      ctx.fillRect(x, y, ICON_WIDTH + 1, icon.bigIconFullHeight + 1)
+    }
+
+  }
+
 }
 
 var drawProgressCircle = function (ctx, center, progress) {
@@ -1655,7 +1703,7 @@ var hideRenameTextarea = function (cancel) {
   icon.fsnode.rename(name, function (error) {
     if (error) {
       icon.fsnode.name = oldName
-      icon.lines = getIconLines(oldName)
+      icon.updateName()
       currentList = currentList.sort(currentSort)
 
       makeIconVisible(icon)
