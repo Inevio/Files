@@ -1210,7 +1210,7 @@
   border: 1px solid @blueHorbito;
   box-sizing: border-box;
   box-shadow: 0px 0px 4px @blueHorbito inset;
-  height: 40px;
+  min-height: 40px;
   line-height: 17px;
 
   &.active{

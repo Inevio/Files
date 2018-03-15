@@ -250,17 +250,18 @@ var Icon = function (fsnode) {
 
 Icon.prototype.updateName = function () {
 
-  this.bigIconFullText = getIconLines(this.fsnode.name)
+  var lines = getIconLines(this.fsnode.name)
+  this.bigIconFullText = Array.from(lines).map( function(row){ return row.trim() })
   this.bigIconFullTextHeight = 4 + ( this.bigIconFullText.length * ( 14 + 4 ) )
   this.bigIconFullHeight = ICON_IMAGE_HEIGHT_AREA + this.bigIconFullTextHeight
 
-  if( this.bigIconFullText.length <= 2 ){
+  if( this.bigIconFullText.length <= 3 ){
     this.bigIconText = this.bigIconFullText
   }else{
-    this.bigIconText = [ this.bigIconFullText[ 0 ] ]
+    this.bigIconText = [ lines[ 0 ].trim(), lines[ 1 ].trim() ]
 
-    var start = this.bigIconFullText[ 1 ]
-    var end = this.fsnode.name.slice( -1 * start.length )
+    var start = this.fsnode.name.slice( lines[ 0 ].length + lines[ 1 ].length ).slice(0, 15).trim()
+    var end = this.fsnode.name.slice( -15 ).trim()
     var itFits = false
     var removedChars = 1
     var text = ''
@@ -278,16 +279,11 @@ Icon.prototype.updateName = function () {
 
     }
 
-    this.bigIconText[ 1 ] = text
+    this.bigIconText[ 2 ] = text.trim()
 
   }
 
-  if (this.bigIconText.length > 1) {
-    this.bigIconTextHeight = 4 + 14 + 4 + 14 + 4
-  } else {
-    this.bigIconTextHeight = 4 + 14 + 4
-  }
-
+  this.bigIconTextHeight = 4 + ( (14 + 4) * this.bigIconText.length )
   this.bigIconHeight = ICON_IMAGE_HEIGHT_AREA + this.bigIconTextHeight
 
   return this
@@ -1375,7 +1371,7 @@ var getIconLines = function (text) {
   var line = ''
 
   if (ctx.measureText(text).width < ICON_TEXT_WIDTH) {
-    return [ text.trim() ]
+    return [ text ]
   }
 
   while (words.length > 0) {
@@ -1393,12 +1389,12 @@ var getIconLines = function (text) {
     if (ctx.measureText(line + words[ 0 ]).width < ICON_TEXT_WIDTH) {
       line += words.shift() + ' '
     } else {
-      lines.push(line.trim())
+      lines.push(line)
       line = ''
     }
 
     if (words.length === 0) {
-      lines.push(line.trim())
+      lines.push(line)
     }
   }
 
@@ -2162,7 +2158,8 @@ var showRenameTextarea = function (icon) {
   visualRenameTextarea.val(icon.fsnode.name).css({
 
     top: areaPosition.top + iconPosition.y + currentScroll + ICON_IMAGE_HEIGHT_AREA,
-    left: areaPosition.left + iconPosition.x
+    left: areaPosition.left + iconPosition.x,
+    height: icon.bigIconFullTextHeight
 
   }).data('icon', icon).addClass('active')
 
