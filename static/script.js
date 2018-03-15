@@ -12,6 +12,7 @@ var TYPE_FOLDER_SPECIAL = 1
 var TYPE_FOLDER = 2
 var TYPE_FILE = 3
 
+var DRAG_OFFSET = 5
 var PROGRESS_RADIUS = 5
 var PROGRESS_ICON = new Image()
 PROGRESS_ICON.src = 'https://static.horbito.com/app/1/img/processing@2x.png'
@@ -4167,6 +4168,7 @@ visualItemArea
       )
     }
 
+    drag.setOffset(DRAG_OFFSET)
     drag.ghost(ghost)
     drag.data(currentActive)
   })
