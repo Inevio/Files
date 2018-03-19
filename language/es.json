@@ -409,6 +409,7 @@
     "replace" : "Remplazar",
     "dontReplace" : "Mantener ambos",
     "alreadyExists" : "ya existe en",
+    "destinyFolder" : "la carpeta destino",
     "whatToDo"  : "¿Qué quieres hacer?",
     "noQuota" : "Lo sentimos, no hay suficiente espacio disponible en la nube destino",
     "onedriveTrash" : "Lo sentimos, pero Microsoft no permite usar la Papelera fuera de su sistema. Por favor, vaya a la <a href='https://onedrive.live.com' target='_blank'> pagina oficial de Onedrive </a> para restaurar o borrar permanentemente un archivo.",
