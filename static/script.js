@@ -15,11 +15,11 @@ var TYPE_FILE = 3
 var DRAG_OFFSET = 5
 var PROGRESS_RADIUS = 5
 var PROGRESS_ICON = new Image()
-PROGRESS_ICON.src = 'https://static.horbito.com/app/1/img/processing@2x.png'
+PROGRESS_ICON.src = 'https://cdn.horbito.com/app/1/img/processing@2x.png'
 var SHARING_ICON = new Image()
-SHARING_ICON.src = 'https://static.horbito.com/app/1/img/sharing@2x.png'
+SHARING_ICON.src = 'https://cdn.horbito.com/app/1/img/sharing@2x.png'
 var FOLDER_ICON = new Image()
-FOLDER_ICON.src = 'https://static.horbito.com/image/icons/64/retina/folder.png'
+FOLDER_ICON.src = 'https://cdn.horbito.com/image/icons/64/retina/folder.png'
 var SHARED_PATH = 0
 var RADIUS = 90
 var dy = 1
@@ -29,9 +29,9 @@ var LOADING_SPRITE = {
   onedrive: { image: new Image(), height: 90, width: 90, frames: 90, fps: 50, rows: 10, cols: 9 }
 }
 
-LOADING_SPRITE.dropbox.image.src = 'https://static.horbito.com/app/377/img/loading_dropbox@2x.png'
-LOADING_SPRITE.gdrive.image.src = 'https://static.horbito.com/app/377/img/loading_gdrive@2x.png'
-LOADING_SPRITE.onedrive.image.src = 'https://static.horbito.com/app/377/img/loading_onedrive@2x.png'
+LOADING_SPRITE.dropbox.image.src = 'https://cdn.horbito.com/app/1/img/loading_dropbox@2x.png'
+LOADING_SPRITE.gdrive.image.src = 'https://cdn.horbito.com/app/1/img/loading_gdrive@2x.png'
+LOADING_SPRITE.onedrive.image.src = 'https://cdn.horbito.com/app/1/img/loading_onedrive@2x.png'
 
 /* COLORS */
 var BLUEUI = '#0071f6'
@@ -97,89 +97,89 @@ var onedriveShowingFolder
 
 var folderIcons = {
   'normal': {
-    16: 'https://static.horbito.com/image/icons/16/normal/folder.png',
-    32: 'https://static.horbito.com/image/icons/32/normal/folder.png',
-    64: 'https://static.horbito.com/image/icons/64/normal/folder.png',
-    128: 'https://static.horbito.com/image/icons/128/normal/folder.png',
-    256: 'https://static.horbito.com/image/icons/256/normal/folder.png',
-    512: 'https://static.horbito.com/image/icons/512/normal/folder.png',
-    'micro': 'https://static.horbito.com/image/icons/16/normal/folder.png',
-    'tiny': 'https://static.horbito.com/image/icons/32/normal/folder.png',
-    'small': 'https://static.horbito.com/image/icons/64/normal/folder.png',
-    'normal': 'https://static.horbito.com/image/icons/128/normal/folder.png',
-    'big': 'https://static.horbito.com/image/icons/256/normal/folder.png'
+    16: 'https://cdn.horbito.com/image/icons/16/normal/folder.png',
+    32: 'https://cdn.horbito.com/image/icons/32/normal/folder.png',
+    64: 'https://cdn.horbito.com/image/icons/64/normal/folder.png',
+    128: 'https://cdn.horbito.com/image/icons/128/normal/folder.png',
+    256: 'https://cdn.horbito.com/image/icons/256/normal/folder.png',
+    512: 'https://cdn.horbito.com/image/icons/512/normal/folder.png',
+    'micro': 'https://cdn.horbito.com/image/icons/16/normal/folder.png',
+    'tiny': 'https://cdn.horbito.com/image/icons/32/normal/folder.png',
+    'small': 'https://cdn.horbito.com/image/icons/64/normal/folder.png',
+    'normal': 'https://cdn.horbito.com/image/icons/128/normal/folder.png',
+    'big': 'https://cdn.horbito.com/image/icons/256/normal/folder.png'
   },
 
   'retina': {
-    16: 'https://static.horbito.com/image/icons/16/retina/folder.png',
-    32: 'https://static.horbito.com/image/icons/32/retina/folder.png',
-    64: 'https://static.horbito.com/image/icons/64/retina/folder.png',
-    128: 'https://static.horbito.com/image/icons/128/retina/folder.png',
-    256: 'https://static.horbito.com/image/icons/256/retina/folder.png',
-    512: 'https://static.horbito.com/image/icons/512/retina/folder.png',
-    'micro': 'https://static.horbito.com/image/icons/16/retina/folder.png',
-    'tiny': 'https://static.horbito.com/image/icons/32/retina/folder.png',
-    'small': 'https://static.horbito.com/image/icons/64/retina/folder.png',
-    'normal': 'https://static.horbito.com/image/icons/128/retina/folder.png',
-    'big': 'https://static.horbito.com/image/icons/256/retina/folder.png'
+    16: 'https://cdn.horbito.com/image/icons/16/retina/folder.png',
+    32: 'https://cdn.horbito.com/image/icons/32/retina/folder.png',
+    64: 'https://cdn.horbito.com/image/icons/64/retina/folder.png',
+    128: 'https://cdn.horbito.com/image/icons/128/retina/folder.png',
+    256: 'https://cdn.horbito.com/image/icons/256/retina/folder.png',
+    512: 'https://cdn.horbito.com/image/icons/512/retina/folder.png',
+    'micro': 'https://cdn.horbito.com/image/icons/16/retina/folder.png',
+    'tiny': 'https://cdn.horbito.com/image/icons/32/retina/folder.png',
+    'small': 'https://cdn.horbito.com/image/icons/64/retina/folder.png',
+    'normal': 'https://cdn.horbito.com/image/icons/128/retina/folder.png',
+    'big': 'https://cdn.horbito.com/image/icons/256/retina/folder.png'
   }
 }
 var unknowFileIcons = {
   'normal': {
-    16: 'https://static.horbito.com/image/icons/16/normal/unknown.png',
-    32: 'https://static.horbito.com/image/icons/32/normal/unknown.png',
-    64: 'https://static.horbito.com/image/icons/64/normal/unknown.png',
-    128: 'https://static.horbito.com/image/icons/128/normal/unknown.png',
-    256: 'https://static.horbito.com/image/icons/256/normal/unknown.png',
-    512: 'https://static.horbito.com/image/icons/512/normal/unknown.png',
-    'micro': 'https://static.horbito.com/image/icons/16/normal/unknown.png',
-    'tiny': 'https://static.horbito.com/image/icons/32/normal/unknown.png',
-    'small': 'https://static.horbito.com/image/icons/64/normal/unknown.png',
-    'normal': 'https://static.horbito.com/image/icons/128/normal/unknown.png',
-    'big': 'https://static.horbito.com/image/icons/256/normal/unknown.png'
+    16: 'https://cdn.horbito.com/image/icons/16/normal/unknown.png',
+    32: 'https://cdn.horbito.com/image/icons/32/normal/unknown.png',
+    64: 'https://cdn.horbito.com/image/icons/64/normal/unknown.png',
+    128: 'https://cdn.horbito.com/image/icons/128/normal/unknown.png',
+    256: 'https://cdn.horbito.com/image/icons/256/normal/unknown.png',
+    512: 'https://cdn.horbito.com/image/icons/512/normal/unknown.png',
+    'micro': 'https://cdn.horbito.com/image/icons/16/normal/unknown.png',
+    'tiny': 'https://cdn.horbito.com/image/icons/32/normal/unknown.png',
+    'small': 'https://cdn.horbito.com/image/icons/64/normal/unknown.png',
+    'normal': 'https://cdn.horbito.com/image/icons/128/normal/unknown.png',
+    'big': 'https://cdn.horbito.com/image/icons/256/normal/unknown.png'
   },
 
   'retina': {
-    16: 'https://static.horbito.com/image/icons/16/retina/unknown.png',
-    32: 'https://static.horbito.com/image/icons/32/retina/unknown.png',
-    64: 'https://static.horbito.com/image/icons/64/retina/unknown.png',
-    128: 'https://static.horbito.com/image/icons/128/retina/unknown.png',
-    256: 'https://static.horbito.com/image/icons/256/retina/unknown.png',
-    512: 'https://static.horbito.com/image/icons/512/retina/unknown.png',
-    'micro': 'https://static.horbito.com/image/icons/16/retina/unknown.png',
-    'tiny': 'https://static.horbito.com/image/icons/32/retina/unknown.png',
-    'small': 'https://static.horbito.com/image/icons/64/retina/unknown.png',
-    'normal': 'https://static.horbito.com/image/icons/128/retina/unknown.png',
-    'big': 'https://static.horbito.com/image/icons/256/retina/unknown.png'
+    16: 'https://cdn.horbito.com/image/icons/16/retina/unknown.png',
+    32: 'https://cdn.horbito.com/image/icons/32/retina/unknown.png',
+    64: 'https://cdn.horbito.com/image/icons/64/retina/unknown.png',
+    128: 'https://cdn.horbito.com/image/icons/128/retina/unknown.png',
+    256: 'https://cdn.horbito.com/image/icons/256/retina/unknown.png',
+    512: 'https://cdn.horbito.com/image/icons/512/retina/unknown.png',
+    'micro': 'https://cdn.horbito.com/image/icons/16/retina/unknown.png',
+    'tiny': 'https://cdn.horbito.com/image/icons/32/retina/unknown.png',
+    'small': 'https://cdn.horbito.com/image/icons/64/retina/unknown.png',
+    'normal': 'https://cdn.horbito.com/image/icons/128/retina/unknown.png',
+    'big': 'https://cdn.horbito.com/image/icons/256/retina/unknown.png'
   }
 }
 var trashIcons = {
   'normal': {
-    16: 'https://static.horbito.com/image/icons/16/normal/trash.png',
-    32: 'https://static.horbito.com/image/icons/32/normal/trash.png',
-    64: 'https://static.horbito.com/image/icons/64/normal/trash.png',
-    128: 'https://static.horbito.com/image/icons/128/normal/trash.png',
-    256: 'https://static.horbito.com/image/icons/256/normal/trash.png',
-    512: 'https://static.horbito.com/image/icons/512/normal/trash.png',
-    'micro': 'https://static.horbito.com/image/icons/16/normal/trash.png',
-    'tiny': 'https://static.horbito.com/image/icons/32/normal/trash.png',
-    'small': 'https://static.horbito.com/image/icons/64/normal/trash.png',
-    'normal': 'https://static.horbito.com/image/icons/128/normal/trash.png',
-    'big': 'https://static.horbito.com/image/icons/256/normal/trash.png'
+    16: 'https://cdn.horbito.com/image/icons/16/normal/trash.png',
+    32: 'https://cdn.horbito.com/image/icons/32/normal/trash.png',
+    64: 'https://cdn.horbito.com/image/icons/64/normal/trash.png',
+    128: 'https://cdn.horbito.com/image/icons/128/normal/trash.png',
+    256: 'https://cdn.horbito.com/image/icons/256/normal/trash.png',
+    512: 'https://cdn.horbito.com/image/icons/512/normal/trash.png',
+    'micro': 'https://cdn.horbito.com/image/icons/16/normal/trash.png',
+    'tiny': 'https://cdn.horbito.com/image/icons/32/normal/trash.png',
+    'small': 'https://cdn.horbito.com/image/icons/64/normal/trash.png',
+    'normal': 'https://cdn.horbito.com/image/icons/128/normal/trash.png',
+    'big': 'https://cdn.horbito.com/image/icons/256/normal/trash.png'
   },
 
   'retina': {
-    16: 'https://static.horbito.com/image/icons/16/retina/trash.png',
-    32: 'https://static.horbito.com/image/icons/32/retina/trash.png',
-    64: 'https://static.horbito.com/image/icons/64/retina/trash.png',
-    128: 'https://static.horbito.com/image/icons/128/retina/trash.png',
-    256: 'https://static.horbito.com/image/icons/256/retina/trash.png',
-    512: 'https://static.horbito.com/image/icons/512/retina/trash.png',
-    'micro': 'https://static.horbito.com/image/icons/16/retina/trash.png',
-    'tiny': 'https://static.horbito.com/image/icons/32/retina/trash.png',
-    'small': 'https://static.horbito.com/image/icons/64/retina/trash.png',
-    'normal': 'https://static.horbito.com/image/icons/128/retina/trash.png',
-    'big': 'https://static.horbito.com/image/icons/256/retina/trash.png'
+    16: 'https://cdn.horbito.com/image/icons/16/retina/trash.png',
+    32: 'https://cdn.horbito.com/image/icons/32/retina/trash.png',
+    64: 'https://cdn.horbito.com/image/icons/64/retina/trash.png',
+    128: 'https://cdn.horbito.com/image/icons/128/retina/trash.png',
+    256: 'https://cdn.horbito.com/image/icons/256/retina/trash.png',
+    512: 'https://cdn.horbito.com/image/icons/512/retina/trash.png',
+    'micro': 'https://cdn.horbito.com/image/icons/16/retina/trash.png',
+    'tiny': 'https://cdn.horbito.com/image/icons/32/retina/trash.png',
+    'small': 'https://cdn.horbito.com/image/icons/64/retina/trash.png',
+    'normal': 'https://cdn.horbito.com/image/icons/128/retina/trash.png',
+    'big': 'https://cdn.horbito.com/image/icons/256/retina/trash.png'
   }
 }
 //
@@ -1088,7 +1088,7 @@ var drawIconInGrid = function(icon,x,y){
     if (icon.active) {
       ctx.strokeStyle = BLUEUI
       ctx.fillStyle = BLUEUI
-      
+
       if( currentActive.length !== 1 || dropActive ){
         drawRoundRect(ctx, x, y + ICON_IMAGE_HEIGHT_AREA, ICON_WIDTH, icon.bigIconTextHeight, { bl: ICON_RADIUS, br: ICON_RADIUS }, true, false)
       }else{
@@ -3909,11 +3909,11 @@ sortOptions.on('mousedown', function (e) {
 visualUploadButton.on('click', function (e) {
   if (win.hasClass('upload-not-explained')) {
     if (window.navigator.platform.toLowerCase().indexOf('mac') !== -1) {
-      $('.drag .video').html('<source src="https://static.horbito.com/app/1/img/uploadDragMac.mp4" type="video/mp4">')[ 0 ].play()
-      $('.button .video').html('<source src="https://static.horbito.com/app/1/img/uploadButtonMac.mp4" type="video/mp4">')[ 0 ].play()
+      $('.drag .video').html('<source src="https://cdn.horbito.com/app/1/img/uploadDragMac.mp4" type="video/mp4">')[ 0 ].play()
+      $('.button .video').html('<source src="https://cdn.horbito.com/app/1/img/uploadButtonMac.mp4" type="video/mp4">')[ 0 ].play()
     } else {
-      $('.drag .video').html('<source src="https://static.horbito.com/app/1/img/uploadDragWin.mp4" type="video/mp4">')[ 0 ].play()
-      $('.button .video').html('<source src="https://static.horbito.com/app/1/img/uploadButtonWin.mp4" type="video/mp4">')[ 0 ].play()
+      $('.drag .video').html('<source src="https://cdn.horbito.com/app/1/img/uploadDragWin.mp4" type="video/mp4">')[ 0 ].play()
+      $('.button .video').html('<source src="https://cdn.horbito.com/app/1/img/uploadButtonWin.mp4" type="video/mp4">')[ 0 ].play()
     }
 
     $('.explain-upload').show()
