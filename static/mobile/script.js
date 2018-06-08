@@ -29,7 +29,7 @@ var usersShared = [];
 var usersToAddShare = [];
 var usersToRemoveShare = [];
 var fileSelected;
-var myId = api.system.user().id;
+//var myId = api.system.user().id;
 var cancelProgress;
 var backWidth;
 var percentage;
@@ -1276,7 +1276,7 @@ win.on('swipedown', '.file-owners-section', function(e){
   $('.file-options').removeClass('renaming');
 });
 
-api.fs.on( 'move', function( structure, destinyID, originID ){
+/*api.fs.on( 'move', function( structure, destinyID, originID ){
 
  console.log('move', structure);
 
@@ -1294,9 +1294,9 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 
    }*/
 
-})
+/*})*/
 
-.on( 'new', function( structure ){
+/*.on( 'new', function( structure ){
 
   console.log('new', structure);
 
@@ -1305,15 +1305,15 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
     openDirectory( actualPathId, true );
   }
 
-})
+})*/
 
-.on( 'modified', function( structure ){
+/*.on( 'modified', function( structure ){
 
   console.log('modified', structure);
   
   if( structure.parent === actualPathId ){
     openDirectory( actualPathId, true );
-  }
+  }*/
 
   /*if( structure.parent === current.id ){
 
@@ -1347,9 +1347,9 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 
   }*/
 
-})
+/*})*/
 
-.on( 'remove', function( id, quota, parent ){
+/*.on( 'remove', function( id, quota, parent ){
 
   console.log('remove', arguments);
 
@@ -1360,9 +1360,9 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
     itemBack.click();
   }
 
-})
+})*/
 
-.on( 'rename', function( structure ){
+/*.on( 'rename', function( structure ){
 
   $( '.file-' + structure.id + ' .weexplorer-element-name').text( structure.name );
   //sortIcons( fileArea.find('.weexplorer-file') );
@@ -1378,9 +1378,9 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 
   $( '.weexplorer-sidebar .folder-' + structure.id + ' .weexplorer-sidebar-name' ).text( structure.name );
 
-})
+})*/
 
-.on( 'conversionEnd', function( fsnodeId ){
+/*.on( 'conversionEnd', function( fsnodeId ){
 
   console.log( 'conversionEnd', arguments );
   api.fs( fsnodeId, function( error, fsnode ){
@@ -1395,7 +1395,7 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 
   });
 
-})
+})*/
 
 /*.on( 'sharedStart', function( structure ){
 
@@ -1409,11 +1409,11 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 
 })*/
 
-.on( 'thumbnail', function( structure ){
+/*.on( 'thumbnail', function( structure ){
   $( '.file-' + structure.id ).find('.weexplorer-element-icon').css('background-image', 'url(' + structure.icons.normal + ')' )
-});
+});*/
 
-api.upload
+/*api.upload
 .on( 'fileEnqueued', function( file, queue ){
 
   console.log( 'fileEnqueued', arguments );
@@ -1478,24 +1478,24 @@ api.upload
   $('.progress-bar-loaded').width( 0 );
   openDirectory( actualPathId );
 
-});
+});*/
 
 // Start app
-openDirectory( 'root' );
+//openDirectory( 'root' );
 
 /* GENERATE SIDEBAR */
 
 // Esta parte la comento porque usa promesas y puede resultar un poco rara si no se han usado nunca
 // Sacamos las estructuras del sidebar asíncronamente
 // Para ello primero generamos 5 promesas
-var rootPath   = $.Deferred(); // Para la carpeta del usuario
-var hiddenPath = $.Deferred(); // Para las carpetas escondidas
-//var inboxPath  = $.Deferred(); // Para la carpeta de inbox
-//var sharedPath = $.Deferred(); // Para la carpeta de compartidos
-var customPath = $.Deferred(); // Para las carpetas que haya añadido el usuario
+//var rootPath   = $.Deferred(); // Para la carpeta del usuario
+//var hiddenPath = $.Deferred(); // Para las carpetas escondidas
+////var inboxPath  = $.Deferred(); // Para la carpeta de inbox
+////var sharedPath = $.Deferred(); // Para la carpeta de compartidos
+//var customPath = $.Deferred(); // Para las carpetas que haya añadido el usuario
 
 // Y determinamos que pasará cuando se cumplan esas promesas, en este caso, generamos el sidebar
-$.when( rootPath, hiddenPath, customPath ).then( function( rootPath, hiddenPath, customPath ){
+/*$.when( rootPath, hiddenPath, customPath ).then( function( rootPath, hiddenPath, customPath ){
 
   // AVISO -> hiddenPath es un array
   // Ponemos al principio rootPath, inboxPath y sharedPath
@@ -1540,13 +1540,13 @@ $.when( rootPath, hiddenPath, customPath ).then( function( rootPath, hiddenPath,
 
   sidebar.find( '.folder-' + record[ 0 ].id ).addClass('active');
 
-} );
+} );*/
 
 // Ahora que ya tenemos definido que va a pasar ejecutamos las peticiones para cumplir las promesas
 api.fs( 'root', function( error, structure ){
 
   // Ya tenemos la carpeta del usuario, cumplimos la promesa
-  rootPath.resolve( structure );
+  /*rootPath.resolve( structure );
 
   structure.list( { withPermissions : true }, function( error, list ){
 
@@ -1563,7 +1563,8 @@ api.fs( 'root', function( error, structure ){
     // Ya tenemos las carpetas ocultas, cumplimos la promesa
     hiddenPath.resolve( list );
 
-  });
+  });*/
+  console.log('soy files y recibo: ', error, structure)
 
 });
 
@@ -1583,7 +1584,7 @@ api.fs( 'root', function( error, structure ){
 
 });*/
 
-wql.getSidebar( function( error, rows ){
+/*wql.getSidebar( function( error, rows ){
 
   // Si hay algún error o no hay carpetas damos la promesa por cumplida
   if( error || !rows.length ){
@@ -1636,14 +1637,14 @@ wql.getSidebar( function( error, rows ){
 
   });
 
-});
+});*/
 
-if( params ){
+/*if( params ){
   if( params.command === 'selectSource' ||  params.command === 'selectDestiny' ){
     warn('selectSource/selectDestiny not implemented yet')
   }else{
     openDirectory( typeof params === 'object' ? parseInt( params.data ) || 'root' : params );
   }
-}
+}*/
 
-initFiles();
+//initFiles();
