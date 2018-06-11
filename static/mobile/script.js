@@ -2,11 +2,11 @@
 
 // Local variables
 var win            = $( this );
-var content        = $( '#weexplorer-content', win );
-var itemProto      = $( '.weexplorer-element.wz-prototype', win );
-var itemBack       = $( '.weexplorer-element.back', win );
-var title          = $( '#weexplorer-menu-name', win );
-var sidebar        = $( '#weexplorer-sidebar', win );
+var content        = $( '#weexplorer-content' );
+var itemProto      = $( '.weexplorer-element.wz-prototype' );
+var itemBack       = $( '.weexplorer-element.back' );
+var title          = $( '#weexplorer-menu-name' );
+var sidebar        = $( '#weexplorer-sidebar');
 var sidebarElement = $( '.weexplorer-sidebar-element.wz-prototype', sidebar );
 var uploadButton   = $('.weexplorer-menu-upload')
 var userPrototype  = $('.file-options .file-owners-container .user.wz-prototype');
@@ -29,7 +29,7 @@ var usersShared = [];
 var usersToAddShare = [];
 var usersToRemoveShare = [];
 var fileSelected;
-//var myId = api.system.user().id;
+var myId = api.system.user().id;
 var cancelProgress;
 var backWidth;
 var percentage;
@@ -191,6 +191,7 @@ var openDirectory = function( id, jump, clear ){
 
       $('#weexplorer-content').scrollTop(0);
       uploadButton.data( 'data-wz-uploader-destiny', actualPathId )
+      console.log(content,icons)
       content.append( icons );
 
     });
@@ -1481,28 +1482,30 @@ win.on('swipedown', '.file-owners-section', function(e){
 });*/
 
 // Start app
-//openDirectory( 'root' );
+console.log(lang)
+openDirectory('root');
 
 /* GENERATE SIDEBAR */
 
 // Esta parte la comento porque usa promesas y puede resultar un poco rara si no se han usado nunca
 // Sacamos las estructuras del sidebar asíncronamente
 // Para ello primero generamos 5 promesas
-//var rootPath   = $.Deferred(); // Para la carpeta del usuario
-//var hiddenPath = $.Deferred(); // Para las carpetas escondidas
-////var inboxPath  = $.Deferred(); // Para la carpeta de inbox
-////var sharedPath = $.Deferred(); // Para la carpeta de compartidos
-//var customPath = $.Deferred(); // Para las carpetas que haya añadido el usuario
+var rootPath   = $.Deferred(); // Para la carpeta del usuario
+var hiddenPath = $.Deferred(); // Para las carpetas escondidas
+//var inboxPath  = $.Deferred(); // Para la carpeta de inbox
+//var sharedPath = $.Deferred(); // Para la carpeta de compartidos
+var customPath = $.Deferred(); // Para las carpetas que haya añadido el usuario
 
 // Y determinamos que pasará cuando se cumplan esas promesas, en este caso, generamos el sidebar
-/*$.when( rootPath, hiddenPath, customPath ).then( function( rootPath, hiddenPath, customPath ){
+$.when( rootPath, hiddenPath ).then( function( rootPath, hiddenPath ){
+//$.when( rootPath, hiddenPath, customPath ).then( function( rootPath, hiddenPath, customPath ){
 
   // AVISO -> hiddenPath es un array
   // Ponemos al principio rootPath, inboxPath y sharedPath
   hiddenPath.unshift( rootPath );
 
   // Y concatenamos con el listado de carpetas personalizadas
-  hiddenPath = hiddenPath.concat( customPath );
+  //hiddenPath = hiddenPath.concat( customPath );
 
   // Y generamos el sidebar
   hiddenPath.forEach( function( element ){
@@ -1513,6 +1516,7 @@ win.on('swipedown', '.file-owners-section', function(e){
 
     element.id = parseInt(element.id);
 
+    //if( element.id == api.system.user().rootPath ){
     if( element.id == api.system.user().rootPath ){
       controlFolder.removeClass( 'folder' ).addClass( 'userFolder user' );
     }else if( element.id === api.system.user().inboxPath ){
@@ -1540,13 +1544,15 @@ win.on('swipedown', '.file-owners-section', function(e){
 
   sidebar.find( '.folder-' + record[ 0 ].id ).addClass('active');
 
-} );*/
+} );
 
 // Ahora que ya tenemos definido que va a pasar ejecutamos las peticiones para cumplir las promesas
 api.fs( 'root', function( error, structure ){
 
   // Ya tenemos la carpeta del usuario, cumplimos la promesa
-  /*rootPath.resolve( structure );
+  rootPath.resolve( structure );
+
+  console.log('soy files y recibo: ', error, structure)
 
   structure.list( { withPermissions : true }, function( error, list ){
 
@@ -1563,8 +1569,8 @@ api.fs( 'root', function( error, structure ){
     // Ya tenemos las carpetas ocultas, cumplimos la promesa
     hiddenPath.resolve( list );
 
-  });*/
-  console.log('soy files y recibo: ', error, structure)
+  });
+  
 
 });
 
