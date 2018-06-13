@@ -37,8 +37,8 @@ var percentage;
 // Functions
 var initFiles = function(){
 
-  StatusBar.backgroundColorByHexString("#fff");
-  StatusBar.styleDefault();
+  //StatusBar.backgroundColorByHexString("#fff");
+  //StatusBar.styleDefault();
   translate();
   if (params && params[0] === 'select-source') {
     $('#weexplorer-content').addClass('select-source-mode');
@@ -1277,27 +1277,27 @@ win.on('swipedown', '.file-owners-section', function(e){
   $('.file-options').removeClass('renaming');
 });
 
-/*api.fs.on( 'move', function( structure, destinyID, originID ){
+api.fs.on( 'move', function( structure, destinyID, originID ){
 
  console.log('move', structure);
 
-   /*if( originID !== destinyID ){
+   if( originID !== destinyID ){
 
-       if( originID === current.id ){
+      if( originID === current.id ){
 
-           fileArea.children( '.weexplorer-file-' + structure.id ).remove();
-           centerIcons();
-           updateFolderStatusMessage();
+        fileArea.children( '.weexplorer-file-' + structure.id ).remove();
+        centerIcons();
+        updateFolderStatusMessage();
 
-       }else if( destinyID === current.id ){
-           displayIcons( icon( structure ) );
-       }
+      }else if( destinyID === current.id ){
+        displayIcons( icon( structure ) );
+      }
 
-   }*/
+   }
 
-/*})*/
+})
 
-/*.on( 'new', function( structure ){
+.on( 'new', function( structure ){
 
   console.log('new', structure);
 
@@ -1306,51 +1306,50 @@ win.on('swipedown', '.file-owners-section', function(e){
     openDirectory( actualPathId, true );
   }
 
-})*/
+})
 
-/*.on( 'modified', function( structure ){
+.on( 'modified', function( structure ){
 
   console.log('modified', structure);
   
   if( structure.parent === actualPathId ){
     openDirectory( actualPathId, true );
-  }*/
+  }
 
-  /*if( structure.parent === current.id ){
+  if( structure.parent === current.id ){
 
     var file = $('.file-' + structure.id );
 
     if( file.hasClass('temporal-file') && structure.type !== 3 ){
 
-     file
-       .removeClass('temporal-file weexplorer-file-uploading')
-       .addClass('file')
-       .data( 'fsnode', structure )
-       .find('img')
-           .attr( 'attr', file.find('img').attr('src').replace( '?upload', '' ) );
+      file
+        .removeClass('temporal-file weexplorer-file-uploading')
+        .addClass('file')
+        .data( 'fsnode', structure )
+        .find('img')
+        .attr( 'attr', file.find('img').attr('src').replace( '?upload', '' ) );
 
 
     }else if( file.hasClass('file') && structure.type === 3 ){
 
-     file
-       .addClass('temporal-file weexplorer-file-uploading')
-       .removeClass('file')
-       .data( 'fsnode', structure )
-       .find('img')
-           .attr( 'attr', file.find('img').attr('src').replace( '?upload', '' ) );
-
+      file
+        .addClass('temporal-file weexplorer-file-uploading')
+        .removeClass('file')
+        .data( 'fsnode', structure )
+        .find('img')
+        .attr( 'attr', file.find('img').attr('src').replace( '?upload', '' ) );
 
     }else{
-     file.data( 'fsnode', structure );
+      file.data( 'fsnode', structure );
     }
 
     console.log( file.data('fsnode').mime );
 
-  }*/
+  }
 
-/*})*/
+})
 
-/*.on( 'remove', function( id, quota, parent ){
+.on( 'remove', function( id, quota, parent ){
 
   console.log('remove', arguments);
 
@@ -1361,9 +1360,9 @@ win.on('swipedown', '.file-owners-section', function(e){
     itemBack.click();
   }
 
-})*/
+})
 
-/*.on( 'rename', function( structure ){
+.on( 'rename', function( structure ){
 
   $( '.file-' + structure.id + ' .weexplorer-element-name').text( structure.name );
   //sortIcons( fileArea.find('.weexplorer-file') );
@@ -1379,9 +1378,9 @@ win.on('swipedown', '.file-owners-section', function(e){
 
   $( '.weexplorer-sidebar .folder-' + structure.id + ' .weexplorer-sidebar-name' ).text( structure.name );
 
-})*/
+})
 
-/*.on( 'conversionEnd', function( fsnodeId ){
+.on( 'conversionEnd', function( fsnodeId ){
 
   console.log( 'conversionEnd', arguments );
   api.fs( fsnodeId, function( error, fsnode ){
@@ -1396,9 +1395,9 @@ win.on('swipedown', '.file-owners-section', function(e){
 
   });
 
-})*/
+})
 
-/*.on( 'sharedStart', function( structure ){
+.on( 'sharedStart', function( structure ){
 
    $( '.weexplorer-file-' + structure.id, win ).addClass( 'shared' );
 
@@ -1408,13 +1407,13 @@ win.on('swipedown', '.file-owners-section', function(e){
 
    $( '.weexplorer-file-' + structure.id, win ).removeClass( 'shared' );
 
-})*/
+})
 
-/*.on( 'thumbnail', function( structure ){
+.on( 'thumbnail', function( structure ){
   $( '.file-' + structure.id ).find('.weexplorer-element-icon').css('background-image', 'url(' + structure.icons.normal + ')' )
-});*/
+});
 
-/*api.upload
+api.upload
 .on( 'fileEnqueued', function( file, queue ){
 
   console.log( 'fileEnqueued', arguments );
@@ -1479,7 +1478,7 @@ win.on('swipedown', '.file-owners-section', function(e){
   $('.progress-bar-loaded').width( 0 );
   openDirectory( actualPathId );
 
-});*/
+});
 
 // Start app
 console.log(lang)
