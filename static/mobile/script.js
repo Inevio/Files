@@ -1,7 +1,5 @@
-
-
 // Local variables
-var win            = $( this );
+var win            = $(document.body);
 var content        = $( '#weexplorer-content' );
 var itemProto      = $( '.weexplorer-element.wz-prototype' );
 var itemBack       = $( '.weexplorer-element.back' );
@@ -40,7 +38,7 @@ var initFiles = function(){
   //StatusBar.backgroundColorByHexString("#fff");
   //StatusBar.styleDefault();
   translate();
-  if (params && params[0] === 'select-source') {
+  if ( typeof params !== 'undefined' && params.length && params[0] === 'select-source') {
     $('#weexplorer-content').addClass('select-source-mode');
     $('.attach-footer').addClass('select-source-mode');
   }
@@ -64,7 +62,6 @@ var changeName = function( fsnode ){
   }else if( fsnode.type === 1 ){
     fsnode.name = lang.main.folderTranslations[ fsnode.name ] || fsnode.name
   }
-
   return fsnode;
 
 };
@@ -92,7 +89,6 @@ var sortByName = function( a, b ){
     return b[i]? -1:0;
 
   }
-
   return a.fsnode.type > b.fsnode.type ? 1 : -1;
 
 };
@@ -127,11 +123,10 @@ var iconBack = function(){
     itemBack.css( 'display', 'none' );
   }else{
 
-    itemBack
-      .css( 'display', 'block' )
-      .children( '.weexplorer-back-text' )
-      .text( lang.backTo + ' ' + record[ 1 ].name );
-
+  itemBack
+    .css( 'display', 'block' )
+    .children( '.weexplorer-back-text' )
+    .text( lang.backTo + ' ' + record[ 1 ].name );
   }
 
 };
@@ -147,19 +142,17 @@ var openDirectory = function( id, jump, clear ){
       if( clear ){
         record = [];
       }
-
       record.unshift( { id : structure.id, name : structure.name } );
 
     }
 
     // To Do -> Error
-
     title.text( structure.name );
     sidebar
       .children()
-        .removeClass('active')
-        .filter('.folder-' + structure.id )
-        .addClass('active');
+      .removeClass('active')
+      .filter('.folder-' + structure.id )
+      .addClass('active');
 
     structure.list( { withPermissions : true }, function( error, list ){
 
@@ -172,7 +165,6 @@ var openDirectory = function( id, jump, clear ){
       })
 
       var icons = $();
-
       for( var i in list ){
         changeName( list[ i ] )
         icons = icons.add( icon(list[ i ]) );
@@ -212,6 +204,7 @@ var showSidebar = function(){
 
 var hideSidebar = function(){
 
+  console.log(win.hasClass( 'sidebar' ))
   if( win.hasClass( 'sidebar' ) ){
 
     $( '#weexplorer-sidebar' ).transition({ x : '-100%' }, transitionTime , function(){
@@ -253,7 +246,6 @@ var showOptions = function( file ){
   var prototype = $('.share-details .friend-list .user.wz-prototype');
 
   console.log('file', file);
-
   $('.file-owners-container .user').not('.wz-prototype').remove();
   $('.share-with-friends .user').not('.wz-prototype').remove();
   $('.file-options .file-title').text( file.name );
@@ -314,11 +306,9 @@ var showOptions = function( file ){
       pathList[0] = changeName( pathList[0] )
 
       var stringPath = '';
-
       for( var i=0, len = pathList.length; i < len; i++ ){
 
         stringPath = stringPath + pathList[i].name;
-
         if( i != (len-1) ){
           stringPath = stringPath + ' > ';
         }
@@ -340,7 +330,6 @@ var showOptions = function( file ){
     if( users.length ){
 
       var permissions = users[ 0 ].permissions;
-
       Object.keys( permissions ).forEach( function( permission ){
 
         if( permissions[ permission ] ){
@@ -367,7 +356,6 @@ var showOptions = function( file ){
 
     //console.log(oldPermissions);
     console.log('users',users);
-
     $('.file-owners-container .user').not('.wz-prototype').remove();
 
     $.each( users, function( index, userInArray ){
@@ -414,7 +402,6 @@ var showOptions = function( file ){
             toInsertS.push( userS );
           }
 
-
         }
 
         if( index == users.length - 1 ){
@@ -447,13 +434,9 @@ var showOptions = function( file ){
 
       });
 
-
-
     });
 
   });
-
-
 
   $( '.file-options' ).show().transition({
     'y' : yDeployed
@@ -576,7 +559,6 @@ var hideCreateLink = function(){
         },0);
 
       }
-
       mode = 2;
 
     });
@@ -767,10 +749,8 @@ var acceptShare2 = function(){
   usersToApi = usersToApi.concat(usersToAddShare);
 
   if( JSON.stringify(oldPermissions) != JSON.stringify(newPermissions) ){
-
     //Si los permisos son distintos, aplicamos a todos los usuarios que tienen el archivo
     usersToApi = usersToApi.concat(usersShared);
-
   }
 
   usersToApi.forEach( function( userId ){
@@ -992,7 +972,6 @@ $( '#weexplorer-content' )
     return openDirectory( structure.id );
   }
 
-
   if ( $('#weexplorer-content').hasClass('select-source-mode') ) {
     $(this).find('.ui-radio-button').toggleClass('active');
     var nSelected = $('.ui-radio-button.active');
@@ -1026,7 +1005,6 @@ $( '#weexplorer-content' )
     }
 
   });
-
   e.stopPropagation();
 
 });
@@ -1047,7 +1025,6 @@ sidebar.on( 'click', '.weexplorer-sidebar-element', function(){
   if( !$(this).hasClass('active') ){
     openDirectory( $(this).data('fileId'), false, false );
   }
-
   hideSidebar();
 
 });
@@ -1063,12 +1040,12 @@ attachButton.on( 'click' , function(){
 
 $('.opacity-cover').on('click', function(e){
 
-  if( mode == 1 ){
+  console.log(mode)
+  if( mode === 1 ){
     hideSidebar();
   }else{
     hideOptions(true);
   }
-
   e.stopPropagation();
 
 });
@@ -1398,15 +1375,11 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 })
 
 .on( 'sharedStart', function( structure ){
-
-   $( '.weexplorer-file-' + structure.id, win ).addClass( 'shared' );
-
+  $( '.weexplorer-file-' + structure.id, win ).addClass( 'shared' );
 })
 
 .on( 'sharedStop', function( structure ){
-
-   $( '.weexplorer-file-' + structure.id, win ).removeClass( 'shared' );
-
+  $( '.weexplorer-file-' + structure.id, win ).removeClass( 'shared' );
 })
 
 .on( 'thumbnail', function( structure ){
@@ -1491,8 +1464,8 @@ openDirectory('root');
 // Para ello primero generamos 5 promesas
 var rootPath   = $.Deferred(); // Para la carpeta del usuario
 var hiddenPath = $.Deferred(); // Para las carpetas escondidas
-//var inboxPath  = $.Deferred(); // Para la carpeta de inbox
-//var sharedPath = $.Deferred(); // Para la carpeta de compartidos
+var inboxPath  = $.Deferred(); // Para la carpeta de inbox
+var sharedPath = $.Deferred(); // Para la carpeta de compartidos
 var customPath = $.Deferred(); // Para las carpetas que haya añadido el usuario
 
 // Y determinamos que pasará cuando se cumplan esas promesas, en este caso, generamos el sidebar
@@ -1552,7 +1525,6 @@ api.fs( 'root', function( error, structure ){
   rootPath.resolve( structure );
 
   console.log('soy files y recibo: ', error, structure)
-
   structure.list( { withPermissions : true }, function( error, list ){
 
     // Vamos a filtrar la lista para quedarnos solo con las carpetas ocultas, es decir, de tipo 7
@@ -1570,7 +1542,6 @@ api.fs( 'root', function( error, structure ){
 
   });
   
-
 });
 
 /*api.fs( 'received', function( error, structure ){
@@ -1579,9 +1550,9 @@ api.fs( 'root', function( error, structure ){
   console.log(arguments);
   inboxPath.resolve( structure );
 
-});*/
+});
 
-/*api.fs( 'shared', function( error, structure ){
+api.fs( 'shared', function( error, structure ){
 
   // Ya tenemos la carpetas de compartidos, cumplimos la promesa
   //sharedPath.resolve( structure );
@@ -1644,12 +1615,12 @@ api.fs( 'root', function( error, structure ){
 
 });*/
 
-/*if( params ){
+if( typeof params !== 'undefined' ){
   if( params.command === 'selectSource' ||  params.command === 'selectDestiny' ){
     warn('selectSource/selectDestiny not implemented yet')
   }else{
     openDirectory( typeof params === 'object' ? parseInt( params.data ) || 'root' : params );
   }
-}*/
+}
 
-//initFiles();
+initFiles();
