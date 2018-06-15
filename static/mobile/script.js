@@ -1260,13 +1260,13 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 
    if( originID !== destinyID ){
 
-      if( originID === current.id ){
+      if( originID === actualPathId ){
 
         fileArea.children( '.weexplorer-file-' + structure.id ).remove();
         centerIcons();
         updateFolderStatusMessage();
 
-      }else if( destinyID === current.id ){
+      }else if( destinyID === actualPathId ){
         displayIcons( icon( structure ) );
       }
 
@@ -1293,7 +1293,7 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
     openDirectory( actualPathId, true );
   }
 
-  if( structure.parent === current.id ){
+  if( structure.parent === actualPathId ){
 
     var file = $('.file-' + structure.id );
 
@@ -1454,7 +1454,7 @@ api.upload
 });
 
 // Start app
-console.log(lang)
+//console.log(lang)
 openDirectory('root');
 
 /* GENERATE SIDEBAR */
@@ -1521,6 +1521,10 @@ $.when( rootPath, hiddenPath ).then( function( rootPath, hiddenPath ){
 // Ahora que ya tenemos definido que va a pasar ejecutamos las peticiones para cumplir las promesas
 api.fs( 'root', function( error, structure ){
 
+  if(!error){
+    //alert('cargo files')
+    console.warn('llego a cargar fs')
+  } 
   // Ya tenemos la carpeta del usuario, cumplimos la promesa
   rootPath.resolve( structure );
 
@@ -1623,4 +1627,5 @@ if( typeof params !== 'undefined' ){
   }
 }
 
+alert('abro files')
 initFiles();
