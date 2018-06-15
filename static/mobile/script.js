@@ -1523,7 +1523,7 @@ api.fs( 'root', function( error, structure ){
 
   if(!error){
     //alert('cargo files')
-    console.warn('llego a cargar fs')
+    //console.warn('llego a cargar fs')
   } 
   // Ya tenemos la carpeta del usuario, cumplimos la promesa
   rootPath.resolve( structure );
@@ -1627,5 +1627,5 @@ if( typeof params !== 'undefined' ){
   }
 }
 
-alert('abro files')
+//alert('abro files')
 initFiles();
