@@ -11,7 +11,7 @@ var userList = $('.file-shared .list');
 var changeVolumeName = function( fsnode ){
 
   if( fsnode.type === 0 && !isNaN( parseInt( fsnode.name ) ) ){
-    fsnode.name = api.system.user().user;
+    fsnode.name = api.system.user().name;
   }
 
   return fsnode;
