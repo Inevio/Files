@@ -29,7 +29,7 @@ var usersShared = [];
 var usersToAddShare = [];
 var usersToRemoveShare = [];
 var fileSelected;
-var myId = api.system.user().id;
+var myId = api.system.user().idUser;
 var cancelProgress;
 var backWidth;
 var percentage;
@@ -60,7 +60,7 @@ var addZero = function( value ){
 var changeName = function( fsnode ){
 
   if( fsnode.type === 0 && !isNaN( parseInt( fsnode.name ) ) ){
-    fsnode.name = api.system.user().user;
+    fsnode.name = api.system.user().name;
   }else if( fsnode.type === 1 ){
     fsnode.name = lang.main.folderTranslations[ fsnode.name ] || fsnode.name
   }
@@ -403,7 +403,7 @@ var showOptions = function( file ){
           userS.addClass('active');
           user.find('figure').css( "background-image",'url("'+ userI.avatar.normal +'")' );
 
-          if( userI.id == api.system.user().id ){
+          if( userI.id == api.system.user().idUser ){
             user.find('.username').text( user.find('.username').text() + ' ' + lang.propertiesFileOwner );
           }
 
@@ -1310,7 +1310,7 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 .on( 'modified', function( structure ){
 
   console.log('modified', structure);
-  
+
   if( structure.parent === actualPathId ){
     openDirectory( actualPathId, true );
   }
