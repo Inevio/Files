@@ -157,6 +157,7 @@ var openDirectory = function( id, jump, clear ){
     structure.list( { withPermissions : true }, function( error, list ){
 
       // To Do -> Error
+      console.log('list', error, list)
       content.children().not( itemProto ).not( itemBack ).not('.empty-folder').remove();
 
       list = list.sort( function( a, b ){
@@ -170,7 +171,7 @@ var openDirectory = function( id, jump, clear ){
         icons = icons.add( icon(list[ i ]) );
       }
 
-      if( id != actualPathId){
+      if( id !== actualPathId){
         iconBack();
       }
       actualPathId = id;
