@@ -387,11 +387,6 @@ var onedriveNode = function (data) {
 
 var handleError = function (err) {
   console.error(JSON.stringify(err, null, 2))
-  if (api.system.user().idUser === 50523) {
-    alert(JSON.stringify(err, null, 2))
-  } else {
-    alert('Error')
-  }
 }
 
 var acceptButtonHandler = function () {
@@ -598,7 +593,7 @@ var cancelButtonHandler = function () {
 
 var changeName = function (fsnode) {
   if (fsnode.type === 0 && !isNaN(parseInt(fsnode.name))) {
-    fsnode.name = api.system.user().name
+    fsnode.name = api.system.workspace().username
   } else if (fsnode.type === 1) {
     fsnode.name = lang.main.folderTranslations[ fsnode.name ] || fsnode.name
   }
@@ -2905,9 +2900,6 @@ var dropboxToDropbox = function (options) {
 
   // Different account
   } else {
-    if (api.system.user().idUser != 50523) {
-      return alert(lang.developing)
-    }
 
     options.account.toDropbox(options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
       if (err) return handleError(err)
@@ -3089,10 +3081,6 @@ var gdriveToGdrive = function (options) {
 
   // Different account
   } else {
-    if (api.system.user().idUser != 50523) {
-      return alert(lang.developing)
-    }
-
     options.account.toGDrive(options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
       if (err) return handleError(err)
 
@@ -3253,10 +3241,6 @@ var onedriveToOnedrive = function (options) {
 
   // Diferent account
   } else {
-    if (api.system.user().idUser != 50523) {
-      return alert(lang.developing)
-    }
-
     options.account.toOnedrive(options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
       if (err) return handleError(err)
 
