@@ -55,7 +55,7 @@ var loadInfo = function( id ){
     var sharedPromises = [];
 
     users.forEach( function( user ){
-      usersList[ user.id ] = user;
+      usersList[ user.idWorkspace ] = user;
     });
 
     sharedWith = sharedWith.filter( function( share ){
@@ -88,7 +88,7 @@ var loadInfo = function( id ){
       users = users.filter( function( user ){
         var notFound = true;
         sharedWith.forEach( function( shared ){
-          if ( user.id === shared.userId ) {
+          if ( user.idWorkspace === shared.userId ) {
             notFound =  false;
           }
         });
