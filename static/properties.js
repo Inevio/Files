@@ -194,7 +194,7 @@ var loadUsers = function( fsnode ){
 var appendUser = function( user , isOwner ){
 
   var newUser = userPrototype.clone();
-  newUser.removeClass( 'wz-prototype' ).addClass( 'user-' + user.id );
+  newUser.removeClass( 'wz-prototype' ).addClass( 'user-' + user.idWorkspace );
   newUser.find( 'img' ).css( 'background-image' , 'url(' + user.avatar.small + ')' );
   newUser.find( '.name' ).text( user.fullName );
 
