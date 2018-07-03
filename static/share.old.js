@@ -57,7 +57,7 @@
                     $( '.share-how-' + i, state ).mousedown();
                 }
 
-                if( owner !== api.system.user().id ){
+                if( owner !== api.system.workspace().idWorkspace ){
                     state.addClass( 'blocked' );
                 }
 
@@ -154,7 +154,7 @@
     win
     .on( 'mousedown', '.share-how article', function(){
 
-        if( owner === api.system.user().id || loading ){
+        if( owner === api.system.workspace().idWorkspace || loading ){
 
             var button = $(this).find( 'figure' );
 

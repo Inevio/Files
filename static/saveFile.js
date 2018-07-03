@@ -303,7 +303,7 @@
 
                 fileArea.data( 'wz-uploader-destiny', structure.id );
 
-                if( structure.id === api.system.user().rootPath ){
+                if( structure.id === api.system.workspace().rootPath ){
                     folderBar.removeClass( 'folder music photo video doc' ).addClass( 'user' );
                 }else if( structure.name === 'Documents' || structure.name === 'Documentos' ){
                     folderBar.removeClass( 'folder music photo video user' ).addClass( 'doc' );
@@ -438,7 +438,7 @@
 
                         if( error ){
                             alert( error );
-                        }else if( structure.owner === api.system.user().idUser || structure.permissions.modify === 1 ){
+                        }else if( structure.owner === api.system.workspace().idWorkspace || structure.permissions.modify === 1 ){
 
                             structure.remove( function( error, quota ){
 

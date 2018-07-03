@@ -29,7 +29,7 @@ var usersShared = [];
 var usersToAddShare = [];
 var usersToRemoveShare = [];
 var fileSelected;
-var myId = api.system.user().idUser;
+var myId = api.system.workspace().idWorkspace;
 var cancelProgress;
 var backWidth;
 var percentage;
@@ -60,7 +60,7 @@ var addZero = function( value ){
 var changeName = function( fsnode ){
 
   if( fsnode.type === 0 && !isNaN( parseInt( fsnode.name ) ) ){
-    fsnode.name = api.system.user().name;
+    fsnode.name = api.system.workspace().name;
   }else if( fsnode.type === 1 ){
     fsnode.name = lang.main.folderTranslations[ fsnode.name ] || fsnode.name
   }
@@ -403,7 +403,7 @@ var showOptions = function( file ){
           userS.addClass('active');
           user.find('figure').css( "background-image",'url("'+ userI.avatar.normal +'")' );
 
-          if( userI.id == api.system.user().idUser ){
+          if( userI.id == api.system.workspace().idWorkspace ){
             user.find('.username').text( user.find('.username').text() + ' ' + lang.propertiesFileOwner );
           }
 
@@ -709,17 +709,17 @@ var acceptShare1 = function(){
 
   usersArray.each( function(index){
 
-    if( $(this).hasClass('active') && insertedIds.indexOf( $(this).data('user').id ) == -1 ){
+    if( $(this).hasClass('active') && insertedIds.indexOf( $(this).data('user').idWorkspace ) == -1 ){
 
-      usersToAddShare.push( $(this).data('user').id );
+      usersToAddShare.push( $(this).data('user').idWorkspace );
 
-    }else if( !$(this).hasClass('active') && insertedIds.indexOf( $(this).data('user').id ) != -1 ){
+    }else if( !$(this).hasClass('active') && insertedIds.indexOf( $(this).data('user').idWorkspace ) != -1 ){
 
-      usersToRemoveShare.push( $(this).data('user').id );
+      usersToRemoveShare.push( $(this).data('user').idWorkspace );
 
     }else if( $(this).hasClass('active') ){
 
-      usersShared.push( $(this).data('user').id );
+      usersShared.push( $(this).data('user').idWorkspace );
 
     }
 
@@ -1513,9 +1513,9 @@ $.when( rootPath, hiddenPath, customPath ).then( function( rootPath, hiddenPath,
 
     element.id = parseInt(element.id);
 
-    if( element.id == api.system.user().rootPath ){
+    if( element.id == api.system.workspace().rootPath ){
       controlFolder.removeClass( 'folder' ).addClass( 'userFolder user' );
-    }else if( element.id === api.system.user().inboxPath ){
+    }else if( element.id === api.system.workspace().inboxPath ){
       controlFolder.addClass( 'receivedFolder' );
       //notifications();
     }else if( element.id === 'shared' ){

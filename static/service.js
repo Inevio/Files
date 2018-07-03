@@ -81,7 +81,7 @@ var addArrow = function( appName, text, position ){
 
 }
 
-wql.isFirstOpen( [ api.system.user().idUser ] , function( e , o ){
+wql.isFirstOpen( [ api.system.workspace().idWorkspace ] , function( e , o ){
 
   if ( o.length === 0 ){
 
