@@ -579,7 +579,7 @@ var createLink = function(){
       structure.addLink( password, preview, downloads, function( error, link ){
 
         if( error ){
-          return navigator.notification.alert( '', function(){}, error );
+          return alert( '', function(){}, error );
         }
 
         /*if( appendLink( link, true ) ){
@@ -851,7 +851,7 @@ var acceptRename = function(){
       file.rename( $('.file-options .file-rename').val() ,function( error, o){
 
         if( error ){
-          navigator.notification.alert( '', function(){}, error );
+          alert( '', function(){}, error );
         }
 
         $('.file-options .file-rename').blur();
@@ -949,8 +949,9 @@ $( '#weexplorer-content' )
 
   if( structure.pending ){
 
-    return navigator.notification.confirm( lang.main.fileReceivedDialogDescription, function( accepted ){
+    return confirm( lang.main.fileReceivedDialogDescription, function( accepted ){
 
+      console.log('PULSADO BOTON ' + accepted)
       accepted = accepted === 1
 
       if( accepted ){
@@ -961,7 +962,7 @@ $( '#weexplorer-content' )
 
       }
 
-    }, lang.main.fileReceivedDialogTitle.replace( '%s', structure.name ) )
+    }) //, lang.main.fileReceivedDialogTitle.replace( '%s', structure.name ) )
 
   }
 
@@ -985,7 +986,7 @@ $( '#weexplorer-content' )
     structure.open( content.find('.file').map( function(){ return $(this).data('id') }).get(), function( error ){
 
       if( error ){
-        navigator.notification.alert( '', function(){}, lang.main.fileCanNotOpen )
+        alert( '', function(){}, lang.main.fileCanNotOpen )
       }
 
     });
@@ -1169,8 +1170,9 @@ win.on('swipedown', '.file-owners-section', function(e){
       return;
     }
 
-    return navigator.notification.confirm( file.name, function( accepted ){
+    return confirm( file.name, function( accepted ){
 
+      console.log('PULSADO BOTON ' + accepted)
       accepted = accepted === 1
 
       if( accepted ){
@@ -1178,16 +1180,14 @@ win.on('swipedown', '.file-owners-section', function(e){
         file.remove( function( error, o){
 
           if( !error ){
-
-            hideOptions(true);
-
+            hideOptions(true)
           }
 
         });
 
       }
 
-    }, lang.confirmDelete , [lang.accept,lang.cancel] )
+    }) //, lang.confirmDelete , [lang.accept,lang.cancel] )
 
   });
 
@@ -1630,3 +1630,6 @@ if( typeof params !== 'undefined' ){
 
 //alert('abro files')
 initFiles();
+/*setTimeout( function(){
+  alert('asdasdasd')
+}, 2000)*/

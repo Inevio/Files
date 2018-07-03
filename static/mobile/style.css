@@ -58,6 +58,17 @@
   display: none;
 }
 
+.horbito-uploader{
+  width: 23px;
+  height: 19px;
+  float: right;
+  padding: 55px 0 0 54px;
+  text-align: center;
+  background: url( '@static/mobile/subida.png' ) no-repeat;
+  background-size: 23px 19px;
+  background-position: 16px 19px;
+}
+
 #weexplorer-menu-name{
   display: inline-block;
   margin-top: 18px;
