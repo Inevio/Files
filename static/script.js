@@ -2434,7 +2434,7 @@ var updateNotificationCenter = function (fsnode, options) {
   var fsnodeId = options.onlyId ? fsnode : fsnode.id
 
   if (options.isNew && SHARED_PATH === fsnode.parent) {
-    api.user(item.permissions.sharedBy, function (err, user) {
+    api.user(fsnode.permissions.sharedBy, function (err, user) {
       appendSharingNotification(fsnode, user)
     })
   } else {
@@ -3920,7 +3920,7 @@ gotItUploadExplained.on('click', function (e) {
   win.removeClass('upload-not-explained')
   visualUploadButton.click()
 
-  wql.uploadExplainDone([ api.system.user().idUser ], function (err, o) {
+  wql.uploadExplainDone([ api.system.workspace().idWorkspace ], function (err, o) {
     if (err) {
       console.error(err)
     }

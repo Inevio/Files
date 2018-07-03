@@ -447,7 +447,7 @@ var EXTENSIONS_SHOW   = 1;
 
                 fileArea.data( 'wz-uploader-destiny', structure.id );
 
-                if( structure.id === api.system.user().rootPath ){
+                if( structure.id === api.system.workspace().rootPath ){
                     folderBar.removeClass( 'folder music photo video doc' ).addClass( 'user' );
                 }else if( structure.name === 'Documents' || structure.name === 'Documentos' ){
                     folderBar.removeClass( 'folder music photo video user' ).addClass( 'doc' );
@@ -598,7 +598,7 @@ var EXTENSIONS_SHOW   = 1;
                         }
 
                         if(
-                            structure.owner === api.system.user().id ||
+                            structure.owner === api.system.workspace().idWorkspace ||
                             structure.permissions.modify === 1 ||
                             structure.id === structure.shareRoot
                         ){

@@ -50,7 +50,7 @@ var loadInfo = function( id ){
 
   $.when( users, sharedWith ).done( function( users, sharedWith ){
 
-    var currentUser = api.system.user();
+    var currentUser = api.system.workspace();
     var usersList = {};
     var sharedPromises = [];
 
@@ -159,7 +159,7 @@ var loadInfo = function( id ){
         var sharedWithIds = sharedWith.map( function( item ){ return item.userId })
 
         $('.shared-area .user:not(.wz-prototype)').each( function( i ){
-          usersSharing.push( $(this).data('user').id )
+          usersSharing.push( $(this).data('user').idWorkspace )
         })
 
         var permissionsChanged = false;
