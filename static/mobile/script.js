@@ -374,10 +374,10 @@ var showOptions = function( file ){
       var isOwner = userInArray.isOwner;
       /*console.log(isOwner);
       console.log(myId);
-      console.log(userInArray.userId);
-      console.log(!(isOwner && ( userInArray.userId == myId )));*/
+      console.log(userInArray.idWorkspace);
+      console.log(!(isOwner && ( userInArray.idWorkspace == myId )));*/
 
-      api.user( userInArray.userId, function(error, userI){
+      api.user( userInArray.idWorkspace, function(error, userI){
 
         var userxNameField;
         var userxAvatarField;
