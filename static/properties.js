@@ -178,7 +178,7 @@ var loadUsers = function( fsnode ){
 
       var isOwner = user.isOwner;
 
-      api.user( user.userId , function( err , user ){
+      api.user( user.idWorkspace , function( err , user ){
 
         appendUser( user , isOwner );
 
