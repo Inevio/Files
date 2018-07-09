@@ -1825,6 +1825,7 @@ var openFile = function (fsnode) {
   fsnode.open(currentList.filter(function (item) { return item.fsnode.type === TYPE_FILE }).map(function (item) { return item.fsnode.id }), function (error) {
     if (error) {
       console.log(lang.main.noApp)
+      if( !api.system.fullMode() ) return alert(lang.main.noApp)
       fsnode.openLocal()
     }
   })
@@ -2518,12 +2519,10 @@ var generateContextMenu = function (item, options) {
       }
     }
   } else if (item.fsnode.type === TYPE_FILE) {
-    menu.addOption(lang.main.openFile, openFile.bind(null, item.fsnode))
-      .addOption(lang.main.openFileLocal, item.fsnode.openLocal)
 
-    if (item.fsnode.permissions.copy) {
-      menu.addOption(lang.main.copy, clipboardCopy.bind(null, null))
-    }
+    menu.addOption(lang.main.openFile, openFile.bind(null, item.fsnode))
+    if( api.system.fullMode() ) menu.addOption(lang.main.openFileLocal, item.fsnode.openLocal)
+    if (item.fsnode.permissions.copy) menu.addOption(lang.main.copy, clipboardCopy.bind(null, null))
     menu.addOption(lang.main.cut, clipboardCut.bind(null, null))
 
     if (item.fsnode.permissions.link) {
