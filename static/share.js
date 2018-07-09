@@ -237,7 +237,11 @@ var translate = function(){
   $('.global-permissions .share .name').text(lang.share.share);
   $('.global-permissions .send .name').text(lang.share.send);
   $('.global-permissions .save').text(lang.share.save);
-  $('.invite-by-mail .name').text(lang.inviteByMail);
+  if(api.system.fullMode()){
+    $('.invite-by-mail .name').text(lang.inviteByMail);
+  }else{
+    $('.invite-by-mail').remove();
+  }
 
 };
 
