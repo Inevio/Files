@@ -463,7 +463,7 @@
             userxNameField.text( owner[i].fullName );
             userxAvatarField.css( "background-image",'url("'+owner[i].avatar.small+'")' );
 
-            if( owner[i].id == api.system.user().id ){
+            if( owner[i].id == api.system.workspace().idWorkspace ){
               userxNameField.text( userxNameField.text() + ' ' + lang.propertiesFileOwner );
             }
 
@@ -477,8 +477,8 @@
           $( userx ).toggleClass( 'owner' );
           var userxNameField = $( userx + ' .username',win );
           var userxAvatarField = $( userx + ' i',win );
-          userxNameField.text( api.system.user().fullName );
-          userxAvatarField.css( "background-image",'url("'+api.system.user().avatar.small+'")' );
+          userxNameField.text( api.system.workspace().fullName );
+          userxAvatarField.css( "background-image",'url("'+api.system.workspace().avatar.small+'")' );
           permissionText = $( userx + ' .change-permission',win );
           permissionText.text ( lang.propertiesOwner );
           userxNameField.text( userxNameField.text() + ' ' + lang.propertiesFileOwner );

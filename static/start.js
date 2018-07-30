@@ -14,14 +14,14 @@ if( params ){
 
 if( typeof cordova == 'undefined' ){
 
-  wql.isFirstOpen( [ api.system.user().id ] , function( e , o ){
+  wql.isFirstOpen( [ api.system.workspace().idWorkspace ] , function( e , o ){
 
     if ( o.length === 0 ){
 
       win.addClass('first-open');
       win.addClass('upload-not-explained');
 
-      wql.firstOpenDone( [ api.system.user().id ] , function( e , o ){
+      wql.firstOpenDone( [ api.system.workspace().idWorkspace ] , function( e , o ){
         if(e) console.log(e);
       });
 
