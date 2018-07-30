@@ -387,11 +387,6 @@ var onedriveNode = function (data) {
 
 var handleError = function (err) {
   console.error(JSON.stringify(err, null, 2))
-  if (api.system.user().id === 50523) {
-    alert(JSON.stringify(err, null, 2))
-  } else {
-    alert('Error')
-  }
 }
 
 var acceptButtonHandler = function () {
@@ -598,7 +593,7 @@ var cancelButtonHandler = function () {
 
 var changeName = function (fsnode) {
   if (fsnode.type === 0 && !isNaN(parseInt(fsnode.name))) {
-    fsnode.name = api.system.user().user
+    fsnode.name = api.system.workspace().username
   } else if (fsnode.type === 1) {
     fsnode.name = lang.main.folderTranslations[ fsnode.name ] || fsnode.name
   }
@@ -2440,7 +2435,7 @@ var updateNotificationCenter = function (fsnode, options) {
   var fsnodeId = options.onlyId ? fsnode : fsnode.id
 
   if (options.isNew && SHARED_PATH === fsnode.parent) {
-    api.user(item.permissions.sharedBy, function (err, user) {
+    api.user(fsnode.permissions.sharedBy, function (err, user) {
       appendSharingNotification(fsnode, user)
     })
   } else {
@@ -2904,9 +2899,6 @@ var dropboxToDropbox = function (options) {
 
   // Different account
   } else {
-    if (api.system.user().id != 50523) {
-      return alert(lang.developing)
-    }
 
     options.account.toDropbox(options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
       if (err) return handleError(err)
@@ -3088,10 +3080,6 @@ var gdriveToGdrive = function (options) {
 
   // Different account
   } else {
-    if (api.system.user().id != 50523) {
-      return alert(lang.developing)
-    }
-
     options.account.toGDrive(options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
       if (err) return handleError(err)
 
@@ -3252,10 +3240,6 @@ var onedriveToOnedrive = function (options) {
 
   // Diferent account
   } else {
-    if (api.system.user().id != 50523) {
-      return alert(lang.developing)
-    }
-
     options.account.toOnedrive(options.toMoveIds, options.destiny.id, {origin: options.originFolder, destiny: options.destiny, replacementPolicy: 0}, options.destiny.account, function (err, taskProgressId) {
       if (err) return handleError(err)
 
@@ -3935,7 +3919,7 @@ gotItUploadExplained.on('click', function (e) {
   win.removeClass('upload-not-explained')
   visualUploadButton.click()
 
-  wql.uploadExplainDone([ api.system.user().id ], function (err, o) {
+  wql.uploadExplainDone([ api.system.workspace().idWorkspace ], function (err, o) {
     if (err) {
       console.error(err)
     }

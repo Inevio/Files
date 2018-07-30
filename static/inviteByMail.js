@@ -8,7 +8,7 @@ var validMails    = [];
 var MAIL_REGEXP = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,4}))$/
 var url;
 var window = app.parents().slice( -1 )[ 0 ].parentNode.defaultView
-var myUserID = api.system.user().id;
+var myUserID = api.system.workspace().idWorkspace;
 
 addMailButton.on( 'click' , function(){
   addMail();
