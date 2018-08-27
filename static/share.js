@@ -50,12 +50,12 @@ var loadInfo = function( id ){
 
   $.when( users, sharedWith ).done( function( users, sharedWith ){
 
-    var currentUser = api.system.user();
+    var currentUser = api.system.workspace();
     var usersList = {};
     var sharedPromises = [];
 
     users.forEach( function( user ){
-      usersList[ user.id ] = user;
+      usersList[ user.idWorkspace ] = user;
     });
 
     sharedWith = sharedWith.filter( function( share ){
@@ -64,9 +64,9 @@ var loadInfo = function( id ){
 
     sharedWith.forEach( function( share ){
 
-      if( usersList[ share.userId ] ){
-        share.user = usersList[ share.userId ];
-      }else if( share.userId === currentUser.id ){
+      if( usersList[ share.idWorkspace ] ){
+        share.user = usersList[ share.idWorkspace ];
+      }else if( share.idWorkspace === currentUser.idWorkspace ){
         share.user = currentUser;
       }else{
 
@@ -74,7 +74,7 @@ var loadInfo = function( id ){
 
         sharedPromises.push( promise );
 
-        api.user( share.userId, function( error, user ){
+        api.user( share.idWorkspace, function( error, user ){
           share.user = user;
           promise.resolve();
         });
@@ -88,7 +88,7 @@ var loadInfo = function( id ){
       users = users.filter( function( user ){
         var notFound = true;
         sharedWith.forEach( function( shared ){
-          if ( user.id === shared.userId ) {
+          if ( user.idWorkspace === shared.idWorkspace ) {
             notFound =  false;
           }
         });
@@ -156,10 +156,10 @@ var loadInfo = function( id ){
 
         var promises = [];
         var usersSharing = [];
-        var sharedWithIds = sharedWith.map( function( item ){ return item.userId })
+        var sharedWithIds = sharedWith.map( function( item ){ return item.idWorkspace })
 
         $('.shared-area .user:not(.wz-prototype)').each( function( i ){
-          usersSharing.push( $(this).data('user').id )
+          usersSharing.push( $(this).data('user').idWorkspace )
         })
 
         var permissionsChanged = false;
@@ -178,11 +178,11 @@ var loadInfo = function( id ){
           usersToAddShare = usersSharing;
         }
 
-        usersToAddShare.forEach( function( userId ){
+        usersToAddShare.forEach( function( idWorkspace ){
           toAddPromises.push( $.Deferred() )
         })
 
-        usersToRemoveShare.forEach( function( userId ){
+        usersToRemoveShare.forEach( function( idWorkspace ){
           toRemovePromises.push( $.Deferred() )
         })
 
@@ -190,18 +190,18 @@ var loadInfo = function( id ){
 
         api.fs( id, function( error , fsnode ){
 
-          usersToRemoveShare.forEach( function( userId, i ){
+          usersToRemoveShare.forEach( function( idWorkspace, i ){
 
-            fsnode.removeShare( userId, function( err ){
+            fsnode.removeShare( idWorkspace, function( err ){
               console.log( 'REM', err )
               toRemovePromises[ i ].resolve( err )
             })
 
           })
 
-          usersToAddShare.forEach( function( userId, i ){
+          usersToAddShare.forEach( function( idWorkspace, i ){
 
-            fsnode.addShare( userId, permissions, function( err ){
+            fsnode.addShare( idWorkspace, permissions, function( err ){
               console.log( 'ADD', err )
               toAddPromises[ i ].resolve( err )
             })
