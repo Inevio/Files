@@ -483,6 +483,7 @@ var showOptions = function( file ){
 
 var hideOptions = function( fullHide ){
 
+  console.log('hideOptions')
   //optionsDeployed = false;
   if( mode == 4 ){
     hideFileInfo();
@@ -1170,7 +1171,7 @@ win.on('swipedown', '.file-owners-section', function(e){
       return;
     }
 
-    return confirm( file.name, function( accepted ){
+    return api.confirm( file.name, function( accepted ){
 
       console.log('PULSADO BOTON ' + accepted)
       accepted = accepted === 1
@@ -1178,6 +1179,8 @@ win.on('swipedown', '.file-owners-section', function(e){
       if( accepted ){
 
         file.remove( function( error, o){
+
+          console.log('file removed', error, o)
 
           if( !error ){
             hideOptions(true)
