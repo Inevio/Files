@@ -832,6 +832,7 @@ var activateRename = function(){
   $('.file-options .file-rename').show();
   $('.file-options .options-more').hide();
   $('.file-options .rename-accept, .file-options .rename-cancel').show();
+  $('.file-options').height('100%')
   if ( $('.file-options .file-rename').val().lastIndexOf('.') < 0 ) {
     selectRangeText( $('.file-options .file-rename')[0] , 0 , $('.file-options .file-rename').val().length );
   }else{
@@ -872,6 +873,7 @@ var cancelRename = function(){
   $('.file-options .file-title').show();
   $('.file-options .rename-accept, .file-options .rename-cancel').hide();
   $('.file-options .options-more').show();
+  $('.file-options').height('410px')
   mode = 2;
 
 }
