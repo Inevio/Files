@@ -440,7 +440,8 @@ var showOptions = function( file ){
   });
 
   $( '.file-options' ).show().transition({
-    'y' : yDeployed
+    'y' : yDeployed,
+    'height' : '410px'
   },transitionTime, function(){
     mode = 2;
     yDeployed = '-410px';
@@ -1069,10 +1070,10 @@ win.on('swipedown', '.file-owners-section', function(e){
 
 .on('swipedown', '.file-options', function(e){
 
-  if( mode != 7 ){
+  /*if( mode != 7 ){
     hideOptions();
   }
-  e.stopPropagation();
+  e.stopPropagation();*/
 
 })
 
