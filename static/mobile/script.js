@@ -843,6 +843,8 @@ var activateRename = function(){
 
 var acceptRename = function(){
 
+  console.log('Accept rename')
+
   api.fs( $('.weexplorer-element.active').data('id') , function( e, file ){
 
     if(e){
@@ -869,6 +871,7 @@ var acceptRename = function(){
 
 var cancelRename = function(){
 
+  console.log('Cancel rename')
   $('.file-options .file-rename').hide().blur();
   $('.file-options .file-title').show();
   $('.file-options .rename-accept, .file-options .rename-cancel').hide();
