@@ -827,7 +827,9 @@ var hideShareScreen = function(){
 
 var activateRename = function(){
 
+  console.log('Activate rename')
   mode = 5;
+  $('.file-options').addClass('renaming');
   $('.file-options .file-title').hide();
   $('.file-options .file-rename').show();
   $('.file-options .options-more').hide();
@@ -872,7 +874,10 @@ var acceptRename = function(){
 var cancelRename = function(){
 
   console.log('Cancel rename')
-  $('.file-options .file-rename').hide().blur();
+  if( mode !== 5 ) return
+
+  $('.file-options .file-rename').hide();
+  $('.file-options').removeClass('renaming');
   $('.file-options .file-title').show();
   $('.file-options .rename-accept, .file-options .rename-cancel').hide();
   $('.file-options .options-more').show();
@@ -1257,11 +1262,11 @@ win.on('swipedown', '.file-owners-section', function(e){
 })
 
 .on('focus', 'input.file-rename', function(){
-  $('.file-options').addClass('renaming');
+  activateRename();
 })
 
 .on('blur', 'input.file-rename', function(){
-  $('.file-options').removeClass('renaming');
+  cancelRename();
 });
 
 api.fs.on( 'move', function( structure, destinyID, originID ){
