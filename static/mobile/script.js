@@ -998,7 +998,7 @@ $( '#weexplorer-content' )
     structure.open( content.find('.file').map( function(){ return $(this).data('id') }).get(), function( error ){
 
       if( error ){
-        alert( '', function(){}, lang.main.fileCanNotOpen )
+        alert( lang.main.fileCanNotOpen, function(){} )
       }
 
     });
