@@ -50,16 +50,16 @@ var loadInfo = function( id ){
 
   $.when( users, sharedWith ).done( function( users, sharedWith ){
 
-    var currentUser = api.system.workspace();
-    var usersList = {};
-    var sharedPromises = [];
+    var currentUser = Object.assign({}, api.system.user(), api.system.workspace())
+    var usersList = {}
+    var sharedPromises = []
 
     users.forEach( function( user ){
-      usersList[ user.idWorkspace ] = user;
+      usersList[ user.idWorkspace ] = user
     });
 
     sharedWith = sharedWith.filter( function( share ){
-      return !share.isOwner;
+      return !share.isOwner
     })
 
     sharedWith.forEach( function( share ){
