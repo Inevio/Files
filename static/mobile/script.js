@@ -861,8 +861,6 @@ var acceptRename = function(){
           alert( '', function(){}, error );
         }
 
-        $('.file-options .file-rename').blur();
-
       });
 
     }
@@ -1236,8 +1234,9 @@ win.on('swipedown', '.file-owners-section', function(e){
   activateRename();
 })
 
-.on('click', '.file-options .rename-accept', function(){
+.on('mousedown', '.file-options .rename-accept', function(e){
   acceptRename();
+  e.stopPropagation();
 })
 
 .on('click', '.file-options .rename-cancel', function(){
@@ -1261,13 +1260,13 @@ win.on('swipedown', '.file-owners-section', function(e){
 
 })
 
-.on('focus', 'input.file-rename', function(){
+/*.on('focus', 'input.file-rename', function(){
   activateRename();
 })
 
 .on('blur', 'input.file-rename', function(){
   cancelRename();
-});
+});*/
 
 api.fs.on( 'move', function( structure, destinyID, originID ){
 
@@ -1356,11 +1355,14 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 
 .on( 'rename', function( structure ){
 
+  console.log('')
+
   $( '.file-' + structure.id + ' .weexplorer-element-name').text( structure.name );
   //sortIcons( fileArea.find('.weexplorer-file') );
 
   if( mode === 5 ){
-    $('.file-options .file-title').text( $('.file-options .file-rename').val() );
+    $('.file-options .file-title').text(structure.name)
+    $('.file-options .file-rename').val(structure.name)
     cancelRename();
   }
 
