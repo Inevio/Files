@@ -1180,26 +1180,25 @@ win.on('swipedown', '.file-owners-section', function(e){
       return;
     }
 
-    return api.confirm( file.name, function( accepted ){
+    return confirm( lang.main.confirmDelete, function( accepted ){
 
-      console.log('PULSADO BOTON ' + accepted)
       accepted = accepted === 1
 
       if( accepted ){
 
         file.remove( function( error, o){
 
-          console.log('file removed', error, o)
-
           if( !error ){
-            hideOptions(true)
+
+            hideOptions(true);
+
           }
 
         });
 
       }
 
-    }) //, lang.confirmDelete , [lang.accept,lang.cancel] )
+    })
 
   });
 
