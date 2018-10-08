@@ -1136,7 +1136,7 @@ win.on('swipedown', '.file-owners-section', function(e){
   api.fs( $('.weexplorer-element.active').data('id') , function( e, file ){
 
     if(e){
-      return;
+      return console.error(e);
     }
     $( '.actual-file,.total-file' ).text( 1 );
 
@@ -1267,6 +1267,7 @@ win.on('swipedown', '.file-owners-section', function(e){
   cancelRename();
 });*/
 
+
 api.fs.on( 'move', function( structure, destinyID, originID ){
 
  console.log('move', structure);
@@ -1354,7 +1355,7 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 
 .on( 'rename', function( structure ){
 
-  console.log('')
+  console.log('rename')
 
   $( '.file-' + structure.id + ' .weexplorer-element-name').text( structure.name );
   //sortIcons( fileArea.find('.weexplorer-file') );
