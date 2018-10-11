@@ -62,7 +62,7 @@
   width: 23px;
   height: 19px;
   float: right;
-  padding: 55px 0 0 54px;
+  padding: 34px 0 0 33px;
   text-align: center;
   background: url( '@static/mobile/subida.png' ) no-repeat;
   background-size: 23px 19px;
@@ -126,6 +126,7 @@
   margin-top: 16px;
   font-size: 17px;
   color: #252525;
+  max-width: ~'calc(100% - 100px)';
 }
 
 .weexplorer-element-icon{
