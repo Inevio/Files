@@ -1233,9 +1233,9 @@ win.on('swipedown', '.file-owners-section', function(e){
   activateRename();
 })
 
-.on('mousedown', '.file-options .rename-accept', function(e){
+.on('click', '.file-options .rename-accept', function(e){
   acceptRename();
-  e.stopPropagation();
+  //e.stopPropagation();
 })
 
 .on('click', '.file-options .rename-cancel', function(){
