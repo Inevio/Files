@@ -135,6 +135,8 @@ var openDirectory = function( id, jump, clear ){
 
   api.fs( id, function( error, structure ){
 
+    $('.horbito-uploader').data('folder-id', structure.id)
+
     changeName( structure )
 
     if( !jump ){
@@ -1290,7 +1292,7 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 
 .on( 'new', function( structure ){
 
-  console.log('new', structure);
+  console.log('new', structure, actualPathId);
 
   if( structure.parent === actualPathId ){
     //appendIcon( icon( structure ) );
