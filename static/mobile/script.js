@@ -156,6 +156,8 @@ var openDirectory = function( id, jump, clear ){
       .filter('.folder-' + structure.id )
       .addClass('active');
 
+    let prevScrollTop = $('#weexplorer-content').scrollTop()
+
     structure.list( { withPermissions : true }, function( error, list ){
 
       // To Do -> Error
@@ -173,21 +175,24 @@ var openDirectory = function( id, jump, clear ){
         icons = icons.add( icon(list[ i ]) );
       }
 
-      if( id !== actualPathId){
-        iconBack();
-      }
-      actualPathId = id;
 
       if( list.length === 0 ){
         $('.empty-folder').addClass('active');
       }else{
         $('.empty-folder').removeClass('active');
       }
-
       $('#weexplorer-content').scrollTop(0);
+
       uploadButton.data( 'data-wz-uploader-destiny', actualPathId )
       console.log(content,icons)
       content.append( icons );
+
+      if( id !== actualPathId ){
+        iconBack();
+      }else{
+        $('#weexplorer-content').scrollTop(prevScrollTop)
+      }
+      actualPathId = structure.id;
 
     });
 
@@ -1294,7 +1299,7 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 
   console.log('new', structure, actualPathId);
 
-  if( structure.parent === actualPathId ){
+  if( parseInt(structure.parent) === actualPathId ){
     //appendIcon( icon( structure ) );
     openDirectory( actualPathId, true );
   }
@@ -1305,7 +1310,7 @@ api.fs.on( 'move', function( structure, destinyID, originID ){
 
   console.log('modified', structure);
 
-  if( structure.parent === actualPathId ){
+  if( parseInt(structure.parent) === actualPathId ){
     openDirectory( actualPathId, true );
   }
 
