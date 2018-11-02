@@ -1,4 +1,5 @@
 // Local variables
+//console.log('abro files')
 var win            = $(document.body);
 var content        = $( '#weexplorer-content' );
 var itemProto      = $( '.weexplorer-element.wz-prototype' );
@@ -927,6 +928,7 @@ var translate = function (){
   $('.attach-selected').text( '0 ' + lang.filesSelected);
   $('.cancel-progress').text( lang.cancel );
   $('.progress-text').text( lang.downloading );
+  $('.empty-folder').text(lang.emptyFolder)
 
 };
 
@@ -1650,7 +1652,7 @@ if( typeof params !== 'undefined' ){
   }
 }
 
-//alert('abro files')
+console.log('abro files', api)
 initFiles();
 /*setTimeout( function(){
   alert('asdasdasd')
