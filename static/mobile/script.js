@@ -1189,7 +1189,7 @@ win.on('swipedown', '.file-owners-section', function(e){
       return;
     }
 
-    return confirm( lang.main.confirmDelete, function( accepted ){
+    return confirm( lang.main.confirmDelete + '(' + file.name + ')' , function( accepted ){
 
       accepted = accepted === 1
 
