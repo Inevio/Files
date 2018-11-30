@@ -1,20 +1,89 @@
+.wz-view{
+  border-radius: 12px;
+  position: absolute;
+  /*bottom: 12px;
+  right: 12px;*/
+}
+
 .header{
 
   width: 100%;
   height: 80px;
   display: inline-block;
   background-color: white;
+  box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.05), 0px 1px 0px 0px rgba(0,0,0,0.05);
 
   .left-progress{
     width: 62px;
     height: 100%;
     float: left;
+
+    .total-progress{
+      width: 32px;
+      height: 32px;
+      position: absolute;
+      top: 25px;
+      left: 18px;
+      background-color: grey;
+    }
+
+    .progress-done{
+      width: 32px;
+      height: 32px;
+      position: absolute;
+      top: 25px;
+      left: 18px;
+    }
+
+    .progress-arrow{
+      width: 12px;
+      height: 16px;
+      display: inline-block;
+    }
+
+  }
+
+  .left-progress:after{
+    content: '';
+    width: 1px;
+    height: 56px;
+    display: block;
+    margin-top: 12px;
+    background-color: #9a9aa2;
+    position: absolute;
+    top: 0px;
+    left: 62px;
   }
 
   .summary{
     float: right;
     height: 100%;
     width: ~'calc(100% - 62px)';
+    .title{
+      font-size: 17px;
+      letter-spacing: 0.28pt;
+      color: #252525;
+      margin-top: 32px;
+      display: inline-block;
+      margin-left: 12px;
+    }
+    .subtitle{
+      font-size: 13px;
+      letter-spacing: 0.28pt;
+      color: #a29a9a;
+      margin-top: 32px;
+      display: inline-block;
+    }
+
+  }
+
+  .close-button{
+    width: 10px;
+    height: 10px;
+    background-color: black;
+    position: absolute;
+    top: 18px;
+    right: 18px;
   }
 
 }
@@ -23,4 +92,40 @@
   width: 100%;
   height: ~'calc(100% - 80px)';
   display: inline-block;
+
+  .file-info{
+    width: 100%;
+    height: 30px;
+    background: #F8F8F8;
+    .icon{
+      width: 16px;
+      height: 16px;
+      float: left;
+    }
+    .name{
+      font-size: 15px;
+      letter-spacing: 0.25pt;
+      color: #252525;
+      float: left;
+      margin-top: 7px;
+      width: ~'calc(100% - 165px)';
+    }
+    .file-size{
+      font-size: 15px;
+      letter-spacing: 0.25pt;
+      color: #717171;
+      float: left;
+      margin-top: 7px;
+    }
+    .file-progress{
+      font-size: 15px;
+      letter-spacing: 0.25pt;
+      color: #0071f6;
+      float: left;
+      margin-top: 7px;
+    }
+  }
+  .file-info:nth-child(even) {
+    background: white;
+  }
 }
