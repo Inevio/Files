@@ -420,6 +420,8 @@
     "confirmEmptyTrash" : "You are going to remove permanently all trash content. ¿Are you sure?",
     "restoreFolder"  : "This folder is deleted, you have to restore it to open it.",
     "developing"  : "This feature is not available yet",
-    "cantDownloadFolders" : "It is not possible to download a folder from Dropbox, Google Drive or Onedrive"
+    "cantDownloadFolders" : "It is not possible to download a folder from Dropbox, Google Drive or Onedrive",
+
+    "pending" : "Pending"
 
 }

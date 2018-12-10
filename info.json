@@ -370,33 +370,46 @@
 
                 "downloadManager" : {
 
-                  "template" : "downloadManager.html",
+                    "template" : "downloadManager.html",
 
-                  "maxizable" : false,
-                  "resizable" : false,
+                    "maxizable" : false,
+                    "resizable" : false,
 
-                  "width"  : {
+                    "width"  : {
 
-                      "default" : 380,
-                      "min"     : 380,
-                      "max"     : 0
+                        "default" : 380,
+                        "min"     : 380,
+                        "max"     : 0
 
-                  },
+                    },
 
-                  "height" : {
 
-                      "default" : 275,
-                      "min"     : 275,
-                      "max"     : 0
+                    "height" : {
 
-                  },
+                        "default" : 275,
+                        "min"     : 275,
+                        "max"     : 0
 
-                  "css"    : [ "downloadManager.css" ],
-                  "script" : [],
-                  "start"  : []
+
+                    },
+                    "css"      : ["downloadManager.css"],
+                    "script"   : ["downloadManager.js"]
 
                 }
 
+            },
+
+            "widget" : {
+
+                "downloadManager" : {
+
+                    "template" : "downloadManager.html",
+                    "css"      : ["downloadManager.css"],
+                    "script"   : ["downloadManager.js"],
+
+                    "alwaysInFront" : true
+
+                }
 
             }
 

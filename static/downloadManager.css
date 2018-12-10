@@ -3,6 +3,8 @@
   position: absolute;
   /*bottom: 12px;
   right: 12px;*/
+  width: 380px;
+  height: 275px;
 }
 
 .header{
@@ -63,7 +65,7 @@
       font-size: 17px;
       letter-spacing: 0.28pt;
       color: #252525;
-      margin-top: 32px;
+      margin-top: 16px;
       display: inline-block;
       margin-left: 12px;
     }
@@ -71,16 +73,44 @@
       font-size: 13px;
       letter-spacing: 0.28pt;
       color: #a29a9a;
-      margin-top: 32px;
+      margin-top: 16px;
       display: inline-block;
     }
 
   }
 
+  .see-more{
+    width: 88px;
+    height: 19px;
+    position: absolute;
+    right: 18px;
+    top: 47px;
+    border-radius: 9px;
+    background-color: #F8FAFB;
+    .icon{
+      width: 9px;
+      height: 5px;
+      float: left;
+      margin-left: 10px;
+      margin-top: 7px;
+      margin-right: 4px;
+      background-image: url('@static/moreIcon@2x.png');
+      background-size: 9px 5px;
+    }
+    .text{
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 0.22pt;
+      color: #a29a9a;
+      margin-top: 1px;
+    }
+  }
+
   .close-button{
     width: 10px;
     height: 10px;
-    background-color: black;
+    background-image: url('@static/closeDownload@2x.png');
+    background-size: 10px 10px;
     position: absolute;
     top: 18px;
     right: 18px;
@@ -127,5 +157,13 @@
   }
   .file-info:nth-child(even) {
     background: white;
+  }
+}
+
+.wz-view.contracted{
+  height: 80px !important;
+  min-height: 80px !important;
+  .content{
+    display: none;
   }
 }
