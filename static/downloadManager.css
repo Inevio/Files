@@ -93,19 +93,20 @@
       float: left;
       margin-left: 10px;
       margin-top: 7px;
-      margin-right: 4px;
+      margin-right: 2px;
       background-image: url('@static/moreIcon@2x.png');
       background-size: 9px 5px;
+      transform: rotate(180deg);
     }
     .text{
       font-size: 13px;
       font-weight: bold;
       letter-spacing: 0.22pt;
       color: #a29a9a;
-      margin-top: 1px;
+      margin-top: 3px;
+      text-align: center;
     }
   }
-
   .close-button{
     width: 10px;
     height: 10px;
@@ -163,6 +164,9 @@
 .wz-view.contracted{
   height: 80px !important;
   min-height: 80px !important;
+  .see-more .icon{
+    transform: rotate(0deg);
+  }
   .content{
     display: none;
   }
