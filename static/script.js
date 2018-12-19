@@ -521,7 +521,7 @@ var appendItemToList = function (items) {
 var refreshNotificationCenter = function (receivedFolder) {
   SHARED_PATH = receivedFolder.id
 
-  receivedFolder.list({ withPermissions: true }, function (e, list) {
+  receivedFolder.list({ withPermissions: true }).then( list => {
     list.forEach(function (item) {
       api.user(item.permissions.sharedBy, function (err, user) {
         appendSharingNotification(item, user)
@@ -1340,15 +1340,11 @@ var getAvailableNewFolderName = function () {
 var getFolderItems = function (fsnode) {
   var end = $.Deferred()
 
-  fsnode.list({ withPermissions: true, withConverting: true }, function (error, list) {
+  fsnode.list({ withPermissions: true, withConverting: true }).then( list => {
     // To Do -> Error
     list = list.filter(function (item) {
-      if (item.type === TYPE_FOLDER_SPECIAL && item.name === 'Received') {
-        return false
-      }
-
+      if (item.type === TYPE_FOLDER_SPECIAL && item.name === 'Received') return false
       changeName(item)
-
       return true
     })
 
@@ -1613,10 +1609,9 @@ var getSidebarItems = function () {
   var second = $.Deferred()
 
   api.fs('root', function (error, fsnode) {
-    fsnode.list({ withPermissions: true }, function (error, list) {
-      list = list.filter(function (item) {
-        return item.type === 1
-      })
+    console.log(fsnode)
+    fsnode.list({ withPermissions: true }).then( list => {
+      list = list.filter(function (item) { return item.type === 1 })
 
       list.forEach(function (item) {
         injectAliasAttribute(item)
@@ -3502,6 +3497,7 @@ api.fs
     updateIconConversionProgress(fsnodeId, -1)
   })
 
+/*
 api.upload
   .on('conflict', function(data){
     alert(data.origin + ' ' + lang.alreadyExists + ' ' + lang.destinyFolder)
@@ -3550,17 +3546,6 @@ api.upload
     var time = 100
 
     visualProgressBar.width(parseFloat(progress * 100).toFixed(4) + '%')
-
-    /* if( !time ){
-    visualProgressStatusTime.text( lang.main.uploadingTimeCalculating.replace( '%d', percentage ) );
-  }else if( time < 60 ){
-    visualProgressStatusTime.text( ( parseInt( time ) === 1 ? lang.main.uploadingTimeSecond : lang.main.uploadingTimeSeconds ).replace( '%d', parseInt( time ) ).replace( '%d', percentage ) );
-  }else if( time < 3600 ){
-    visualProgressStatusTime.text( ( parseInt( time / 60 ) === 1 ? lang.main.uploadingTimeMinute : lang.main.uploadingTimeMinutes ).replace( '%d', parseInt( time / 60 ) ).replace( '%d', percentage ) );
-  }else{
-    visualProgressStatusTime.text( ( parseInt( time / 3600 ) === 1 ? lang.main.uploadingTimeHour : lang.main.uploadingTimeHours ).replace( '%d', parseInt( time / 3600 ) ).replace( '%d', percentage ) );
-  } */
-
     visualProgressStatusTime.text(lang.main.uploadingProgress.replace('%d', percentage))
   })
 
@@ -3572,6 +3557,7 @@ api.upload
     win.removeClass('uploading')
     startUploadingAnimation()
   })
+  */
 
 // DOM Events
 win
