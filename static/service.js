@@ -125,4 +125,4 @@ api.taskProgress
 
 checkRecieved();
 
-api.app.createWidget('downloadManager')
+api.app.createWidget(null,'downloadManager')

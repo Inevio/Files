@@ -404,6 +404,13 @@
       "calculating" : "Calculating..."
     },
 
+    "downloadManager" : {
+      "downloading": "Downloading",
+      "file": "file",
+      "seeMore": "See more",
+      "seeLess": "See less"
+    },
+
     "cantCopySamePlace" : "You can't copy to the same directory",
     "skip"  : "Skip",
     "replace" : "Replace",
