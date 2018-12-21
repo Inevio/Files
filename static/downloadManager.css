@@ -162,7 +162,7 @@
       float: right;
     }
   }
-  .file-info:nth-child(even) {
+  .file-info:nth-child(odd) {
     background: white;
   }
 }
