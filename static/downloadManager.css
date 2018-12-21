@@ -129,6 +129,7 @@
   width: 100%;
   height: ~'calc(100% - 80px)';
   display: inline-block;
+  border-radius: 0 0 6px 6px;
 
   .file-info{
     width: 100%;
@@ -160,11 +161,19 @@
       color: #0071f6;
       margin-top: 7px;
       float: right;
+      width: 75px;
+      margin-right: 5px;
+      text-align: right;
     }
   }
   .file-info:nth-child(odd) {
     background: white;
   }
+  .file-info.finished .name{
+    cursor: pointer;
+    color: #0071f6;
+  }
+
 }
 
 .wz-widget.contracted{
