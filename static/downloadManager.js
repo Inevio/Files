@@ -2,6 +2,39 @@ var uploadPrototype = $('.file-info.wz-prototype')
 var win = $(this)
 var isElectron = typeof process !== 'undefined'
 
+if(isElectron){
+  const {ipcRenderer} = require('electron')
+  var downloadsFromElectron = new Set()
+  ipcRenderer.on('download-info', (event, arg) => {
+    console.log('download-info: ',  JSON.parse(arg))
+    let file = JSON.parse(arg)
+    //let queueSize = queue.length()
+    let uploadDom = uploadPrototype.clone().removeClass('wz-prototype').addClass('uploadDom')
+    uploadDom.addClass('upload-' + file.id)
+    uploadDom.find('.name').text(file.name)
+    uploadDom.find('.file-size').text(bytesToSize(file.size))
+    uploadDom.find('.file-progress').text(lang.pending)
+    $('.content').append(uploadDom)
+    //setHeaderTitle(queueSize)
+    //downloadsFromElectron.add(arg)
+  })
+  ipcRenderer.on('download-progress', (event, arg) => {
+    let progressObject = JSON.parse(arg)
+    //console.log('download-progress: ', progressObject.progress)
+    setUploadProgress(progressObject.id, progressObject.progress)
+    //downloadsFromElectron.add(parseInt(arg))
+  })
+  ipcRenderer.on('download-end', (event, arg) => {
+    console.log('download-end: ', arg)
+    api.fs(arg, function(error, updatedFSNode){
+      if(error) return console.error(error)
+      $('.file-info.upload-' + updatedFSNode.id).data('fsnode',updatedFSNode)
+      $('.file-info.upload-' + updatedFSNode.id).addClass('finished')
+    })
+    //downloadsFromElectron.add(parseInt(arg))
+  })
+}
+
 console.log('isElectron', isElectron)
 
 var bytesToSize = function (bytes) {
