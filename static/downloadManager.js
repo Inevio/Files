@@ -4,25 +4,23 @@ var isElectron = typeof process !== 'undefined'
 
 if(isElectron){
   const {ipcRenderer} = require('electron')
-  var downloadsFromElectron = new Set()
   ipcRenderer.on('download-info', (event, arg) => {
     console.log('download-info: ',  JSON.parse(arg))
     let file = JSON.parse(arg)
     //let queueSize = queue.length()
     let uploadDom = uploadPrototype.clone().removeClass('wz-prototype').addClass('uploadDom')
+    uploadDom.addClass('download-from-electron')
     uploadDom.addClass('upload-' + file.id)
     uploadDom.find('.name').text(file.name)
     uploadDom.find('.file-size').text(bytesToSize(file.size))
     uploadDom.find('.file-progress').text(lang.pending)
     $('.content').append(uploadDom)
     //setHeaderTitle(queueSize)
-    //downloadsFromElectron.add(arg)
   })
   ipcRenderer.on('download-progress', (event, arg) => {
     let progressObject = JSON.parse(arg)
     //console.log('download-progress: ', progressObject.progress)
     setUploadProgress(progressObject.id, progressObject.progress)
-    //downloadsFromElectron.add(parseInt(arg))
   })
   ipcRenderer.on('download-end', (event, arg) => {
     console.log('download-end: ', arg)
@@ -31,7 +29,6 @@ if(isElectron){
       $('.file-info.upload-' + updatedFSNode.id).data('fsnode',updatedFSNode)
       $('.file-info.upload-' + updatedFSNode.id).addClass('finished')
     })
-    //downloadsFromElectron.add(parseInt(arg))
   })
 }
 
@@ -45,12 +42,13 @@ var bytesToSize = function (bytes) {
 }
 
 var translateInterface = function(){
+  $('.file-info .open div').text(lang.downloadManager.open)
   $('.header .see-more .text').text(lang.downloadManager.seeLess)
   setHeaderTitle(0)
 }
 
 var setHeaderTitle = function(queueSize){
-  let text = `${lang.downloadManager.downloading} ${queueSize} ${lang.downloadManager.file}`
+  let text = `${lang.downloadManager.importing} ${queueSize} ${lang.downloadManager.file}`
   if(queueSize > 1 || queueSize === 0){
     text = text + 's'
   }
@@ -59,11 +57,14 @@ var setHeaderTitle = function(queueSize){
 
 var setHeaderProgress = function(progress){
   $('.header .summary .subtitle').text(`(${progress})%`)
+  setProgress(progress)
 }
   
-var setUploadProgress = function(fsnodeID, progress){
+var setUploadProgress = function(fsnodeID, progress, totalProgress){
   var percentage = parseFloat(progress * 100).toFixed(1)
-  setHeaderProgress(percentage)
+  totalProgress = parseFloat(totalProgress * 100).toFixed(1)
+  setHeaderProgress(totalProgress)
+  $('.file-info.upload-' + fsnodeID).addClass('in-progress')
   $('.file-info.upload-' + fsnodeID).find('.file-progress').text(percentage + '%')
   //console.log(fsnodeID, $('.file-info.upload-' + fsnodeID))
 }
@@ -98,7 +99,8 @@ api.upload
 
   })
   .on('fsnodeProgress', function (fsnodeID, progress, queue) {
-    setUploadProgress(fsnodeID, progress)
+    var totalProgress = queue.progress()
+    setUploadProgress(fsnodeID, progress, totalProgress)
   })
   .on('fsnodeQueueEnd', function () {
     //TODO closeApp
@@ -110,10 +112,23 @@ win.on('click', '.see-more', function(){
   $('.header .see-more .text').text( win.hasClass('contracted') ? lang.downloadManager.seeMore : lang.downloadManager.seeLess )
 })
 
-.on('click', '.file-info.finished', function(){
-  let fsnode = $(this).data('fsnode')
+.on('click', '.file-info .open', function(){
+  let fsnode = $(this).parent().data('fsnode')
   console.log(fsnode)
   fsnode.open()
 })
 
 translateInterface()
+//setProgress(0)
+
+var circle = $('.progress-ring__circle')[0];
+var radius = circle.r.baseVal.value;
+var circumference = radius * 2 * Math.PI;
+
+circle.style.strokeDasharray = `${circumference} ${circumference}`;
+circle.style.strokeDashoffset = `${circumference}`;
+
+function setProgress(percent) {
+  const offset = circumference - percent / 100 * circumference;
+  circle.style.strokeDashoffset = offset;
+}
