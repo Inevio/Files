@@ -2,19 +2,24 @@ var uploadPrototype = $('.file-info.wz-prototype')
 var win = $(this)
 var isElectron = typeof process !== 'undefined'
 
+let itemId = 0
+let totalQueue = {}
+let widgetHidden = true
+
 if(isElectron){
   const {ipcRenderer} = require('electron')
   ipcRenderer.on('download-info', (event, arg) => {
     console.log('download-info: ',  JSON.parse(arg))
     let file = JSON.parse(arg)
     //let queueSize = queue.length()
+    addToQueue(file)
     let uploadDom = uploadPrototype.clone().removeClass('wz-prototype').addClass('uploadDom')
     uploadDom.addClass('download-from-electron')
     uploadDom.addClass('upload-' + file.id)
     uploadDom.find('.name').text(file.name)
     uploadDom.find('.file-size').text(bytesToSize(file.size))
     uploadDom.find('.file-progress').text(lang.pending)
-    $('.content').append(uploadDom)
+    $('.content').prepend(uploadDom)
     //setHeaderTitle(queueSize)
   })
   ipcRenderer.on('download-progress', (event, arg) => {
@@ -33,6 +38,17 @@ if(isElectron){
 }
 
 console.log('isElectron', isElectron)
+
+var addToQueue = function(file){
+
+  if(widgetHidden){
+    win.show()
+    widgetHidden = false
+  }
+  totalQueue[itemId] = file
+  itemId++
+}
+
 
 var bytesToSize = function (bytes) {
   var sizes = ['B', 'KB', 'MB', 'GB', 'TB']
@@ -75,13 +91,14 @@ api.upload
   })
   .on('fileEnqueued', function (file, queue) {
     console.log(file, queue)
-    let queueSize = queue.length()
+    addToQueue(file)
+    let queueSize = Object.keys(totalQueue).length
     let uploadDom = uploadPrototype.clone().removeClass('wz-prototype').addClass('uploadDom')
     uploadDom.addClass('upload-queue-' + file.id)
     uploadDom.find('.name').text(file.name)
     uploadDom.find('.file-size').text(bytesToSize(file.size))
     uploadDom.find('.file-progress').text(lang.pending)
-    $('.content').append(uploadDom)
+    $('.content').prepend(uploadDom)
     setHeaderTitle(queueSize)
   })
   .on('fsnodeStart', function (fsnode, queue) {
@@ -89,14 +106,12 @@ api.upload
     $('.file-info.upload-queue-' + queue.current.id).addClass('upload-' + fsnode.id)
   })
   .on('fsnodeEnd', function(fsnode) {
-    
     console.log('fsnodeEnd', fsnode)
     api.fs(fsnode.id, function(error, updatedFSNode){
       if(error) return console.error(error)
       $('.file-info.upload-' + updatedFSNode.id).data('fsnode',updatedFSNode)
       $('.file-info.upload-' + updatedFSNode.id).addClass('finished')
     })
-
   })
   .on('fsnodeProgress', function (fsnodeID, progress, queue) {
     var totalProgress = queue.progress()
@@ -119,7 +134,6 @@ win.on('click', '.see-more', function(){
 })
 
 translateInterface()
-//setProgress(0)
 
 var circle = $('.progress-ring__circle')[0];
 var radius = circle.r.baseVal.value;
