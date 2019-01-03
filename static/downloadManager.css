@@ -1,0 +1,245 @@
+.wz-widget{
+  border-radius: 12px;
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 380px;
+  height: 275px;
+  background-color: #fff;
+  box-shadow: 0 10px 20px rgba(0,0,0,.3);
+  border-radius: 12px;
+  display: none;
+}
+
+.header{
+
+  width: 100%;
+  height: 80px;
+  display: inline-block;
+  background-color: white;
+  box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.05), 0px 1px 0px 0px rgba(0,0,0,0.05);
+  border-radius: 12px 12px 0 0;
+
+  .left-progress{
+    width: 62px;
+    height: 100%;
+    float: left;
+
+    svg{
+      margin-left: 14px;
+      margin-top: 23px;
+    }
+    .progress-ring__circle {
+      transition: 0.35s stroke-dashoffset;
+      // axis compensation
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+
+    .total-progress{
+      width: 32px;
+      height: 32px;
+      position: absolute;
+      top: 25px;
+      left: 18px;
+      background-color: grey;
+    }
+
+    .progress-done{
+      width: 32px;
+      height: 32px;
+      position: absolute;
+      top: 25px;
+      left: 18px;
+    }
+
+    .progress-arrow{
+      width: 12px;
+      height: 16px;
+      display: inline-block;
+    }
+
+  }
+
+  .left-progress:after{
+    content: '';
+    width: 1px;
+    height: 56px;
+    display: block;
+    margin-top: 12px;
+    background-color: #9a9aa2;
+    position: absolute;
+    top: 0px;
+    left: 62px;
+  }
+
+  .summary{
+    float: right;
+    height: 100%;
+    width: ~'calc(100% - 62px)';
+    .title{
+      font-size: 17px;
+      letter-spacing: 0.28pt;
+      color: #252525;
+      margin-top: 16px;
+      display: inline-block;
+      margin-left: 12px;
+    }
+    .subtitle{
+      font-size: 13px;
+      letter-spacing: 0.28pt;
+      color: #a29a9a;
+      margin-top: 16px;
+      display: inline-block;
+    }
+
+  }
+
+  .see-more{
+    width: 88px;
+    height: 19px;
+    position: absolute;
+    right: 18px;
+    top: 47px;
+    border-radius: 9px;
+    background-color: #F8FAFB;
+    .icon{
+      width: 9px;
+      height: 5px;
+      float: left;
+      margin-left: 10px;
+      margin-top: 7px;
+      margin-right: 2px;
+      background-image: url('@static/moreIcon@2x.png');
+      background-size: 9px 5px;
+      transform: rotate(180deg);
+    }
+    .text{
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 0.22pt;
+      color: #a29a9a;
+      margin-top: 3px;
+      text-align: center;
+    }
+  }
+  .close-button{
+    width: 10px;
+    height: 10px;
+    background-image: url('@static/closeDownload@2x.png');
+    background-size: 10px 10px;
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    display: none;
+  }
+
+}
+
+.content{
+  width: 100%;
+  height: ~'calc(100% - 80px)';
+  display: inline-block;
+  border-radius: 0 0 6px 6px;
+
+  .file-info{
+    width: 100%;
+    height: 30px;
+    background: #F8F8F8;
+    position: relative;
+    .icon{
+      width: 16px;
+      height: 16px;
+      float: left;
+    }
+    .name{
+      font-size: 15px;
+      letter-spacing: 0.25pt;
+      color: #252525;
+      float: left;
+      margin-top: 7px;
+      width: ~'calc(100% - 165px)';
+    }
+    .file-size{
+      font-size: 15px;
+      letter-spacing: 0.25pt;
+      color: #717171;
+      margin-top: 7px;
+      float: right;
+    }
+    .file-progress{
+      font-size: 15px;
+      letter-spacing: 0.25pt;
+      color: #717171;
+      margin-top: 7px;
+      float: right;
+      width: 75px;
+      margin-right: 5px;
+      text-align: right;
+    }
+    .arrow{
+      float: right;
+      width: 10px;
+      height: 12px;
+      background-image: url('@static/arrowGrey@2x.png');
+      background-size: 10px 12px;
+      margin-right: 8px;
+      margin-top: 8px;
+    }
+    .open{
+      width: 60px;
+      height: 20px;
+      position: absolute;
+      top: 4px;
+      right: 6px;
+      background-color: rgba(0,0,0,0.1);
+      border-radius: 10.5px;
+      display: none;
+    }
+    .open .text{
+      color: #717171;
+      text-align: center;
+      font-family: 'Lato';
+      font-weight: bold;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+  }
+  .file-info:nth-child(odd) {
+    background: white;
+  }
+  .file-info.finished .open{
+    display: block;
+  }
+  .file-info.finished .file-progress, .file-info.finished .arrow{
+    visibility: hidden;
+  }
+  .file-info.download-from-electron .arrow{
+    transform: rotate(180deg);
+  }
+  .file-info.in-progress .arrow{
+    background-image: url('@static/arrowBlue@2x.png')
+  }
+  .file-info.in-progress .file-progress{
+    color: #0071f6;
+  }
+  
+}
+
+.wz-widget.contracted{
+  height: 80px !important;
+  min-height: 80px !important;
+  .header{
+    border-radius: 12px;
+  }
+  .see-more .icon{
+    transform: rotate(0deg);
+  }
+  .content{
+    display: none;
+  }
+}
+
+.wz-widget.show{
+  display: block !important;
+}

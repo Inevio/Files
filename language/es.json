@@ -404,6 +404,14 @@
       "calculating" : "Calculando..."
     },
 
+    "downloadManager" : {
+      "importing": "Importando",
+      "file": "archivo",
+      "seeMore": "Ver más",
+      "seeLess": "Ver menos",
+      "open": "Abrir"
+    },
+
     "cantCopySamePlace" : "No puedes copiarlo a la misma carpeta",
     "skip"  : "Omitir",
     "replace" : "Remplazar",
@@ -420,6 +428,8 @@
     "confirmEmptyTrash" : "¿Seguro que desea eliminar definitivamente todo el contenido de la papelera?",
     "restoreFolder"  : "Esta carpeta esta en tu papelera, para verla debes restaurarla",
     "developing"  : "Esta funcionalidad aun no esta disponible",
-    "cantDownloadFolders" : "No es posible descargar una carpeta desde Dropbox, Google Drive o Onedrive"
+    "cantDownloadFolders" : "No es posible descargar una carpeta desde Dropbox, Google Drive o Onedrive",
+
+    "pending" : "Pendiente"
 
 }

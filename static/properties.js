@@ -11,7 +11,7 @@ var userList = $('.file-shared .list');
 var changeVolumeName = function( fsnode ){
 
   if( fsnode.type === 0 && !isNaN( parseInt( fsnode.name ) ) ){
-    fsnode.name = api.system.user().user;
+    fsnode.name = api.system.workspace().name;
   }
 
   return fsnode;
@@ -178,7 +178,7 @@ var loadUsers = function( fsnode ){
 
       var isOwner = user.isOwner;
 
-      api.user( user.userId , function( err , user ){
+      api.user( user.idWorkspace , function( err , user ){
 
         appendUser( user , isOwner );
 
@@ -194,7 +194,7 @@ var loadUsers = function( fsnode ){
 var appendUser = function( user , isOwner ){
 
   var newUser = userPrototype.clone();
-  newUser.removeClass( 'wz-prototype' ).addClass( 'user-' + user.id );
+  newUser.removeClass( 'wz-prototype' ).addClass( 'user-' + user.idWorkspace );
   newUser.find( 'img' ).css( 'background-image' , 'url(' + user.avatar.small + ')' );
   newUser.find( '.name' ).text( user.fullName );
 

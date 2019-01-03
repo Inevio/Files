@@ -54,6 +54,19 @@
   background: url( '@static/mobile/subida.png' ) no-repeat;
   background-size: 23px 19px;
   background-position: 16px 19px;
+  /* */
+  display: none;
+}
+
+.horbito-uploader{
+  width: 23px;
+  height: 19px;
+  float: right;
+  padding: 34px 0 0 33px;
+  text-align: center;
+  background: url( '@static/mobile/subida.png' ) no-repeat;
+  background-size: 23px 19px;
+  background-position: 16px 19px;
 }
 
 #weexplorer-menu-name{
@@ -113,6 +126,7 @@
   margin-top: 16px;
   font-size: 17px;
   color: #252525;
+  max-width: ~'calc(100% - 100px)';
 }
 
 .weexplorer-element-icon{
@@ -546,9 +560,9 @@
   display: none;
 }
 
-.file-options.folder .option-section .option.download{
+/*.file-options.folder .option-section .option.download{
   display: none;
-}
+}*/
 
 .option-section .option.send-to figure{
   width: 15px;
@@ -1113,7 +1127,7 @@
 	height: 49px;
 	bottom: 0;
 	z-index: 3;
-	transform: translateY(49px);
+	display: none;
 	background-color: #f0f0f0;
 
 	.attach-selected{
@@ -1145,8 +1159,7 @@
 }
 
 .attach-footer.select-source-mode{
-	position: inline-block;
-	transform: translateY(0px);
+	display: block;
 }
 
 .progress-container{
