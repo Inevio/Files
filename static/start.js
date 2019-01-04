@@ -35,3 +35,4 @@ if( typeof cordova == 'undefined' ){
 
 }
 
+//api.app.createWidget('downloadManager')
