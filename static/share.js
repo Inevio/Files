@@ -29,6 +29,10 @@ var loadInfo = function( id ){
   var users = $.Deferred();
   var sharedWith = $.Deferred();
 
+  if( api.system.workplace().type == 'personal' ){
+    win.addClass( 'personal' )
+  }
+
   api.user.friendList( false, function( error, list ){
     users.resolve( list );
   });
