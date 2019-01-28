@@ -4551,8 +4551,21 @@ var setOutOldCloudLoading = function () {
 }
 
 var setOldCloudAccounts = function () {
+
+  let oldCloudAccounts = {
+    dropbox: true,
+    oneDrive: true,
+    gDrive: true
+  }
+
   // Dropbox
   api.integration.dropbox.listAccounts(function (e, accounts) {
+
+    oldCloudAccounts.dropbox = accounts.length ? true : false
+    if(!oldCloudAccounts.dropbox && !oldCloudAccounts.gDrive && !oldCloudAccounts.oneDrive){
+      $('.ui-navgroup-title.old-cloud').hide()
+    }
+
     accounts.forEach(function (account) {
       if (isInSidebar(account.id)) {
         return
@@ -4571,6 +4584,11 @@ var setOldCloudAccounts = function () {
 
   // GDrive
   api.integration.gdrive.listAccounts(function (e, accounts) {
+
+    oldCloudAccounts.gDrive = accounts.length ? true : false
+    if(!oldCloudAccounts.dropbox && !oldCloudAccounts.gDrive && !oldCloudAccounts.oneDrive){
+      $('.ui-navgroup-title.old-cloud').hide()
+    }
     accounts.forEach(function (account) {
       if (isInSidebar(account.id)) {
         return
@@ -4589,6 +4607,11 @@ var setOldCloudAccounts = function () {
 
   // Onedrive
   api.integration.onedrive.listAccounts(function (e, accounts) {
+
+    oldCloudAccounts.oneDrive = accounts.length ? true : false
+    if(!oldCloudAccounts.dropbox && !oldCloudAccounts.gDrive && !oldCloudAccounts.oneDrive){
+      $('.ui-navgroup-title.old-cloud').hide()
+    }
     accounts.forEach(function (account) {
       if (isInSidebar(account.id)) {
         return
