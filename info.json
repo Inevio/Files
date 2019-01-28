@@ -368,9 +368,9 @@
 
                 },
 
-                "downloadManager" : {
+                "transferManagers" : {
 
-                    "template" : "downloadManager.html",
+                    "template" : "transferManagers.html",
 
                     "maxizable" : false,
                     "resizable" : false,
@@ -392,8 +392,8 @@
 
 
                     },
-                    "css"      : ["downloadManager.css"],
-                    "script"   : ["downloadManager.js"]
+                    "css"      : ["transferManagers.css"],
+                    "script"   : ["transferManagers.js"]
 
                 }
 
@@ -401,11 +401,11 @@
 
             "widget" : {
 
-                "downloadManager" : {
+                "transferManagers" : {
 
-                    "template" : "downloadManager.html",
-                    "css"      : ["downloadManager.css"],
-                    "script"   : ["downloadManager.js"],
+                    "template" : "transferManagers.html",
+                    "css"      : ["transferManagers.css"],
+                    "script"   : ["transferManagers.js"],
 
                     "alwaysInFront" : true
 
