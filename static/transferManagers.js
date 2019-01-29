@@ -4,7 +4,11 @@ var isElectron = typeof process !== 'undefined'
 
 let itemId = 0
 let totalQueue = {}
-let widgetHidden = true
+let uploadHidden = true
+let downloadHidden = true
+
+let downloadManager = $('.manager.download-manager')
+let uploadManager = $('.manager.upload-manager')
 
 if(isElectron){
   const {ipcRenderer} = require('electron')
@@ -41,9 +45,10 @@ console.log('isElectron', isElectron)
 
 var addToQueue = function(file){
 
-  if(widgetHidden){
+  if(uploadHidden){
     win.show()
-    widgetHidden = false
+    uploadManager.show()
+    uploadHidden = false
   }
   totalQueue[itemId] = file
   itemId++
@@ -58,22 +63,16 @@ var bytesToSize = function (bytes) {
 }
 
 var translateInterface = function(){
-  $('.file-info .open div').text(lang.downloadManager.open)
-  $('.header .see-more .text').text(lang.downloadManager.seeLess)
-  setHeaderTitle(0)
-}
-
-var setHeaderTitle = function(queueSize){
-  let text = `${lang.downloadManager.importing} ${queueSize} ${lang.downloadManager.file}`
-  if(queueSize > 1 || queueSize === 0){
-    text = text + 's'
-  }
-  $('.header .summary .title').text(text)
+  $('.file-info .open div').text(lang.transferManagers.open)
+  $('.header .see-more .text').text(lang.transferManagers.seeMore)
+  $('.header .summary .title', downloadManager).text(lang.transferManagers.downloading)
+  $('.header .summary .title', uploadManager).text(lang.transferManagers.importing)
+  //setHeaderTitle(0)
 }
 
 var setHeaderProgress = function(progress){
   $('.header .summary .subtitle').text(`(${progress})%`)
-  setProgress(progress)
+  setProgress(progress, true)
 }
   
 var setUploadProgress = function(fsnodeID, progress, totalProgress){
@@ -99,7 +98,7 @@ api.upload
     uploadDom.find('.file-size').text(bytesToSize(file.size))
     uploadDom.find('.file-progress').text(lang.pending)
     $('.content').prepend(uploadDom)
-    setHeaderTitle(queueSize)
+    //setHeaderTitle(queueSize)
   })
   .on('fsnodeStart', function (fsnode, queue) {
     //console.log(fsnode,queue)
@@ -123,8 +122,9 @@ api.upload
   })
 
 win.on('click', '.see-more', function(){
-  win.toggleClass('contracted')
-  $('.header .see-more .text').text( win.hasClass('contracted') ? lang.downloadManager.seeMore : lang.downloadManager.seeLess )
+  let container = $(this).parents('.manager')
+  container.toggleClass('contracted')
+  $('.header .see-more .text', container).text( container.hasClass('contracted') ? lang.transferManagers.seeMore : lang.transferManagers.seeLess )
 })
 
 .on('click', '.file-info .open', function(){
@@ -135,14 +135,22 @@ win.on('click', '.see-more', function(){
 
 translateInterface()
 
-var circle = $('.progress-ring__circle')[0];
-var radius = circle.r.baseVal.value;
-var circumference = radius * 2 * Math.PI;
+var circleUpload = $('.upload-manager .progress-ring__circle')[0]
+var circleDownload = $('.download-manager .progress-ring__circle')[0]
+var radius = circleUpload.r.baseVal.value
+var circumference = radius * 2 * Math.PI
 
-circle.style.strokeDasharray = `${circumference} ${circumference}`;
-circle.style.strokeDashoffset = `${circumference}`;
+circleUpload.style.strokeDasharray = `${circumference} ${circumference}`
+circleDownload.style.strokeDasharray = `${circumference} ${circumference}`
+circleUpload.style.strokeDashoffset = `${circumference}`
+circleDownload.style.strokeDashoffset = `${circumference}`
 
-function setProgress(percent) {
-  const offset = circumference - percent / 100 * circumference;
-  circle.style.strokeDashoffset = offset;
+function setProgress(percent, isUpload) {
+  const offset = circumference - percent / 100 * circumference
+  if(isUpload){
+    circleUpload.style.strokeDashoffset = offset
+  }else{
+    circleDownload.style.strokeDashoffset = offset
+  }
+  
 }
