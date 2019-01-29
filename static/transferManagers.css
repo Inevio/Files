@@ -1,33 +1,45 @@
 .wz-widget{
-  border-radius: 12px;
   position: absolute;
   bottom: 12px;
   right: 12px;
-  width: 380px;
-  height: 275px;
+  height: 191px;
+  display: block;/*none*/
+}
+
+.manager{
+  border-radius: 12px;
+  float: right;
+  width: 350px;
+  height: 191px;
   background-color: #fff;
   box-shadow: 0 10px 20px rgba(0,0,0,.3);
   border-radius: 12px;
-  display: none;
+  display: block;
+  position: relative;
+  margin-top: 0px;
+}
+
+.manager.download-manager{
+  margin-left: 70px;
 }
 
 .header{
 
   width: 100%;
-  height: 80px;
+  height: 60px;
   display: inline-block;
   background-color: white;
   box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.05), 0px 1px 0px 0px rgba(0,0,0,0.05);
   border-radius: 12px 12px 0 0;
 
   .left-progress{
-    width: 62px;
+    width: 54px;
     height: 100%;
     float: left;
 
     svg{
-      margin-left: 14px;
-      margin-top: 23px;
+      margin-left: 10px;
+      margin-top: 14px;
     }
     .progress-ring__circle {
       transition: 0.35s stroke-dashoffset;
@@ -64,51 +76,59 @@
   .left-progress:after{
     content: '';
     width: 1px;
-    height: 56px;
+    height: 48px;
     display: block;
-    margin-top: 12px;
+    margin-top: 7px;
     background-color: #9a9aa2;
     position: absolute;
     top: 0px;
-    left: 62px;
+    left: 54px;
+    opacity: 0.1;
   }
 
   .summary{
     float: right;
     height: 100%;
-    width: ~'calc(100% - 62px)';
+    width: ~'calc(100% - 54px)';
     .title{
+      width: 100%;
       font-size: 17px;
       letter-spacing: 0.28pt;
       color: #252525;
-      margin-top: 16px;
+      margin-top: 12px;
       display: inline-block;
       margin-left: 12px;
     }
-    .subtitle{
+    .number-of-files{
       font-size: 13px;
       letter-spacing: 0.28pt;
-      color: #a29a9a;
-      margin-top: 16px;
+      color: #252525;
+      margin-top: 7px;
+      margin-left: 12px;
       display: inline-block;
     }
-
+    .percentage{
+      font-size: 13px;
+      letter-spacing: 0.28pt;
+      color: #9a9aa2;
+      display: inline-block;
+    }
   }
 
   .see-more{
-    width: 88px;
-    height: 19px;
+    width: 95px;
+    height: 24px;
     position: absolute;
-    right: 18px;
-    top: 47px;
-    border-radius: 9px;
-    background-color: #F8FAFB;
+    right: 6px;
+    top: 30px;
+    border-radius: 12px;
+    background-color: rgba(0,0,0,0.1);
     .icon{
       width: 9px;
       height: 5px;
       float: left;
-      margin-left: 10px;
-      margin-top: 7px;
+      margin-left: 12px;
+      margin-top: 10px;
       margin-right: 2px;
       background-image: url('@static/moreIcon@2x.png');
       background-size: 9px 5px;
@@ -119,7 +139,9 @@
       font-weight: bold;
       letter-spacing: 0.22pt;
       color: #a29a9a;
-      margin-top: 3px;
+      margin-top: 5px;
+      margin-left: 7px;
+      /*display: inline-block;*/
       text-align: center;
     }
   }
@@ -226,9 +248,10 @@
   
 }
 
-.wz-widget.contracted{
-  height: 80px !important;
-  min-height: 80px !important;
+.manager.contracted{
+  height: 60px !important;
+  min-height: 60px !important;
+  margin-top: 131px !important;
   .header{
     border-radius: 12px;
   }
