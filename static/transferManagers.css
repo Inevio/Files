@@ -133,7 +133,7 @@
       margin-right: 2px;
       background-image: url('@static/moreIcon@2x.png');
       background-size: 9px 5px;
-      transform: rotate(180deg);
+      transform: rotate(0deg);
     }
     .text{
       font-size: 13px;
@@ -245,7 +245,6 @@
   .file-info.in-progress .file-progress{
     color: #0071f6;
   }
-  
 }
 
 .manager.contracted{
@@ -256,7 +255,7 @@
     border-radius: 12px;
   }
   .see-more .icon{
-    transform: rotate(0deg);
+    transform: rotate(180deg);
   }
   .content{
     display: none;
