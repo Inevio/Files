@@ -60,7 +60,8 @@ if(isElectron){
     uploadDom.find('.file-size').text(bytesToSize(file.size))
     uploadDom.find('.file-progress').text(lang.pending)
     $('.content', downloadManager).prepend(uploadDom)
-    //setHeaderTitle(queueSize)
+    let queueSize = Object.keys(totalQueueDownload).length
+    setQueueSizeDom(queueSize, false)
   })
   ipcRenderer.on('horbito-download-progress', (event, arg) => {
     let progressObject = JSON.parse(arg)
