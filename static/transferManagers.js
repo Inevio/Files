@@ -18,20 +18,43 @@ if(isElectron){
   
   const {ipcRenderer} = require('electron')
   //Upload events
-  ipcRenderer.on('upload-from-download-info', (event, arg) => {
+  ipcRenderer.on('upload-from-download-proccessing', (event, arg) => {
     console.log('download-info: ',  JSON.parse(arg))
     let file = JSON.parse(arg)
     //let queueSize = queue.length()
     addToQueue(file, true)
     let uploadDom = uploadPrototype.clone().removeClass('wz-prototype').addClass('uploadDom')
     uploadDom.addClass('upload-from-electron')
-    uploadDom.addClass('fileID-' + file.id)
+    uploadDom.addClass('fileTemporalID-' + file.temporalID)
     uploadDom.find('.name').text(file.name)
-    uploadDom.find('.file-size').text(bytesToSize(file.size))
+    //uploadDom.find('.file-size').text(bytesToSize(file.size))
     uploadDom.find('.file-progress').text(lang.pending)
     $('.content', uploadManager).prepend(uploadDom)
     let queueSize = Object.keys(totalQueueUpload).length
     setQueueSizeDom(queueSize, true)
+  })
+
+  ipcRenderer.on('upload-from-download-info', (event, arg) => {
+    console.log('download-info: ',  JSON.parse(arg))
+    let file = JSON.parse(arg)
+    let needToInsert = !!$('fileTemporalID-' + file.temporalID).length
+    if(needToInsert){
+      addToQueue(file, true)
+      let uploadDom = uploadPrototype.clone().removeClass('wz-prototype').addClass('uploadDom')
+      uploadDom.addClass('upload-from-electron')
+      uploadDom.addClass('fileID-' + file.id)
+      uploadDom.find('.name').text(file.name)
+      uploadDom.find('.file-size').text(bytesToSize(file.size))
+      uploadDom.find('.file-progress').text(lang.pending)
+      $('.content', uploadManager).prepend(uploadDom)
+      let queueSize = Object.keys(totalQueueUpload).length
+      setQueueSizeDom(queueSize, true)      
+    }else{
+      $('fileTemporalID-' + file.temporalID).addClass('fileID-' + file.id)
+      $('fileTemporalID-' + file.temporalID).find('.file-size').text(bytesToSize(file.size))
+      $('fileTemporalID-' + file.temporalID).find('.file-progress').text(lang.pending)
+    }
+
   })
   ipcRenderer.on('upload-from-download-progress', (event, arg) => {
     let progressObject = JSON.parse(arg)
