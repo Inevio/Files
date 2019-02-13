@@ -28,7 +28,7 @@ if(isElectron){
     uploadDom.addClass('fileTemporalID-' + file.temporalID)
     uploadDom.find('.name').text(file.name)
     //uploadDom.find('.file-size').text(bytesToSize(file.size))
-    uploadDom.find('.file-progress').text(lang.pending)
+    uploadDom.find('.file-progress').text(lang.proccessing)
     $('.content', uploadManager).prepend(uploadDom)
     let queueSize = Object.keys(totalQueueUpload).length
     setQueueSizeDom(queueSize, true)
