@@ -29,6 +29,7 @@ if(isElectron){
     uploadDom.find('.name').text(file.name)
     //uploadDom.find('.file-size').text(bytesToSize(file.size))
     uploadDom.find('.file-progress').text(lang.proccessing)
+    //uploadDom.find('.arrow').hide()
     $('.content', uploadManager).prepend(uploadDom)
     let queueSize = Object.keys(totalQueueUpload).length
     setQueueSizeDom(queueSize, true)
@@ -50,9 +51,10 @@ if(isElectron){
       let queueSize = Object.keys(totalQueueUpload).length
       setQueueSizeDom(queueSize, true)      
     }else{
-      $('fileTemporalID-' + file.temporalID).addClass('fileID-' + file.id)
-      $('fileTemporalID-' + file.temporalID).find('.file-size').text(bytesToSize(file.size))
-      $('fileTemporalID-' + file.temporalID).find('.file-progress').text(lang.pending)
+      $('.fileTemporalID-' + file.temporalID).addClass('fileID-' + file.id)
+      //$('.fileTemporalID-' + file.temporalID + ' .arrow').show()
+      $('.fileTemporalID-' + file.temporalID + ' .file-size').text(bytesToSize(file.size))
+      $('.fileTemporalID-' + file.temporalID + ' .file-progress').text(lang.pending)
     }
 
   })
