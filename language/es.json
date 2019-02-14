@@ -431,6 +431,7 @@
     "developing"  : "Esta funcionalidad aun no esta disponible",
     "cantDownloadFolders" : "No es posible descargar una carpeta desde Dropbox, Google Drive o Onedrive",
 
-    "pending" : "Pendiente"
+    "pending" : "Pendiente",
+    "proccessing" : "Procesando"
 
 }
