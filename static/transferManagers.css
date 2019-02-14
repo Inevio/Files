@@ -207,7 +207,8 @@
       color: #717171;
       margin-top: 7px;
       float: right;
-      width: 75px;
+      width: auto;
+      min-width: 75px;
       margin-right: 5px;
       text-align: right;
     }
