@@ -174,16 +174,20 @@ api.upload
     console.error(data.origin + ' ' + lang.alreadyExists + ' ' + lang.destinyFolder)
   })
   .on('fileEnqueued', function (file, queue) {
-    console.log(file, queue)
-    addToQueue(file, true)
-    let queueSize = Object.keys(totalQueueUpload).length
-    let uploadDom = uploadPrototype.clone().removeClass('wz-prototype').addClass('uploadDom')
-    uploadDom.addClass('upload-queue-' + file.id)
-    uploadDom.find('.name').text(file.name)
-    uploadDom.find('.file-size').text(bytesToSize(file.size))
-    uploadDom.find('.file-progress').text(lang.pending)
-    $('.content', uploadManager).prepend(uploadDom)
-    setQueueSizeDom(queueSize, true)
+    console.log('fichero', file)
+    if(file.directory === false){
+      //console.log('fichero añadido a la cola', file, file.fsnode === null, file.fsnode.type !== 2)
+      addToQueue(file, true)
+      let queueSize = Object.keys(totalQueueUpload).length
+      let uploadDom = uploadPrototype.clone().removeClass('wz-prototype').addClass('uploadDom')
+      uploadDom.addClass('upload-queue-' + file.id)
+      uploadDom.find('.name').text(file.name)
+      uploadDom.find('.file-size').text(bytesToSize(file.size))
+      uploadDom.find('.file-progress').text(lang.pending)
+      $('.content', uploadManager).prepend(uploadDom)
+      setQueueSizeDom(queueSize, true)    
+    }
+
   })
   .on('fsnodeStart', function (fsnode, queue) {
     //console.log(fsnode,queue)
