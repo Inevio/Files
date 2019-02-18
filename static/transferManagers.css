@@ -252,7 +252,7 @@
   .file-info.finished .file-progress, .file-info.finished .arrow{
     visibility: hidden;
   }
-  .file-info.upload-from-electron .arrow{
+  .file-info.upload-from-electron .arrow, .file-info.download-from-electron .arrow{
     transform: rotate(180deg);
   }
   .file-info.in-progress .arrow{
