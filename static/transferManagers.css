@@ -38,8 +38,8 @@
     height: 100%;
     float: left;
     svg{
-      margin-left: 14px;
-      margin-top: 17px;
+      margin-left: 9px;
+      margin-top: 12px;
     }
     .progress-ring__circle {
       transition: 0.35s stroke-dashoffset;
@@ -182,6 +182,7 @@
     height: 30px;
     background: #F8F8F8;
     position: relative;
+    
     .icon{
       width: 16px;
       height: 16px;
@@ -193,7 +194,7 @@
       color: #252525;
       float: left;
       margin-top: 7px;
-      width: ~'calc(100% - 165px)';
+      width: ~'calc(100% - 170px)';
     }
     .file-size{
       font-size: 15px;
