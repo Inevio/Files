@@ -3,7 +3,7 @@
   bottom: 12px;
   right: 12px;
   height: 191px;
-  display: none;
+  /*display: none;*/
 }
 
 .manager{
@@ -14,14 +14,9 @@
   background-color: #fff;
   box-shadow: 0 10px 20px rgba(0,0,0,.3);
   border-radius: 12px;
-  display: block;
   position: relative;
   margin-top: 0px;
-  display: none;
-}
-
-.manager.download-manager{
-  margin-left: 70px;
+  /*display: none;*/
 }
 
 .header{
@@ -37,6 +32,27 @@
     width: 54px;
     height: 100%;
     float: left;
+    .progress-gif{
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+      background-image: url('@static/img/uploading-arrow.gif');
+      background-size: 24px 24px;
+      left: 18px;
+      top: 18px;
+      position: absolute;
+    }
+    .done-gif{
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+      background-image: url('@static/img/done.gif');
+      background-size: 24px 24px;
+      left: 18px;
+      top: 18px;
+      position: absolute;
+      visibility: hidden;
+    }
     svg{
       margin-left: 9px;
       margin-top: 12px;
@@ -265,6 +281,16 @@
   }
 }
 
+.manager.download-manager{
+  margin-left: 70px;
+  .progress-gif{
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    background-image: url('@static/img/downloading-arrow.gif');
+  }
+}
+
 .manager.contracted{
   height: 60px !important;
   min-height: 60px !important;
@@ -277,6 +303,15 @@
   }
   .content{
     display: none;
+  }
+}
+
+.manager.done{
+  .progress-gif{
+    display: none;
+  }
+  .done-gif{
+    visibility: visible;
   }
 }
 
