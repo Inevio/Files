@@ -236,9 +236,15 @@ win.on('click', '.see-more', function () {
     container.find('.see-more').click()
   })
 
+  .on('click', '.manager .left-progress', function () {
+    $(this).parents('.manager').toggleClass('done')
+    let gifURL = $(this).find('.done-gif').css('background-image')
+    $(this).find('.done-gif').css('background-image', 'url("")').css('background-image', gifURL)
+  })
+
 translateInterface()
 
-var circleUpload = $('.upload-manager .progress-ring__circle')[0]
+/* var circleUpload = $('.upload-manager .progress-ring__circle')[0]
 var circleDownload = $('.download-manager .progress-ring__circle')[0]
 var radius = circleUpload.r.baseVal.value
 var circumference = radius * 2 * Math.PI
@@ -255,4 +261,4 @@ function setCircleProgress (percent, isUpload) {
   } else {
     circleDownload.style.strokeDashoffset = offset
   }
-}
+} */
