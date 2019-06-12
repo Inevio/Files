@@ -405,11 +405,9 @@
     },
 
     "transferManagers" : {
-      "importing": "Importing to Horbito",
-      "downloading" : "Downloading from Horbito",
+      "importing": "Importing",
+      "downloading" : "Downloading",
       "file": "file",
-      "seeMore": "See more",
-      "seeLess": "See less",
       "open": "Open"
     },
 
