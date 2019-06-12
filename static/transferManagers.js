@@ -38,6 +38,7 @@ if (isElectron) {
     console.log('download-info: ', JSON.parse(arg))
     let file = JSON.parse(arg)
     let needToInsert = !!$('fileTemporalID-' + file.temporalID).length
+    console.log('El MIME ES: ', file)
     if (needToInsert) {
       addToQueue(file, true)
       let uploadDom = uploadPrototype.clone().removeClass('wz-prototype').addClass('uploadDom')
@@ -69,12 +70,12 @@ if (isElectron) {
       $('.file-info.fileID-' + updatedFSNode.id, uploadManager).addClass('finished')
     })
   })
-
   // Download events
   ipcRenderer.on('horbito-download-info', (event, arg) => {
     console.log('horbito-download-info: ', JSON.parse(arg))
     let file = JSON.parse(arg)
     // let queueSize = queue.length()
+    console.log('El MIME ES: ', file)
     addToQueue(file, false)
     let uploadDom = downloadPrototype.clone().removeClass('wz-prototype')
     uploadDom.addClass('download-from-electron')
@@ -133,7 +134,6 @@ var bytesToSize = function (bytes) {
 
 var translateInterface = function () {
   $('.file-info .open div').text(lang.transferManagers.open)
-  $('.header .see-more .text').text(lang.transferManagers.seeMore)
   $('.header .summary .title', downloadManager).text(lang.transferManagers.downloading)
   $('.header .summary .title', uploadManager).text(lang.transferManagers.importing)
   /* setQueueSizeDom(0, true)
@@ -164,7 +164,7 @@ var setProgress = function (fsnodeID, progress, totalProgress, isUpload) {
   } else {
     var percentage = parseFloat(progress * 100).toFixed(1)
     totalProgress = parseFloat(totalProgress * 100).toFixed(1)
-    setHeaderProgress(totalProgress, isUpload)
+    // setHeaderProgress(totalProgress, isUpload)
     $('.file-info.fileID-' + fsnodeID, container).addClass('in-progress')
     $('.file-info.fileID-' + fsnodeID, container).find('.file-progress').text(percentage + '%')
     // console.log(fsnodeID, $('.file-info.upload-' + fsnodeID))
@@ -177,6 +177,7 @@ api.upload
   })
   .on('fileEnqueued', function (file, queue) {
     console.log('fichero', file)
+    console.log('El MIME ES: ', file)
     if (file.directory === false) {
       // console.log('fichero añadido a la cola', file, file.fsnode === null, file.fsnode.type !== 2)
       addToQueue(file, true)
@@ -214,7 +215,6 @@ api.upload
 win.on('click', '.see-more', function () {
   let container = $(this).parents('.manager')
   container.toggleClass('contracted')
-  $('.header .see-more .text', container).text(container.hasClass('contracted') ? lang.transferManagers.seeMore : lang.transferManagers.seeLess)
 })
 
   .on('click', '.file-info .open', function () {
