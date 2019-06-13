@@ -47,6 +47,7 @@ if (isElectron) {
       uploadDom.find('.name').text(file.name)
       uploadDom.find('.file-size').text(bytesToSize(file.size))
       uploadDom.find('.file-progress').text(lang.pending)
+      uploadDom.addClass( mimeToClass(file.type.toLowerCase()) )
       $('.content', uploadManager).prepend(uploadDom)
       let queueSize = Object.keys(totalQueueUpload).length
       setQueueSizeDom(queueSize, true)
@@ -75,7 +76,7 @@ if (isElectron) {
     console.log('horbito-download-info: ', JSON.parse(arg))
     let file = JSON.parse(arg)
     // let queueSize = queue.length()
-    console.log('El MIME ES: ', file)
+    console.log('El MIME ES: ', file.type)
     addToQueue(file, false)
     let uploadDom = downloadPrototype.clone().removeClass('wz-prototype')
     uploadDom.addClass('download-from-electron')
@@ -87,6 +88,7 @@ if (isElectron) {
       uploadDom.find('.file-size').text(bytesToSize(file.size))
     }
     uploadDom.find('.file-progress').text(lang.pending)
+    uploadDom.addClass( mimeToClass(file.type.toLowerCase()) )
     $('.content', downloadManager).prepend(uploadDom)
     let queueSize = Object.keys(totalQueueDownload).length
     setQueueSizeDom(queueSize, false)
@@ -130,6 +132,24 @@ var bytesToSize = function (bytes) {
   if (bytes == 0) return '0 Byte'
   var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)))
   return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i]
+}
+
+var mimeToClass = function (mime) {
+  let classToInsert = 'generic'
+  if( mime === 'application/vnd.openxmlformats-officedocument.presentationml.presentation' || mime === 'application/vnd.openxmlformats-officedocument.presentationml.presentation' ){
+    classToInsert = 'ppt'
+  }else if( mime === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ){
+    classToInsert = 'xls'
+  }else if( mime === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ){
+    classToInsert = 'doc'
+  }else if( mime.indexOf('image/') !== -1 ){
+    classToInsert = 'img'
+  }else if( mime.indexOf('audio/') !== -1 ){
+    classToInsert = 'audio'
+  }else if( mime.indexOf('video/') !== -1 ){
+    classToInsert = 'video'
+  }
+  return classToInsert
 }
 
 var translateInterface = function () {
@@ -187,6 +207,7 @@ api.upload
       uploadDom.find('.name').text(file.name)
       uploadDom.find('.file-size').text(bytesToSize(file.size))
       uploadDom.find('.file-progress').text(lang.pending)
+      uploadDom.addClass( mimeToClass(file.type.toLowerCase()) )
       $('.content', uploadManager).prepend(uploadDom)
       setQueueSizeDom(queueSize, true)
     }
