@@ -3,7 +3,7 @@
   bottom: 12px;
   right: 12px;
   height: 251px;
-  /*display: none;*/
+  display: none;
 }
 
 .manager *{
@@ -20,7 +20,7 @@
   border-radius: 12px;
   position: relative;
   margin-top: 0px;
-  /*display: none;*/
+  display: none;
 }
 
 .header{
@@ -197,6 +197,8 @@
       float: left;
       margin-left: 8px;
       margin-top: 17px;
+      background-image: url('@static/fileIcons/generic@2x.png');
+      background-size: 16px 16px;
     }
     .name{
       font-size: 15px;
@@ -274,6 +276,9 @@
       }
     }
   }
+  .file-info.upload-from-electron .download-to-pc{
+    display: inline-block;
+  }
   .file-info:nth-child(odd) {
     background: white;
   }
@@ -292,7 +297,7 @@
   .file-info.in-progress .file-progress{
     color: #0071f6;
   }
-  .file-info:hover{
+  .file-info.finished:hover{
     background-color: rgba(0,113,246,0.15);
     cursor: pointer;
     .finished-icon, .file-progress, .arrow{
@@ -308,6 +313,24 @@
       color: #252525;
     }
   }
+  .file-info.ppt .icon{
+    background-image: url('@static/fileIcons/pptx@2x.png');
+  }
+  .file-info.xls .icon{
+    background-image: url('@static/fileIcons/xlsx@2x.png');
+  }
+  .file-info.doc .icon{
+    background-image: url('@static/fileIcons/docx@2x.png');
+  }
+  .file-info.image .icon{
+    background-image: url('@static/fileIcons/imageIcon@2x.png');
+  }
+  .file-info.audio .icon{
+    background-image: url('@static/fileIcons/musicIcon@2x.png');
+  }
+  .file-info.video .icon{
+    background-image: url('@static/fileIcons/videoIcon@2x.png');
+  }
 }
 
 .manager.download-manager{
@@ -317,9 +340,6 @@
     height: 24px;
     display: inline-block;
     background-image: url('@static/img/downloading-arrow.gif');
-  }
-  .file-info .download-to-pc{
-    display: inline-block;
   }
 }
 
