@@ -2,26 +2,25 @@
   position: absolute;
   bottom: 12px;
   right: 12px;
-  height: 191px;
+  height: 251px;
   display: none;
+}
+
+.manager *{
+  font-family: Akademie;
 }
 
 .manager{
   border-radius: 12px;
   float: right;
   width: 350px;
-  height: 191px;
+  height: 251px;
   background-color: #fff;
   box-shadow: 0 10px 20px rgba(0,0,0,.3);
   border-radius: 12px;
-  display: block;
   position: relative;
   margin-top: 0px;
   display: none;
-}
-
-.manager.download-manager{
-  margin-left: 70px;
 }
 
 .header{
@@ -37,6 +36,27 @@
     width: 54px;
     height: 100%;
     float: left;
+    .progress-gif{
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+      background-image: url('@static/img/uploading-arrow.gif');
+      background-size: 24px 24px;
+      left: 18px;
+      top: 18px;
+      position: absolute;
+    }
+    .done-gif{
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+      background-image: url('@static/img/done.gif');
+      background-size: 24px 24px;
+      left: 18px;
+      top: 18px;
+      position: absolute;
+      visibility: hidden;
+    }
     svg{
       margin-left: 9px;
       margin-top: 12px;
@@ -91,7 +111,7 @@
       font-size: 17px;
       letter-spacing: 0.28pt;
       color: #252525;
-      margin-top: 9px;
+      margin-top: 11px;
       display: inline-block;
       margin-left: 12px;
     }
@@ -113,61 +133,49 @@
   }
 
   .see-more{
-    width: 95px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
     position: absolute;
-    right: 6px;
-    top: 30px;
-    border-radius: 12px;
-    background-color: rgba(0,0,0,0.05);
-    .icon{
-      width: 9px;
-      height: 5px;
-      float: left;
-      margin-left: 12px;
-      margin-top: 10px;
-      margin-right: 2px;
-      background-image: url('@static/moreIcon@2x.png');
-      background-size: 9px 5px;
+    right: 47px;
+    top: 15px;
+    border-radius: 50%;
+    text-align: center;
+    figure{
+      width: 18px;
+      height: 10px;
+      background-image: url('@static/compress@2x.png');
+      background-size: 18px 10px;
       transform: rotate(0deg);
-      display: none;
-    }
-    .text{
-      font-size: 13px;
-      font-weight: bold;
-      letter-spacing: 0.22pt;
-      color: #a29a9a;
-      margin-top: 5px;
-      margin-left: 7px;
-      /*display: inline-block;*/
-      text-align: center;
+      display: inline-block;
+      margin-top: 10px;
+      transform: rotate(180deg);
     }
   }
 
   .see-more:hover{
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(154,154,162,0.15);
   }
 
   .close-button{
-    width: 18px;
-    height: 18px;
+    width: 30px;
+    height: 30px;
     position: absolute;
-    top: 6px;
+    top: 15px;
     right: 6px;
     border-radius: 50%;
+    text-align: center;
     figure{
-      width: 10px;
-      height: 10px;
+      width: 14px;
+      height: 14px;
       background-image: url('@static/closeDownload@2x.png');
-      background-size: 10px 10px;
+      background-size: 14px 14px;
       display: inline-block;
-      margin-top: 4px;
-      margin-left: 4px;
+      margin-top: 8px;
     }
   }
 
   .close-button:hover{
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(154,154,162,0.15);
   }
 
 }
@@ -177,37 +185,43 @@
   height: ~'calc(100% - 60px)';
   display: inline-block;
   border-radius: 0 0 6px 6px;
+  top: -2px;
   .file-info{
     width: 100%;
-    height: 30px;
+    height: 50px;
     background: #F8F8F8;
     position: relative;
-    
     .icon{
       width: 16px;
       height: 16px;
       float: left;
+      margin-left: 8px;
+      margin-top: 17px;
+      background-image: url('@static/fileIcons/generic@2x.png');
+      background-size: 16px 16px;
     }
     .name{
       font-size: 15px;
       letter-spacing: 0.25pt;
       color: #252525;
       float: left;
-      margin-top: 7px;
-      width: ~'calc(100% - 170px)';
+      margin-top: 17px;
+      margin-left: 8px;
+      width: ~'calc(100% - 202px)';
+      line-height: 1.1em;
     }
     .file-size{
       font-size: 15px;
       letter-spacing: 0.25pt;
       color: #717171;
-      margin-top: 7px;
+      margin-top: 17px;
       float: right;
     }
     .file-progress{
       font-size: 15px;
       letter-spacing: 0.25pt;
-      color: #717171;
-      margin-top: 7px;
+      color: #0071f6;
+      margin-top: 17px;
       float: right;
       width: auto;
       min-width: 75px;
@@ -220,35 +234,55 @@
       height: 12px;
       background-image: url('@static/arrowGrey@2x.png');
       background-size: 10px 12px;
-      margin-right: 8px;
-      margin-top: 8px;
+      margin-right: 15px;
+      margin-top: 19px;
     }
-    .open{
-      width: 60px;
-      height: 20px;
+    .finished-icon{
+      width: 15px;
+      height: 11px;
+      background-image: url('@static/checkmark@2x.png');
+      background-size: 15px 11px;
       position: absolute;
-      top: 4px;
-      right: 6px;
-      background-color: rgba(0,0,0,0.05);
-      border-radius: 10.5px;
+      right: 12px;
+      top: 20px;
       display: none;
     }
-    .open:hover{
-      background-color: rgba(0,0,0,0.1);
+    .extra-actions{
+      display: none;
+      position: absolute;
+      right: 12px;
+      top: 15px;
+      .open-folder{
+        float: right;
+        display: inline-block;
+        opacity: 0.7;
+        width: 19px;
+        height: 19px;
+        background-image: url('@static/folder@2x.png');
+        background-size: 19px 19px;
+      }
+      .download-to-pc{
+        display: none;
+        float: right;
+        opacity: 0.7;
+        width: 18px;
+        height: 19px;
+        background-image: url('@static/downloadLocal@2x.png');
+        background-size: 18px 19px;
+        margin-right: 18px;
+      }
+      .open-folder:hover, .download-to-pc:hover{
+        opacity: 1;
+      }
     }
-    .open .text{
-      color: #717171;
-      text-align: center;
-      font-family: 'Lato';
-      font-weight: bold;
-      font-size: 13px;
-      margin-top: 4px;
-    }
+  }
+  .file-info.upload-from-electron .download-to-pc{
+    display: inline-block;
   }
   .file-info:nth-child(odd) {
     background: white;
   }
-  .file-info.finished .open{
+  .file-info.finished .finished-icon{
     display: block;
   }
   .file-info.finished .file-progress, .file-info.finished .arrow{
@@ -263,20 +297,74 @@
   .file-info.in-progress .file-progress{
     color: #0071f6;
   }
+  .file-info.finished:hover{
+    background-color: rgba(0,113,246,0.15);
+    cursor: pointer;
+    .finished-icon, .file-progress, .arrow{
+      visibility: hidden;
+    }
+    *{
+      cursor: pointer;
+    }
+    .extra-actions{
+      display: inline-block;
+    }
+    .file-size{
+      color: #252525;
+    }
+  }
+  .file-info.ppt .icon{
+    background-image: url('@static/fileIcons/pptx@2x.png');
+  }
+  .file-info.xls .icon{
+    background-image: url('@static/fileIcons/xlsx@2x.png');
+  }
+  .file-info.doc .icon{
+    background-image: url('@static/fileIcons/docx@2x.png');
+  }
+  .file-info.image .icon{
+    background-image: url('@static/fileIcons/imageIcon@2x.png');
+  }
+  .file-info.audio .icon{
+    background-image: url('@static/fileIcons/musicIcon@2x.png');
+  }
+  .file-info.video .icon{
+    background-image: url('@static/fileIcons/videoIcon@2x.png');
+  }
+}
+
+.manager.download-manager{
+  margin-left: 12px;
+  .progress-gif{
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    background-image: url('@static/img/downloading-arrow.gif');
+  }
 }
 
 .manager.contracted{
   height: 60px !important;
   min-height: 60px !important;
-  margin-top: 131px !important;
+  margin-top: 191px !important;
   .header{
     border-radius: 12px;
   }
-  .see-more .icon{
-    transform: rotate(180deg);
+  .see-more figure{
+    margin-top: 11px;
+    transform: rotate(0deg);
   }
   .content{
     display: none;
+  }
+}
+
+.manager.done{
+  .progress-gif{
+    display: none;
+  }
+  .done-gif{
+    visibility: visible;
   }
 }
 
