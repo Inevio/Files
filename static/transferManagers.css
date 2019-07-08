@@ -2,7 +2,7 @@
   position: absolute;
   bottom: 12px;
   right: 12px;
-  height: 251px;
+  max-height: 251px;
   display: none;
 }
 
@@ -14,7 +14,7 @@
   border-radius: 12px;
   float: right;
   width: 350px;
-  height: 251px;
+  max-height: 251px;
   background-color: #fff;
   box-shadow: 0 10px 20px rgba(0,0,0,.3);
   border-radius: 12px;
@@ -181,8 +181,8 @@
 
 .content{
   width: 100%;
-  height: ~'calc(100% - 60px)';
-  display: inline-block;
+  max-height: 191px;
+  /*display: inline-block;*/
   border-radius: 0 0 6px 6px;
   top: -2px;
   .file-info{
@@ -330,6 +330,10 @@
   .file-info.video .icon{
     background-image: url('@static/fileIcons/videoIcon@2x.png');
   }
+  .file-info.uploadDom:last-child, .file-info.downloadDom:last-child{
+    border-radius: 0 0 12px 12px;
+  }
+
 }
 
 .manager.download-manager{
@@ -345,6 +349,7 @@
 .manager.contracted{
   height: 60px !important;
   min-height: 60px !important;
+  max-height: 60px !important;
   margin-top: 191px !important;
   .header{
     border-radius: 12px;
