@@ -22,6 +22,7 @@
   margin-top: 0px;
   display: none;
   transform: translateY(72px);
+  align-self: flex-end;
 }
 
 .header{
