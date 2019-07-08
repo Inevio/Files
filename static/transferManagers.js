@@ -126,7 +126,7 @@ if (isElectron) {
 console.log('isElectron', isElectron)
 
 var addToQueue = function (file, isUpload) {
-  win.show()
+  win.css('display', 'flex')
   console.log('addToQueue', isUpload, uploadHidden, downloadHidden)
   if (uploadHidden && isUpload) {
     uploadManager.show().transition({
