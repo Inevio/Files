@@ -1,6 +1,6 @@
 const appID = api.app.info().id
 
-// if(appID !== 1) return
+if(appID !== 1) return
 
 var win = $(this)
 var isElectron = typeof process !== 'undefined'
