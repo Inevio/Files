@@ -129,10 +129,14 @@ var addToQueue = function (file, isUpload) {
   win.show()
   console.log('addToQueue', isUpload, uploadHidden, downloadHidden)
   if (uploadHidden && isUpload) {
-    uploadManager.show()
+    uploadManager.show().transition({
+      'transform': 'translateY(0px)'
+    }, 500, 'cubic-bezier(.5,0,.3,1)')
     uploadHidden = false
   } else if (downloadHidden && !isUpload) {
-    downloadManager.show()
+    downloadManager.show().transition({
+      'transform': 'translateY(0px)'
+    }, 500, 'cubic-bezier(.5,0,.3,1)')
     downloadHidden = false
   }
 
@@ -275,9 +279,16 @@ win.on('click', '.see-more', function () {
 
   .on('click', '.close-button', function () {
     let container = $(this).parents('.manager')
-    container.hide()
-    container.hasClass('upload-manager') ? uploadHidden = true : downloadHidden = true
-    container.find('.see-more').click()
+    container.transition({
+      opacity: 0
+    }, 200, function () {
+      container.hide()
+      container.hasClass('upload-manager') ? uploadHidden = true : downloadHidden = true
+      // container.find('.see-more').click()
+      container.css('transform', 'translateY(72px)')
+      container.css('opacity', 1)
+      container.addClass('contracted')
+    })
   })
 
   .on('click', '.manager .left-progress', function () {

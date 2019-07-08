@@ -21,6 +21,7 @@
   position: relative;
   margin-top: 0px;
   display: none;
+  transform: translateY(72px);
 }
 
 .header{
@@ -350,7 +351,6 @@
   height: 60px !important;
   min-height: 60px !important;
   max-height: 60px !important;
-  margin-top: 191px !important;
   .header{
     border-radius: 12px;
   }
